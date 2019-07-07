@@ -39,11 +39,15 @@ const float hexVertices[] =
 
 
 void InitializeRendering() {
+    glfwInitHint(GLFW_COCOA_CHDIR_RESOURCES, GLFW_TRUE);
+    glfwInitHint(GLFW_COCOA_MENUBAR, GLFW_TRUE);
+    
     if (!glfwInit()) {
         exit(EXIT_FAILURE);
     }
 
     glfwWindowHint(GLFW_SAMPLES, 4);
+    glfwWindowHint(GLFW_COCOA_RETINA_FRAMEBUFFER, GLFW_TRUE);
     glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 
     window = glfwCreateWindow(windowWidth, windowHeight, "DunGen", NULL, NULL);

@@ -1,6 +1,9 @@
 #include "../stdafx.h"
 #include "util.h"
 
+#define STB_DS_IMPLEMENTATION
+#include <stb_ds.h>
+
 double clampd(double d, double min, double max) {
     const double t = d < min ? min : d;
     return t > max ? max : t;
