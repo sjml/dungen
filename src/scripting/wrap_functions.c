@@ -3,14 +3,7 @@
 
 #include "../world.h"
 
-//vec3 testVec3 = {56.82f, 15.40f, 42.0f};
-//
-//int lua_getVec3(lua_State* L) {
-//    float** pv3 = lua_newuserdata(L, sizeof(float**));
-//    *pv3 = testVec3;
-//    luaL_setmetatable(L, "vec3");
-//    return 1;
-//}
+
 
 int lua_InitializeWorld(lua_State* L) {
     int w = (int)lua_tointeger(L, 1);
@@ -22,8 +15,20 @@ int lua_InitializeWorld(lua_State* L) {
     return 0;
 }
 
+int lua_GetTileAtPosition(lua_State* L) {
+    int x = (int)lua_tointeger(L, 1);
+    int y = (int)lua_tointeger(L, 2);
+    
+    TileData* td = GetTileAtPosition(x - 1, y - 1);
+    
+    TileData** ud = lua_newuserdata(L, sizeof(TileData**));
+    *ud = td;
+    luaL_setmetatable(L, "TileData");
+    return 1;
+}
 
-int v3_index(lua_State* L) {
+
+int vec3_index(lua_State* L) {
     float** pv3 = luaL_checkudata(L, 1, "vec3");
     int index = (int)luaL_checkinteger(L, 2);
     if (index < 1 || index > 3) {
@@ -35,7 +40,7 @@ int v3_index(lua_State* L) {
     return 1;
 }
 
-int v3_newindex(lua_State* L) {
+int vec3_newindex(lua_State* L) {
     float** pv3 = luaL_checkudata(L, 1, "vec3");
     int index = (int)luaL_checkinteger(L, 2);
     if (index < 1 || index > 3) {
@@ -48,17 +53,68 @@ int v3_newindex(lua_State* L) {
     return 0;
 }
 
+int vec3_len(lua_State* L) {
+    lua_pushinteger(L, 3);
+    return 1;
+}
+
+int vec3_tostring(lua_State* L) {
+    float** pv3 = luaL_checkudata(L, 1, "vec3");
+    char buffer[50];
+    sprintf(buffer, "[%.2f, %.2f, %.2f]", (*pv3)[0], (*pv3)[1], (*pv3)[2]);
+    lua_pushstring(L, buffer);
+    return 1;
+}
+
 static const luaL_Reg vec3_meta[] = {
-    {"__index", v3_index},
-    {"__newindex", v3_newindex},
+    {"__index", vec3_index},
+    {"__newindex", vec3_newindex},
+    {"__len", vec3_len},
+    {"__tostring", vec3_tostring},
     {NULL, NULL}
 };
+
+
+
+int TileData_index(lua_State* L) {
+    TileData** tile = luaL_checkudata(L, 1, "TileData");
+    const char* index = luaL_checkstring(L, 2);
+    
+    // TODO: there must be a better way to do this.
+    //    This comment on a SO answer talks about upvalues or storing references
+    //    https://stackoverflow.com/questions/19306236/lua-c-api-mapping-a-property-to-a-function#comment28593656_19306568
+    if (strcmp(index, "i") == 0) {
+        lua_pushinteger(L, (*(*tile)).i);
+    }
+    else if (strcmp(index, "color") == 0) {
+        float** pv3 = lua_newuserdata(L, sizeof(float**));
+        *pv3 = (*(*tile)).color;
+        luaL_setmetatable(L, "vec3");
+    }
+    else {
+        lua_pushnil(L);
+    }
+    
+    return 1;
+}
+
+static const luaL_Reg TileData_meta[] = {
+    {"__index", TileData_index},
+    {NULL, NULL}
+};
+
 
 
 void WrapFunctionsToScript(lua_State* L) {
     lua_pushcfunction(L, lua_InitializeWorld);
     lua_setglobal(L, "InitializeWorld");
     
+    lua_pushcfunction(L, lua_GetTileAtPosition);
+    lua_setglobal(L, "GetTileAtPosition");
+    
     luaL_newmetatable(L, "vec3");
     luaL_setfuncs(L, vec3_meta, 0);
+    
+    luaL_newmetatable(L, "TileData");
+    luaL_setfuncs(L, TileData_meta, 0);
 }
