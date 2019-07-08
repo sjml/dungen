@@ -30,12 +30,33 @@ void InitializeWorld(int width, int height, float scale) {
     arrsetlen(WorldArray, width * height);
     
     for (int j = 0; j < height; j++) {
-        for (int i = 0; i < width; i++) {            
+        for (int i = 0; i < width; i++) {
+            WorldArray[j*width + i].i = j*width + i;
             WorldArray[j*width + i].color[0] = rand() / (float)RAND_MAX;
-            WorldArray[j*width + i].color[1] = rand() / (float)RAND_MAX;
+            WorldArray[j*width + i].color[1] = 0.0f; // rand() / (float)RAND_MAX;
             WorldArray[j*width + i].color[2] = rand() / (float)RAND_MAX;
         }
     }
+}
+
+TileData* GetTileAtPosition(int x, int y) {
+    if (x < 0 || x >= worldWidth) {
+        fprintf(stderr, "Invalid tile x index: %d\n", x);
+        return NULL;
+    }
+    if (y < 0 || y >= worldWidth) {
+        fprintf(stderr, "Invalid tile y index: %d\n", y);
+        return NULL;
+    }
+    return &WorldArray[y*worldWidth + x];
+}
+
+TileData* GetTileAtIndex(int i) {
+    if (i < 0 || i >= arrlen(WorldArray)) {
+        fprintf(stderr, "Invalid tile index: %d\n", i);
+        return NULL;
+    }
+    return &WorldArray[i];
 }
 
 void RenderTiles(void) {

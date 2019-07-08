@@ -16,6 +16,9 @@ void InitializeLua() {
         fprintf(stderr, "%s\n", lua_tostring(L, -1));
         lua_pop(L, 1);
     }
+    else {
+        // printf("Lua scripting initialized.\n");
+    }
 }
 
 void FinalizeLua() {

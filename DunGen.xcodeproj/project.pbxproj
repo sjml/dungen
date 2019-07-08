@@ -96,6 +96,7 @@
 		340B5D0F22D21CB700E53DCA /* stb_ds.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = stb_ds.h; path = lib/stb/stb_ds.h; sourceTree = "<group>"; };
 		340B5D1122D221FF00E53DCA /* wrap_functions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = wrap_functions.h; sourceTree = "<group>"; };
 		340B5D1222D221FF00E53DCA /* wrap_functions.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = wrap_functions.c; sourceTree = "<group>"; };
+		3415722822D3873D00FB77F2 /* stb_image.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = stb_image.h; path = lib/stb/stb_image.h; sourceTree = "<group>"; };
 		3417E22322D1486100762C69 /* liblua.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = liblua.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		341F128F22D1FCA9009C844F /* lopcodes.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = lopcodes.c; path = "lib/lua-5.3.5/src/lopcodes.c"; sourceTree = "<group>"; };
 		341F129022D1FCA9009C844F /* ldblib.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = ldblib.c; path = "lib/lua-5.3.5/src/ldblib.c"; sourceTree = "<group>"; };
@@ -237,6 +238,7 @@
 		340B5D0E22D21C9200E53DCA /* stb */ = {
 			isa = PBXGroup;
 			children = (
+				3415722822D3873D00FB77F2 /* stb_image.h */,
 				340B5D0F22D21CB700E53DCA /* stb_ds.h */,
 			);
 			name = stb;
@@ -298,10 +300,10 @@
 		3455A6901EC4DA41000057E4 /* lib */ = {
 			isa = PBXGroup;
 			children = (
-				340B5D0E22D21C9200E53DCA /* stb */,
+				3455A6911EC4DA4A000057E4 /* glfw */,
 				347A942422D1DA70002BF97F /* cglm */,
 				3417E21E22D1480300762C69 /* lua */,
-				3455A6911EC4DA4A000057E4 /* glfw */,
+				340B5D0E22D21C9200E53DCA /* stb */,
 			);
 			name = lib;
 			sourceTree = "<group>";
