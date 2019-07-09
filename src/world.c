@@ -7,34 +7,34 @@ float tileBottomDisplacement;
 float tileRadius;
 float tileFullHeight;
 float tileFullWidth;
-vec2 worldSize;
+hmm_vec2 worldSize;
 int worldWidth;
 int worldHeight;
 
 void InitializeWorld(int width, int height, float scale) {
     worldWidth = width;
     worldHeight = height;
-    
+
     tileSideLength = scale;
     tileBottomDisplacement = sinf(M_PI / 6.0f) * tileSideLength;
     tileRadius = cosf(M_PI / 6.0f) * tileSideLength;
     tileFullHeight = tileSideLength + (2.0f * tileBottomDisplacement);
     tileFullWidth = 2.0f * tileRadius;
 
-    worldSize[0] = tileFullWidth * width;
-    worldSize[1] = (tileFullHeight * height) - (tileBottomDisplacement * (height - 1));
+    worldSize.X = tileFullWidth * width;
+    worldSize.Y = (tileFullHeight * height) - (tileBottomDisplacement * (height - 1));
     if (height > 1) {
-        worldSize[0] += tileRadius;
+        worldSize.X += tileRadius;
     }
-    
+
     arrsetlen(WorldArray, width * height);
-    
+
     for (int j = 0; j < height; j++) {
         for (int i = 0; i < width; i++) {
             WorldArray[j*width + i].i = j*width + i;
-            WorldArray[j*width + i].color[0] = 0.0f;
-            WorldArray[j*width + i].color[1] = 0.0f;
-            WorldArray[j*width + i].color[2] = 0.0f;
+            WorldArray[j*width + i].color.R = rand() / (float)RAND_MAX; // 0.0f;
+            WorldArray[j*width + i].color.G = rand() / (float)RAND_MAX; // 0.0f;
+            WorldArray[j*width + i].color.B = rand() / (float)RAND_MAX; // 0.0f;
         }
     }
 }
@@ -60,27 +60,27 @@ TileData* GetTileAtIndex(int i) {
 }
 
 void RenderTiles(void) {
-    vec2 startingPosition = {worldSize[0] * -0.5f, worldSize[1] * 0.5f};
-    startingPosition[0] += tileRadius;
-    startingPosition[1] += tileFullHeight * -0.5f;
-    vec2 modVector;
-    
+    hmm_vec2 startingPosition = {worldSize.X * -0.5f, worldSize.Y * 0.5f};
+    startingPosition.X += tileRadius;
+    startingPosition.Y += tileFullHeight * -0.5f;
+    hmm_vec2 modVector;
+
     for (int j = 0; j < worldHeight; j++) {
         for (int i = 0; i < worldWidth; i++) {
-            modVector[0] = tileFullWidth * i;
-            modVector[1] = -((tileFullHeight - tileBottomDisplacement) * j);
+            modVector.X = tileFullWidth * i;
+            modVector.Y = -((tileFullHeight - tileBottomDisplacement) * j);
             if (j % 2) {
-                modVector[0] += tileRadius;
+                modVector.X += tileRadius;
             }
-            
+
             glPushMatrix();
                 glTranslatef(
-                             startingPosition[0] + modVector[0],
-                             startingPosition[1] + modVector[1],
+                             startingPosition.X + modVector.X,
+                             startingPosition.Y + modVector.Y,
                              0.0f
                              );
                 glScalef(tileFullHeight, tileFullHeight, 1.0f);
-                glColor3fv(WorldArray[j*worldWidth + i].color);
+                glColor3fv(WorldArray[j*worldWidth + i].color.Elements);
                 glDrawArrays(GL_TRIANGLE_FAN, 0, 8);
             glPopMatrix();
         }

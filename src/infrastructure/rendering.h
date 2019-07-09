@@ -5,9 +5,9 @@ typedef struct {
     int windowWidth;
     int windowHeight;
     double aperture;
-    vec3 position;
-    vec3 view;
-    vec3 up;
+    hmm_vec3 position;
+    hmm_vec3 view;
+    hmm_vec3 up;
     
     float zNearClip;
     float zFarClip;

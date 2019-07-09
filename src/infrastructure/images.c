@@ -4,7 +4,8 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
 
-struct { char* key; vec3* value; } *colorTables = NULL;
+
+struct { char* key; hmm_vec3* value; } *colorTables = NULL;
 
 unsigned char* GetRawImageData(const char* filename, unsigned int *dataLength, int *texWidth, int *texHeight) {
     int n;
@@ -14,20 +15,21 @@ unsigned char* GetRawImageData(const char* filename, unsigned int *dataLength, i
     return imageData;
 }
 
+
 void LoadColorTable(const char* tablename, const char* filename) {
     unsigned int dataLength;
     int width, height;
     unsigned char* imageData = GetRawImageData(filename, &dataLength, &width, &height);
     
-    vec3* colorList = NULL;
+    hmm_vec3* colorList = NULL;
     arrsetlen(colorList, dataLength / 4);
     unsigned int pixOffset = 0;
     for (int y=0; y < height; y++) {
         for (int x=0; x < width; x++) {
             pixOffset = (y * width * 4) + (x * 4);
-            colorList[height*y + x][0] = (float)imageData[pixOffset + 0] / 255.0f;
-            colorList[height*y + x][1] = (float)imageData[pixOffset + 1] / 255.0f;
-            colorList[height*y + x][2] = (float)imageData[pixOffset + 2] / 255.0f;
+            colorList[height*y + x].R = (float)imageData[pixOffset + 0] / 255.0f;
+            colorList[height*y + x].G = (float)imageData[pixOffset + 1] / 255.0f;
+            colorList[height*y + x].B = (float)imageData[pixOffset + 2] / 255.0f;
         }
     }
     stbi_image_free(imageData);
@@ -39,6 +41,7 @@ void LoadColorTable(const char* tablename, const char* filename) {
     shput(colorTables, tablename, colorList);
 }
 
+/*
 vec3* GetColorByIndex(const char* tablename, int i) {
     vec3* ct = shget(colorTables, tablename);
     if (ct == NULL) {
@@ -67,3 +70,5 @@ vec3* GetColorByPercent(const char* tablename, float p) {
     
     return &(ct[indexBase]);
 }
+
+*/

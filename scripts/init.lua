@@ -36,7 +36,8 @@ for j=1, TileSet.Height do
     if (j < GroundLine) then
       t.color = colors.sky
     else
-      t.color = GetColorByPercent("GroundColors", percent)
+      -- t.color = GetColorByPercent("GroundColors", percent)
+      t.color = colors.openCave
     end
   end
 end

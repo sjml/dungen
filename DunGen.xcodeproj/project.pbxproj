@@ -67,24 +67,6 @@
 		347A941822D1B85F002BF97F /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 347A941522D1B85F002BF97F /* main.c */; };
 		347A941C22D1B9C5002BF97F /* game.c in Sources */ = {isa = PBXBuildFile; fileRef = 347A941B22D1B9C5002BF97F /* game.c */; };
 		347A941F22D1BE74002BF97F /* util.c in Sources */ = {isa = PBXBuildFile; fileRef = 347A941E22D1BE74002BF97F /* util.c */; };
-		347A943F22D1DCD7002BF97F /* euler.c in Sources */ = {isa = PBXBuildFile; fileRef = 347A942D22D1DCD6002BF97F /* euler.c */; };
-		347A944022D1DCD7002BF97F /* mat3.c in Sources */ = {isa = PBXBuildFile; fileRef = 347A942E22D1DCD6002BF97F /* mat3.c */; };
-		347A944122D1DCD7002BF97F /* ease.c in Sources */ = {isa = PBXBuildFile; fileRef = 347A942F22D1DCD6002BF97F /* ease.c */; };
-		347A944222D1DCD7002BF97F /* affine.c in Sources */ = {isa = PBXBuildFile; fileRef = 347A943022D1DCD6002BF97F /* affine.c */; };
-		347A944322D1DCD7002BF97F /* quat.c in Sources */ = {isa = PBXBuildFile; fileRef = 347A943122D1DCD6002BF97F /* quat.c */; };
-		347A944422D1DCD7002BF97F /* sphere.c in Sources */ = {isa = PBXBuildFile; fileRef = 347A943222D1DCD7002BF97F /* sphere.c */; };
-		347A944522D1DCD7002BF97F /* mat4.c in Sources */ = {isa = PBXBuildFile; fileRef = 347A943322D1DCD7002BF97F /* mat4.c */; };
-		347A944622D1DCD7002BF97F /* box.c in Sources */ = {isa = PBXBuildFile; fileRef = 347A943422D1DCD7002BF97F /* box.c */; };
-		347A944822D1DCD7002BF97F /* bezier.c in Sources */ = {isa = PBXBuildFile; fileRef = 347A943622D1DCD7002BF97F /* bezier.c */; };
-		347A944922D1DCD7002BF97F /* io.c in Sources */ = {isa = PBXBuildFile; fileRef = 347A943722D1DCD7002BF97F /* io.c */; };
-		347A944A22D1DCD7002BF97F /* cam.c in Sources */ = {isa = PBXBuildFile; fileRef = 347A943822D1DCD7002BF97F /* cam.c */; };
-		347A944B22D1DCD7002BF97F /* project.c in Sources */ = {isa = PBXBuildFile; fileRef = 347A943922D1DCD7002BF97F /* project.c */; };
-		347A944C22D1DCD7002BF97F /* vec4.c in Sources */ = {isa = PBXBuildFile; fileRef = 347A943A22D1DCD7002BF97F /* vec4.c */; };
-		347A944D22D1DCD7002BF97F /* vec3.c in Sources */ = {isa = PBXBuildFile; fileRef = 347A943B22D1DCD7002BF97F /* vec3.c */; };
-		347A944E22D1DCD7002BF97F /* plane.c in Sources */ = {isa = PBXBuildFile; fileRef = 347A943C22D1DCD7002BF97F /* plane.c */; };
-		347A944F22D1DCD7002BF97F /* frustum.c in Sources */ = {isa = PBXBuildFile; fileRef = 347A943D22D1DCD7002BF97F /* frustum.c */; };
-		347A945022D1DCD7002BF97F /* curve.c in Sources */ = {isa = PBXBuildFile; fileRef = 347A943E22D1DCD7002BF97F /* curve.c */; };
-		347A945122D1DD64002BF97F /* libcglm.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 347A942922D1DBE4002BF97F /* libcglm.a */; };
 		347A945522D1E949002BF97F /* world.c in Sources */ = {isa = PBXBuildFile; fileRef = 347A945422D1E949002BF97F /* world.c */; };
 		349C53E71EC4D6FC008D42C6 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 345D93DC1EC4C53B003B7C63 /* OpenGL.framework */; };
 		349C53E81EC4D700008D42C6 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 345D93E21EC4C54C003B7C63 /* Cocoa.framework */; };
@@ -167,24 +149,6 @@
 		347A941B22D1B9C5002BF97F /* game.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = game.c; sourceTree = "<group>"; };
 		347A941D22D1BE74002BF97F /* util.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = util.h; sourceTree = "<group>"; };
 		347A941E22D1BE74002BF97F /* util.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = util.c; sourceTree = "<group>"; };
-		347A942922D1DBE4002BF97F /* libcglm.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libcglm.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		347A942D22D1DCD6002BF97F /* euler.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = euler.c; path = "lib/cglm-0.5.4/src/euler.c"; sourceTree = "<group>"; };
-		347A942E22D1DCD6002BF97F /* mat3.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = mat3.c; path = "lib/cglm-0.5.4/src/mat3.c"; sourceTree = "<group>"; };
-		347A942F22D1DCD6002BF97F /* ease.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = ease.c; path = "lib/cglm-0.5.4/src/ease.c"; sourceTree = "<group>"; };
-		347A943022D1DCD6002BF97F /* affine.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = affine.c; path = "lib/cglm-0.5.4/src/affine.c"; sourceTree = "<group>"; };
-		347A943122D1DCD6002BF97F /* quat.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = quat.c; path = "lib/cglm-0.5.4/src/quat.c"; sourceTree = "<group>"; };
-		347A943222D1DCD7002BF97F /* sphere.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = sphere.c; path = "lib/cglm-0.5.4/src/sphere.c"; sourceTree = "<group>"; };
-		347A943322D1DCD7002BF97F /* mat4.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = mat4.c; path = "lib/cglm-0.5.4/src/mat4.c"; sourceTree = "<group>"; };
-		347A943422D1DCD7002BF97F /* box.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = box.c; path = "lib/cglm-0.5.4/src/box.c"; sourceTree = "<group>"; };
-		347A943622D1DCD7002BF97F /* bezier.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = bezier.c; path = "lib/cglm-0.5.4/src/bezier.c"; sourceTree = "<group>"; };
-		347A943722D1DCD7002BF97F /* io.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = io.c; path = "lib/cglm-0.5.4/src/io.c"; sourceTree = "<group>"; };
-		347A943822D1DCD7002BF97F /* cam.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = cam.c; path = "lib/cglm-0.5.4/src/cam.c"; sourceTree = "<group>"; };
-		347A943922D1DCD7002BF97F /* project.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = project.c; path = "lib/cglm-0.5.4/src/project.c"; sourceTree = "<group>"; };
-		347A943A22D1DCD7002BF97F /* vec4.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = vec4.c; path = "lib/cglm-0.5.4/src/vec4.c"; sourceTree = "<group>"; };
-		347A943B22D1DCD7002BF97F /* vec3.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = vec3.c; path = "lib/cglm-0.5.4/src/vec3.c"; sourceTree = "<group>"; };
-		347A943C22D1DCD7002BF97F /* plane.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = plane.c; path = "lib/cglm-0.5.4/src/plane.c"; sourceTree = "<group>"; };
-		347A943D22D1DCD7002BF97F /* frustum.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = frustum.c; path = "lib/cglm-0.5.4/src/frustum.c"; sourceTree = "<group>"; };
-		347A943E22D1DCD7002BF97F /* curve.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = curve.c; path = "lib/cglm-0.5.4/src/curve.c"; sourceTree = "<group>"; };
 		347A945222D1DDC9002BF97F /* stdafx.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = stdafx.h; sourceTree = "<group>"; };
 		347A945322D1E949002BF97F /* world.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = world.h; sourceTree = "<group>"; };
 		347A945422D1E949002BF97F /* world.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = world.c; sourceTree = "<group>"; };
@@ -207,18 +171,10 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		347A942722D1DBE4002BF97F /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		349C53AF1EC4D6B9008D42C6 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				347A945122D1DD64002BF97F /* libcglm.a in Frameworks */,
 				3417E26922D149B000762C69 /* liblua.a in Frameworks */,
 				3455A6B41EC4DB8F000057E4 /* libglfw.a in Frameworks */,
 				349C53EA1EC4D70D008D42C6 /* CoreVideo.framework in Frameworks */,
@@ -306,7 +262,6 @@
 			isa = PBXGroup;
 			children = (
 				3455A6911EC4DA4A000057E4 /* glfw */,
-				347A942422D1DA70002BF97F /* cglm */,
 				3417E21E22D1480300762C69 /* lua */,
 				340B5D0E22D21C9200E53DCA /* single-file */,
 			);
@@ -353,7 +308,6 @@
 				349C53B21EC4D6B9008D42C6 /* DunGen.app */,
 				3455A6961EC4DA71000057E4 /* libglfw.a */,
 				3417E22322D1486100762C69 /* liblua.a */,
-				347A942922D1DBE4002BF97F /* libcglm.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -397,30 +351,6 @@
 			path = infrastructure;
 			sourceTree = "<group>";
 		};
-		347A942422D1DA70002BF97F /* cglm */ = {
-			isa = PBXGroup;
-			children = (
-				347A943022D1DCD6002BF97F /* affine.c */,
-				347A943622D1DCD7002BF97F /* bezier.c */,
-				347A943422D1DCD7002BF97F /* box.c */,
-				347A943822D1DCD7002BF97F /* cam.c */,
-				347A943E22D1DCD7002BF97F /* curve.c */,
-				347A942F22D1DCD6002BF97F /* ease.c */,
-				347A942D22D1DCD6002BF97F /* euler.c */,
-				347A943D22D1DCD7002BF97F /* frustum.c */,
-				347A943722D1DCD7002BF97F /* io.c */,
-				347A942E22D1DCD6002BF97F /* mat3.c */,
-				347A943322D1DCD7002BF97F /* mat4.c */,
-				347A943C22D1DCD7002BF97F /* plane.c */,
-				347A943922D1DCD7002BF97F /* project.c */,
-				347A943122D1DCD6002BF97F /* quat.c */,
-				347A943222D1DCD7002BF97F /* sphere.c */,
-				347A943B22D1DCD7002BF97F /* vec3.c */,
-				347A943A22D1DCD7002BF97F /* vec4.c */,
-			);
-			name = cglm;
-			sourceTree = "<group>";
-		};
 		349C53B31EC4D6B9008D42C6 /* Support */ = {
 			isa = PBXGroup;
 			children = (
@@ -442,13 +372,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		3455A6941EC4DA71000057E4 /* Headers */ = {
-			isa = PBXHeadersBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		347A942522D1DBE4002BF97F /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -492,23 +415,6 @@
 			productReference = 3455A6961EC4DA71000057E4 /* libglfw.a */;
 			productType = "com.apple.product-type.library.static";
 		};
-		347A942822D1DBE4002BF97F /* cglm */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 347A942A22D1DBE4002BF97F /* Build configuration list for PBXNativeTarget "cglm" */;
-			buildPhases = (
-				347A942522D1DBE4002BF97F /* Headers */,
-				347A942622D1DBE4002BF97F /* Sources */,
-				347A942722D1DBE4002BF97F /* Frameworks */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = cglm;
-			productName = cglm;
-			productReference = 347A942922D1DBE4002BF97F /* libcglm.a */;
-			productType = "com.apple.product-type.library.static";
-		};
 		349C53B11EC4D6B9008D42C6 /* DunGen */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 349C53E41EC4D6B9008D42C6 /* Build configuration list for PBXNativeTarget "DunGen" */;
@@ -546,9 +452,6 @@
 						DevelopmentTeam = CFJYV723M9;
 						ProvisioningStyle = Automatic;
 					};
-					347A942822D1DBE4002BF97F = {
-						CreatedOnToolsVersion = 10.2.1;
-					};
 					349C53B11EC4D6B9008D42C6 = {
 						CreatedOnToolsVersion = 8.3.2;
 						DevelopmentTeam = CFJYV723M9;
@@ -572,7 +475,6 @@
 				349C53B11EC4D6B9008D42C6 /* DunGen */,
 				3455A6951EC4DA71000057E4 /* glfw */,
 				3417E22222D1486100762C69 /* lua */,
-				347A942822D1DBE4002BF97F /* cglm */,
 			);
 		};
 /* End PBXProject section */
@@ -671,30 +573,6 @@
 				341F12EC22D1FD66009C844F /* nsgl_context.m in Sources */,
 				341F12EE22D1FD66009C844F /* cocoa_init.m in Sources */,
 				341F12F522D20196009C844F /* osmesa_context.c in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		347A942622D1DBE4002BF97F /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				347A944D22D1DCD7002BF97F /* vec3.c in Sources */,
-				347A944422D1DCD7002BF97F /* sphere.c in Sources */,
-				347A944322D1DCD7002BF97F /* quat.c in Sources */,
-				347A944022D1DCD7002BF97F /* mat3.c in Sources */,
-				347A944F22D1DCD7002BF97F /* frustum.c in Sources */,
-				347A944A22D1DCD7002BF97F /* cam.c in Sources */,
-				347A944522D1DCD7002BF97F /* mat4.c in Sources */,
-				347A944922D1DCD7002BF97F /* io.c in Sources */,
-				347A944122D1DCD7002BF97F /* ease.c in Sources */,
-				347A945022D1DCD7002BF97F /* curve.c in Sources */,
-				347A944E22D1DCD7002BF97F /* plane.c in Sources */,
-				347A944222D1DCD7002BF97F /* affine.c in Sources */,
-				347A943F22D1DCD7002BF97F /* euler.c in Sources */,
-				347A944C22D1DCD7002BF97F /* vec4.c in Sources */,
-				347A944822D1DCD7002BF97F /* bezier.c in Sources */,
-				347A944B22D1DCD7002BF97F /* project.c in Sources */,
-				347A944622D1DCD7002BF97F /* box.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -899,37 +777,6 @@
 			};
 			name = Release;
 		};
-		347A942B22D1DBE4002BF97F /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				EXECUTABLE_PREFIX = lib;
-				GCC_C_LANGUAGE_STANDARD = gnu11;
-				MACOSX_DEPLOYMENT_TARGET = 10.14;
-				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
-				MTL_FAST_MATH = YES;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SKIP_INSTALL = YES;
-			};
-			name = Debug;
-		};
-		347A942C22D1DBE4002BF97F /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				EXECUTABLE_PREFIX = lib;
-				GCC_C_LANGUAGE_STANDARD = gnu11;
-				MACOSX_DEPLOYMENT_TARGET = 10.14;
-				MTL_FAST_MATH = YES;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SKIP_INSTALL = YES;
-			};
-			name = Release;
-		};
 		349C53C31EC4D6B9008D42C6 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -996,15 +843,6 @@
 			buildConfigurations = (
 				345D937F1EC4C47D003B7C63 /* Debug */,
 				345D93801EC4C47D003B7C63 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		347A942A22D1DBE4002BF97F /* Build configuration list for PBXNativeTarget "cglm" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				347A942B22D1DBE4002BF97F /* Debug */,
-				347A942C22D1DBE4002BF97F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

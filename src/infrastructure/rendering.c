@@ -10,7 +10,7 @@ const int windowHeight = 768;
 GLFWwindow* window = NULL;
 
 CameraData MainCamera;
-mat4 viewMatrix;
+hmm_mat4 viewMatrix;
 
 const float hexVertices[] =
 {
@@ -80,29 +80,28 @@ void InitializeRendering() {
     glClearStencil(0);
     glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
     
-    MainCamera.aperture = M_PI / 2.0f;
-    MainCamera.position[0] = 0.0f;
-    MainCamera.position[1] = 0.0f;
-    MainCamera.position[2] = 10.0f;
-    MainCamera.view[0] = 0.0f;
-    MainCamera.view[1] = 0.0f;
-    MainCamera.view[2] = -10.0f;
-    MainCamera.up[0] = 0.0f;
-    MainCamera.up[1] = 1.0f;
-    MainCamera.up[2] = 0.0f;
+    MainCamera.aperture = 90.0f;
+    MainCamera.position.X = 0.0f;
+    MainCamera.position.Y = 0.0f;
+    MainCamera.position.Z = 10.0f;
+    MainCamera.view.X = 0.0f;
+    MainCamera.view.Y = 0.0f;
+    MainCamera.view.Z = -10.0f;
+    MainCamera.up.X = 0.0f;
+    MainCamera.up.Y = 1.0f;
+    MainCamera.up.Z = 0.0f;
     MainCamera.zFarClip = 200.0f;
     MainCamera.zNearClip = 0.001f;
     MainCamera.windowWidth = windowWidth;
     MainCamera.windowHeight = windowHeight;
     
-    glm_perspective(MainCamera.aperture, (float)MainCamera.windowWidth / (float)MainCamera.windowHeight, MainCamera.zNearClip, MainCamera.zFarClip, viewMatrix);
-    mat4 look;
-    glm_lookat(MainCamera.position, MainCamera.view, MainCamera.up, look);
-    glm_mat4_mul(viewMatrix, look, viewMatrix);
+    viewMatrix = HMM_Perspective(90.0f, (float)MainCamera.windowWidth / (float)MainCamera.windowHeight, MainCamera.zNearClip, MainCamera.zFarClip);
+    hmm_mat4 look = HMM_LookAt(MainCamera.position, MainCamera.view, MainCamera.up);
+    viewMatrix = HMM_MultiplyMat4(viewMatrix, look);
 
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-    glMultMatrixf((const float*) viewMatrix);
+    glMultMatrixf((const float*) viewMatrix.Elements);
     handleGLErrors(__FILE__, __LINE__);
 }
 

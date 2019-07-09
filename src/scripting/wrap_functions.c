@@ -39,39 +39,39 @@ int luawrap_LoadColorTable(lua_State* L) {
     return 0;
 }
 
-int luawrap_GetColorByIndex(lua_State* L) {
-    const char* tablename = luaL_checkstring(L, 1);
-    int i = (int)luaL_checkinteger(L, 2);
-    
-    vec3* c = GetColorByIndex(tablename, i);
-    if (c == NULL) {
-        lua_pushnil(L);
-    }
-    else {
-        float** pv3 = lua_newuserdata(L, sizeof(float**));
-        *pv3 = (float*)c;
-        luaL_setmetatable(L, "vec3");
-    }
-    
-    return 1;
-}
-
-int luawrap_GetColorByPercent(lua_State* L) {
-    const char* tablename = luaL_checkstring(L, 1);
-    float p = (float)luaL_checknumber(L, 2);
-    
-    vec3* c = GetColorByPercent(tablename, p);
-    if (c == NULL) {
-        lua_pushnil(L);
-    }
-    else {
-        float** pv3 = lua_newuserdata(L, sizeof(float**));
-        *pv3 = (float*)c;
-        luaL_setmetatable(L, "vec3");
-    }
-    
-    return 1;
-}
+//int luawrap_GetColorByIndex(lua_State* L) {
+//    const char* tablename = luaL_checkstring(L, 1);
+//    int i = (int)luaL_checkinteger(L, 2);
+//    
+//    vec3* c = GetColorByIndex(tablename, i);
+//    if (c == NULL) {
+//        lua_pushnil(L);
+//    }
+//    else {
+//        float** pv3 = lua_newuserdata(L, sizeof(float**));
+//        *pv3 = (float*)c;
+//        luaL_setmetatable(L, "vec3");
+//    }
+//    
+//    return 1;
+//}
+//
+//int luawrap_GetColorByPercent(lua_State* L) {
+//    const char* tablename = luaL_checkstring(L, 1);
+//    float p = (float)luaL_checknumber(L, 2);
+//    
+//    vec3* c = GetColorByPercent(tablename, p);
+//    if (c == NULL) {
+//        lua_pushnil(L);
+//    }
+//    else {
+//        float** pv3 = lua_newuserdata(L, sizeof(float**));
+//        *pv3 = (float*)c;
+//        luaL_setmetatable(L, "vec3");
+//    }
+//    
+//    return 1;
+//}
 
 
 int vec3_index(lua_State* L) {
@@ -134,7 +134,7 @@ int TileData_index(lua_State* L) {
     }
     else if (strcmp(index, "color") == 0) {
         float** pv3 = lua_newuserdata(L, sizeof(float**));
-        *pv3 = (*(*tile)).color;
+        *pv3 = (*(*tile)).color.Elements;
         luaL_setmetatable(L, "vec3");
     }
     else {
@@ -156,9 +156,9 @@ int TileData_newindex(lua_State* L) {
                 fprintf(stderr, "ERROR: can only assign vec3 userdata to color.\n");
                 return 0;
             }
-            (*(*tile)).color[0] = (*pv3)[0];
-            (*(*tile)).color[1] = (*pv3)[1];
-            (*(*tile)).color[2] = (*pv3)[2];
+            (*(*tile)).color.R = (*pv3)[0];
+            (*(*tile)).color.G = (*pv3)[1];
+            (*(*tile)).color.B = (*pv3)[2];
             return 0;
         }
         
@@ -173,17 +173,17 @@ int TileData_newindex(lua_State* L) {
         }
         lua_pushinteger(L, 1);
         lua_gettable(L, 3);
-        (*(*tile)).color[0] = luaL_checknumber(L, -1);
+        (*(*tile)).color.R = luaL_checknumber(L, -1);
         lua_pop(L, 1);
         
         lua_pushinteger(L, 2);
         lua_gettable(L, 3);
-        (*(*tile)).color[1] = luaL_checknumber(L, -1);
+        (*(*tile)).color.G = luaL_checknumber(L, -1);
         lua_pop(L, 1);
         
         lua_pushinteger(L, 3);
         lua_gettable(L, 3);
-        (*(*tile)).color[2] = luaL_checknumber(L, -1);
+        (*(*tile)).color.B = luaL_checknumber(L, -1);
         lua_pop(L, 1);
     }
     else {
@@ -211,11 +211,11 @@ void WrapFunctionsToScript(lua_State* L) {
     lua_pushcfunction(L, luawrap_LoadColorTable);
     lua_setglobal(L, "LoadColorTable");
     
-    lua_pushcfunction(L, luawrap_GetColorByIndex);
-    lua_setglobal(L, "GetColorByIndex");
-    
-    lua_pushcfunction(L, luawrap_GetColorByPercent);
-    lua_setglobal(L, "GetColorByPercent");
+//    lua_pushcfunction(L, luawrap_GetColorByIndex);
+//    lua_setglobal(L, "GetColorByIndex");
+//    
+//    lua_pushcfunction(L, luawrap_GetColorByPercent);
+//    lua_setglobal(L, "GetColorByPercent");
     
     luaL_newmetatable(L, "vec3");
     luaL_setfuncs(L, vec3_meta, 0);

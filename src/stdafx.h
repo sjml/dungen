@@ -1,6 +1,7 @@
 #pragma once
 
 #include <stdlib.h>
+#include <stdbool.h>
 
 #include <lua.h>
 #include <lauxlib.h>
@@ -11,7 +12,7 @@
 #include <GLFW/glfw3.h>
 #pragma clang diagnostic pop
 
-#include <cglm/cglm.h>
+//#include <cglm/cglm.h>
 #include <HandmadeMath.h>
 
 #include <stb_ds.h>
