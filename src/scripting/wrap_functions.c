@@ -98,8 +98,47 @@ int TileData_index(lua_State* L) {
     return 1;
 }
 
+int TileData_newindex(lua_State* L) {
+    TileData** tile = luaL_checkudata(L, 1, "TileData");
+    const char* index = luaL_checkstring(L, 2);
+    
+    // TODO: same note as above
+    if (strcmp(index, "color") == 0) {
+        // TODO: allow assignment of vec3
+        if (!lua_istable(L, 3)) {
+            fprintf(stderr, "ERROR: can only assign table to color.\n");
+            return 0;
+        }
+        size_t len = lua_rawlen(L, 3);
+        if (len < 3) {
+            fprintf(stderr, "ERROR: color assignment table must have three elements.\n");
+            return 0;
+        }
+        lua_pushinteger(L, 1);
+        lua_gettable(L, 3);
+        (*(*tile)).color[0] = luaL_checknumber(L, -1);
+        lua_pop(L, 1);
+        
+        lua_pushinteger(L, 2);
+        lua_gettable(L, 3);
+        (*(*tile)).color[1] = luaL_checknumber(L, -1);
+        lua_pop(L, 1);
+        
+        lua_pushinteger(L, 3);
+        lua_gettable(L, 3);
+        (*(*tile)).color[2] = luaL_checknumber(L, -1);
+        lua_pop(L, 1);
+    }
+    else {
+        fprintf(stderr, "ERROR: cannot assign to %s.\n", index);
+    }
+    
+    return 0;
+}
+
 static const luaL_Reg TileData_meta[] = {
     {"__index", TileData_index},
+    {"__newindex", TileData_newindex},
     {NULL, NULL}
 };
 
