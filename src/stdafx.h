@@ -12,5 +12,6 @@
 #pragma clang diagnostic pop
 
 #include <cglm/cglm.h>
+#include <HandmadeMath.h>
 
 #include <stb_ds.h>

@@ -4,6 +4,9 @@
 #define STB_DS_IMPLEMENTATION
 #include <stb_ds.h>
 
+#define HANDMADE_MATH_IMPLEMENTATION
+#include <HandmadeMath.h>
+
 double clampd(double d, double min, double max) {
     const double t = d < min ? min : d;
     return t > max ? max : t;
@@ -12,6 +15,14 @@ double clampd(double d, double min, double max) {
 float clampf(float f, float min, float max) {
     const float t = f < min ? min : f;
     return t > max ? max : t;
+}
+
+float lerpf(float f1, float f2, float amount) {
+    return f1 + ((f2 - f1) * amount);
+}
+
+double lerpd(double f1, double f2, double amount) {
+    return f1 + ((f2 - f1) * amount);
 }
 
 int handleGLErrors(const char* f, int line) {

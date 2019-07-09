@@ -61,6 +61,7 @@
 		341F12F622D20196009C844F /* egl_context.c in Sources */ = {isa = PBXBuildFile; fileRef = 341F12F422D20196009C844F /* egl_context.c */; };
 		344C39E51EC4E0B2007F9466 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 344C39E41EC4E0B2007F9466 /* Assets.xcassets */; };
 		3455A6B41EC4DB8F000057E4 /* libglfw.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3455A6961EC4DA71000057E4 /* libglfw.a */; };
+		3466A4B622D4D71B00ED6CAA /* images.c in Sources */ = {isa = PBXBuildFile; fileRef = 3466A4B522D4D71B00ED6CAA /* images.c */; };
 		347A941622D1B85F002BF97F /* scripting.c in Sources */ = {isa = PBXBuildFile; fileRef = 347A941122D1B85F002BF97F /* scripting.c */; };
 		347A941722D1B85F002BF97F /* rendering.c in Sources */ = {isa = PBXBuildFile; fileRef = 347A941422D1B85F002BF97F /* rendering.c */; };
 		347A941822D1B85F002BF97F /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 347A941522D1B85F002BF97F /* main.c */; };
@@ -93,10 +94,10 @@
 
 /* Begin PBXFileReference section */
 		340B5D0B22D2133400E53DCA /* init.lua */ = {isa = PBXFileReference; lastKnownFileType = text; path = init.lua; sourceTree = "<group>"; };
-		340B5D0F22D21CB700E53DCA /* stb_ds.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = stb_ds.h; path = lib/stb/stb_ds.h; sourceTree = "<group>"; };
+		340B5D0F22D21CB700E53DCA /* stb_ds.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = stb_ds.h; path = "lib/single-file/stb_ds.h"; sourceTree = "<group>"; };
 		340B5D1122D221FF00E53DCA /* wrap_functions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = wrap_functions.h; sourceTree = "<group>"; };
 		340B5D1222D221FF00E53DCA /* wrap_functions.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = wrap_functions.c; sourceTree = "<group>"; };
-		3415722822D3873D00FB77F2 /* stb_image.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = stb_image.h; path = lib/stb/stb_image.h; sourceTree = "<group>"; };
+		3415722822D3873D00FB77F2 /* stb_image.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = stb_image.h; path = "lib/single-file/stb_image.h"; sourceTree = "<group>"; };
 		3417E22322D1486100762C69 /* liblua.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = liblua.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		341F128F22D1FCA9009C844F /* lopcodes.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = lopcodes.c; path = "lib/lua-5.3.5/src/lopcodes.c"; sourceTree = "<group>"; };
 		341F129022D1FCA9009C844F /* ldblib.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = ldblib.c; path = "lib/lua-5.3.5/src/ldblib.c"; sourceTree = "<group>"; };
@@ -154,6 +155,9 @@
 		345D93DE1EC4C540003B7C63 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
 		345D93E01EC4C543003B7C63 /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
 		345D93E21EC4C54C003B7C63 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
+		3466A4B422D4D71B00ED6CAA /* images.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = images.h; sourceTree = "<group>"; };
+		3466A4B522D4D71B00ED6CAA /* images.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = images.c; sourceTree = "<group>"; };
+		3466A4B722D4EDEB00ED6CAA /* HandmadeMath.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = HandmadeMath.h; path = "lib/single-file/HandmadeMath.h"; sourceTree = "<group>"; };
 		347A941122D1B85F002BF97F /* scripting.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = scripting.c; sourceTree = "<group>"; };
 		347A941222D1B85F002BF97F /* scripting.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = scripting.h; sourceTree = "<group>"; };
 		347A941322D1B85F002BF97F /* rendering.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = rendering.h; sourceTree = "<group>"; };
@@ -235,13 +239,14 @@
 			path = scripts;
 			sourceTree = "<group>";
 		};
-		340B5D0E22D21C9200E53DCA /* stb */ = {
+		340B5D0E22D21C9200E53DCA /* single-file */ = {
 			isa = PBXGroup;
 			children = (
 				3415722822D3873D00FB77F2 /* stb_image.h */,
 				340B5D0F22D21CB700E53DCA /* stb_ds.h */,
+				3466A4B722D4EDEB00ED6CAA /* HandmadeMath.h */,
 			);
-			name = stb;
+			name = "single-file";
 			sourceTree = "<group>";
 		};
 		340B5D1022D221CB00E53DCA /* scripting */ = {
@@ -303,7 +308,7 @@
 				3455A6911EC4DA4A000057E4 /* glfw */,
 				347A942422D1DA70002BF97F /* cglm */,
 				3417E21E22D1480300762C69 /* lua */,
-				340B5D0E22D21C9200E53DCA /* stb */,
+				340B5D0E22D21C9200E53DCA /* single-file */,
 			);
 			name = lib;
 			sourceTree = "<group>";
@@ -386,6 +391,8 @@
 				347A941B22D1B9C5002BF97F /* game.c */,
 				347A941D22D1BE74002BF97F /* util.h */,
 				347A941E22D1BE74002BF97F /* util.c */,
+				3466A4B422D4D71B00ED6CAA /* images.h */,
+				3466A4B522D4D71B00ED6CAA /* images.c */,
 			);
 			path = infrastructure;
 			sourceTree = "<group>";
@@ -509,7 +516,7 @@
 				349C53AE1EC4D6B9008D42C6 /* Sources */,
 				349C53AF1EC4D6B9008D42C6 /* Frameworks */,
 				349C53B01EC4D6B9008D42C6 /* Resources */,
-				340B5D0D22D2138700E53DCA /* ShellScript */,
+				340B5D0D22D2138700E53DCA /* Copy Resources */,
 			);
 			buildRules = (
 			);
@@ -582,7 +589,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		340B5D0D22D2138700E53DCA /* ShellScript */ = {
+		340B5D0D22D2138700E53DCA /* Copy Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -591,13 +598,14 @@
 			);
 			inputPaths = (
 			);
+			name = "Copy Resources";
 			outputFileListPaths = (
 			);
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "cp -R ${PROJECT_DIR}/scripts ${CONFIGURATION_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}\n";
+			shellScript = "cp -R ${PROJECT_DIR}/scripts ${CONFIGURATION_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}\ncp -R ${PROJECT_DIR}/images ${CONFIGURATION_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -701,6 +709,7 @@
 				347A941622D1B85F002BF97F /* scripting.c in Sources */,
 				347A941822D1B85F002BF97F /* main.c in Sources */,
 				340B5D1322D221FF00E53DCA /* wrap_functions.c in Sources */,
+				3466A4B622D4D71B00ED6CAA /* images.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -933,7 +942,7 @@
 					"lib/glfw-3.3.0/include",
 					"lib/lua-5.3.5/src",
 					"lib/cglm-0.5.4/include",
-					lib/stb,
+					"lib/single-file",
 				);
 				INFOPLIST_FILE = platform/macOS/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
@@ -953,7 +962,7 @@
 					"lib/glfw-3.3.0/include",
 					"lib/lua-5.3.5/src",
 					"lib/cglm-0.5.4/include",
-					lib/stb,
+					"lib/single-file",
 				);
 				INFOPLIST_FILE = platform/macOS/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
