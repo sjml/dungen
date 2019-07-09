@@ -2,7 +2,7 @@
 
 typedef struct {
     int i;
-    hmm_vec3 color;
+    gbVec3 color;
 } TileData;
 
 void InitializeWorld(int width, int height, float scale);

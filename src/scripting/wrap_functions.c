@@ -134,7 +134,7 @@ int TileData_index(lua_State* L) {
     }
     else if (strcmp(index, "color") == 0) {
         float** pv3 = lua_newuserdata(L, sizeof(float**));
-        *pv3 = (*(*tile)).color.Elements;
+        *pv3 = (*(*tile)).color.e;
         luaL_setmetatable(L, "vec3");
     }
     else {
@@ -156,9 +156,9 @@ int TileData_newindex(lua_State* L) {
                 fprintf(stderr, "ERROR: can only assign vec3 userdata to color.\n");
                 return 0;
             }
-            (*(*tile)).color.R = (*pv3)[0];
-            (*(*tile)).color.G = (*pv3)[1];
-            (*(*tile)).color.B = (*pv3)[2];
+            (*(*tile)).color.r = (*pv3)[0];
+            (*(*tile)).color.g = (*pv3)[1];
+            (*(*tile)).color.b = (*pv3)[2];
             return 0;
         }
         
@@ -173,17 +173,17 @@ int TileData_newindex(lua_State* L) {
         }
         lua_pushinteger(L, 1);
         lua_gettable(L, 3);
-        (*(*tile)).color.R = luaL_checknumber(L, -1);
+        (*(*tile)).color.r = luaL_checknumber(L, -1);
         lua_pop(L, 1);
         
         lua_pushinteger(L, 2);
         lua_gettable(L, 3);
-        (*(*tile)).color.G = luaL_checknumber(L, -1);
+        (*(*tile)).color.g = luaL_checknumber(L, -1);
         lua_pop(L, 1);
         
         lua_pushinteger(L, 3);
         lua_gettable(L, 3);
-        (*(*tile)).color.B = luaL_checknumber(L, -1);
+        (*(*tile)).color.b = luaL_checknumber(L, -1);
         lua_pop(L, 1);
     }
     else {

@@ -139,7 +139,7 @@
 		345D93E21EC4C54C003B7C63 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		3466A4B422D4D71B00ED6CAA /* images.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = images.h; sourceTree = "<group>"; };
 		3466A4B522D4D71B00ED6CAA /* images.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = images.c; sourceTree = "<group>"; };
-		3466A4B722D4EDEB00ED6CAA /* HandmadeMath.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = HandmadeMath.h; path = "lib/single-file/HandmadeMath.h"; sourceTree = "<group>"; };
+		3466A4B722D4EDEB00ED6CAA /* gb_math.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = gb_math.h; path = "lib/single-file/gb_math.h"; sourceTree = "<group>"; };
 		347A941122D1B85F002BF97F /* scripting.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = scripting.c; sourceTree = "<group>"; };
 		347A941222D1B85F002BF97F /* scripting.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = scripting.h; sourceTree = "<group>"; };
 		347A941322D1B85F002BF97F /* rendering.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = rendering.h; sourceTree = "<group>"; };
@@ -200,7 +200,7 @@
 			children = (
 				3415722822D3873D00FB77F2 /* stb_image.h */,
 				340B5D0F22D21CB700E53DCA /* stb_ds.h */,
-				3466A4B722D4EDEB00ED6CAA /* HandmadeMath.h */,
+				3466A4B722D4EDEB00ED6CAA /* gb_math.h */,
 			);
 			name = "single-file";
 			sourceTree = "<group>";

@@ -10,7 +10,7 @@ const int windowHeight = 768;
 GLFWwindow* window = NULL;
 
 CameraData MainCamera;
-hmm_mat4 viewMatrix;
+gbMat4 viewMatrix;
 
 const float hexVertices[] =
 {
@@ -41,7 +41,7 @@ const float hexVertices[] =
 void InitializeRendering() {
     glfwInitHint(GLFW_COCOA_CHDIR_RESOURCES, GLFW_TRUE);
     glfwInitHint(GLFW_COCOA_MENUBAR, GLFW_TRUE);
-    
+
     if (!glfwInit()) {
         exit(EXIT_FAILURE);
     }
@@ -79,29 +79,30 @@ void InitializeRendering() {
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glClearStencil(0);
     glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
-    
-    MainCamera.aperture = 90.0f;
-    MainCamera.position.X = 0.0f;
-    MainCamera.position.Y = 0.0f;
-    MainCamera.position.Z = 10.0f;
-    MainCamera.view.X = 0.0f;
-    MainCamera.view.Y = 0.0f;
-    MainCamera.view.Z = -10.0f;
-    MainCamera.up.X = 0.0f;
-    MainCamera.up.Y = 1.0f;
-    MainCamera.up.Z = 0.0f;
+
+    MainCamera.aperture = M_PI / 2;
+    MainCamera.position.x = 0.0f;
+    MainCamera.position.y = 0.0f;
+    MainCamera.position.z = 10.0f;
+    MainCamera.view.x = 0.0f;
+    MainCamera.view.y = 0.0f;
+    MainCamera.view.z = -10.0f;
+    MainCamera.up.x = 0.0f;
+    MainCamera.up.y = 1.0f;
+    MainCamera.up.z = 0.0f;
     MainCamera.zFarClip = 200.0f;
     MainCamera.zNearClip = 0.001f;
     MainCamera.windowWidth = windowWidth;
     MainCamera.windowHeight = windowHeight;
-    
-    viewMatrix = HMM_Perspective(90.0f, (float)MainCamera.windowWidth / (float)MainCamera.windowHeight, MainCamera.zNearClip, MainCamera.zFarClip);
-    hmm_mat4 look = HMM_LookAt(MainCamera.position, MainCamera.view, MainCamera.up);
-    viewMatrix = HMM_MultiplyMat4(viewMatrix, look);
+
+    gb_mat4_perspective(&viewMatrix, MainCamera.aperture, (float)MainCamera.windowWidth / (float)MainCamera.windowHeight, MainCamera.zNearClip, MainCamera.zFarClip);
+    gbMat4 look;
+    gb_mat4_look_at(&look, MainCamera.position, MainCamera.view, MainCamera.up);
+    gb_mat4_mul(&viewMatrix, &viewMatrix, &look);
 
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-    glMultMatrixf((const float*) viewMatrix.Elements);
+    glMultMatrixf((const float*) viewMatrix.e);
     handleGLErrors(__FILE__, __LINE__);
 }
 
@@ -112,13 +113,13 @@ void FinalizeRendering() {
 
 int Render() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    
+
     glMatrixMode(GL_MODELVIEW);
     glPushMatrix();
 
     glEnableClientState(GL_VERTEX_ARRAY);
     glVertexPointer(2, GL_FLOAT, 0, hexVertices);
-    
+
     RenderTiles();
 
     glMatrixMode(GL_MODELVIEW);
@@ -128,7 +129,7 @@ int Render() {
     glfwPollEvents();
 
     handleGLErrors(__FILE__, __LINE__);
-    
+
     if (glfwWindowShouldClose(window)) {
         return 1;
     }

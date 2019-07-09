@@ -4,8 +4,8 @@
 #define STB_DS_IMPLEMENTATION
 #include <stb_ds.h>
 
-#define HANDMADE_MATH_IMPLEMENTATION
-#include <HandmadeMath.h>
+#define GB_MATH_IMPLEMENTATION
+#include <gb_math.h>
 
 double clampd(double d, double min, double max) {
     const double t = d < min ? min : d;

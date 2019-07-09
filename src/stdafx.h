@@ -12,7 +12,6 @@
 #include <GLFW/glfw3.h>
 #pragma clang diagnostic pop
 
-//#include <cglm/cglm.h>
-#include <HandmadeMath.h>
+#include <gb_math.h>
 
 #include <stb_ds.h>
