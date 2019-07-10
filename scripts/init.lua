@@ -24,20 +24,24 @@ local colors = { -- R      G      B
   dwarven =      { 0.0 ,  0.0 ,  1.0  },
 }
 
-InitializeWorld(TileSet.Width, TileSet.Height, TileSet.Scale)
+dungen.InitializeWorld(TileSet.Width, TileSet.Height, TileSet.Scale)
+td = dungen.GetTileAtPosition(25, 25)
+td2 = dungen.GetTileAtPosition(25, 26)
+td.color = {0, 1, 0}
+td2.color = td.color
 
-LoadColorTable("GroundColors", "images/DunStone.png")
+-- LoadColorTable("GroundColors", "images/DunStone.png")
 
-for j=1, TileSet.Height do
-  local percent = (j - 1 - GroundLine) / (TileSet.Height - GroundLine)
+-- for j=1, TileSet.Height do
+--   local percent = (j - 1 - GroundLine) / (TileSet.Height - GroundLine)
 
-  for i=1, TileSet.Width do
-    local t = GetTileAtPosition(i, j)
-    if (j < GroundLine) then
-      t.color = colors.sky
-    else
-      -- t.color = GetColorByPercent("GroundColors", percent)
-      t.color = colors.openCave
-    end
-  end
-end
+--   for i=1, TileSet.Width do
+--     local t = GetTileAtPosition(i, j)
+--     if (j < GroundLine) then
+--       t.color = colors.sky
+--     else
+--       -- t.color = GetColorByPercent("GroundColors", percent)
+--       t.color = colors.openCave
+--     end
+--   end
+-- end

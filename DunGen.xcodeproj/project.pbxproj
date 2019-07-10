@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		340B5D1322D221FF00E53DCA /* wrap_functions.c in Sources */ = {isa = PBXBuildFile; fileRef = 340B5D1222D221FF00E53DCA /* wrap_functions.c */; };
 		3417E26922D149B000762C69 /* liblua.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3417E22322D1486100762C69 /* liblua.a */; };
 		341F12B222D1FCAB009C844F /* lopcodes.c in Sources */ = {isa = PBXBuildFile; fileRef = 341F128F22D1FCA9009C844F /* lopcodes.c */; };
 		341F12B322D1FCAB009C844F /* ldblib.c in Sources */ = {isa = PBXBuildFile; fileRef = 341F129022D1FCA9009C844F /* ldblib.c */; };
@@ -68,6 +67,7 @@
 		347A941C22D1B9C5002BF97F /* game.c in Sources */ = {isa = PBXBuildFile; fileRef = 347A941B22D1B9C5002BF97F /* game.c */; };
 		347A941F22D1BE74002BF97F /* util.c in Sources */ = {isa = PBXBuildFile; fileRef = 347A941E22D1BE74002BF97F /* util.c */; };
 		347A945522D1E949002BF97F /* world.c in Sources */ = {isa = PBXBuildFile; fileRef = 347A945422D1E949002BF97F /* world.c */; };
+		3482A55822D61C6700AAD098 /* wrapping.c in Sources */ = {isa = PBXBuildFile; fileRef = 3482A55722D61BA900AAD098 /* wrapping.c */; settings = {COMPILER_FLAGS = "--no-warnings"; }; };
 		349C53E71EC4D6FC008D42C6 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 345D93DC1EC4C53B003B7C63 /* OpenGL.framework */; };
 		349C53E81EC4D700008D42C6 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 345D93E21EC4C54C003B7C63 /* Cocoa.framework */; };
 		349C53E91EC4D707008D42C6 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 345D93E01EC4C543003B7C63 /* IOKit.framework */; };
@@ -77,8 +77,6 @@
 /* Begin PBXFileReference section */
 		340B5D0B22D2133400E53DCA /* init.lua */ = {isa = PBXFileReference; lastKnownFileType = text; path = init.lua; sourceTree = "<group>"; };
 		340B5D0F22D21CB700E53DCA /* stb_ds.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = stb_ds.h; path = "lib/single-file/stb_ds.h"; sourceTree = "<group>"; };
-		340B5D1122D221FF00E53DCA /* wrap_functions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = wrap_functions.h; sourceTree = "<group>"; };
-		340B5D1222D221FF00E53DCA /* wrap_functions.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = wrap_functions.c; sourceTree = "<group>"; };
 		3415722822D3873D00FB77F2 /* stb_image.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = stb_image.h; path = "lib/single-file/stb_image.h"; sourceTree = "<group>"; };
 		3417E22322D1486100762C69 /* liblua.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = liblua.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		341F128F22D1FCA9009C844F /* lopcodes.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = lopcodes.c; path = "lib/lua-5.3.5/src/lopcodes.c"; sourceTree = "<group>"; };
@@ -152,6 +150,10 @@
 		347A945222D1DDC9002BF97F /* stdafx.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = stdafx.h; sourceTree = "<group>"; };
 		347A945322D1E949002BF97F /* world.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = world.h; sourceTree = "<group>"; };
 		347A945422D1E949002BF97F /* world.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = world.c; sourceTree = "<group>"; };
+		3482A55622D6198400AAD098 /* world.i */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c.preprocessed; path = world.i; sourceTree = "<group>"; };
+		3482A55722D61BA900AAD098 /* wrapping.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = wrapping.c; sourceTree = "<group>"; };
+		3482A55922D6247800AAD098 /* dungen.i */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c.preprocessed; path = dungen.i; sourceTree = "<group>"; };
+		3482A55B22D624A800AAD098 /* vectors.i */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c.preprocessed; path = vectors.i; sourceTree = "<group>"; };
 		349C53B21EC4D6B9008D42C6 /* DunGen.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DunGen.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		349C53C21EC4D6B9008D42C6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = platform/macOS/Info.plist; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
@@ -208,10 +210,10 @@
 		340B5D1022D221CB00E53DCA /* scripting */ = {
 			isa = PBXGroup;
 			children = (
+				3482A55522D6197500AAD098 /* interfaces */,
 				347A941222D1B85F002BF97F /* scripting.h */,
 				347A941122D1B85F002BF97F /* scripting.c */,
-				340B5D1122D221FF00E53DCA /* wrap_functions.h */,
-				340B5D1222D221FF00E53DCA /* wrap_functions.c */,
+				3482A55722D61BA900AAD098 /* wrapping.c */,
 			);
 			path = scripting;
 			sourceTree = "<group>";
@@ -349,6 +351,16 @@
 				3466A4B522D4D71B00ED6CAA /* images.c */,
 			);
 			path = infrastructure;
+			sourceTree = "<group>";
+		};
+		3482A55522D6197500AAD098 /* interfaces */ = {
+			isa = PBXGroup;
+			children = (
+				3482A55922D6247800AAD098 /* dungen.i */,
+				3482A55622D6198400AAD098 /* world.i */,
+				3482A55B22D624A800AAD098 /* vectors.i */,
+			);
+			path = interfaces;
 			sourceTree = "<group>";
 		};
 		349C53B31EC4D6B9008D42C6 /* Support */ = {
@@ -582,11 +594,11 @@
 			files = (
 				347A945522D1E949002BF97F /* world.c in Sources */,
 				347A941F22D1BE74002BF97F /* util.c in Sources */,
+				3482A55822D61C6700AAD098 /* wrapping.c in Sources */,
 				347A941722D1B85F002BF97F /* rendering.c in Sources */,
 				347A941C22D1B9C5002BF97F /* game.c in Sources */,
 				347A941622D1B85F002BF97F /* scripting.c in Sources */,
 				347A941822D1B85F002BF97F /* main.c in Sources */,
-				340B5D1322D221FF00E53DCA /* wrap_functions.c in Sources */,
 				3466A4B622D4D71B00ED6CAA /* images.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

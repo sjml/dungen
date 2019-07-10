@@ -1,7 +1,8 @@
 #include "../stdafx.h"
 #include "scripting.h"
 
-#include "wrap_functions.h"
+// implementation in generated wrapping.c file
+int luaopen_dungen(lua_State* L);
 
 lua_State* L = NULL;
 
@@ -9,7 +10,7 @@ void InitializeLua() {
     L = luaL_newstate();
     luaL_openlibs(L);
     
-    WrapFunctionsToScript(L);
+    luaopen_dungen(L);
     
     int error = luaL_dofile(L, "scripts/init.lua");
     if (error) {

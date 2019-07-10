@@ -32,9 +32,9 @@ void InitializeWorld(int width, int height, float scale) {
     for (int j = 0; j < height; j++) {
         for (int i = 0; i < width; i++) {
             WorldArray[j*width + i].i = j*width + i;
-            WorldArray[j*width + i].color.r = rand() / (float)RAND_MAX; // 0.0f;
-            WorldArray[j*width + i].color.g = rand() / (float)RAND_MAX; // 0.0f;
-            WorldArray[j*width + i].color.b = rand() / (float)RAND_MAX; // 0.0f;
+            WorldArray[j*width + i].color.r = gb_random01(); // 0.0f;
+            WorldArray[j*width + i].color.g = 0.0f;
+            WorldArray[j*width + i].color.b = gb_random01(); // 0.0f;
         }
     }
 }
