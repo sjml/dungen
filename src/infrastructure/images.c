@@ -41,34 +41,45 @@ void LoadColorTable(const char* tablename, const char* filename) {
     shput(colorTables, tablename, colorList);
 }
 
-/*
-vec3* GetColorByIndex(const char* tablename, int i) {
-    vec3* ct = shget(colorTables, tablename);
+
+gbVec3 GetColorByIndex(const char* tablename, int i) {
+    gbVec3 ret = {0.0f, 0.0f, 0.0f};
+    gbVec3* ct = shget(colorTables, tablename);
     if (ct == NULL) {
         fprintf(stderr, "ERROR: no color table named `%s`.\n", tablename);
-        return NULL;
+        return ret;
     }
     if (i < 0 || i >= arrlen(ct)) {
         fprintf(stderr, "ERROR: %d is invalid index to `%s`.\n", i, tablename);
-        return NULL;
+        return ret;
     }
-    return &(ct[i]);
+
+    ret.r = (*ct).r;
+    ret.g = (*ct).g;
+    ret.b = (*ct).b;
+    return ret;
 }
 
-vec3* GetColorByPercent(const char* tablename, float p) {
-    vec3* ct = shget(colorTables, tablename);
+
+gbVec3 GetColorByPercent(const char* tablename, float p) {
+    gbVec3 ret = {0.0f, 0.0f, 0.0f};
+    gbVec3* ct = shget(colorTables, tablename);
     if (ct == NULL) {
         fprintf(stderr, "ERROR: no color table named `%s`.\n", tablename);
-        return NULL;
+        return ret;
     }
     float fIndex = p * (float)arrlen(ct);
     int indexBase = fIndex;
     float offset = fIndex - (float)indexBase;
     if (++indexBase >= arrlen(ct)) {
-        return &(ct[--indexBase]);
+        indexBase--;
+        ret.r = ct[indexBase].r;
+        ret.g = ct[indexBase].g;
+        ret.b = ct[indexBase].b;
+        return ret;
     }
-
-    return &(ct[indexBase]);
+    
+    gb_vec3_lerp(&ret, ct[indexBase-1], ct[indexBase], offset);
+    
+    return ret;
 }
-
-*/

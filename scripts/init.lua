@@ -30,18 +30,18 @@ td2 = dungen.GetTileAtPosition(25, 26)
 td.color = {0, 1, 0}
 td2.color = td.color
 
--- LoadColorTable("GroundColors", "images/DunStone.png")
+dungen.LoadColorTable("GroundColors", "images/DunStone.png")
 
--- for j=1, TileSet.Height do
---   local percent = (j - 1 - GroundLine) / (TileSet.Height - GroundLine)
+for j=0, TileSet.Height - 1 do
+  local percent = (j - 1 - GroundLine) / (TileSet.Height - GroundLine)
 
---   for i=1, TileSet.Width do
---     local t = GetTileAtPosition(i, j)
---     if (j < GroundLine) then
---       t.color = colors.sky
---     else
---       -- t.color = GetColorByPercent("GroundColors", percent)
---       t.color = colors.openCave
---     end
---   end
--- end
+  for i=0, TileSet.Width - 1 do
+    local t = dungen.GetTileAtPosition(i, j)
+    if (j < GroundLine) then
+      t.color = colors.sky
+    else
+      t.color = dungen.GetColorByPercent("GroundColors", percent)
+      -- t.color = colors.openCave
+    end
+  end
+end

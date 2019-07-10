@@ -154,6 +154,7 @@
 		3482A55722D61BA900AAD098 /* wrapping.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = wrapping.c; sourceTree = "<group>"; };
 		3482A55922D6247800AAD098 /* dungen.i */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c.preprocessed; path = dungen.i; sourceTree = "<group>"; };
 		3482A55B22D624A800AAD098 /* vectors.i */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c.preprocessed; path = vectors.i; sourceTree = "<group>"; };
+		3482A55D22D62E4300AAD098 /* images.i */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c.preprocessed; path = images.i; sourceTree = "<group>"; };
 		349C53B21EC4D6B9008D42C6 /* DunGen.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DunGen.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		349C53C21EC4D6B9008D42C6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = platform/macOS/Info.plist; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
@@ -359,6 +360,7 @@
 				3482A55922D6247800AAD098 /* dungen.i */,
 				3482A55622D6198400AAD098 /* world.i */,
 				3482A55B22D624A800AAD098 /* vectors.i */,
+				3482A55D22D62E4300AAD098 /* images.i */,
 			);
 			path = interfaces;
 			sourceTree = "<group>";

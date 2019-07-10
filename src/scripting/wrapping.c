@@ -2694,6 +2694,17 @@ static swig_module_info swig_module = {swig_types, 4, 0, 0, 0, 0};
     #include <gb_math.h>
 
 
+    #include "../infrastructure/images.h"
+
+
+SWIGINTERN int SWIG_lua_isnilstring(lua_State *L, int idx) {
+  int ret = lua_isstring(L, idx);
+  if (!ret)
+   ret = lua_isnil(L, idx);
+  return ret;
+}
+
+
     #include "../world.h"
 
 #ifdef __cplusplus
@@ -3408,6 +3419,84 @@ static swig_lua_class *swig_gbVec3_bases[] = {0};
 static const char *swig_gbVec3_base_names[] = {0};
 static swig_lua_class _wrap_class_gbVec3 = { "gbVec3", "gbVec3", &SWIGTYPE_p_gbVec3,_proxy__wrap_new_gbVec3, swig_delete_gbVec3, swig_gbVec3_methods, swig_gbVec3_attributes, &swig_gbVec3_Sf_SwigStatic, swig_gbVec3_meta, swig_gbVec3_bases, swig_gbVec3_base_names };
 
+static int _wrap_LoadColorTable(lua_State* L) {
+  int SWIG_arg = 0;
+  char *arg1 = (char *) 0 ;
+  char *arg2 = (char *) 0 ;
+  
+  SWIG_check_num_args("LoadColorTable",2,2)
+  if(!SWIG_lua_isnilstring(L,1)) SWIG_fail_arg("LoadColorTable",1,"char const *");
+  if(!SWIG_lua_isnilstring(L,2)) SWIG_fail_arg("LoadColorTable",2,"char const *");
+  arg1 = (char *)lua_tostring(L, 1);
+  arg2 = (char *)lua_tostring(L, 2);
+  LoadColorTable((char const *)arg1,(char const *)arg2);
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_GetColorByIndex(lua_State* L) {
+  int SWIG_arg = 0;
+  char *arg1 = (char *) 0 ;
+  int arg2 ;
+  gbVec3 result;
+  
+  SWIG_check_num_args("GetColorByIndex",2,2)
+  if(!SWIG_lua_isnilstring(L,1)) SWIG_fail_arg("GetColorByIndex",1,"char const *");
+  if(!lua_isnumber(L,2)) SWIG_fail_arg("GetColorByIndex",2,"int");
+  arg1 = (char *)lua_tostring(L, 1);
+  arg2 = (int)lua_tonumber(L, 2);
+  result = GetColorByIndex((char const *)arg1,arg2);
+  {
+    gbVec3 * resultptr;
+    resultptr = (gbVec3 *) malloc(sizeof(gbVec3));
+    memmove(resultptr, &result, sizeof(gbVec3));
+    SWIG_NewPointerObj(L,(void *) resultptr,SWIGTYPE_p_gbVec3,1); SWIG_arg++;
+  }
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_GetColorByPercent(lua_State* L) {
+  int SWIG_arg = 0;
+  char *arg1 = (char *) 0 ;
+  float arg2 ;
+  gbVec3 result;
+  
+  SWIG_check_num_args("GetColorByPercent",2,2)
+  if(!SWIG_lua_isnilstring(L,1)) SWIG_fail_arg("GetColorByPercent",1,"char const *");
+  if(!lua_isnumber(L,2)) SWIG_fail_arg("GetColorByPercent",2,"float");
+  arg1 = (char *)lua_tostring(L, 1);
+  arg2 = (float)lua_tonumber(L, 2);
+  result = GetColorByPercent((char const *)arg1,arg2);
+  {
+    gbVec3 * resultptr;
+    resultptr = (gbVec3 *) malloc(sizeof(gbVec3));
+    memmove(resultptr, &result, sizeof(gbVec3));
+    SWIG_NewPointerObj(L,(void *) resultptr,SWIGTYPE_p_gbVec3,1); SWIG_arg++;
+  }
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
 static int _wrap_TileData_i_set(lua_State* L) {
   int SWIG_arg = 0;
   TileData *arg1 = (TileData *) 0 ;
@@ -3678,6 +3767,9 @@ static swig_lua_const_info swig_SwigModule_constants[]= {
     {0,0,0,0,0,0}
 };
 static swig_lua_method swig_SwigModule_methods[]= {
+    { "LoadColorTable", _wrap_LoadColorTable},
+    { "GetColorByIndex", _wrap_GetColorByIndex},
+    { "GetColorByPercent", _wrap_GetColorByPercent},
     { "InitializeWorld", _wrap_InitializeWorld},
     { "GetTileAtPosition", _wrap_GetTileAtPosition},
     { "GetTileAtIndex", _wrap_GetTileAtIndex},
