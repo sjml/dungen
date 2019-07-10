@@ -12,7 +12,6 @@ int main(int argc, const char * argv[]) {
     InitializeGame();
 
     InitializeLua();
-//    InitializeWorld(61, 53, 0.25f);
     
     while (Render() == 0) {}
     

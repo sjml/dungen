@@ -102,7 +102,7 @@ void InitializeRendering() {
 
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-    glMultMatrixf((const float*) viewMatrix.e);
+    glMultMatrixf(viewMatrix.e);
     handleGLErrors(__FILE__, __LINE__);
 }
 

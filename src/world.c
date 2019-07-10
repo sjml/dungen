@@ -33,7 +33,7 @@ void InitializeWorld(int width, int height, float scale) {
         for (int i = 0; i < width; i++) {
             WorldArray[j*width + i].i = j*width + i;
             WorldArray[j*width + i].color.r = gb_random01(); // 0.0f;
-            WorldArray[j*width + i].color.g = 0.0f;
+            WorldArray[j*width + i].color.g = gb_random01(); // 0.0f;
             WorldArray[j*width + i].color.b = gb_random01(); // 0.0f;
         }
     }
@@ -78,7 +78,7 @@ void RenderTiles(void) {
                              startingPosition.x + modVector.x,
                              startingPosition.y + modVector.y,
                              0.0f
-                             );
+                );
                 glScalef(tileFullHeight, tileFullHeight, 1.0f);
                 glColor3fv(WorldArray[j*worldWidth + i].color.e);
                 glDrawArrays(GL_TRIANGLE_FAN, 0, 8);
