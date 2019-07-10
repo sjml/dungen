@@ -41,7 +41,6 @@ for j=0, TileSet.Height - 1 do
       t.color = colors.sky
     else
       t.color = dungen.GetColorByPercent("GroundColors", percent)
-      -- t.color = colors.openCave
     end
   end
 end
