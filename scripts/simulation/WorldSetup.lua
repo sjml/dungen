@@ -25,10 +25,6 @@ local colors = { -- R      G      B
 }
 
 dungen.InitializeWorld(TileSet.Width, TileSet.Height, TileSet.Scale)
-td = dungen.GetTileAtPosition(25, 25)
-td2 = dungen.GetTileAtPosition(25, 26)
-td.color = {0, 1, 0}
-td2.color = td.color
 
 dungen.LoadColorTable("GroundColors", "images/DunStone.png")
 

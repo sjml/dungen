@@ -1,5 +1,4 @@
 * hlvm implementation
-    - stack
     - registers
         - ints, floats, strings, tiles, tilesets?
     - exceptions

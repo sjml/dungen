@@ -68,6 +68,8 @@
 		347A941F22D1BE74002BF97F /* util.c in Sources */ = {isa = PBXBuildFile; fileRef = 347A941E22D1BE74002BF97F /* util.c */; };
 		347A945522D1E949002BF97F /* world.c in Sources */ = {isa = PBXBuildFile; fileRef = 347A945422D1E949002BF97F /* world.c */; };
 		3482A55822D61C6700AAD098 /* wrapping.c in Sources */ = {isa = PBXBuildFile; fileRef = 3482A55722D61BA900AAD098 /* wrapping.c */; settings = {COMPILER_FLAGS = "--no-warnings"; }; };
+		3482A56222D63C4F00AAD098 /* hlvm.c in Sources */ = {isa = PBXBuildFile; fileRef = 3482A56122D63C4F00AAD098 /* hlvm.c */; };
+		3482A56522D6842000AAD098 /* lfs.c in Sources */ = {isa = PBXBuildFile; fileRef = 3482A56422D6842000AAD098 /* lfs.c */; };
 		349C53E71EC4D6FC008D42C6 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 345D93DC1EC4C53B003B7C63 /* OpenGL.framework */; };
 		349C53E81EC4D700008D42C6 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 345D93E21EC4C54C003B7C63 /* Cocoa.framework */; };
 		349C53E91EC4D707008D42C6 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 345D93E01EC4C543003B7C63 /* IOKit.framework */; };
@@ -75,7 +77,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		340B5D0B22D2133400E53DCA /* init.lua */ = {isa = PBXFileReference; lastKnownFileType = text; path = init.lua; sourceTree = "<group>"; };
 		340B5D0F22D21CB700E53DCA /* stb_ds.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = stb_ds.h; path = "lib/single-file/stb_ds.h"; sourceTree = "<group>"; };
 		3415722822D3873D00FB77F2 /* stb_image.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = stb_image.h; path = "lib/single-file/stb_image.h"; sourceTree = "<group>"; };
 		3417E22322D1486100762C69 /* liblua.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = liblua.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -129,6 +130,7 @@
 		341F12F122D200BC009C844F /* posix_thread.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = posix_thread.c; path = "lib/glfw-3.3.0/src/posix_thread.c"; sourceTree = "<group>"; };
 		341F12F322D20196009C844F /* osmesa_context.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = osmesa_context.c; path = "lib/glfw-3.3.0/src/osmesa_context.c"; sourceTree = "<group>"; };
 		341F12F422D20196009C844F /* egl_context.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = egl_context.c; path = "lib/glfw-3.3.0/src/egl_context.c"; sourceTree = "<group>"; };
+		3424314522D7B51E00FC9FBE /* hlvm.i */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c.preprocessed; path = hlvm.i; sourceTree = "<group>"; };
 		344C39E41EC4E0B2007F9466 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = platform/macOS/Assets.xcassets; sourceTree = SOURCE_ROOT; };
 		3455A6961EC4DA71000057E4 /* libglfw.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libglfw.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		345D93DC1EC4C53B003B7C63 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
@@ -155,6 +157,9 @@
 		3482A55922D6247800AAD098 /* dungen.i */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c.preprocessed; path = dungen.i; sourceTree = "<group>"; };
 		3482A55B22D624A800AAD098 /* vectors.i */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c.preprocessed; path = vectors.i; sourceTree = "<group>"; };
 		3482A55D22D62E4300AAD098 /* images.i */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c.preprocessed; path = images.i; sourceTree = "<group>"; };
+		3482A56022D63C4F00AAD098 /* hlvm.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = hlvm.h; sourceTree = "<group>"; };
+		3482A56122D63C4F00AAD098 /* hlvm.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = hlvm.c; sourceTree = "<group>"; };
+		3482A56422D6842000AAD098 /* lfs.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = lfs.c; path = "lib/luafilesystem-1.7.0-2/src/lfs.c"; sourceTree = "<group>"; };
 		349C53B21EC4D6B9008D42C6 /* DunGen.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DunGen.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		349C53C21EC4D6B9008D42C6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = platform/macOS/Info.plist; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
@@ -190,14 +195,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		340B5D0A22D2130100E53DCA /* scripts */ = {
-			isa = PBXGroup;
-			children = (
-				340B5D0B22D2133400E53DCA /* init.lua */,
-			);
-			path = scripts;
-			sourceTree = "<group>";
-		};
 		340B5D0E22D21C9200E53DCA /* single-file */ = {
 			isa = PBXGroup;
 			children = (
@@ -266,6 +263,7 @@
 			children = (
 				3455A6911EC4DA4A000057E4 /* glfw */,
 				3417E21E22D1480300762C69 /* lua */,
+				3482A56322D683FD00AAD098 /* luafilesystem */,
 				340B5D0E22D21C9200E53DCA /* single-file */,
 			);
 			name = lib;
@@ -297,7 +295,6 @@
 			isa = PBXGroup;
 			children = (
 				347A941022D1B85F002BF97F /* src */,
-				340B5D0A22D2130100E53DCA /* scripts */,
 				3455A6901EC4DA41000057E4 /* lib */,
 				349C53B31EC4D6B9008D42C6 /* Support */,
 				345D937B1EC4C47D003B7C63 /* Products */,
@@ -333,6 +330,7 @@
 				347A941522D1B85F002BF97F /* main.c */,
 				347A945322D1E949002BF97F /* world.h */,
 				347A945422D1E949002BF97F /* world.c */,
+				3482A55F22D63C2E00AAD098 /* hlvm */,
 				340B5D1022D221CB00E53DCA /* scripting */,
 				347A941922D1B868002BF97F /* infrastructure */,
 			);
@@ -361,8 +359,26 @@
 				3482A55622D6198400AAD098 /* world.i */,
 				3482A55B22D624A800AAD098 /* vectors.i */,
 				3482A55D22D62E4300AAD098 /* images.i */,
+				3424314522D7B51E00FC9FBE /* hlvm.i */,
 			);
 			path = interfaces;
+			sourceTree = "<group>";
+		};
+		3482A55F22D63C2E00AAD098 /* hlvm */ = {
+			isa = PBXGroup;
+			children = (
+				3482A56022D63C4F00AAD098 /* hlvm.h */,
+				3482A56122D63C4F00AAD098 /* hlvm.c */,
+			);
+			path = hlvm;
+			sourceTree = "<group>";
+		};
+		3482A56322D683FD00AAD098 /* luafilesystem */ = {
+			isa = PBXGroup;
+			children = (
+				3482A56422D6842000AAD098 /* lfs.c */,
+			);
+			name = luafilesystem;
 			sourceTree = "<group>";
 		};
 		349C53B31EC4D6B9008D42C6 /* Support */ = {
@@ -433,6 +449,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 349C53E41EC4D6B9008D42C6 /* Build configuration list for PBXNativeTarget "DunGen" */;
 			buildPhases = (
+				3424314622D7B56B00FC9FBE /* Generate SWIG Wrappings */,
 				349C53AE1EC4D6B9008D42C6 /* Sources */,
 				349C53AF1EC4D6B9008D42C6 /* Frameworks */,
 				349C53B01EC4D6B9008D42C6 /* Resources */,
@@ -523,6 +540,24 @@
 			shellPath = /bin/sh;
 			shellScript = "cp -R ${PROJECT_DIR}/scripts ${CONFIGURATION_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}\ncp -R ${PROJECT_DIR}/images ${CONFIGURATION_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}\n";
 		};
+		3424314622D7B56B00FC9FBE /* Generate SWIG Wrappings */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Generate SWIG Wrappings";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "swig -lua -o ${PROJECT_DIR}/src/scripting/wrapping.c ${PROJECT_DIR}/src/scripting/interfaces/dungen.i\n";
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -557,6 +592,7 @@
 				341F12B322D1FCAB009C844F /* ldblib.c in Sources */,
 				341F12B422D1FCAB009C844F /* loadlib.c in Sources */,
 				341F12CA22D1FCAB009C844F /* loslib.c in Sources */,
+				3482A56522D6842000AAD098 /* lfs.c in Sources */,
 				341F12BD22D1FCAB009C844F /* lvm.c in Sources */,
 				341F12D322D1FCAB009C844F /* lcorolib.c in Sources */,
 				341F12C722D1FCAB009C844F /* lfunc.c in Sources */,
@@ -600,6 +636,7 @@
 				347A941722D1B85F002BF97F /* rendering.c in Sources */,
 				347A941C22D1B9C5002BF97F /* game.c in Sources */,
 				347A941622D1B85F002BF97F /* scripting.c in Sources */,
+				3482A56222D63C4F00AAD098 /* hlvm.c in Sources */,
 				347A941822D1B85F002BF97F /* main.c in Sources */,
 				3466A4B622D4D71B00ED6CAA /* images.c in Sources */,
 			);
@@ -625,6 +662,7 @@
 				EXECUTABLE_PREFIX = lib;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_WARN_INHIBIT_ALL_WARNINGS = YES;
+				HEADER_SEARCH_PATHS = "lib/lua-5.3.5/src";
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -649,6 +687,7 @@
 				EXECUTABLE_PREFIX = lib;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_WARN_INHIBIT_ALL_WARNINGS = YES;
+				HEADER_SEARCH_PATHS = "lib/lua-5.3.5/src";
 				MTL_FAST_MATH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;

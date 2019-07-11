@@ -9,9 +9,9 @@
 int main(int argc, const char * argv[]) {
     
     InitializeRendering();
-    InitializeGame();
-
     InitializeLua();
+
+    InitializeGame();
     
     while (Render() == 0) {}
     

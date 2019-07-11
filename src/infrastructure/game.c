@@ -4,6 +4,8 @@
 #include <time.h>
 
 #include "util.h"
+#include "../scripting/scripting.h"
+#include "../hlvm/hlvm.h"
 
 double MAX_TIMESTEP = 1.0;
 
@@ -13,6 +15,12 @@ void InitializeGame(void) {
     srand((unsigned int)time(NULL));
     
     previousTime = glfwGetTime();
+    
+    RunFile("scripts/simulation/WorldSetup.lua");
+    
+    HLVMProcess();
+    HLVMProcess();
+    HLVMProcess();
 }
 
 void FinalizeGame(void) {
