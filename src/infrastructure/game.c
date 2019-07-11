@@ -17,17 +17,18 @@ void InitializeGame(void) {
     previousTime = glfwGetTime();
     
     RunFile("scripts/simulation/WorldSetup.lua");
-    
-    HLVMProcess();
-    HLVMProcess();
-    HLVMProcess();
 }
 
 void FinalizeGame(void) {
     
 }
 
-void GameTick(void) {
-    currentTime = glfwGetTime();
-    // double dt = gb_clamp(currentTime - previousTime, 0.0, MAX_TIMESTEP);
+int GameTick(void) {
+//    previousTime = currentTime;
+//    currentTime = glfwGetTime();
+//    double dt = gb_clamp(currentTime - previousTime, 0.0, MAX_TIMESTEP);
+    
+    HLVMProcess();
+    
+    return 0;
 }

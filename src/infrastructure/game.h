@@ -3,4 +3,4 @@
 void InitializeGame(void);
 void FinalizeGame(void);
 
-void GameTick(void);
+int GameTick(void);

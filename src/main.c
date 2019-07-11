@@ -13,7 +13,11 @@ int main(int argc, const char * argv[]) {
 
     InitializeGame();
     
-    while (Render() == 0) {}
+    bool shouldStop = 0;
+    while (!shouldStop) {
+        shouldStop = GameTick();
+        shouldStop = Render();
+    }
     
     FinalizeLua();
     FinalizeRendering();
