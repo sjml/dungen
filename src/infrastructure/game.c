@@ -8,6 +8,8 @@
 #include "../hlvm/hlvm.h"
 
 double MAX_TIMESTEP = 1.0;
+int TICKS_PER_CYCLE = 1;
+double SECONDS_PER_CYCLE = 0.0;
 
 double previousTime, currentTime;
 
@@ -23,12 +25,20 @@ void FinalizeGame(void) {
     
 }
 
+double hlvmAccum = 0.0;
 int GameTick(void) {
-//    previousTime = currentTime;
-//    currentTime = glfwGetTime();
-//    double dt = gb_clamp(currentTime - previousTime, 0.0, MAX_TIMESTEP);
+    previousTime = currentTime;
+    currentTime = glfwGetTime();
+    double dt = gb_clamp(currentTime - previousTime, 0.0, MAX_TIMESTEP);
     
-    HLVMProcess();
+    hlvmAccum += dt;
+    if (hlvmAccum >= SECONDS_PER_CYCLE) {
+        hlvmAccum = 0.0;
+        int hlvmTickCount = 0;
+        while (hlvmTickCount++ < TICKS_PER_CYCLE) {
+            HLVMProcess();
+        }
+    }
     
     return 0;
 }

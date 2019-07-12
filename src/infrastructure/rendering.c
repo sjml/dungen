@@ -78,7 +78,7 @@ void InitializeRendering() {
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glClearStencil(0);
-    glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
     MainCamera.aperture = M_PI / 2;
     MainCamera.position.x = 0.0f;

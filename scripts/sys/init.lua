@@ -40,7 +40,8 @@ function push(className)
 
   local f, r = coroutine.running()
   if (r ~= true) then
-    --  TODO: this is a hack because the C code is not calling sim elements as true coroutines
+    --  TODO: this is a hack because the C code is not
+    --        calling sim elements as true coroutines
     coroutine.yield(1)
   end
 end
