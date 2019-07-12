@@ -33,12 +33,21 @@ void HLVMPush(SimulationElement* sim) {
     stackTop = arrlen(stack) - 1;
 }
 
-SimulationElement* HLVMPop() {
+void HLVMPop(SimulationElement* topCheck) {
     if (arrlen(stack) == 0) {
-        return NULL;
+        fprintf(stderr, "ERROR: HLVM stack corruption! (trying to pop empty stack)\n");
+        return;
     }
-    stackTop -= 1;
-    return arrpop(stack);
+
+    SimulationElement* top = arrpop(stack);
+    stackTop--;
+    if (top != topCheck) {
+        // TODO: have this panic / throw
+        fprintf(stderr, "ERROR: HLVM stack corruption! (incorrect top of stack)\n");
+        return;
+    }
+    luaL_unref(GetLuaState(), LUA_REGISTRYINDEX, (*top).LuaRefKey);
+    free(top);
 }
 
 void HLVMProcess() {
@@ -54,22 +63,15 @@ void HLVMProcess() {
     int status = lua_pcall(L, 0, 1, 0);
     if (status != LUA_OK) {
         // error of some kind
-        fprintf(stderr, "LUA ERROR: %s; popping %s\n", lua_tostring(L, -1), (*sim).Name);
+        fprintf(stderr, "LUA ERROR: %s; HLVM popping %s\n", lua_tostring(L, -1), (*sim).Name);
         lua_pop(L, 1);
+        HLVMPop(sim);
         return;
     }
     int retVal = (int)lua_tointeger(L, lua_gettop(L));
     lua_pop(L, 1);
     
     if (retVal == 0) {
-        SimulationElement* check = arrpop(stack);
-        stackTop--;
-        if (check != sim) {
-            // TODO: have this panic / throw
-            fprintf(stderr, "ERROR: HLVM stack corruption!\n");
-            return;
-        }
-        luaL_unref(L, LUA_REGISTRYINDEX, (*sim).LuaRefKey);
-        free(sim);
+        HLVMPop(sim);
     }
 }

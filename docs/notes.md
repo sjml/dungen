@@ -1,14 +1,12 @@
-* hlvm implementation
-    - registers
-        - ints, floats, strings, tiles, tilesets?
-    - exceptions
-* pathfinding
+* regions
+* outline rendering
+* HLVM registers
+    - ints, floats, strings, tiles, tilesets?
 * tagging system for tiles?
     - attributes?
     - ints/floats/strings
     - how to search, then?
-* tile neighbors (collective and individual)
 * constraint solver
+* pathfinding
+* HLVM exceptions
 * player choice to overrule random tiles or die rolls
-* regions
-    - rendering of outlines
