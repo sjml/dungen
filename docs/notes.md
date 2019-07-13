@@ -1,11 +1,15 @@
-* outline rendering
-* HLVM registers
+## TODO
+1. outline rendering
+2. HLVM registers
     - ints, floats, strings, tiles, tilesets?
-* tagging system for tiles?
+3. tagging system for tiles?
     - attributes?
     - ints/floats/strings
     - how to search, then?
-* constraint solver
-* pathfinding
-* HLVM exceptions
-* player choice to overrule random tiles or die rolls
+4. constraint solver
+5. pathfinding
+6. HLVM exceptions
+7. player choice to overrule random tiles or die rolls
+
+## Horizon
+* setup debugger in VS Code or ZeroBrane?

@@ -1,5 +1,7 @@
 #include "world.h"
 
+#include "infrastructure/attributes.h"
+
 TileData* WorldArray = NULL;
 
 float tileSideLength;
@@ -77,6 +79,8 @@ void InitializeWorld(int width, int height, float scale) {
             }
         }
     }
+    
+    SetupAttributeData(WorldArray);
 }
 
 void FinalizeWorld() {

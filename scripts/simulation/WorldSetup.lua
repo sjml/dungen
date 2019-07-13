@@ -40,3 +40,5 @@ for j=0, TileSet.Height - 1 do
     end
   end
 end
+
+push("_Root")

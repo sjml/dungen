@@ -1,13 +1,15 @@
 #include "stdafx.h"
 
 #include "infrastructure/rendering.h"
-#include "infrastructure/game.h"
 #include "scripting/scripting.h"
+#include "infrastructure/attributes.h"
+#include "infrastructure/game.h"
 
 int main(int argc, const char * argv[]) {
     
     InitializeRendering();
     InitializeLua();
+    InitializeAttributes();
 
     InitializeGame();
     
@@ -19,6 +21,7 @@ int main(int argc, const char * argv[]) {
     
     FinalizeGame();
     
+    FinalizeAttributes();
     FinalizeLua();
     FinalizeRendering();
     

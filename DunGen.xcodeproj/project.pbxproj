@@ -74,6 +74,9 @@
 		349C53E81EC4D700008D42C6 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 345D93E21EC4C54C003B7C63 /* Cocoa.framework */; };
 		349C53E91EC4D707008D42C6 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 345D93E01EC4C543003B7C63 /* IOKit.framework */; };
 		349C53EA1EC4D70D008D42C6 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 345D93DE1EC4C540003B7C63 /* CoreVideo.framework */; };
+		34CD649622D9DD3E00C33190 /* sqlite3.c in Sources */ = {isa = PBXBuildFile; fileRef = 34CD649522D9DD3D00C33190 /* sqlite3.c */; };
+		34CD649722D9DD4900C33190 /* libsqlite.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 34CD649122D9DD2F00C33190 /* libsqlite.a */; };
+		34CD649A22D9DE3B00C33190 /* attributes.c in Sources */ = {isa = PBXBuildFile; fileRef = 34CD649922D9DE3B00C33190 /* attributes.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -162,6 +165,10 @@
 		3482A56422D6842000AAD098 /* lfs.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = lfs.c; path = "lib/luafilesystem-1.7.0-2/src/lfs.c"; sourceTree = "<group>"; };
 		349C53B21EC4D6B9008D42C6 /* DunGen.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DunGen.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		349C53C21EC4D6B9008D42C6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = platform/macOS/Info.plist; sourceTree = SOURCE_ROOT; };
+		34CD649122D9DD2F00C33190 /* libsqlite.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libsqlite.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		34CD649522D9DD3D00C33190 /* sqlite3.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = sqlite3.c; path = "lib/sqlite-amalgamation-3290000/sqlite3.c"; sourceTree = "<group>"; };
+		34CD649822D9DE3B00C33190 /* attributes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = attributes.h; sourceTree = "<group>"; };
+		34CD649922D9DE3B00C33190 /* attributes.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = attributes.c; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -183,12 +190,20 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				34CD649722D9DD4900C33190 /* libsqlite.a in Frameworks */,
 				3417E26922D149B000762C69 /* liblua.a in Frameworks */,
 				3455A6B41EC4DB8F000057E4 /* libglfw.a in Frameworks */,
 				349C53EA1EC4D70D008D42C6 /* CoreVideo.framework in Frameworks */,
 				349C53E91EC4D707008D42C6 /* IOKit.framework in Frameworks */,
 				349C53E81EC4D700008D42C6 /* Cocoa.framework in Frameworks */,
 				349C53E71EC4D6FC008D42C6 /* OpenGL.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		34CD648F22D9DD2F00C33190 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -264,6 +279,7 @@
 				3455A6911EC4DA4A000057E4 /* glfw */,
 				3417E21E22D1480300762C69 /* lua */,
 				3482A56322D683FD00AAD098 /* luafilesystem */,
+				34CD648C22D9DC8800C33190 /* sqlite */,
 				340B5D0E22D21C9200E53DCA /* single-file */,
 			);
 			name = lib;
@@ -308,6 +324,7 @@
 				349C53B21EC4D6B9008D42C6 /* DunGen.app */,
 				3455A6961EC4DA71000057E4 /* libglfw.a */,
 				3417E22322D1486100762C69 /* liblua.a */,
+				34CD649122D9DD2F00C33190 /* libsqlite.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -340,14 +357,16 @@
 		347A941922D1B868002BF97F /* infrastructure */ = {
 			isa = PBXGroup;
 			children = (
-				347A941322D1B85F002BF97F /* rendering.h */,
-				347A941422D1B85F002BF97F /* rendering.c */,
+				34CD649822D9DE3B00C33190 /* attributes.h */,
+				34CD649922D9DE3B00C33190 /* attributes.c */,
 				347A941A22D1B9C5002BF97F /* game.h */,
 				347A941B22D1B9C5002BF97F /* game.c */,
-				347A941D22D1BE74002BF97F /* util.h */,
-				347A941E22D1BE74002BF97F /* util.c */,
 				3466A4B422D4D71B00ED6CAA /* images.h */,
 				3466A4B522D4D71B00ED6CAA /* images.c */,
+				347A941322D1B85F002BF97F /* rendering.h */,
+				347A941422D1B85F002BF97F /* rendering.c */,
+				347A941D22D1BE74002BF97F /* util.h */,
+				347A941E22D1BE74002BF97F /* util.c */,
 			);
 			path = infrastructure;
 			sourceTree = "<group>";
@@ -391,6 +410,14 @@
 			path = DunGen;
 			sourceTree = "<group>";
 		};
+		34CD648C22D9DC8800C33190 /* sqlite */ = {
+			isa = PBXGroup;
+			children = (
+				34CD649522D9DD3D00C33190 /* sqlite3.c */,
+			);
+			name = sqlite;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -402,6 +429,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		3455A6941EC4DA71000057E4 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		34CD648D22D9DD2F00C33190 /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -464,6 +498,23 @@
 			productReference = 349C53B21EC4D6B9008D42C6 /* DunGen.app */;
 			productType = "com.apple.product-type.application";
 		};
+		34CD649022D9DD2F00C33190 /* sqlite */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 34CD649222D9DD2F00C33190 /* Build configuration list for PBXNativeTarget "sqlite" */;
+			buildPhases = (
+				34CD648D22D9DD2F00C33190 /* Headers */,
+				34CD648E22D9DD2F00C33190 /* Sources */,
+				34CD648F22D9DD2F00C33190 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = sqlite;
+			productName = sqlite;
+			productReference = 34CD649122D9DD2F00C33190 /* libsqlite.a */;
+			productType = "com.apple.product-type.library.static";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -488,6 +539,11 @@
 						DevelopmentTeam = CFJYV723M9;
 						ProvisioningStyle = Automatic;
 					};
+					34CD649022D9DD2F00C33190 = {
+						CreatedOnToolsVersion = 10.2.1;
+						DevelopmentTeam = CFJYV723M9;
+						ProvisioningStyle = Automatic;
+					};
 				};
 			};
 			buildConfigurationList = 345D93751EC4C47D003B7C63 /* Build configuration list for PBXProject "DunGen" */;
@@ -506,6 +562,7 @@
 				349C53B11EC4D6B9008D42C6 /* DunGen */,
 				3455A6951EC4DA71000057E4 /* glfw */,
 				3417E22222D1486100762C69 /* lua */,
+				34CD649022D9DD2F00C33190 /* sqlite */,
 			);
 		};
 /* End PBXProject section */
@@ -634,11 +691,20 @@
 				347A941F22D1BE74002BF97F /* util.c in Sources */,
 				3482A55822D61C6700AAD098 /* wrapping.c in Sources */,
 				347A941722D1B85F002BF97F /* rendering.c in Sources */,
+				34CD649A22D9DE3B00C33190 /* attributes.c in Sources */,
 				347A941C22D1B9C5002BF97F /* game.c in Sources */,
 				347A941622D1B85F002BF97F /* scripting.c in Sources */,
 				3482A56222D63C4F00AAD098 /* hlvm.c in Sources */,
 				347A941822D1B85F002BF97F /* main.c in Sources */,
 				3466A4B622D4D71B00ED6CAA /* images.c in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		34CD648E22D9DD2F00C33190 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				34CD649622D9DD3E00C33190 /* sqlite3.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -841,7 +907,7 @@
 				HEADER_SEARCH_PATHS = (
 					"lib/glfw-3.3.0/include",
 					"lib/lua-5.3.5/src",
-					"lib/cglm-0.5.4/include",
+					"lib/sqlite-amalgamation-3290000",
 					"lib/single-file",
 				);
 				INFOPLIST_FILE = platform/macOS/Info.plist;
@@ -861,12 +927,49 @@
 				HEADER_SEARCH_PATHS = (
 					"lib/glfw-3.3.0/include",
 					"lib/lua-5.3.5/src",
-					"lib/cglm-0.5.4/include",
+					"lib/sqlite-amalgamation-3290000",
 					"lib/single-file",
 				);
 				INFOPLIST_FILE = platform/macOS/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		34CD649322D9DD2F00C33190 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = CFJYV723M9;
+				EXECUTABLE_PREFIX = lib;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		34CD649422D9DD2F00C33190 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = CFJYV723M9;
+				EXECUTABLE_PREFIX = lib;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
 			};
 			name = Release;
 		};
@@ -905,6 +1008,15 @@
 			buildConfigurations = (
 				349C53C31EC4D6B9008D42C6 /* Debug */,
 				349C53C41EC4D6B9008D42C6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		34CD649222D9DD2F00C33190 /* Build configuration list for PBXNativeTarget "sqlite" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				34CD649322D9DD2F00C33190 /* Debug */,
+				34CD649422D9DD2F00C33190 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
