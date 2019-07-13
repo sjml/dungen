@@ -79,6 +79,10 @@ void InitializeWorld(int width, int height, float scale) {
     }
 }
 
+void FinalizeWorld() {
+    arrfree(WorldArray);
+}
+
 Vec2i GetWorldDimensions() {
     Vec2i dim = {worldWidth, worldHeight};
     return dim;
@@ -158,4 +162,36 @@ void RenderTiles(void) {
             glPopMatrix();
         }
     }
+}
+
+int AddTileToSet(TileSet* ts, TileData* t) {
+    hmput(ts->tiles, t, 1);
+    return (int)hmlen(ts);
+}
+
+int RemoveTileFromSet(TileSet* ts, TileData* t) {
+    hmdel(ts->tiles, t);
+    return (int)hmlen(ts);
+}
+
+bool IsTileInSet(TileSet* ts, TileData* t) {
+    return hmgeti(ts->tiles, t) >= 0;
+}
+
+int GetTileCount(TileSet* ts) {
+    return (int)hmlen(ts->tiles);
+}
+
+TileData** GetTiles(TileSet* ts) {
+    TileData** ret = NULL;
+    arrsetlen(ret, hmlen(ts->tiles));
+    for (int i=0; i < hmlen(ts->tiles); i++) {
+        ret[i] = ts->tiles[i].key;
+    }
+    
+    return ret;
+}
+
+void DestroyTileSet(TileSet* ts) {
+    hmfree(ts->tiles);
 }

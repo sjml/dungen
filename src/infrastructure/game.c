@@ -4,6 +4,7 @@
 #include <time.h>
 
 #include "util.h"
+#include "../world.h"
 #include "../scripting/scripting.h"
 #include "../hlvm/hlvm.h"
 
@@ -22,7 +23,7 @@ void InitializeGame(void) {
 }
 
 void FinalizeGame(void) {
-    
+    FinalizeWorld();
 }
 
 double hlvmAccum = 0.0;

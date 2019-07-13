@@ -2676,12 +2676,13 @@ SWIG_Lua_dostring(lua_State *L, const char *str) {
 
 #define SWIGTYPE_p_SimulationElement swig_types[0]
 #define SWIGTYPE_p_TileData swig_types[1]
-#define SWIGTYPE_p_Vec2i swig_types[2]
-#define SWIGTYPE_p_float swig_types[3]
-#define SWIGTYPE_p_gbVec2 swig_types[4]
-#define SWIGTYPE_p_gbVec3 swig_types[5]
-static swig_type_info *swig_types[7];
-static swig_module_info swig_module = {swig_types, 6, 0, 0, 0, 0};
+#define SWIGTYPE_p_TileSet swig_types[2]
+#define SWIGTYPE_p_Vec2i swig_types[3]
+#define SWIGTYPE_p_float swig_types[4]
+#define SWIGTYPE_p_gbVec2 swig_types[5]
+#define SWIGTYPE_p_gbVec3 swig_types[6]
+static swig_type_info *swig_types[8];
+static swig_module_info swig_module = {swig_types, 7, 0, 0, 0, 0};
 #define SWIG_TypeQuery(name) SWIG_TypeQueryModule(&swig_module, &swig_module, name)
 #define SWIG_MangledTypeQuery(name) SWIG_MangledTypeQueryModule(&swig_module, &swig_module, name)
 
@@ -2713,6 +2714,15 @@ SWIGINTERN int SWIG_lua_isnilstring(lua_State *L, int idx) {
 
     #include "../world.h"
 
+SWIGINTERN TileSet *new_TileSet(void){
+        TileSet* ts = malloc(sizeof(TileSet));
+        ts->tiles = NULL;
+        return ts;
+    }
+SWIGINTERN void delete_TileSet(TileSet *self){
+        DestroyTileSet(self);
+        free(self);
+    }
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -4516,10 +4526,6 @@ fail:
 }
 
 
-static void swig_delete_TileData(void *obj) {
-TileData *arg1 = (TileData *) obj;
-free((char *) arg1);
-}
 static int _proxy__wrap_new_TileData(lua_State *L) {
     assert(lua_istable(L,1));
     lua_pushcfunction(L,_wrap_new_TileData);
@@ -4570,7 +4576,71 @@ static swig_lua_namespace swig_TileData_Sf_SwigStatic = {
 };
 static swig_lua_class *swig_TileData_bases[] = {0};
 static const char *swig_TileData_base_names[] = {0};
-static swig_lua_class _wrap_class_TileData = { "TileData", "TileData", &SWIGTYPE_p_TileData,_proxy__wrap_new_TileData, swig_delete_TileData, swig_TileData_methods, swig_TileData_attributes, &swig_TileData_Sf_SwigStatic, swig_TileData_meta, swig_TileData_bases, swig_TileData_base_names };
+static swig_lua_class _wrap_class_TileData = { "TileData", "TileData", &SWIGTYPE_p_TileData,_proxy__wrap_new_TileData,0, swig_TileData_methods, swig_TileData_attributes, &swig_TileData_Sf_SwigStatic, swig_TileData_meta, swig_TileData_bases, swig_TileData_base_names };
+
+static int _wrap_new_TileSet(lua_State* L) {
+  int SWIG_arg = 0;
+  TileSet *result = 0 ;
+  
+  SWIG_check_num_args("TileSet::TileSet",0,0)
+  result = (TileSet *)new_TileSet();
+  SWIG_NewPointerObj(L,result,SWIGTYPE_p_TileSet,1); SWIG_arg++; 
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static void swig_delete_TileSet(void *obj) {
+TileSet *arg1 = (TileSet *) obj;
+delete_TileSet(arg1);
+}
+static int _proxy__wrap_new_TileSet(lua_State *L) {
+    assert(lua_istable(L,1));
+    lua_pushcfunction(L,_wrap_new_TileSet);
+    assert(!lua_isnil(L,-1));
+    lua_replace(L,1); /* replace our table with real constructor */
+    lua_call(L,lua_gettop(L)-1,1);
+    return 1;
+}
+static swig_lua_attribute swig_TileSet_attributes[] = {
+    {0,0,0}
+};
+static swig_lua_method swig_TileSet_methods[]= {
+    {0,0}
+};
+static swig_lua_method swig_TileSet_meta[] = {
+    {0,0}
+};
+
+static swig_lua_attribute swig_TileSet_Sf_SwigStatic_attributes[] = {
+    {0,0,0}
+};
+static swig_lua_const_info swig_TileSet_Sf_SwigStatic_constants[]= {
+    {0,0,0,0,0,0}
+};
+static swig_lua_method swig_TileSet_Sf_SwigStatic_methods[]= {
+    {0,0}
+};
+static swig_lua_class* swig_TileSet_Sf_SwigStatic_classes[]= {
+    0
+};
+
+static swig_lua_namespace swig_TileSet_Sf_SwigStatic = {
+    "TileSet",
+    swig_TileSet_Sf_SwigStatic_methods,
+    swig_TileSet_Sf_SwigStatic_attributes,
+    swig_TileSet_Sf_SwigStatic_constants,
+    swig_TileSet_Sf_SwigStatic_classes,
+    0
+};
+static swig_lua_class *swig_TileSet_bases[] = {0};
+static const char *swig_TileSet_base_names[] = {0};
+static swig_lua_class _wrap_class_TileSet = { "TileSet", "TileSet", &SWIGTYPE_p_TileSet,_proxy__wrap_new_TileSet, swig_delete_TileSet, swig_TileSet_methods, swig_TileSet_attributes, &swig_TileSet_Sf_SwigStatic, swig_TileSet_meta, swig_TileSet_bases, swig_TileSet_base_names };
 
 static int _wrap_InitializeWorld(lua_State* L) {
   int SWIG_arg = 0;
@@ -4679,6 +4749,161 @@ fail:
 }
 
 
+static int _wrap_AddTileToSet(lua_State* L) {
+  int SWIG_arg = 0;
+  TileSet *arg1 = (TileSet *) 0 ;
+  TileData *arg2 = (TileData *) 0 ;
+  int result;
+  
+  SWIG_check_num_args("AddTileToSet",2,2)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("AddTileToSet",1,"TileSet *");
+  if(!SWIG_isptrtype(L,2)) SWIG_fail_arg("AddTileToSet",2,"TileData *");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_TileSet,0))){
+    SWIG_fail_ptr("AddTileToSet",1,SWIGTYPE_p_TileSet);
+  }
+  
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,2,(void**)&arg2,SWIGTYPE_p_TileData,0))){
+    SWIG_fail_ptr("AddTileToSet",2,SWIGTYPE_p_TileData);
+  }
+  
+  result = (int)AddTileToSet(arg1,arg2);
+  lua_pushnumber(L, (lua_Number) result); SWIG_arg++;
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_RemoveTileFromSet(lua_State* L) {
+  int SWIG_arg = 0;
+  TileSet *arg1 = (TileSet *) 0 ;
+  TileData *arg2 = (TileData *) 0 ;
+  int result;
+  
+  SWIG_check_num_args("RemoveTileFromSet",2,2)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("RemoveTileFromSet",1,"TileSet *");
+  if(!SWIG_isptrtype(L,2)) SWIG_fail_arg("RemoveTileFromSet",2,"TileData *");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_TileSet,0))){
+    SWIG_fail_ptr("RemoveTileFromSet",1,SWIGTYPE_p_TileSet);
+  }
+  
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,2,(void**)&arg2,SWIGTYPE_p_TileData,0))){
+    SWIG_fail_ptr("RemoveTileFromSet",2,SWIGTYPE_p_TileData);
+  }
+  
+  result = (int)RemoveTileFromSet(arg1,arg2);
+  lua_pushnumber(L, (lua_Number) result); SWIG_arg++;
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_IsTileInSet(lua_State* L) {
+  int SWIG_arg = 0;
+  TileSet *arg1 = (TileSet *) 0 ;
+  TileData *arg2 = (TileData *) 0 ;
+  bool result;
+  
+  SWIG_check_num_args("IsTileInSet",2,2)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("IsTileInSet",1,"TileSet *");
+  if(!SWIG_isptrtype(L,2)) SWIG_fail_arg("IsTileInSet",2,"TileData *");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_TileSet,0))){
+    SWIG_fail_ptr("IsTileInSet",1,SWIGTYPE_p_TileSet);
+  }
+  
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,2,(void**)&arg2,SWIGTYPE_p_TileData,0))){
+    SWIG_fail_ptr("IsTileInSet",2,SWIGTYPE_p_TileData);
+  }
+  
+  result = (bool)IsTileInSet(arg1,arg2);
+  lua_pushboolean(L,(int)(result!=0)); SWIG_arg++;
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_GetTileCount(lua_State* L) {
+  int SWIG_arg = 0;
+  TileSet *arg1 = (TileSet *) 0 ;
+  int result;
+  
+  SWIG_check_num_args("GetTileCount",1,1)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("GetTileCount",1,"TileSet *");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_TileSet,0))){
+    SWIG_fail_ptr("GetTileCount",1,SWIGTYPE_p_TileSet);
+  }
+  
+  result = (int)GetTileCount(arg1);
+  lua_pushnumber(L, (lua_Number) result); SWIG_arg++;
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_GetTiles(lua_State* L) {
+  int SWIG_arg = 0;
+  TileSet *arg1 = (TileSet *) 0 ;
+  TileData **result = 0 ;
+  
+  SWIG_check_num_args("GetTiles",1,1)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("GetTiles",1,"TileSet *");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_TileSet,0))){
+    SWIG_fail_ptr("GetTiles",1,SWIGTYPE_p_TileSet);
+  }
+  
+  result = (TileData **)GetTiles(arg1);
+  
+  {
+    lua_newtable(L);
+    if (arrlen(result) > 0) {
+      for (unsigned int i=1; i <= arrlen(result); i++) {
+        lua_pushnumber(L, i);
+        SWIG_NewPointerObj(L, result[i-1], SWIGTYPE_p_TileData, 1);
+        lua_settable(L, -3);
+      }
+    }
+    arrfree(result);
+    
+    SWIG_arg += 1;
+  }
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
 static swig_lua_attribute swig_SwigModule_attributes[] = {
     {0,0,0}
 };
@@ -4697,6 +4922,11 @@ static swig_lua_method swig_SwigModule_methods[]= {
     { "GetWorldScale", _wrap_GetWorldScale},
     { "GetTileAtPosition", _wrap_GetTileAtPosition},
     { "GetTileAtIndex", _wrap_GetTileAtIndex},
+    { "AddTileToSet", _wrap_AddTileToSet},
+    { "RemoveTileFromSet", _wrap_RemoveTileFromSet},
+    { "IsTileInSet", _wrap_IsTileInSet},
+    { "GetTileCount", _wrap_GetTileCount},
+    { "GetTiles", _wrap_GetTiles},
     {0,0}
 };
 static swig_lua_class* swig_SwigModule_classes[]= {
@@ -4705,6 +4935,7 @@ static swig_lua_class* swig_SwigModule_classes[]= {
 &_wrap_class_gbVec3,
 &_wrap_class_SimulationElement,
 &_wrap_class_TileData,
+&_wrap_class_TileSet,
     0
 };
 static swig_lua_namespace* swig_SwigModule_namespaces[] = {
@@ -4727,6 +4958,7 @@ static swig_lua_namespace swig_SwigModule = {
 
 static swig_type_info _swigt__p_SimulationElement = {"_p_SimulationElement", "SimulationElement *", 0, 0, (void*)&_wrap_class_SimulationElement, 0};
 static swig_type_info _swigt__p_TileData = {"_p_TileData", "TileData *", 0, 0, (void*)&_wrap_class_TileData, 0};
+static swig_type_info _swigt__p_TileSet = {"_p_TileSet", "TileSet *", 0, 0, (void*)&_wrap_class_TileSet, 0};
 static swig_type_info _swigt__p_Vec2i = {"_p_Vec2i", "Vec2i *", 0, 0, (void*)&_wrap_class_Vec2i, 0};
 static swig_type_info _swigt__p_float = {"_p_float", "float *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_gbVec2 = {"_p_gbVec2", "union gbVec2 *|gbVec2 *", 0, 0, (void*)&_wrap_class_gbVec2, 0};
@@ -4735,6 +4967,7 @@ static swig_type_info _swigt__p_gbVec3 = {"_p_gbVec3", "union gbVec3 *|gbVec3 *"
 static swig_type_info *swig_type_initial[] = {
   &_swigt__p_SimulationElement,
   &_swigt__p_TileData,
+  &_swigt__p_TileSet,
   &_swigt__p_Vec2i,
   &_swigt__p_float,
   &_swigt__p_gbVec2,
@@ -4743,6 +4976,7 @@ static swig_type_info *swig_type_initial[] = {
 
 static swig_cast_info _swigc__p_SimulationElement[] = {  {&_swigt__p_SimulationElement, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_TileData[] = {  {&_swigt__p_TileData, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_TileSet[] = {  {&_swigt__p_TileSet, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_Vec2i[] = {  {&_swigt__p_Vec2i, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_float[] = {  {&_swigt__p_float, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gbVec2[] = {  {&_swigt__p_gbVec2, 0, 0, 0},{0, 0, 0, 0}};
@@ -4751,6 +4985,7 @@ static swig_cast_info _swigc__p_gbVec3[] = {  {&_swigt__p_gbVec3, 0, 0, 0},{0, 0
 static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_SimulationElement,
   _swigc__p_TileData,
+  _swigc__p_TileSet,
   _swigc__p_Vec2i,
   _swigc__p_float,
   _swigc__p_gbVec2,

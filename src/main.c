@@ -4,8 +4,6 @@
 #include "infrastructure/game.h"
 #include "scripting/scripting.h"
 
-#include "world.h"
-
 int main(int argc, const char * argv[]) {
     
     InitializeRendering();
@@ -18,6 +16,8 @@ int main(int argc, const char * argv[]) {
         shouldStop = GameTick();
         shouldStop = Render();
     }
+    
+    FinalizeGame();
     
     FinalizeLua();
     FinalizeRendering();

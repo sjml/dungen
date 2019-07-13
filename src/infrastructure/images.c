@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "../stdafx.h"
 #include "images.h"
 
 #define STB_IMAGE_IMPLEMENTATION

@@ -1,4 +1,3 @@
-* regions
 * outline rendering
 * HLVM registers
     - ints, floats, strings, tiles, tilesets?
