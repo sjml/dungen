@@ -10,9 +10,7 @@ sqlite3* db;
 
 void InitializeAttributes() {
     char* err = 0;
-//    const char* dbPath = ":memory:";
-    system("rm -rf /Users/shane/Documents/tiles.sqlite3");
-    const char* dbPath = "/Users/shane/Documents/tiles.sqlite3";
+    const char* dbPath = ":memory:";
 
     int ret = sqlite3_open(dbPath, &db);
     if (ret != SQLITE_OK) {
