@@ -8,8 +8,9 @@ function loadFiles(dir)
       if (f ~= nil) then
         sims[simName] = f
       else
-        print("ERROR: Couldn't load code for " .. simName .. ":")
-        print(err)
+        io.stderr:write("LUA ERROR: Couldn't load code for " .. simName .. ":")
+        io.stderr:write(err)
+        io.stderr:write("\n")
       end
     end
   end
@@ -22,7 +23,7 @@ end
 function VM_wrap(sim)
   local f = sims[sim]
   if (f == nil) then
-    print("WARNING: No element called " .. sim .. ".")
+    io.stderr:write("LUA WARNING: No element called " .. sim .. ".\n")
     f = sims["Null"]
   end
 
@@ -34,8 +35,8 @@ function push(className)
     className = "Null"
   end
 
-  sim = dungen.CreateSimulationElement(className)
-  dungen.HLVMPush(sim)
+  sim = CreateSimulationElement(className)
+  HLVMPush(sim)
 
   local f, r = coroutine.running()
   if (r ~= true) then
@@ -46,62 +47,72 @@ function push(className)
   end
 end
 
-tdmt = getmetatable(dungen.TileData())
-tdmt[".fn"].GetNeighbors = function(td)
+function getfntable(classname)
+  local reg = debug.getregistry()
+  local classTable = reg["SWIG"][classname]
+  if (classTable == nil) then
+    io.stderr:write("LUA WARNING: No class called " .. classname .. ".\n")
+    return
+  end
+  return classTable[".fn"]
+end
+
+tdft = getfntable("TileData")
+tdft.GetNeighbors = function(td)
   local ret = {}
   if (td.neighborW ~= -1) then
-    table.insert(ret, dungen.GetTileAtIndex(td.neighborW))
+    table.insert(ret, GetTileAtIndex(td.neighborW))
   end
   if (td.neighborNW ~= -1) then
-    table.insert(ret, dungen.GetTileAtIndex(td.neighborNW))
+    table.insert(ret, GetTileAtIndex(td.neighborNW))
   end
   if (td.neighborNE ~= -1) then
-    table.insert(ret, dungen.GetTileAtIndex(td.neighborNE))
+    table.insert(ret, GetTileAtIndex(td.neighborNE))
   end
   if (td.neighborE ~= -1) then
-    table.insert(ret, dungen.GetTileAtIndex(td.neighborE))
+    table.insert(ret, GetTileAtIndex(td.neighborE))
   end
   if (td.neighborSE ~= -1) then
-    table.insert(ret, dungen.GetTileAtIndex(td.neighborSE))
+    table.insert(ret, GetTileAtIndex(td.neighborSE))
   end
   if (td.neighborSW ~= -1) then
-    table.insert(ret, dungen.GetTileAtIndex(td.neighborSW))
+    table.insert(ret, GetTileAtIndex(td.neighborSW))
   end
   return ret
 end
 
-tdmt[".fn"].SetAttributeInt = function(td, name, value)
-  dungen.SetAttributeInt(td, name, value)
+tdft.SetAttributeInt = function(td, name, value)
+  SetAttributeInt(td, name, value)
 end
 
-tdmt[".fn"].SetAttributeFloat = function(td, name, value)
-  dungen.SetAttributeFloat(td, name, value)
+tdft.SetAttributeFloat = function(td, name, value)
+  SetAttributeFloat(td, name, value)
 end
 
-tdmt[".fn"].SetAttributeString = function(td, name, value)
-  dungen.SetAttributeString(td, name, value)
+tdft.SetAttributeString = function(td, name, value)
+  SetAttributeString(td, name, value)
 end
 
-tdmt[".fn"].GetAttributeInt = function(td, name)
-  return dungen.GetAttributeInt(td, name)
+tdft.GetAttributeInt = function(td, name)
+  return GetAttributeInt(td, name)
 end
 
-tdmt[".fn"].GetAttributeFloat = function(td, name)
-  return dungen.GetAttributeFloat(td, name)
+tdft.GetAttributeFloat = function(td, name)
+  return GetAttributeFloat(td, name)
 end
 
-tdmt[".fn"].GetAttributeString = function(td, name)
-  return dungen.GetAttributeString(td, name)
+tdft.GetAttributeString = function(td, name)
+  return GetAttributeString(td, name)
 end
 
-tdmt[".fn"].AddTag = function(td, tag)
-  dungen.AddTag(td, tag)
+tdft.AddTag = function(td, tag)
+  AddTag(td, tag)
 end
 
-tdmt[".fn"].RemoveTag = function(td, tag)
-  dungen.RemoveTag(td, tag)
+tdft.RemoveTag = function(td, tag)
+  RemoveTag(td, tag)
 end
 
-tdmt[".fn"].GetTags = function(td)
-  return dungen.GetTags(td)
+tdft.GetTags = function(td)
+  return GetTags(td)
 end

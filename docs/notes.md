@@ -1,5 +1,5 @@
 ## TODO
-1. outline rendering (C)
+1. outline rendering (C + Lua invoking)
 2. HLVM registers (C <-> Lua)
     - ints, floats, strings, tiles, tilesets?
 3. constraint solver (in Lua?)
