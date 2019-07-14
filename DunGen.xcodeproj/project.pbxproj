@@ -712,6 +712,7 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "swig -lua -o ${PROJECT_DIR}/src/scripting/wrapping.c ${PROJECT_DIR}/src/scripting/interfaces/dungen.i\n";
+			showEnvVarsInLog = 0;
 		};
 		34279F6122DA28F100B825D0 /* Copy .app to build directory */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -729,7 +730,8 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if [ -n \"${BUILD_ARTIFACTSTAGINGDIRECTORY}\" ]; \nthen\n    # Building on an Azure pipeline\n    cp -R ${BUILT_PRODUCTS_DIR}/${FULL_PRODUCT_NAME} ${BUILD_ARTIFACTSTAGINGDIRECTORY}\nelif [ \"${PROJECT_DIR}/build/${CONFIGURATION}\" != \"${PROJECT_DIR}/build/${CONFIGURATION}\" ];\nthen\n    # Building on a Mac as part of normal Xcode build (non-CLI)\n    mkdir -p ${PROJECT_DIR}/build/${CONFIGURATION}\n    cp -r ${BUILT_PRODUCTS_DIR}/${FULL_PRODUCT_NAME} ${PROJECT_DIR}/build/${CONFIGURATION}\nfi\n";
+			shellScript = "if [ -n \"${BUILD_ARTIFACTSTAGINGDIRECTORY}\" ]; \nthen\n    # Building on an Azure pipeline\n    cp -R \"${BUILT_PRODUCTS_DIR}/${FULL_PRODUCT_NAME}\" \"${BUILD_ARTIFACTSTAGINGDIRECTORY}\"\nelif [ \"${BUILT_PRODUCTS_DIR}/${FULL_PRODUCT_NAME}\" != \"${PROJECT_DIR}/build/${CONFIGURATION}\" ];\nthen\n    # Building on a Mac as part of normal Xcode build (non-CLI)\n    mkdir -p \"${PROJECT_DIR}/build/${CONFIGURATION}\"\n    cp -r \"${BUILT_PRODUCTS_DIR}/${FULL_PRODUCT_NAME}\" \"${PROJECT_DIR}/build/${CONFIGURATION}\"\nfi\n";
+			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
 

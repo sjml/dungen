@@ -15,7 +15,7 @@ steps:
     sdk: 'macosx'
     configuration: 'Release'
     xcWorkspacePath: 'DunGen.xcodeproj'
-    xcodeVersion: 10 # Options: 8, 9, 10, default, specifyPath
+    xcodeVersion: 10
 - task: PublishBuildArtifacts@1
   inputs:
     PathtoPublish: '$(Build.ArtifactStagingDirectory)'
