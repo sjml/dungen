@@ -7,7 +7,7 @@ pool:
 steps:
 - task: CmdLine@2
   inputs:
-    script: 'env; brew install swig'
+    script: 'brew install swig'
 - task: Xcode@5
   inputs:
     actions: 'build'
