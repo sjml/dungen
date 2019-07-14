@@ -2,7 +2,7 @@
 #include "rendering.h"
 
 #include "util.h"
-#include "../world.h"
+#include "world.h"
 
 const int windowWidth  = 1024;
 const int windowHeight = 768;
@@ -109,6 +109,14 @@ void InitializeRendering() {
 void FinalizeRendering() {
     glfwDestroyWindow(window);
     glfwTerminate();
+}
+
+void AddOutline(Outline* o) {
+    
+}
+
+void RemoveOutline(Outline* o) {
+    
 }
 
 int Render() {

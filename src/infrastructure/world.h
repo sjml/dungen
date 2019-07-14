@@ -1,6 +1,6 @@
 #pragma once
 
-#include "infrastructure/util.h"
+#include "util.h"
 
 typedef struct {
     long long i;

@@ -1,10 +1,10 @@
-#include "../stdafx.h"
+#include "stdafx.h"
 #include "game.h"
 
 #include <time.h>
 
 #include "util.h"
-#include "../world.h"
+#include "world.h"
 #include "../scripting/scripting.h"
 #include "../hlvm/hlvm.h"
 

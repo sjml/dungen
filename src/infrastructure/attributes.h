@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../world.h"
+#include "world.h"
 
 void InitializeAttributes(void);
 void FinalizeAttributes(void);

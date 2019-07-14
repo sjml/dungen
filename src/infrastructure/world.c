@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "world.h"
 
-#include "infrastructure/attributes.h"
+#include "attributes.h"
 
 TileData* WorldArray = NULL;
 

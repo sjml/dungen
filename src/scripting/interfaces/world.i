@@ -1,6 +1,6 @@
 %module dungen
 %{
-    #include "../world.h"
+    #include "../infrastructure/world.h"
 %}
 
 %nodefaultdtor TileData;

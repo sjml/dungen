@@ -61,6 +61,7 @@
 		344C39E51EC4E0B2007F9466 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 344C39E41EC4E0B2007F9466 /* Assets.xcassets */; };
 		3455A6B41EC4DB8F000057E4 /* libglfw.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3455A6961EC4DA71000057E4 /* libglfw.a */; };
 		3466A4B622D4D71B00ED6CAA /* images.c in Sources */ = {isa = PBXBuildFile; fileRef = 3466A4B522D4D71B00ED6CAA /* images.c */; };
+		346CC51322DB507900E24845 /* outline.c in Sources */ = {isa = PBXBuildFile; fileRef = 346CC51222DB507900E24845 /* outline.c */; };
 		347A941622D1B85F002BF97F /* scripting.c in Sources */ = {isa = PBXBuildFile; fileRef = 347A941122D1B85F002BF97F /* scripting.c */; };
 		347A941722D1B85F002BF97F /* rendering.c in Sources */ = {isa = PBXBuildFile; fileRef = 347A941422D1B85F002BF97F /* rendering.c */; };
 		347A941822D1B85F002BF97F /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 347A941522D1B85F002BF97F /* main.c */; };
@@ -145,6 +146,10 @@
 		3466A4B422D4D71B00ED6CAA /* images.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = images.h; sourceTree = "<group>"; };
 		3466A4B522D4D71B00ED6CAA /* images.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = images.c; sourceTree = "<group>"; };
 		3466A4B722D4EDEB00ED6CAA /* gb_math.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = gb_math.h; path = "lib/single-file/gb_math.h"; sourceTree = "<group>"; };
+		346CC51122DB507900E24845 /* outline.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = outline.h; sourceTree = "<group>"; };
+		346CC51222DB507900E24845 /* outline.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = outline.c; sourceTree = "<group>"; };
+		346CC51422DB532300E24845 /* rendering.i */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c.preprocessed; path = rendering.i; sourceTree = "<group>"; };
+		346CC51522DB536B00E24845 /* outline.i */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c.preprocessed; path = outline.i; sourceTree = "<group>"; };
 		347A941122D1B85F002BF97F /* scripting.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = scripting.c; sourceTree = "<group>"; };
 		347A941222D1B85F002BF97F /* scripting.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = scripting.h; sourceTree = "<group>"; };
 		347A941322D1B85F002BF97F /* rendering.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = rendering.h; sourceTree = "<group>"; };
@@ -360,8 +365,6 @@
 			children = (
 				347A945222D1DDC9002BF97F /* stdafx.h */,
 				347A941522D1B85F002BF97F /* main.c */,
-				347A945322D1E949002BF97F /* world.h */,
-				347A945422D1E949002BF97F /* world.c */,
 				3482A55F22D63C2E00AAD098 /* hlvm */,
 				340B5D1022D221CB00E53DCA /* scripting */,
 				347A941922D1B868002BF97F /* infrastructure */,
@@ -378,10 +381,14 @@
 				347A941B22D1B9C5002BF97F /* game.c */,
 				3466A4B422D4D71B00ED6CAA /* images.h */,
 				3466A4B522D4D71B00ED6CAA /* images.c */,
+				346CC51122DB507900E24845 /* outline.h */,
+				346CC51222DB507900E24845 /* outline.c */,
 				347A941322D1B85F002BF97F /* rendering.h */,
 				347A941422D1B85F002BF97F /* rendering.c */,
 				347A941D22D1BE74002BF97F /* util.h */,
 				347A941E22D1BE74002BF97F /* util.c */,
+				347A945322D1E949002BF97F /* world.h */,
+				347A945422D1E949002BF97F /* world.c */,
 			);
 			path = infrastructure;
 			sourceTree = "<group>";
@@ -395,6 +402,8 @@
 				3482A55D22D62E4300AAD098 /* images.i */,
 				3424314522D7B51E00FC9FBE /* hlvm.i */,
 				3499472B22DB30D700C5BA7E /* attributes.i */,
+				346CC51422DB532300E24845 /* rendering.i */,
+				346CC51522DB536B00E24845 /* outline.i */,
 			);
 			path = interfaces;
 			sourceTree = "<group>";
@@ -760,6 +769,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				347A945522D1E949002BF97F /* world.c in Sources */,
+				346CC51322DB507900E24845 /* outline.c in Sources */,
 				347A941F22D1BE74002BF97F /* util.c in Sources */,
 				3482A55822D61C6700AAD098 /* wrapping.c in Sources */,
 				347A941722D1B85F002BF97F /* rendering.c in Sources */,

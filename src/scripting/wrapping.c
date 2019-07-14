@@ -2674,15 +2674,16 @@ SWIG_Lua_dostring(lua_State *L, const char *str) {
 
 /* -------- TYPES TABLE (BEGIN) -------- */
 
-#define SWIGTYPE_p_SimulationElement swig_types[0]
-#define SWIGTYPE_p_TileData swig_types[1]
-#define SWIGTYPE_p_TileSet swig_types[2]
-#define SWIGTYPE_p_Vec2i swig_types[3]
-#define SWIGTYPE_p_float swig_types[4]
-#define SWIGTYPE_p_gbVec2 swig_types[5]
-#define SWIGTYPE_p_gbVec3 swig_types[6]
-static swig_type_info *swig_types[8];
-static swig_module_info swig_module = {swig_types, 7, 0, 0, 0, 0};
+#define SWIGTYPE_p_Outline swig_types[0]
+#define SWIGTYPE_p_SimulationElement swig_types[1]
+#define SWIGTYPE_p_TileData swig_types[2]
+#define SWIGTYPE_p_TileSet swig_types[3]
+#define SWIGTYPE_p_Vec2i swig_types[4]
+#define SWIGTYPE_p_float swig_types[5]
+#define SWIGTYPE_p_gbVec2 swig_types[6]
+#define SWIGTYPE_p_gbVec3 swig_types[7]
+static swig_type_info *swig_types[9];
+static swig_module_info swig_module = {swig_types, 8, 0, 0, 0, 0};
 #define SWIG_TypeQuery(name) SWIG_TypeQueryModule(&swig_module, &swig_module, name)
 #define SWIG_MangledTypeQuery(name) SWIG_MangledTypeQueryModule(&swig_module, &swig_module, name)
 
@@ -2709,10 +2710,13 @@ SWIGINTERN int SWIG_lua_isnilstring(lua_State *L, int idx) {
 }
 
 
+    #include "../infrastructure/rendering.h"
+
+
     #include "../hlvm/hlvm.h"
 
 
-    #include "../world.h"
+    #include "../infrastructure/world.h"
 
 SWIGINTERN TileSet *new_TileSet(void){
         TileSet* ts = malloc(sizeof(TileSet));
@@ -2723,6 +2727,9 @@ SWIGINTERN void delete_TileSet(TileSet *self){
         DestroyTileSet(self);
         free(self);
     }
+
+    #include "../infrastructure/outline.h"
+
 
     #include "../infrastructure/attributes.h"
 
@@ -3767,6 +3774,52 @@ static int _wrap_GetColorByPercent(lua_State* L) {
     memmove(resultptr, &result, sizeof(gbVec3));
     SWIG_NewPointerObj(L,(void *) resultptr,SWIGTYPE_p_gbVec3,1); SWIG_arg++;
   }
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_AddOutline(lua_State* L) {
+  int SWIG_arg = 0;
+  Outline *arg1 = (Outline *) 0 ;
+  
+  SWIG_check_num_args("AddOutline",1,1)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("AddOutline",1,"Outline *");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_Outline,0))){
+    SWIG_fail_ptr("AddOutline",1,SWIGTYPE_p_Outline);
+  }
+  
+  AddOutline(arg1);
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_RemoveOutline(lua_State* L) {
+  int SWIG_arg = 0;
+  Outline *arg1 = (Outline *) 0 ;
+  
+  SWIG_check_num_args("RemoveOutline",1,1)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("RemoveOutline",1,"Outline *");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_Outline,0))){
+    SWIG_fail_ptr("RemoveOutline",1,SWIGTYPE_p_Outline);
+  }
+  
+  RemoveOutline(arg1);
+  
   return SWIG_arg;
   
   if(0) SWIG_fail;
@@ -4908,6 +4961,83 @@ fail:
 }
 
 
+static int _wrap_CreateOutline(lua_State* L) {
+  int SWIG_arg = 0;
+  TileSet *arg1 = (TileSet *) 0 ;
+  Outline *result = 0 ;
+  
+  SWIG_check_num_args("CreateOutline",1,1)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("CreateOutline",1,"TileSet *");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_TileSet,0))){
+    SWIG_fail_ptr("CreateOutline",1,SWIGTYPE_p_TileSet);
+  }
+  
+  result = (Outline *)CreateOutline(arg1);
+  SWIG_NewPointerObj(L,result,SWIGTYPE_p_Outline,0); SWIG_arg++; 
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_UpdateOutline(lua_State* L) {
+  int SWIG_arg = 0;
+  Outline *arg1 = (Outline *) 0 ;
+  TileSet *arg2 = (TileSet *) 0 ;
+  
+  SWIG_check_num_args("UpdateOutline",2,2)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("UpdateOutline",1,"Outline *");
+  if(!SWIG_isptrtype(L,2)) SWIG_fail_arg("UpdateOutline",2,"TileSet *");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_Outline,0))){
+    SWIG_fail_ptr("UpdateOutline",1,SWIGTYPE_p_Outline);
+  }
+  
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,2,(void**)&arg2,SWIGTYPE_p_TileSet,0))){
+    SWIG_fail_ptr("UpdateOutline",2,SWIGTYPE_p_TileSet);
+  }
+  
+  UpdateOutline(arg1,arg2);
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_DestroyOutline(lua_State* L) {
+  int SWIG_arg = 0;
+  Outline *arg1 = (Outline *) 0 ;
+  
+  SWIG_check_num_args("DestroyOutline",1,1)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("DestroyOutline",1,"Outline *");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_Outline,0))){
+    SWIG_fail_ptr("DestroyOutline",1,SWIGTYPE_p_Outline);
+  }
+  
+  DestroyOutline(arg1);
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
 static int _wrap_SetAttributeInt(lua_State* L) {
   int SWIG_arg = 0;
   TileData *arg1 = (TileData *) 0 ;
@@ -5215,6 +5345,8 @@ static swig_lua_method swig_SwigModule_methods[]= {
     { "LoadColorTable", _wrap_LoadColorTable},
     { "GetColorByIndex", _wrap_GetColorByIndex},
     { "GetColorByPercent", _wrap_GetColorByPercent},
+    { "AddOutline", _wrap_AddOutline},
+    { "RemoveOutline", _wrap_RemoveOutline},
     { "CreateSimulationElement", _wrap_CreateSimulationElement},
     { "HLVMPush", _wrap_HLVMPush},
     { "HLVMPop", _wrap_HLVMPop},
@@ -5228,6 +5360,9 @@ static swig_lua_method swig_SwigModule_methods[]= {
     { "IsTileInSet", _wrap_IsTileInSet},
     { "GetTileCount", _wrap_GetTileCount},
     { "GetTiles", _wrap_GetTiles},
+    { "CreateOutline", _wrap_CreateOutline},
+    { "UpdateOutline", _wrap_UpdateOutline},
+    { "DestroyOutline", _wrap_DestroyOutline},
     { "SetAttributeInt", _wrap_SetAttributeInt},
     { "SetAttributeFloat", _wrap_SetAttributeFloat},
     { "SetAttributeString", _wrap_SetAttributeString},
@@ -5267,6 +5402,7 @@ static swig_lua_namespace swig_SwigModule = {
 
 /* -------- TYPE CONVERSION AND EQUIVALENCE RULES (BEGIN) -------- */
 
+static swig_type_info _swigt__p_Outline = {"_p_Outline", "Outline *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_SimulationElement = {"_p_SimulationElement", "SimulationElement *", 0, 0, (void*)&_wrap_class_SimulationElement, 0};
 static swig_type_info _swigt__p_TileData = {"_p_TileData", "TileData *", 0, 0, (void*)&_wrap_class_TileData, 0};
 static swig_type_info _swigt__p_TileSet = {"_p_TileSet", "TileSet *", 0, 0, (void*)&_wrap_class_TileSet, 0};
@@ -5276,6 +5412,7 @@ static swig_type_info _swigt__p_gbVec2 = {"_p_gbVec2", "union gbVec2 *|gbVec2 *"
 static swig_type_info _swigt__p_gbVec3 = {"_p_gbVec3", "union gbVec3 *|gbVec3 *", 0, 0, (void*)&_wrap_class_gbVec3, 0};
 
 static swig_type_info *swig_type_initial[] = {
+  &_swigt__p_Outline,
   &_swigt__p_SimulationElement,
   &_swigt__p_TileData,
   &_swigt__p_TileSet,
@@ -5285,6 +5422,7 @@ static swig_type_info *swig_type_initial[] = {
   &_swigt__p_gbVec3,
 };
 
+static swig_cast_info _swigc__p_Outline[] = {  {&_swigt__p_Outline, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_SimulationElement[] = {  {&_swigt__p_SimulationElement, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_TileData[] = {  {&_swigt__p_TileData, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_TileSet[] = {  {&_swigt__p_TileSet, 0, 0, 0},{0, 0, 0, 0}};
@@ -5294,6 +5432,7 @@ static swig_cast_info _swigc__p_gbVec2[] = {  {&_swigt__p_gbVec2, 0, 0, 0},{0, 0
 static swig_cast_info _swigc__p_gbVec3[] = {  {&_swigt__p_gbVec3, 0, 0, 0},{0, 0, 0, 0}};
 
 static swig_cast_info *swig_cast_initial[] = {
+  _swigc__p_Outline,
   _swigc__p_SimulationElement,
   _swigc__p_TileData,
   _swigc__p_TileSet,
