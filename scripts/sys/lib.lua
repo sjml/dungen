@@ -69,3 +69,39 @@ tdmt[".fn"].GetNeighbors = function(td)
   end
   return ret
 end
+
+tdmt[".fn"].SetAttributeInt = function(td, name, value)
+  dungen.SetAttributeInt(td, name, value)
+end
+
+tdmt[".fn"].SetAttributeFloat = function(td, name, value)
+  dungen.SetAttributeFloat(td, name, value)
+end
+
+tdmt[".fn"].SetAttributeString = function(td, name, value)
+  dungen.SetAttributeString(td, name, value)
+end
+
+tdmt[".fn"].GetAttributeInt = function(td, name)
+  return dungen.GetAttributeInt(td, name)
+end
+
+tdmt[".fn"].GetAttributeFloat = function(td, name)
+  return dungen.GetAttributeFloat(td, name)
+end
+
+tdmt[".fn"].GetAttributeString = function(td, name)
+  return dungen.GetAttributeString(td, name)
+end
+
+tdmt[".fn"].AddTag = function(td, tag)
+  dungen.AddTag(td, tag)
+end
+
+tdmt[".fn"].RemoveTag = function(td, tag)
+  dungen.RemoveTag(td, tag)
+end
+
+tdmt[".fn"].GetTags = function(td)
+  return dungen.GetTags(td)
+end
