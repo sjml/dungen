@@ -87,51 +87,6 @@ void SetupAttributeData(TileData* data) {
 
     sqlite3_finalize(stmt);
     sqlite3_exec(db, "COMMIT TRANSACTION;", 0, 0, &err);
-
-    SetAttributeInt(&data[0], "intVal", 5682);
-    SetAttributeFloat(&data[0], "floatVal", 3.14f);
-    SetAttributeString(&data[0], "strVal", "Hello!");
-
-    printf("5682: %d\n", GetAttributeInt(&data[0], "intVal"));
-    printf("3.14: %.2f\n", GetAttributeFloat(&data[0], "floatVal"));
-    char* val = GetAttributeString(&data[0], "strVal");
-    printf("Hello!: %s\n", val);
-    free(val);
-    // 0 A B C
-    // 1 B C
-    // 2 C
-    AddTag(&data[0], "A");
-    AddTag(&data[0], "B");
-    AddTag(&data[0], "B");
-    AddTag(&data[1], "B");
-    AddTag(&data[1], "C");
-    AddTag(&data[2], "C");
-    AddTag(&data[0], "C");
-    AddTag(&data[0], "D");
-    RemoveTag(&data[0], "D");
-    RemoveTag(&data[0], "D");
-    
-    char** tags0 = GetTags(&data[0]);
-    for (int i=0; i < arrlen(tags0); i++) {
-        printf("%c: %s\n", 'A'+i, tags0[i]);
-        free(tags0[i]);
-    }
-    arrfree(tags0);
-    
-    TileData** ts = GetTilesTagged("B,C");
-    printf("2: %ld\n", arrlen(ts));
-    printf("0: %lld\n", (*ts[0]).i);
-    printf("1: %lld\n", (*ts[1]).i);
-    arrfree(ts);
-    ts = GetTilesTagged("C");
-    printf("3: %ld\n", arrlen(ts));
-    printf("0: %lld\n", (*ts[0]).i);
-    printf("1: %lld\n", (*ts[1]).i);
-    printf("2: %lld\n", (*ts[2]).i);
-    arrfree(ts);
-    ts = GetTilesTagged("D");
-    printf("0: %ld\n", arrlen(ts));
-    arrfree(ts);
 }
 
 bool _DoesColumnExist(char* name) {
@@ -523,9 +478,11 @@ TileData** GetTilesTagged(char* tagString) {
     sqlite3_stmt *stmt;
     if (sqlite3_prepare(db, query, -1, &stmt, NULL) != SQLITE_OK) {
         fprintf(stderr, "SQL ERROR: could not prepare tag search statement: %s\n", sqlite3_errmsg(db));
+        sdsfree(query);
         sqlite3_finalize(stmt);
         return NULL;
     }
+    sdsfree(query);
     for (int i=0; i < arrlen(tags); i++) {
         if (sqlite3_bind_text(stmt, i+1, tags[i], (int)strlen(tags[i]), NULL) != SQLITE_OK) {
             fprintf(stderr, "SQL ERROR: could not bind tag '%s' to tag search statement: %s\n", tags[i], sqlite3_errmsg(db));
