@@ -729,7 +729,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if [ \"${BUILT_PRODUCTS_DIR}\" = \"${PROJECT_DIR}/build/${CONFIGURATION}\" ]; \nthen\n    exit 0\nfi\nmkdir -p ${PROJECT_DIR}/build/${CONFIGURATION}\ncp -r ${BUILT_PRODUCTS_DIR}/${FULL_PRODUCT_NAME} ${PROJECT_DIR}/build/${CONFIGURATION}\n";
+			shellScript = "if [ \"${BUILT_PRODUCTS_DIR}\" = \"${PROJECT_DIR}/build/${CONFIGURATION}\" ]; \nthen\n    env\n    exit 0\nfi\nmkdir -p ${PROJECT_DIR}/build/${CONFIGURATION}\ncp -r ${BUILT_PRODUCTS_DIR}/${FULL_PRODUCT_NAME} ${PROJECT_DIR}/build/${CONFIGURATION}\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
