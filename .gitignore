@@ -12,3 +12,5 @@ xcuserdata/
 !*.xcodeproj/xcshareddata/
 !*.xcworkspace/contents.xcworkspacedata
 /*.gcno
+build/*
+!.gitkeep

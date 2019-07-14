@@ -5,7 +5,7 @@
 
 %nodefaultdtor TileData;
 typedef struct {
-    int i;
+    long long i;
     Vec2i hexPos;
     gbVec3 color;
     
@@ -61,7 +61,7 @@ Vec2i GetWorldDimensions(void);
 float GetWorldScale(void);
 
 TileData* GetTileAtPosition(int x, int y);
-TileData* GetTileAtIndex(int i);
+TileData* GetTileAtIndex(long long i);
 // GetTileNeighbors intentionally omitted in favor of Lua version
 // TileData** GetTileNeighbors(TileData* center, int *numNeighbors);
 

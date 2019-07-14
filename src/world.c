@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "world.h"
 
 #include "infrastructure/attributes.h"
@@ -108,9 +109,9 @@ TileData* GetTileAtPosition(int x, int y) {
     return &WorldArray[y*worldWidth + x];
 }
 
-TileData* GetTileAtIndex(int i) {
+TileData* GetTileAtIndex(long long i) {
     if (i < 0 || i >= arrlen(WorldArray)) {
-        fprintf(stderr, "Invalid tile index: %d\n", i);
+        fprintf(stderr, "Invalid tile index: %lld\n", i);
         return NULL;
     }
     return &WorldArray[i];

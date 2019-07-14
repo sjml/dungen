@@ -5,9 +5,9 @@
 
 typedef struct {
     int LuaRefKey;
-    const char* Name;
+    char* Name;
 } SimulationElement;
 
-SimulationElement* CreateSimulationElement(const char* name);
+SimulationElement* CreateSimulationElement(char* name);
 void HLVMPush(SimulationElement* sim);
 SimulationElement* HLVMPop(void);

@@ -10,7 +10,7 @@ void InitializeHLVM() {
 
 }
 
-SimulationElement* CreateSimulationElement(const char* name) {
+SimulationElement* CreateSimulationElement(char* name) {
     lua_State* L = GetLuaState();
     lua_getglobal(L, "VM_wrap");
     lua_pushstring(L, name);

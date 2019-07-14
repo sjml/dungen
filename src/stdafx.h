@@ -15,3 +15,8 @@
 #include <gb_math.h>
 
 #include <stb_ds.h>
+
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wshorten-64-to-32"
+#include <sds.h>
+#pragma clang diagnostic pop

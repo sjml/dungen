@@ -12,4 +12,5 @@
 7. player choice to overrule random tiles or die rolls
 
 ## Horizon
+* replace existing string split/munging code with SDS
 * setup debugger in VS Code or ZeroBrane?

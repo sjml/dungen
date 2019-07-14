@@ -74,6 +74,8 @@
 		349C53E81EC4D700008D42C6 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 345D93E21EC4C54C003B7C63 /* Cocoa.framework */; };
 		349C53E91EC4D707008D42C6 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 345D93E01EC4C543003B7C63 /* IOKit.framework */; };
 		349C53EA1EC4D70D008D42C6 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 345D93DE1EC4C540003B7C63 /* CoreVideo.framework */; };
+		34C5B3F922DB2767007F0A79 /* sds.c in Sources */ = {isa = PBXBuildFile; fileRef = 34C5B3EE22DB2128007F0A79 /* sds.c */; };
+		34C5B3FA22DB2798007F0A79 /* libsds.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 34C5B3F522DB2753007F0A79 /* libsds.a */; };
 		34CD649622D9DD3E00C33190 /* sqlite3.c in Sources */ = {isa = PBXBuildFile; fileRef = 34CD649522D9DD3D00C33190 /* sqlite3.c */; };
 		34CD649722D9DD4900C33190 /* libsqlite.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 34CD649122D9DD2F00C33190 /* libsqlite.a */; };
 		34CD649A22D9DE3B00C33190 /* attributes.c in Sources */ = {isa = PBXBuildFile; fileRef = 34CD649922D9DE3B00C33190 /* attributes.c */; };
@@ -165,6 +167,8 @@
 		3482A56422D6842000AAD098 /* lfs.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = lfs.c; path = "lib/luafilesystem-1.7.0-2/src/lfs.c"; sourceTree = "<group>"; };
 		349C53B21EC4D6B9008D42C6 /* DunGen.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DunGen.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		349C53C21EC4D6B9008D42C6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = platform/macOS/Info.plist; sourceTree = SOURCE_ROOT; };
+		34C5B3EE22DB2128007F0A79 /* sds.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = sds.c; path = "lib/sds-0bb446e/sds.c"; sourceTree = "<group>"; };
+		34C5B3F522DB2753007F0A79 /* libsds.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libsds.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		34CD649122D9DD2F00C33190 /* libsqlite.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libsqlite.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		34CD649522D9DD3D00C33190 /* sqlite3.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = sqlite3.c; path = "lib/sqlite-amalgamation-3290000/sqlite3.c"; sourceTree = "<group>"; };
 		34CD649822D9DE3B00C33190 /* attributes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = attributes.h; sourceTree = "<group>"; };
@@ -190,6 +194,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				34C5B3FA22DB2798007F0A79 /* libsds.a in Frameworks */,
 				34CD649722D9DD4900C33190 /* libsqlite.a in Frameworks */,
 				3417E26922D149B000762C69 /* liblua.a in Frameworks */,
 				3455A6B41EC4DB8F000057E4 /* libglfw.a in Frameworks */,
@@ -197,6 +202,13 @@
 				349C53E91EC4D707008D42C6 /* IOKit.framework in Frameworks */,
 				349C53E81EC4D700008D42C6 /* Cocoa.framework in Frameworks */,
 				349C53E71EC4D6FC008D42C6 /* OpenGL.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		34C5B3F322DB2753007F0A79 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -280,6 +292,7 @@
 				3417E21E22D1480300762C69 /* lua */,
 				3482A56322D683FD00AAD098 /* luafilesystem */,
 				34CD648C22D9DC8800C33190 /* sqlite */,
+				34C5B3D722DB10D3007F0A79 /* sds */,
 				340B5D0E22D21C9200E53DCA /* single-file */,
 			);
 			name = lib;
@@ -325,6 +338,7 @@
 				3455A6961EC4DA71000057E4 /* libglfw.a */,
 				3417E22322D1486100762C69 /* liblua.a */,
 				34CD649122D9DD2F00C33190 /* libsqlite.a */,
+				34C5B3F522DB2753007F0A79 /* libsds.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -407,7 +421,14 @@
 				344C39E41EC4E0B2007F9466 /* Assets.xcassets */,
 			);
 			name = Support;
-			path = DunGen;
+			sourceTree = "<group>";
+		};
+		34C5B3D722DB10D3007F0A79 /* sds */ = {
+			isa = PBXGroup;
+			children = (
+				34C5B3EE22DB2128007F0A79 /* sds.c */,
+			);
+			name = sds;
 			sourceTree = "<group>";
 		};
 		34CD648C22D9DC8800C33190 /* sqlite */ = {
@@ -429,6 +450,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		3455A6941EC4DA71000057E4 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		34C5B3F122DB2753007F0A79 /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -488,6 +516,7 @@
 				349C53AF1EC4D6B9008D42C6 /* Frameworks */,
 				349C53B01EC4D6B9008D42C6 /* Resources */,
 				340B5D0D22D2138700E53DCA /* Copy Resources */,
+				34279F6122DA28F100B825D0 /* Copy .app to build directory */,
 			);
 			buildRules = (
 			);
@@ -497,6 +526,23 @@
 			productName = DunGen;
 			productReference = 349C53B21EC4D6B9008D42C6 /* DunGen.app */;
 			productType = "com.apple.product-type.application";
+		};
+		34C5B3F422DB2753007F0A79 /* sds */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 34C5B3F622DB2753007F0A79 /* Build configuration list for PBXNativeTarget "sds" */;
+			buildPhases = (
+				34C5B3F122DB2753007F0A79 /* Headers */,
+				34C5B3F222DB2753007F0A79 /* Sources */,
+				34C5B3F322DB2753007F0A79 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = sds;
+			productName = sds;
+			productReference = 34C5B3F522DB2753007F0A79 /* libsds.a */;
+			productType = "com.apple.product-type.library.static";
 		};
 		34CD649022D9DD2F00C33190 /* sqlite */ = {
 			isa = PBXNativeTarget;
@@ -539,6 +585,11 @@
 						DevelopmentTeam = CFJYV723M9;
 						ProvisioningStyle = Automatic;
 					};
+					34C5B3F422DB2753007F0A79 = {
+						CreatedOnToolsVersion = 10.2.1;
+						DevelopmentTeam = CFJYV723M9;
+						ProvisioningStyle = Automatic;
+					};
 					34CD649022D9DD2F00C33190 = {
 						CreatedOnToolsVersion = 10.2.1;
 						DevelopmentTeam = CFJYV723M9;
@@ -563,6 +614,7 @@
 				3455A6951EC4DA71000057E4 /* glfw */,
 				3417E22222D1486100762C69 /* lua */,
 				34CD649022D9DD2F00C33190 /* sqlite */,
+				34C5B3F422DB2753007F0A79 /* sds */,
 			);
 		};
 /* End PBXProject section */
@@ -614,6 +666,24 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "swig -lua -o ${PROJECT_DIR}/src/scripting/wrapping.c ${PROJECT_DIR}/src/scripting/interfaces/dungen.i\n";
+		};
+		34279F6122DA28F100B825D0 /* Copy .app to build directory */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Copy .app to build directory";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "mkdir -p ${PROJECT_DIR}/build/${CONFIGURATION}\ncp -r ${BUILT_PRODUCTS_DIR}/${FULL_PRODUCT_NAME} ${PROJECT_DIR}/build/${CONFIGURATION}\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -697,6 +767,14 @@
 				3482A56222D63C4F00AAD098 /* hlvm.c in Sources */,
 				347A941822D1B85F002BF97F /* main.c in Sources */,
 				3466A4B622D4D71B00ED6CAA /* images.c in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		34C5B3F222DB2753007F0A79 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				34C5B3F922DB2767007F0A79 /* sds.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -829,7 +907,6 @@
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = c11;
 				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -883,7 +960,6 @@
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = c11;
-				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
@@ -908,6 +984,7 @@
 					"lib/glfw-3.3.0/include",
 					"lib/lua-5.3.5/src",
 					"lib/sqlite-amalgamation-3290000",
+					"lib/sds-0bb446e",
 					"lib/single-file",
 				);
 				INFOPLIST_FILE = platform/macOS/Info.plist;
@@ -928,11 +1005,51 @@
 					"lib/glfw-3.3.0/include",
 					"lib/lua-5.3.5/src",
 					"lib/sqlite-amalgamation-3290000",
+					"lib/sds-0bb446e",
 					"lib/single-file",
 				);
 				INFOPLIST_FILE = platform/macOS/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		34C5B3F722DB2753007F0A79 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = CFJYV723M9;
+				EXECUTABLE_PREFIX = lib;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_WARN_INHIBIT_ALL_WARNINGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		34C5B3F822DB2753007F0A79 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = CFJYV723M9;
+				EXECUTABLE_PREFIX = lib;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_WARN_INHIBIT_ALL_WARNINGS = YES;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
 			};
 			name = Release;
 		};
@@ -948,6 +1065,7 @@
 				DEVELOPMENT_TEAM = CFJYV723M9;
 				EXECUTABLE_PREFIX = lib;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_WARN_INHIBIT_ALL_WARNINGS = YES;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -967,6 +1085,7 @@
 				DEVELOPMENT_TEAM = CFJYV723M9;
 				EXECUTABLE_PREFIX = lib;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_WARN_INHIBIT_ALL_WARNINGS = YES;
 				MTL_FAST_MATH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -1008,6 +1127,15 @@
 			buildConfigurations = (
 				349C53C31EC4D6B9008D42C6 /* Debug */,
 				349C53C41EC4D6B9008D42C6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		34C5B3F622DB2753007F0A79 /* Build configuration list for PBXNativeTarget "sds" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				34C5B3F722DB2753007F0A79 /* Debug */,
+				34C5B3F822DB2753007F0A79 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

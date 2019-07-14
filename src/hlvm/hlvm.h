@@ -2,11 +2,11 @@
 
 typedef struct {
     int LuaRefKey;
-    const char* Name;
+    char* Name;
 } SimulationElement;
 
 void InitializeHLVM(void);
 
-SimulationElement* CreateSimulationElement(const char* name);
+SimulationElement* CreateSimulationElement(char* name);
 void HLVMPush(SimulationElement* sim);
 void HLVMProcess(void);

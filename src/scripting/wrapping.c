@@ -3831,7 +3831,7 @@ static int _wrap_SimulationElement_Name_set(lua_State* L) {
   
   SWIG_check_num_args("SimulationElement::Name",2,2)
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("SimulationElement::Name",1,"SimulationElement *");
-  if(!SWIG_lua_isnilstring(L,2)) SWIG_fail_arg("SimulationElement::Name",2,"char const *");
+  if(!SWIG_lua_isnilstring(L,2)) SWIG_fail_arg("SimulationElement::Name",2,"char *");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_SimulationElement,0))){
     SWIG_fail_ptr("SimulationElement_Name_set",1,SWIGTYPE_p_SimulationElement);
@@ -3839,8 +3839,9 @@ static int _wrap_SimulationElement_Name_set(lua_State* L) {
   
   arg2 = (char *)lua_tostring(L, 2);
   {
+    free(arg1->Name);
     if (arg2) {
-      arg1->Name = (char const *) malloc(strlen((const char *)arg2)+1);
+      arg1->Name = (char *) malloc(strlen((const char *)arg2)+1);
       strcpy((char *)arg1->Name, (const char *)arg2);
     } else {
       arg1->Name = 0;
@@ -3953,9 +3954,9 @@ static int _wrap_CreateSimulationElement(lua_State* L) {
   SimulationElement *result = 0 ;
   
   SWIG_check_num_args("CreateSimulationElement",1,1)
-  if(!SWIG_lua_isnilstring(L,1)) SWIG_fail_arg("CreateSimulationElement",1,"char const *");
+  if(!SWIG_lua_isnilstring(L,1)) SWIG_fail_arg("CreateSimulationElement",1,"char *");
   arg1 = (char *)lua_tostring(L, 1);
-  result = (SimulationElement *)CreateSimulationElement((char const *)arg1);
+  result = (SimulationElement *)CreateSimulationElement(arg1);
   SWIG_NewPointerObj(L,result,SWIGTYPE_p_SimulationElement,0); SWIG_arg++; 
   return SWIG_arg;
   
@@ -4010,17 +4011,17 @@ fail:
 static int _wrap_TileData_i_set(lua_State* L) {
   int SWIG_arg = 0;
   TileData *arg1 = (TileData *) 0 ;
-  int arg2 ;
+  long long arg2 ;
   
   SWIG_check_num_args("TileData::i",2,2)
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("TileData::i",1,"TileData *");
-  if(!lua_isnumber(L,2)) SWIG_fail_arg("TileData::i",2,"int");
+  if(!lua_isnumber(L,2)) SWIG_fail_arg("TileData::i",2,"long long");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_TileData,0))){
     SWIG_fail_ptr("TileData_i_set",1,SWIGTYPE_p_TileData);
   }
   
-  arg2 = (int)lua_tonumber(L, 2);
+  arg2 = (long long)lua_tonumber(L, 2);
   if (arg1) (arg1)->i = arg2;
   
   return SWIG_arg;
@@ -4036,7 +4037,7 @@ fail:
 static int _wrap_TileData_i_get(lua_State* L) {
   int SWIG_arg = 0;
   TileData *arg1 = (TileData *) 0 ;
-  int result;
+  long long result;
   
   SWIG_check_num_args("TileData::i",1,1)
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("TileData::i",1,"TileData *");
@@ -4045,7 +4046,7 @@ static int _wrap_TileData_i_get(lua_State* L) {
     SWIG_fail_ptr("TileData_i_get",1,SWIGTYPE_p_TileData);
   }
   
-  result = (int) ((arg1)->i);
+  result = (long long) ((arg1)->i);
   lua_pushnumber(L, (lua_Number) result); SWIG_arg++;
   return SWIG_arg;
   
@@ -4731,12 +4732,12 @@ fail:
 
 static int _wrap_GetTileAtIndex(lua_State* L) {
   int SWIG_arg = 0;
-  int arg1 ;
+  long long arg1 ;
   TileData *result = 0 ;
   
   SWIG_check_num_args("GetTileAtIndex",1,1)
-  if(!lua_isnumber(L,1)) SWIG_fail_arg("GetTileAtIndex",1,"int");
-  arg1 = (int)lua_tonumber(L, 1);
+  if(!lua_isnumber(L,1)) SWIG_fail_arg("GetTileAtIndex",1,"long long");
+  arg1 = (long long)lua_tonumber(L, 1);
   result = (TileData *)GetTileAtIndex(arg1);
   SWIG_NewPointerObj(L,result,SWIGTYPE_p_TileData,0); SWIG_arg++; 
   return SWIG_arg;

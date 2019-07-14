@@ -3,7 +3,7 @@
 #include "infrastructure/util.h"
 
 typedef struct {
-    int i;
+    long long i;
     Vec2i hexPos;
     gbVec3 color;
 
@@ -32,7 +32,7 @@ float GetWorldScale(void);
 void RenderTiles(void);
 
 TileData* GetTileAtPosition(int x, int y);
-TileData* GetTileAtIndex(int i);
+TileData* GetTileAtIndex(long long i);
 TileData** GetTileNeighbors(TileData* center, int *numNeighbors);
 
 int AddTileToSet(TileSet* ts, TileData* t);
