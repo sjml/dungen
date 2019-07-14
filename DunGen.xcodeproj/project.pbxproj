@@ -82,6 +82,37 @@
 		34CD649A22D9DE3B00C33190 /* attributes.c in Sources */ = {isa = PBXBuildFile; fileRef = 34CD649922D9DE3B00C33190 /* attributes.c */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		3450505622DB77A300D3485B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 345D93721EC4C47D003B7C63 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 3455A6951EC4DA71000057E4;
+			remoteInfo = glfw;
+		};
+		3450505822DB77A300D3485B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 345D93721EC4C47D003B7C63 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 3417E22222D1486100762C69;
+			remoteInfo = lua;
+		};
+		3450505A22DB77A300D3485B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 345D93721EC4C47D003B7C63 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 34CD649022D9DD2F00C33190;
+			remoteInfo = sqlite;
+		};
+		3450505C22DB77A300D3485B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 345D93721EC4C47D003B7C63 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 34C5B3F422DB2753007F0A79;
+			remoteInfo = sds;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		340B5D0F22D21CB700E53DCA /* stb_ds.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = stb_ds.h; path = "lib/single-file/stb_ds.h"; sourceTree = "<group>"; };
 		3415722822D3873D00FB77F2 /* stb_image.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = stb_image.h; path = "lib/single-file/stb_image.h"; sourceTree = "<group>"; };
@@ -532,6 +563,10 @@
 			buildRules = (
 			);
 			dependencies = (
+				3450505722DB77A300D3485B /* PBXTargetDependency */,
+				3450505922DB77A300D3485B /* PBXTargetDependency */,
+				3450505B22DB77A300D3485B /* PBXTargetDependency */,
+				3450505D22DB77A300D3485B /* PBXTargetDependency */,
 			);
 			name = DunGen;
 			productName = DunGen;
@@ -799,6 +834,29 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		3450505722DB77A300D3485B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 3455A6951EC4DA71000057E4 /* glfw */;
+			targetProxy = 3450505622DB77A300D3485B /* PBXContainerItemProxy */;
+		};
+		3450505922DB77A300D3485B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 3417E22222D1486100762C69 /* lua */;
+			targetProxy = 3450505822DB77A300D3485B /* PBXContainerItemProxy */;
+		};
+		3450505B22DB77A300D3485B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 34CD649022D9DD2F00C33190 /* sqlite */;
+			targetProxy = 3450505A22DB77A300D3485B /* PBXContainerItemProxy */;
+		};
+		3450505D22DB77A300D3485B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 34C5B3F422DB2753007F0A79 /* sds */;
+			targetProxy = 3450505C22DB77A300D3485B /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		3417E22522D1486100762C69 /* Debug */ = {
