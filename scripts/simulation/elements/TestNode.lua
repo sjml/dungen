@@ -4,11 +4,11 @@ td2 = dungen.GetTileAtPosition(25, 27)
 td3 = dungen.GetTileAtPosition(25, 29)
 
 ts = dungen.TileSet()
-print("0.0:", dungen.GetTileCount(ts))
+print(string.format("0:\t%d", dungen.GetTileCount(ts)))
 dungen.AddTileToSet(ts, td)
-print("1.0: ", dungen.GetTileCount(ts))
+print(string.format("1:\t%d", dungen.GetTileCount(ts)))
 dungen.AddTileToSet(ts, td2)
-print("2.0: ", dungen.GetTileCount(ts))
+print(string.format("2:\t%d", dungen.GetTileCount(ts)))
 
 print("true: ", dungen.IsTileInSet(ts, td))
 print("true: ", dungen.IsTileInSet(ts, td2))
@@ -21,18 +21,18 @@ for _, t in ipairs(tiles) do
 end
 
 dungen.RemoveTileFromSet(ts, td)
-print("1.0: ", dungen.GetTileCount(ts))
+print(string.format("1:\t%d", dungen.GetTileCount(ts)))
 print("false: ", dungen.IsTileInSet(ts, td))
 print("true: ", dungen.IsTileInSet(ts, td2))
 dungen.RemoveTileFromSet(ts, td2)
-print("0.0: ", dungen.GetTileCount(ts))
+print(string.format("0:\t%d", dungen.GetTileCount(ts)))
 print("false: ", dungen.IsTileInSet(ts, td2))
 
 td:SetAttributeInt("intVal", 5682)
 td:SetAttributeFloat("floatVal", 3.14)
 td:SetAttributeString("strVal", "Hello!")
-print(string.format("5682: %d", td:GetAttributeInt("intVal")))
-print(string.format("3.14: %.2f", td:GetAttributeFloat("floatVal")))
+print(string.format("5682:\t%d", td:GetAttributeInt("intVal")))
+print(string.format("3.14:\t%.2f", td:GetAttributeFloat("floatVal")))
 print("Hello!:", td:GetAttributeString("strVal"))
 
 -- resulting tags:
@@ -58,13 +58,13 @@ print("C:", tags[3])
 
 tiles = dungen.GetTilesTagged("B,C")
 print("2:", #tiles)
-print(string.format("%d: %d", td.i, tiles[1].i))
-print(string.format("%d: %d", td2.i, tiles[2].i))
+print(string.format("%d:\t%d", td.i, tiles[1].i))
+print(string.format("%d:\t%d", td2.i, tiles[2].i))
 
 tiles = dungen.GetTilesTagged("C")
 print("3:", #tiles)
-print(string.format("%d: %d", td.i, tiles[1].i))
-print(string.format("%d: %d", td2.i, tiles[2].i))
-print(string.format("%d: %d", td3.i, tiles[3].i))
+print(string.format("%d:\t%d", td.i, tiles[1].i))
+print(string.format("%d:\t%d", td2.i, tiles[2].i))
+print(string.format("%d:\t%d", td3.i, tiles[3].i))
 
-collectgarbage()
+collectgarbage() -- just to make sure this doesn't trigger segfaults
