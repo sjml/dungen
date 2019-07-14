@@ -16,3 +16,8 @@ steps:
     configuration: 'Release'
     xcWorkspacePath: 'DunGen.xcodeproj'
     xcodeVersion: 10 # Options: 8, 9, 10, default, specifyPath
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    ArtifactName: 'Mac Build'
+    publishLocation: 'Container'
