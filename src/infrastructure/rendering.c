@@ -95,7 +95,7 @@ void RemoveOutline(Outline* o) {
     for (int i = 0; i < arrlen(outlines); i++) {
         if (outlines[i] == o) {
             arrdel(outlines, i);
-            break;
+            return;
         }
     }
     fprintf(stderr, "ERROR: removing outline that was not part of the world.\n");

@@ -56,7 +56,7 @@ void InitializeWorld(int width, int height, float scale) {
     }
 
     arrsetlen(WorldArray, width * height);
-    arrsetlen(PointList, height+1); // TODO: does this need to be 2d?
+    arrsetlen(PointList, height+1);
 
     gbVec2 startingPos = { worldSize.x * -0.5f, worldSize.y * 0.5f };
     float yHigh;

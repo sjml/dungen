@@ -4,7 +4,6 @@
 
 typedef struct {
     gbVec3 color;
-    // TODO: can these just be gbVec2?
     float** pointLists;
 } Outline;
 

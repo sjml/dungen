@@ -1,6 +1,8 @@
 #include "../stdafx.h"
 #include "outline.h"
 
+#include "./rendering.h"
+
 typedef struct {
     Vec2i EdgePos;
     Vec2i StartIdx;
@@ -225,6 +227,7 @@ Outline* CreateOutline(TileSet* ts) {
 }
 
 void DestroyOutline(Outline* o) {
+    RemoveOutline(o);
     for (int i = 0; i < arrlen(o->pointLists); i++) {
         arrfree(o->pointLists[i]);
     }
