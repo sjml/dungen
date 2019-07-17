@@ -12,31 +12,7 @@ GLFWwindow* window = NULL;
 CameraData MainCamera;
 gbMat4 viewMatrix;
 
-const float hexVertices[] =
-{
-    0.0f,               0.0f,
-    0.5f * -0.8660254f, 0.5f *  0.5f,
-    0.5f * -0.8660254f, 0.5f * -0.5f,
-    0.5f *  0.0000000f, 0.5f * -1.0f,
-    0.5f *  0.8660254f, 0.5f * -0.5f,
-    0.5f *  0.8660254f, 0.5f *  0.5f,
-    0.5f *  0.0f,       0.5f *  1.0f,
-    0.5f * -0.8660254f, 0.5f *  0.5f,
-};
-
-//const float hexTexVertices[] =
-//{
-//    hexVertices[0]  + 0.5f, hexVertices[1]  + 0.5f,
-//    hexVertices[2]  + 0.5f, hexVertices[3]  + 0.5f,
-//    hexVertices[4]  + 0.5f, hexVertices[5]  + 0.5f,
-//    hexVertices[6]  + 0.5f, hexVertices[7]  + 0.5f,
-//    hexVertices[8]  + 0.5f, hexVertices[9]  + 0.5f,
-//    hexVertices[10] + 0.5f, hexVertices[11] + 0.5f,
-//    hexVertices[12] + 0.5f, hexVertices[13] + 0.5f,
-//    hexVertices[14] + 0.5f, hexVertices[15] + 0.5f,
-//};
-
-
+Outline** outlines = NULL;
 
 void InitializeRendering() {
     glfwInitHint(GLFW_COCOA_CHDIR_RESOURCES, GLFW_TRUE);
@@ -78,7 +54,7 @@ void InitializeRendering() {
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glClearStencil(0);
-    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+    glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 
     MainCamera.aperture = M_PI / 2;
     MainCamera.position.x = 0.0f;
@@ -112,11 +88,17 @@ void FinalizeRendering() {
 }
 
 void AddOutline(Outline* o) {
-    
+    arrpush(outlines, o);
 }
 
 void RemoveOutline(Outline* o) {
-    
+    for (int i = 0; i < arrlen(outlines); i++) {
+        if (outlines[i] == o) {
+            arrdel(outlines, i);
+            break;
+        }
+    }
+    fprintf(stderr, "ERROR: removing outline that was not part of the world.\n");
 }
 
 int Render() {
@@ -125,10 +107,10 @@ int Render() {
     glMatrixMode(GL_MODELVIEW);
     glPushMatrix();
 
-    glEnableClientState(GL_VERTEX_ARRAY);
-    glVertexPointer(2, GL_FLOAT, 0, hexVertices);
-
     RenderTiles();
+    for (int i = 0; i < arrlen(outlines); i++) {
+        RenderOutline(outlines[i]);
+    }
 
     glMatrixMode(GL_MODELVIEW);
     glPopMatrix();

@@ -28,6 +28,7 @@ void InitializeWorld(int width, int height, float scale);
 void FinalizeWorld(void);
 Vec2i GetWorldDimensions(void);
 float GetWorldScale(void);
+gbVec2** GetWorldPointList(void);
 
 void RenderTiles(void);
 

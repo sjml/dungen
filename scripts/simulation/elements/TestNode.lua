@@ -1,39 +1,52 @@
 
+function lazyBasicAssert(item1, item2, desc)
+  if (desc == nil) then
+    desc = ""
+  else
+    desc = "("..desc..")"
+  end
+  if (item1 == item2) then
+    print("✅ OK " .. desc)
+  else
+    io.stderr:write("❌ FAIL! " .. desc .. "\n")
+  end
+end
+
 td = GetTileAtPosition(25, 25)
 td2 = GetTileAtPosition(25, 27)
 td3 = GetTileAtPosition(25, 29)
 
 ts = TileSet()
-print(string.format("0:\t%d", GetTileCount(ts)))
+lazyBasicAssert(0, GetTileCount(ts), "TileSet count 1")
 AddTileToSet(ts, td)
-print(string.format("1:\t%d", GetTileCount(ts)))
+lazyBasicAssert(1, GetTileCount(ts), "TileSet count 2")
 AddTileToSet(ts, td2)
-print(string.format("2:\t%d", GetTileCount(ts)))
+lazyBasicAssert(2, GetTileCount(ts), "TileSet count 3")
 
-print("true: ", IsTileInSet(ts, td))
-print("true: ", IsTileInSet(ts, td2))
-print("false: ", IsTileInSet(ts, td3))
+lazyBasicAssert(true, IsTileInSet(ts, td), "TileSet membership 1")
+lazyBasicAssert(true, IsTileInSet(ts, td2), "TileSet membership 2")
+lazyBasicAssert(false, IsTileInSet(ts, td3), "TileSet membership 3")
 
 tiles = GetTiles(ts)
-print("2:\t", #tiles)
+lazyBasicAssert(2, #tiles, "TileSet count")
 for _, t in ipairs(tiles) do
   t.color = {0, 1, 0}
 end
 
 RemoveTileFromSet(ts, td)
-print(string.format("1:\t%d", GetTileCount(ts)))
-print("false: ", IsTileInSet(ts, td))
-print("true: ", IsTileInSet(ts, td2))
+lazyBasicAssert(1, GetTileCount(ts), "TileSet removal 1")
+lazyBasicAssert(false, IsTileInSet(ts, td), "TileSet removal 2")
+lazyBasicAssert(true, IsTileInSet(ts, td2), "TileSet removal 3")
 RemoveTileFromSet(ts, td2)
-print(string.format("0:\t%d", GetTileCount(ts)))
-print("false: ", IsTileInSet(ts, td2))
+lazyBasicAssert(0, GetTileCount(ts), "TileSet removal 4")
+lazyBasicAssert(false, IsTileInSet(ts, td2), "TileSet removal 5")
 
 td:SetAttributeInt("intVal", 5682)
 td:SetAttributeFloat("floatVal", 3.14)
 td:SetAttributeString("strVal", "Hello!")
-print(string.format("5682:\t%d", td:GetAttributeInt("intVal")))
-print(string.format("3.14:\t%.2f", td:GetAttributeFloat("floatVal")))
-print("Hello!:", td:GetAttributeString("strVal"))
+lazyBasicAssert(5682, td:GetAttributeInt("intVal"), "Integer attribute")
+lazyBasicAssert("3.14", string.format("%.2f", td:GetAttributeFloat("floatVal")), "Float attribute")
+lazyBasicAssert("Hello!", td:GetAttributeString("strVal"), "String attribute")
 
 -- resulting tags:
 -- td  A B C
@@ -51,20 +64,20 @@ td:RemoveTag("D")
 td:RemoveTag("D")
 
 tags = td:GetTags()
-print("3: ", #tags)
-print("A:", tags[1])
-print("B:", tags[2])
-print("C:", tags[3])
+lazyBasicAssert(3, #tags, "Tag count")
+lazyBasicAssert("A", tags[1], "Tag retrieval 1")
+lazyBasicAssert("B", tags[2], "Tag retrieval 2")
+lazyBasicAssert("C", tags[3], "Tag retrieval 3")
 
 tiles = GetTilesTagged("B,C")
-print("2:", #tiles)
-print(string.format("%d:\t%d", td.i, tiles[1].i))
-print(string.format("%d:\t%d", td2.i, tiles[2].i))
+lazyBasicAssert(2, #tiles, "Multi-tag count")
+lazyBasicAssert(td.i, tiles[1].i, "Tile retrieval by tag 1")
+lazyBasicAssert(td2.i, tiles[2].i, "Tile retrieval by tag 2")
 
 tiles = GetTilesTagged("C")
-print("3:", #tiles)
-print(string.format("%d:\t%d", td.i, tiles[1].i))
-print(string.format("%d:\t%d", td2.i, tiles[2].i))
-print(string.format("%d:\t%d", td3.i, tiles[3].i))
+lazyBasicAssert(3, #tiles, "Tag count 2")
+lazyBasicAssert(td.i,  tiles[1].i, "Tile retrieval by tag 3")
+lazyBasicAssert(td2.i, tiles[2].i, "Tile retrieval by tag 4")
+lazyBasicAssert(td3.i, tiles[3].i, "Tile retrieval by tag 5")
 
 collectgarbage() -- just to make sure this doesn't trigger segfaults

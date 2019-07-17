@@ -1,9 +1,34 @@
-#include "stdafx.h"
+#include "../stdafx.h"
 #include "world.h"
 
 #include "attributes.h"
 
+const float hexVertices[] = {
+    0.0f,               0.0f,
+    0.5f * -0.8660254f, 0.5f *  0.5f,
+    0.5f * -0.8660254f, 0.5f * -0.5f,
+    0.5f *  0.0000000f, 0.5f * -1.0f,
+    0.5f *  0.8660254f, 0.5f * -0.5f,
+    0.5f *  0.8660254f, 0.5f *  0.5f,
+    0.5f *  0.0f,       0.5f *  1.0f,
+    0.5f * -0.8660254f, 0.5f *  0.5f,
+};
+
+//const float hexTexVertices[] = {
+//    hexVertices[0]  + 0.5f, hexVertices[1]  + 0.5f,
+//    hexVertices[2]  + 0.5f, hexVertices[3]  + 0.5f,
+//    hexVertices[4]  + 0.5f, hexVertices[5]  + 0.5f,
+//    hexVertices[6]  + 0.5f, hexVertices[7]  + 0.5f,
+//    hexVertices[8]  + 0.5f, hexVertices[9]  + 0.5f,
+//    hexVertices[10] + 0.5f, hexVertices[11] + 0.5f,
+//    hexVertices[12] + 0.5f, hexVertices[13] + 0.5f,
+//    hexVertices[14] + 0.5f, hexVertices[15] + 0.5f,
+//};
+
+
+
 TileData* WorldArray = NULL;
+gbVec2** PointList = NULL;
 
 float tileSideLength;
 float tileBottomDisplacement;
@@ -31,6 +56,34 @@ void InitializeWorld(int width, int height, float scale) {
     }
 
     arrsetlen(WorldArray, width * height);
+    arrsetlen(PointList, height+1); // TODO: does this need to be 2d?
+
+    gbVec2 startingPos = { worldSize.x * -0.5f, worldSize.y * 0.5f };
+    float yHigh;
+    float yLow;
+    float currentX;
+    bool high = true;
+    for (int j = 0; j < height + 1; j++) {
+        PointList[j] = NULL;
+        arrsetlen(PointList[j], 2 * (width+1));
+
+        high = (j % 2 != 0);
+        yHigh = startingPos.y - (j * (tileBottomDisplacement + tileSideLength));
+        yLow = yHigh - tileBottomDisplacement;
+        currentX = startingPos.x;
+
+        for (int i = 0; i < arrlen(PointList[j]); i++) {
+            PointList[j][i].x = currentX;
+            if (high) {
+                PointList[j][i].y = yHigh;
+            }
+            else {
+                PointList[j][i].y = yLow;
+            }
+            currentX += tileRadius;
+            high = !high;
+        }
+    }
 
     for (int j = 0; j < height; j++) {
         for (int i = 0; i < width; i++) {
@@ -80,11 +133,15 @@ void InitializeWorld(int width, int height, float scale) {
             }
         }
     }
-    
+
     SetupAttributeData(WorldArray);
 }
 
 void FinalizeWorld() {
+    for (int i=0; i < arrlen(PointList); i++) {
+        arrfree(PointList[i]);
+    }
+    arrfree(PointList);
     arrfree(WorldArray);
 }
 
@@ -95,6 +152,10 @@ Vec2i GetWorldDimensions() {
 
 float GetWorldScale() {
     return tileSideLength;
+}
+
+gbVec2** GetWorldPointList() {
+    return PointList;
 }
 
 TileData* GetTileAtPosition(int x, int y) {
@@ -147,6 +208,9 @@ void RenderTiles(void) {
     startingPosition.y += tileFullHeight * -0.5f;
     gbVec2 modVector;
 
+    glEnableClientState(GL_VERTEX_ARRAY);
+    glVertexPointer(2, GL_FLOAT, 0, hexVertices);
+
     for (int j = 0; j < worldHeight; j++) {
         for (int i = 0; i < worldWidth; i++) {
             modVector.x = tileFullWidth * i;
@@ -193,7 +257,7 @@ TileData** GetTiles(TileSet* ts) {
     for (int i=0; i < hmlen(ts->tiles); i++) {
         ret[i] = ts->tiles[i].key;
     }
-    
+
     return ret;
 }
 
