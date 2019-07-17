@@ -1,16 +1,13 @@
 ## TODO
-1. outline rendering (C + Lua invoking)
-    - after duping dungen1, experiment with pointlist being 1d instead of 2d
-    - check TODOs
-2. HLVM registers (C <-> Lua)
+1. HLVM registers (C <-> Lua)
     - ints, floats, strings, tiles, tilesets?
-3. font rendering (C + Lua invoking)
-4. pathfinding (in Lua?)
-5. constraint solver (in Lua?)
-6. choice presentation (tiles, die rolls)
+2. font rendering (C + Lua invoking)
+3. pathfinding (in Lua?)
+4. constraint solver (in Lua?)
+5. choice presentation (tiles, die rolls)
     - means some kind of UI description from Lua, plus "wait for it" where VM stops processing momentarily
-7. HLVM exceptions (C + Lua invoking)
-8. player choice to overrule random tiles or die rolls (in Lua?)
+6. HLVM exceptions (C + Lua invoking)
+7. player choice to overrule random tiles or die rolls (in Lua?)
 
 ## Horizon
 * replace existing string split/munging code with SDS

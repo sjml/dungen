@@ -80,4 +80,15 @@ lazyBasicAssert(td.i,  tiles[1].i, "Tile retrieval by tag 3")
 lazyBasicAssert(td2.i, tiles[2].i, "Tile retrieval by tag 4")
 lazyBasicAssert(td3.i, tiles[3].i, "Tile retrieval by tag 5")
 
+-- no asserts for this, just checking it doesn't trash memory
+--   (and display can be checked by commenting last line)
+ts = TileSet()
+AddTileToSet(ts, GetTileAtIndex(0))
+AddTileToSet(ts, GetTileAtIndex(1))
+AddTileToSet(ts, GetTileAtPosition(1, 1))
+AddTileToSet(ts, GetTileAtPosition(3, 2))
+o = CreateOutline(ts)
+AddOutline(o)
+DestroyOutline(o)
+
 collectgarbage() -- just to make sure this doesn't trigger segfaults
