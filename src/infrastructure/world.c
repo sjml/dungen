@@ -2,6 +2,7 @@
 #include "world.h"
 
 #include "attributes.h"
+#include "outline.h"
 
 const float hexVertices[] = {
     0.0f,               0.0f,
@@ -233,6 +234,13 @@ void RenderTiles(void) {
     }
 }
 
+TileSet* CreateTileSet() {
+    TileSet* ts = malloc(sizeof(TileSet));
+    ts->tiles = NULL;
+    ts->outline = NULL;
+    return ts;
+}
+
 int AddTileToSet(TileSet* ts, TileData* t) {
     hmput(ts->tiles, t, 1);
     return (int)hmlen(ts);
@@ -263,4 +271,8 @@ TileData** GetTiles(TileSet* ts) {
 
 void DestroyTileSet(TileSet* ts) {
     hmfree(ts->tiles);
+    if (ts->outline != NULL) {
+        DestroyOutline(ts->outline);
+    }
+    free(ts);
 }

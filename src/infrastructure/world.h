@@ -2,6 +2,8 @@
 
 #include "util.h"
 
+typedef struct sOutline Outline;
+
 typedef struct {
     long long i;
     Vec2i hexPos;
@@ -22,6 +24,7 @@ typedef struct {
 } TileHash;
 typedef struct {
     TileHash* tiles;
+    Outline* outline;
 } TileSet;
 
 void InitializeWorld(int width, int height, float scale);
@@ -36,6 +39,7 @@ TileData* GetTileAtPosition(int x, int y);
 TileData* GetTileAtIndex(long long i);
 TileData** GetTileNeighbors(TileData* center, int *numNeighbors);
 
+TileSet* CreateTileSet(void);
 int AddTileToSet(TileSet* ts, TileData* t);
 int RemoveTileFromSet(TileSet* ts, TileData* t);
 bool IsTileInSet(TileSet* ts, TileData* t);

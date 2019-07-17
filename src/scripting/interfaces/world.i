@@ -8,7 +8,7 @@ typedef struct {
     long long i;
     Vec2i hexPos;
     gbVec3 color;
-    
+
     int neighborW;
     int neighborNW;
     int neighborNE;
@@ -25,17 +25,15 @@ typedef struct {
 %nodefaultdtor TileSet;
 typedef struct {
 //    TileHash* tiles;
+    Outline* outline;
 } TileSet;
 
 %extend TileSet {
     TileSet() {
-        TileSet* ts = malloc(sizeof(TileSet));
-        ts->tiles = NULL;
-        return ts;
+        return CreateTileSet();
     }
     ~TileSet() {
         DestroyTileSet($self);
-        free($self);
     }
 }
 
@@ -51,7 +49,7 @@ typedef struct {
             }
         }
         arrfree($1);
-        
+
         SWIG_arg += 1;
     }
 %}

@@ -9,6 +9,7 @@ function lazyBasicAssert(item1, item2, desc)
     print("✅ OK " .. desc)
   else
     io.stderr:write("❌ FAIL! " .. desc .. "\n")
+    io.stderr:write("\t" .. tostring(item1) .. " not equal to " .. tostring(item2) .. "\n")
   end
 end
 
@@ -90,5 +91,21 @@ AddTileToSet(ts, GetTileAtPosition(3, 2))
 o = CreateOutline(ts)
 AddOutline(o)
 DestroyOutline(o)
+
+SetIntRegister("A", 5682)
+SetFloatRegister("B", 3.14)
+SetStringRegister("C", "Hello!")
+SetTileRegister("D", td)
+SetTileSetRegister("E", ts)
+lazyBasicAssert(GetIntRegister("A"), 5682, "Integer register check")
+lazyBasicAssert(string.format("%.2f", GetFloatRegister("B")), string.format("%.2f", 3.14), "Float register check")
+lazyBasicAssert(GetStringRegister("C"), "Hello!", "String register check")
+lazyBasicAssert(GetTileRegister("D"), td, "Tile register check")
+lazyBasicAssert(GetTileSetRegister("E"), ts, "TileSet register check")
+lazyBasicAssert(GetIntRegister("F"), 0, "Null integer register check")
+lazyBasicAssert(string.format("%.2f", GetFloatRegister("F")), string.format("%.2f", 0.0), "Null integer register check")
+lazyBasicAssert(GetStringRegister("F"), "", "Null string register check")
+lazyBasicAssert(GetTileRegister("F"), nil, "Null Tile register check")
+lazyBasicAssert(GetTileSetRegister("F"), nil, "Null TileSet set register check")
 
 collectgarbage() -- just to make sure this doesn't trigger segfaults

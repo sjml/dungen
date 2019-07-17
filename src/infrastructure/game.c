@@ -18,6 +18,8 @@ void InitializeGame(void) {
     srand((unsigned int)time(NULL));
 
     previousTime = glfwGetTime();
+    
+    InitializeHLVM();
 
     if (RunFile("scripts/simulation/WorldSetup.lua") == 0) {
         RunString("push(\"_Root\")");

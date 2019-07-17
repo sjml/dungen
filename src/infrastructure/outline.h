@@ -2,7 +2,7 @@
 
 #include "world.h"
 
-typedef struct {
+typedef struct sOutline {
     gbVec3 color;
     float** pointLists;
 } Outline;
