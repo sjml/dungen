@@ -179,12 +179,9 @@ Outline* CreateOutline(TileSet* ts) {
                 Edge e = edges[i];
                 if (DoEdgesShareVertex(&edgeCheck, &e, &checkVert, &crossVector)) {
                     lastMatched = e;
-                    // TODO: test cleanup of these with in-place norm/mul
-                    gbVec2 dir = { -crossVector.y, crossVector.x };
-                    gbVec2 normal;
-                    gb_vec2_norm(&normal, dir);
-                    normal.x *= halfThickness;
-                    normal.y *= halfThickness;
+                    gbVec2 normal = { -crossVector.y, crossVector.x };
+                    gb_vec2_norm(&normal, normal);
+                    gb_vec2_mul(&normal, normal, halfThickness);
 
                     gbVec2* cv = &PL[checkVert.y][checkVert.x];
                     arrpush(points, cv->x + normal.x);
@@ -204,12 +201,9 @@ Outline* CreateOutline(TileSet* ts) {
         }
 
         DoEdgesShareVertex(&lastMatched, &first, &checkVert, &crossVector);
-        // TODO: test cleanup of these with in-place norm/mul
-        gbVec2 dir = { -crossVector.y, crossVector.x };
-        gbVec2 normal;
-        gb_vec2_norm(&normal, dir);
-        normal.x *= halfThickness;
-        normal.y *= halfThickness;
+        gbVec2 normal = { -crossVector.y, crossVector.x };
+        gb_vec2_norm(&normal, normal);
+        gb_vec2_mul(&normal, normal, halfThickness);
 
         gbVec2* cv = &PL[checkVert.y][checkVert.x];
         arrpush(points, cv->x + normal.x);

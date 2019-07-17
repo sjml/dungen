@@ -4985,36 +4985,6 @@ fail:
 }
 
 
-static int _wrap_UpdateOutline(lua_State* L) {
-  int SWIG_arg = 0;
-  Outline *arg1 = (Outline *) 0 ;
-  TileSet *arg2 = (TileSet *) 0 ;
-  
-  SWIG_check_num_args("UpdateOutline",2,2)
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("UpdateOutline",1,"Outline *");
-  if(!SWIG_isptrtype(L,2)) SWIG_fail_arg("UpdateOutline",2,"TileSet *");
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_Outline,0))){
-    SWIG_fail_ptr("UpdateOutline",1,SWIGTYPE_p_Outline);
-  }
-  
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,2,(void**)&arg2,SWIGTYPE_p_TileSet,0))){
-    SWIG_fail_ptr("UpdateOutline",2,SWIGTYPE_p_TileSet);
-  }
-  
-  UpdateOutline(arg1,arg2);
-  
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
 static int _wrap_DestroyOutline(lua_State* L) {
   int SWIG_arg = 0;
   Outline *arg1 = (Outline *) 0 ;
@@ -5361,7 +5331,6 @@ static swig_lua_method swig_SwigModule_methods[]= {
     { "GetTileCount", _wrap_GetTileCount},
     { "GetTiles", _wrap_GetTiles},
     { "CreateOutline", _wrap_CreateOutline},
-    { "UpdateOutline", _wrap_UpdateOutline},
     { "DestroyOutline", _wrap_DestroyOutline},
     { "SetAttributeInt", _wrap_SetAttributeInt},
     { "SetAttributeFloat", _wrap_SetAttributeFloat},

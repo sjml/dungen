@@ -4,5 +4,4 @@
 %}
 
 Outline* CreateOutline(TileSet* ts);
-void UpdateOutline(Outline* o, TileSet* ts);
 void DestroyOutline(Outline* o);
