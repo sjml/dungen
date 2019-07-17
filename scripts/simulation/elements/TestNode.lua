@@ -108,4 +108,10 @@ lazyBasicAssert(GetStringRegister("F"), "", "Null string register check")
 lazyBasicAssert(GetTileRegister("F"), nil, "Null Tile register check")
 lazyBasicAssert(GetTileSetRegister("F"), nil, "Null TileSet set register check")
 
+td = nil
+td2 = nil
+td3 = nil
+tiles = nil
+tags = nil
+ts = nil
 collectgarbage() -- just to make sure this doesn't trigger segfaults
