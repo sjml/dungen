@@ -3,6 +3,7 @@
 
 #include "util.h"
 #include "world.h"
+#include "text.h"
 
 const int windowWidth  = 1024;
 const int windowHeight = 768;
@@ -10,7 +11,8 @@ const int windowHeight = 768;
 GLFWwindow* window = NULL;
 
 CameraData MainCamera;
-gbMat4 viewMatrix;
+gbMat4 perspectiveMatrix;
+gbMat4 orthoMatrix;
 
 Outline** outlines = NULL;
 
@@ -46,9 +48,9 @@ void InitializeRendering() {
     glPolygonMode(GL_FRONT, GL_FILL);
     glShadeModel(GL_FLAT);
     glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
-    glEnable(GL_CULL_FACE);
-    glFrontFace(GL_CCW);
-    glCullFace(GL_BACK);
+//    glEnable(GL_CULL_FACE);
+//    glFrontFace(GL_CCW);
+//    glCullFace(GL_BACK);
     glDepthFunc(GL_LEQUAL);
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_BLEND);
@@ -71,14 +73,16 @@ void InitializeRendering() {
     MainCamera.windowWidth = windowWidth;
     MainCamera.windowHeight = windowHeight;
 
-    gb_mat4_perspective(&viewMatrix, MainCamera.aperture, (float)MainCamera.windowWidth / (float)MainCamera.windowHeight, MainCamera.zNearClip, MainCamera.zFarClip);
+    gb_mat4_perspective(&perspectiveMatrix, MainCamera.aperture, (float)MainCamera.windowWidth / (float)MainCamera.windowHeight, MainCamera.zNearClip, MainCamera.zFarClip);
     gbMat4 look;
     gb_mat4_look_at(&look, MainCamera.position, MainCamera.view, MainCamera.up);
-    gb_mat4_mul(&viewMatrix, &viewMatrix, &look);
+    gb_mat4_mul(&perspectiveMatrix, &perspectiveMatrix, &look);
+    
+    gb_mat4_ortho2d(&orthoMatrix, 0.0f, 1024.0f, 768.0f, 0.0f);
 
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-    glMultMatrixf(viewMatrix.e);
+    glMultMatrixf(perspectiveMatrix.e);
     handleGLErrors(__FILE__, __LINE__);
 }
 
@@ -104,15 +108,22 @@ void RemoveOutline(Outline* o) {
 int Render() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+    glEnableClientState(GL_VERTEX_ARRAY);
+    
     glMatrixMode(GL_MODELVIEW);
     glPushMatrix();
-
-    RenderTiles();
-    for (int i = 0; i < arrlen(outlines); i++) {
-        RenderOutline(outlines[i]);
-    }
-
-    glMatrixMode(GL_MODELVIEW);
+        RenderTiles();
+        for (int i = 0; i < arrlen(outlines); i++) {
+            RenderOutline(outlines[i]);
+        }
+    glPopMatrix();
+    
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    glPushMatrix();
+        glMultMatrixf(orthoMatrix.e);
+        // Print text strings here
+    glMatrixMode(GL_PROJECTION);
     glPopMatrix();
 
     glfwSwapBuffers(window);

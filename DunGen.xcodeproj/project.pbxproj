@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		340A323422DFB74600685193 /* text.c in Sources */ = {isa = PBXBuildFile; fileRef = 340A323322DFB74600685193 /* text.c */; };
 		3417E26922D149B000762C69 /* liblua.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3417E22322D1486100762C69 /* liblua.a */; };
 		341F12B222D1FCAB009C844F /* lopcodes.c in Sources */ = {isa = PBXBuildFile; fileRef = 341F128F22D1FCA9009C844F /* lopcodes.c */; };
 		341F12B322D1FCAB009C844F /* ldblib.c in Sources */ = {isa = PBXBuildFile; fileRef = 341F129022D1FCA9009C844F /* ldblib.c */; };
@@ -114,6 +115,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		340A323222DFB74600685193 /* text.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = text.h; sourceTree = "<group>"; };
+		340A323322DFB74600685193 /* text.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = text.c; sourceTree = "<group>"; };
 		340B5D0F22D21CB700E53DCA /* stb_ds.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = stb_ds.h; path = "lib/single-file/stb_ds.h"; sourceTree = "<group>"; };
 		3415722822D3873D00FB77F2 /* stb_image.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = stb_image.h; path = "lib/single-file/stb_image.h"; sourceTree = "<group>"; };
 		3417E22322D1486100762C69 /* liblua.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = liblua.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -422,6 +425,8 @@
 				347A941E22D1BE74002BF97F /* util.c */,
 				347A945322D1E949002BF97F /* world.h */,
 				347A945422D1E949002BF97F /* world.c */,
+				340A323222DFB74600685193 /* text.h */,
+				340A323322DFB74600685193 /* text.c */,
 			);
 			path = infrastructure;
 			sourceTree = "<group>";
@@ -732,7 +737,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if [ -n \"${BUILD_ARTIFACTSTAGINGDIRECTORY}\" ]; \nthen\n    # Building on an Azure pipeline\n    cp -R \"${BUILT_PRODUCTS_DIR}/${FULL_PRODUCT_NAME}\" \"${BUILD_ARTIFACTSTAGINGDIRECTORY}\"\nelif [ \"${BUILT_PRODUCTS_DIR}/${FULL_PRODUCT_NAME}\" != \"${PROJECT_DIR}/build/${CONFIGURATION}\" ];\nthen\n    # Building on a Mac as part of normal Xcode build (non-CLI)\n    mkdir -p \"${PROJECT_DIR}/build/${CONFIGURATION}\"\n    cp -r \"${BUILT_PRODUCTS_DIR}/${FULL_PRODUCT_NAME}\" \"${PROJECT_DIR}/build/${CONFIGURATION}\"\nfi\n";
+			shellScript = "if [ -n \"${BUILD_ARTIFACTSTAGINGDIRECTORY}\" ]; \nthen\n    # Building on an Azure pipeline\n    cp -R \"${BUILT_PRODUCTS_DIR}/${FULL_PRODUCT_NAME}\" \"${BUILD_ARTIFACTSTAGINGDIRECTORY}\"\nelif [ \"${BUILT_PRODUCTS_DIR}/${FULL_PRODUCT_NAME}\" != \"${PROJECT_DIR}/build/${CONFIGURATION}\" ];\nthen\n    # Building on a Mac as part of normal Xcode build (non-CLI)\n    mkdir -p \"${PROJECT_DIR}/build/${CONFIGURATION}\"\n    rm -rf \"${PROJECT_DIR}/build/${CONFIGURATION}/${FULL_PRODUCT_NAME}\"\n    cp -r \"${BUILT_PRODUCTS_DIR}/${FULL_PRODUCT_NAME}\" \"${PROJECT_DIR}/build/${CONFIGURATION}\"\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -815,6 +820,7 @@
 				34CD649A22D9DE3B00C33190 /* attributes.c in Sources */,
 				347A941C22D1B9C5002BF97F /* game.c in Sources */,
 				347A941622D1B85F002BF97F /* scripting.c in Sources */,
+				340A323422DFB74600685193 /* text.c in Sources */,
 				3482A56222D63C4F00AAD098 /* hlvm.c in Sources */,
 				347A941822D1B85F002BF97F /* main.c in Sources */,
 				3466A4B622D4D71B00ED6CAA /* images.c in Sources */,

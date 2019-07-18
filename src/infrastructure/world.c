@@ -209,7 +209,6 @@ void RenderTiles(void) {
     startingPosition.y += tileFullHeight * -0.5f;
     gbVec2 modVector;
 
-    glEnableClientState(GL_VERTEX_ARRAY);
     glVertexPointer(2, GL_FLOAT, 0, hexVertices);
 
     for (int j = 0; j < worldHeight; j++) {
