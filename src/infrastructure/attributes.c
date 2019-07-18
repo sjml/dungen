@@ -510,6 +510,82 @@ TileData** GetTilesTagged(char* tagString) {
     return ret;
 }
 
+// this is mostly cut-and-paste from GetTilesTagged
+bool TileHasTags(TileData* td, char* tagString) {
+    if (strlen(tagString) == 0) {
+        return false;
+    }
+    
+    char** tags = NULL;
+    char* tag;
+    char* localTagString = malloc(sizeof(char) * strlen(tagString)+1);
+    strcpy(localTagString, tagString);
+    while ((tag = strtok(localTagString, ","))) {
+        char* localTag = malloc(sizeof(char) * strlen(tag)+1);
+        strcpy(localTag, tag);
+        arrpush(tags, localTag);
+        localTagString = NULL;
+    }
+    free(localTagString);
+    
+    sds query = sdsnew(
+                       "SELECT tiles.tile_id "
+                       "FROM tiles_tags, tiles, tags "
+                       "WHERE tiles_tags.tag_id = tags.tag_id "
+                       "AND (tags.value IN (?"
+                       );
+    for (int i=0; i < arrlen(tags)-1; i++) {
+        query = sdscat(query, ", ?");
+    }
+    query = sdscat(query,
+                   ")) "
+                   "AND tiles.tile_id = tiles_tags.tile_id "
+                   "AND tiles.tile_id = ? "
+                   "GROUP BY tiles.tile_id "
+                   "HAVING COUNT(tiles.tile_id)=?;"
+                   );
+    
+    sqlite3_stmt *stmt;
+    if (sqlite3_prepare(db, query, -1, &stmt, NULL) != SQLITE_OK) {
+        fprintf(stderr, "SQL ERROR: could not prepare tag search statement: %s\n", sqlite3_errmsg(db));
+        sdsfree(query);
+        sqlite3_finalize(stmt);
+        return NULL;
+    }
+    sdsfree(query);
+    for (int i=0; i < arrlen(tags); i++) {
+        if (sqlite3_bind_text(stmt, i+1, tags[i], (int)strlen(tags[i]), NULL) != SQLITE_OK) {
+            fprintf(stderr, "SQL ERROR: could not bind tag '%s' to tag search statement: %s\n", tags[i], sqlite3_errmsg(db));
+            sqlite3_finalize(stmt);
+            return NULL;
+        }
+    }
+    if (sqlite3_bind_int64(stmt, (int)arrlen(tags)+1, td->i) != SQLITE_OK) {
+        fprintf(stderr, "SQL ERROR: could not bind tile index to tag search statement: %s\n", sqlite3_errmsg(db));
+        sqlite3_finalize(stmt);
+        return NULL;
+    }
+    if (sqlite3_bind_int(stmt, (int)arrlen(tags)+2, (int)arrlen(tags)) != SQLITE_OK) {
+        fprintf(stderr, "SQL ERROR: could not bind number of tags to tag search statement: %s\n", sqlite3_errmsg(db));
+        sqlite3_finalize(stmt);
+        return NULL;
+    }
+    
+    bool ret = false;
+    while (sqlite3_step(stmt) == SQLITE_ROW) {
+        ret = true;
+    }
+    
+    sqlite3_finalize(stmt);
+    
+    for (int i=0; i < arrlen(tags); i++) {
+        free(tags[i]);
+    }
+    arrfree(tags);
+    
+    return ret;
+}
+
 char** GetTags(TileData* td) {
     sqlite3_stmt* stmt;
     

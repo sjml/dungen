@@ -8,6 +8,7 @@ dungen = nil
 
 package.path = './scripts/?.lua;' .. package.path
 require("sys.lib")
+require("sys.styler")
 
 os.exit = function()
   io.stderr:write("Cannot exit from Lua.\n")

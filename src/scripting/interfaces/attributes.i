@@ -34,4 +34,5 @@ char* GetAttributeString(TileData* data, char* name);
 bool AddTag(TileData* td, char* tag);
 bool RemoveTag(TileData* td, char* tag);
 TileData** GetTilesTagged(char* tagString);
+bool TileHasTags(TileData* td, char* tagString);
 char** GetTags(TileData* td);

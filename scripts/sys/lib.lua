@@ -113,6 +113,10 @@ tdft.RemoveTag = function(td, tag)
   RemoveTag(td, tag)
 end
 
+tdft.HasTags = function(td, tagStr)
+  return TileHasTags(td, tagStr)
+end
+
 tdft.GetTags = function(td)
   return GetTags(td)
 end

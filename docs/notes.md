@@ -1,7 +1,6 @@
 ## TODO
 1. More declarative approach to coloring/rendering
-    - have render resolver that is the only thing to apply colors
-    - something akin to CSS (but hopefully less complicated)
+    - basic version in, still needs regions, overlays
 2. pathfinding (in Lua?)
 3. constraint solver (in Lua?)
 4. choice presentation (tiles, die rolls)

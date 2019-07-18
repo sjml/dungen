@@ -5534,6 +5534,33 @@ fail:
 }
 
 
+static int _wrap_TileHasTags(lua_State* L) {
+  int SWIG_arg = 0;
+  TileData *arg1 = (TileData *) 0 ;
+  char *arg2 = (char *) 0 ;
+  bool result;
+  
+  SWIG_check_num_args("TileHasTags",2,2)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("TileHasTags",1,"TileData *");
+  if(!SWIG_lua_isnilstring(L,2)) SWIG_fail_arg("TileHasTags",2,"char *");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_TileData,0))){
+    SWIG_fail_ptr("TileHasTags",1,SWIGTYPE_p_TileData);
+  }
+  
+  arg2 = (char *)lua_tostring(L, 2);
+  result = (bool)TileHasTags(arg1,arg2);
+  lua_pushboolean(L,(int)(result!=0)); SWIG_arg++;
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
 static int _wrap_GetTags(lua_State* L) {
   int SWIG_arg = 0;
   TileData *arg1 = (TileData *) 0 ;
@@ -5621,6 +5648,7 @@ static swig_lua_method swig_SwigModule_methods[]= {
     { "AddTag", _wrap_AddTag},
     { "RemoveTag", _wrap_RemoveTag},
     { "GetTilesTagged", _wrap_GetTilesTagged},
+    { "TileHasTags", _wrap_TileHasTags},
     { "GetTags", _wrap_GetTags},
     {0,0}
 };
