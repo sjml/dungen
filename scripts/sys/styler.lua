@@ -12,16 +12,22 @@ local function colorTable(name, value, tile)
 end
 
 function ReloadStyles()
-  styles = {
+  local preload = {
     colorTable = colorTable
   }
+  styles = {}
+  for k,v in pairs(preload) do styles[k] = v end
   styleLoad, err = loadfile("scripts/simulation/Styles.lua", "bt", styles)
   if (err) then
     io.stderr:write("ERROR: Could not load styles. " .. err .. "\n")
     return
   end
   styleLoad()
-  styles.colorTable = nil
+  for k,v in pairs(styles) do
+    if type(v) == "function" then
+      styles[k] = nil
+    end
+  end
 
   ResolveStyles()
 end
