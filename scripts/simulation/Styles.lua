@@ -14,8 +14,6 @@ local colors = { -- R      G      B
   dwarven =      { 0.0 ,  0.0 ,  1.0  },
 }
 
-LoadColorTable("GroundColors", "images/DunStone.png")
-
 sky = {
   reqs = {
     tags = "sky"
@@ -27,5 +25,5 @@ groundBase = {
   reqs = {
     tags = "ground"
   },
-  fill = {"ColorTable", "GroundColors", "depth"}
+  fill = {colorTable, "GroundColors", "depth"}
 }

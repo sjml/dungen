@@ -30,6 +30,16 @@ function VM_wrap(sim)
   return coroutine.wrap(f)
 end
 
+function table.slice(tbl, first, last, step)
+  local sliced = {}
+
+  for i = first or 1, last or #tbl, step or 1 do
+    sliced[#sliced+1] = tbl[i]
+  end
+
+  return sliced
+end
+
 function push(className)
   if (className == nil) then
     className = "Null"

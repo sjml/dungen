@@ -22,4 +22,6 @@ for j=0, TileSet.Height - 1 do
   end
 end
 
+LoadColorTable("GroundColors", "images/DunStone.png")
+
 ReloadStyles()

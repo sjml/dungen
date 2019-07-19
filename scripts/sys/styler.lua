@@ -3,9 +3,17 @@
 
 local styles = nil
 
+local function colorTable(name, value, tile)
+  if (type(value) == "string") then
+    local f = tile:GetAttributeFloat(value)
+    return GetColorByPercent(name, f)
+  end
+  return GetColorByPercent(name, value)
+end
+
 function ReloadStyles()
   styles = {
-    LoadColorTable = LoadColorTable
+    colorTable = colorTable
   }
   styleLoad, err = loadfile("scripts/simulation/Styles.lua", "bt", styles)
   if (err) then
@@ -13,7 +21,7 @@ function ReloadStyles()
     return
   end
   styleLoad()
-  styles.LoadColorTable = nil
+  styles.colorTable = nil
 
   ResolveStyles()
 end
@@ -49,13 +57,17 @@ end
 
 function ApplyStyle(styleTable, target)
   if (styleTable.fill ~= nil) then
-    if (type(styleTable.fill[1]) == "number") then
+    if (
+          #styleTable.fill > 2
+      and type(styleTable.fill[1]) == "number"
+      and type(styleTable.fill[2]) == "number"
+      and type(styleTable.fill[3]) == "number"
+    ) then
       target.color = styleTable.fill
-    elseif (styleTable.fill[1] == "ColorTable") then
-      target.color = GetColorByPercent(
-        styleTable.fill[2],
-        target:GetAttributeFloat("depth")
-      )
+    elseif (type(styleTable.fill[1]) == "function") then
+      local args = table.slice(styleTable.fill, 2)
+      table.insert(args, target)
+      target.color = styleTable.fill[1](table.unpack(args))
     end
   end
 end

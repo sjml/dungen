@@ -1,15 +1,18 @@
 ## TODO
 1. More declarative approach to coloring/rendering
-    - basic version in, still needs regions, overlays
-2. pathfinding (in Lua?)
+    - basic version in, still needs region outlines, overlays
+    - labels
+2. Tech debt: 
+    - replace existing string split/munging code with SDS
+    - cache SQL statements so they don't need to be recompiled afresh
 3. constraint solver (in Lua?)
-4. choice presentation (tiles, die rolls)
+4. pathfinding (in Lua?)
+5. choice presentation (tiles, die rolls)
     - means some kind of UI description from Lua, plus "wait for it" where VM stops processing momentarily
-5. HLVM exceptions (C + Lua invoking)
-6. player choice to overrule random tiles or die rolls (in Lua?)
+6. HLVM exceptions (C + Lua invoking)
+7. player choice to overrule random tiles or die rolls (in Lua?)
 
 ## Horizon
-* replace existing string split/munging code with SDS
 * setup debugger in VS Code or ZeroBrane?
 * specify (and store) random seed
 * let simulation elements be nested in directories
