@@ -40,6 +40,10 @@ function table.slice(tbl, first, last, step)
   return sliced
 end
 
+function countInString(s1, s2)
+  return select(2, s1:gsub(s2, ""))
+end
+
 function push(className)
   if (className == nil) then
     className = "Null"

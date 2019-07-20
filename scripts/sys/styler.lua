@@ -38,8 +38,12 @@ function ResolveStyles()
   for i=0, max - 1, 1 do
     local t = GetTileAtIndex(i)
 
+    local match = {0, 0}
+
     for label, style in pairs(styles) do
-      if (CheckStyle(style, t)) then
+      local m = CheckStyle(style, t)
+      if ((m[1] > match[1]) or (match[1] <= m[1] and m[2] > match[2])) then
+        match = m
         ApplyStyle(style, t)
       end
     end
@@ -52,18 +56,21 @@ function CheckStyle(styleTable, target)
     return true
   end
 
+  local match = {0, 0}
+
   if (reqs.tags ~= nil) then
+    local tcount = countInString(reqs.tags, ",") + 1
     for _, set in pairs(target.memberSets) do
       if (set:HasTags(reqs.tags) == true) then
-        return true
+        match[2] = match[2] + tcount
       end
     end
     if (target:HasTags(reqs.tags) == true) then
-      return true
+      match[1] = match[1] + tcount
     end
   end
 
-  return false
+  return match
 end
 
 function ApplyStyle(styleTable, target)

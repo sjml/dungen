@@ -2,8 +2,6 @@
 1. More declarative approach to coloring/rendering
     - NB: get tileset by index needed
     - basic version in, still needs region outlines
-        - need to think through priority of styles :-/
-        - styler checks region styles first before individual
         - outlines drawn after everything
             - when resolving, remove a region's outline, or set its color to invisible
             - outlines are only made by styler
