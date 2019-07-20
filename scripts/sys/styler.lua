@@ -53,12 +53,17 @@ function CheckStyle(styleTable, target)
   end
 
   if (reqs.tags ~= nil) then
-    if (target:HasTags(reqs.tags) ~= true) then
-      return false
+    for _, set in pairs(target.memberSets) do
+      if (set:HasTags(reqs.tags) == true) then
+        return true
+      end
+    end
+    if (target:HasTags(reqs.tags) == true) then
+      return true
     end
   end
 
-  return true
+  return false
 end
 
 function ApplyStyle(styleTable, target)

@@ -1,6 +1,8 @@
 ## TODO
 1. More declarative approach to coloring/rendering
+    - NB: get tileset by index needed
     - basic version in, still needs region outlines
+        - need to think through priority of styles :-/
         - styler checks region styles first before individual
         - outlines drawn after everything
             - when resolving, remove a region's outline, or set its color to invisible
@@ -13,7 +15,6 @@
     - have world setup wrapped in a transaction?
     - replace existing string split/munging code with SDS
     - cache SQL statements so they don't need to be recompiled afresh
-    - get tileset by index
 3. constraint solver (in Lua?)
 4. pathfinding (in Lua?)
 5. choice presentation (tiles, die rolls)

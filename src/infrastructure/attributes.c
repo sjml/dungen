@@ -6,8 +6,8 @@ struct { char* key; long long value; } *tags_StringToIdx = NULL;
 struct { long long key; char* value; } *tags_IdxToString = NULL;
 struct { long long key; long long* value; } *tagIdxToTiles = NULL;
 struct { long long key; long long* value; } *tagIdxToTileSets = NULL;
-// struct { long long key; long long* value; } *tileIdxToTags = NULL;
-// struct { long long key; long long* value; } *tileSetIdxToTags = NULL;
+struct { long long key; long long* value; } *tileIdxToTags = NULL;
+struct { long long key; long long* value; } *tileSetIdxToTags = NULL;
 
 
 // Doing all this with SQLite may be... overkill?
@@ -27,8 +27,8 @@ void InitializeAttributes() {
     hmdefault(tags_IdxToString, "");
     hmdefault(tagIdxToTiles, NULL);
     hmdefault(tagIdxToTileSets, NULL);
-    // hmdefault(tileIdxToTags, NULL);
-    // hmdefault(tileSetIdxToTags, NULL);
+    hmdefault(tileIdxToTags, NULL);
+    hmdefault(tileSetIdxToTags, NULL);
 
     char* err = 0;
     const char* dbPath = ":memory:";
@@ -600,9 +600,9 @@ bool AddTileTag(TileData* data, char* tag) {
     arrpush(tileList, data->i);
     hmput(tagIdxToTiles, id, tileList);
 
-    // long long* tagList = hmget(tileIdxToTags, data->i);
-    // arrpush(tagList, id);
-    // hmput(tileIdxToTags, data->i, tagList);
+    long long* tagList = hmget(tileIdxToTags, data->i);
+    arrpush(tagList, id);
+    hmput(tileIdxToTags, data->i, tagList);
 
     return true;
 }
@@ -644,14 +644,14 @@ bool RemoveTileTag(TileData* data, char* tag) {
     long long* tileList = hmget(tagIdxToTiles, id);
     for (int i = 0; i < arrlen(tileList); i++) {
         if (tileList[i] == data->i) {
-            // long long* tagList = hmget(tileIdxToTags, data->i);
-            // for (int j = 0; j < arrlen(tagList); j++) {
-            //     if (tagList[j] == id) {
-            //         arrdel(tagList, j);
-            //         hmput(tileIdxToTags, data->i, tagList);
-            //         break;
-            //     }
-            // }
+            long long* tagList = hmget(tileIdxToTags, data->i);
+            for (int j = 0; j < arrlen(tagList); j++) {
+                if (tagList[j] == id) {
+                    arrdel(tagList, j);
+                    hmput(tileIdxToTags, data->i, tagList);
+                    break;
+                }
+            }
             arrdel(tileList, i);
             hmput(tagIdxToTiles, id, tileList);
             return true;
@@ -668,14 +668,14 @@ bool RemoveTileSetTag(TileSet* data, char* tag) {
     long long* tileSetList = hmget(tagIdxToTileSets, id);
     for (int i = 0; i < arrlen(tileSetList); i++) {
         if (tileSetList[i] == data->i) {
-            // long long* tagList = hmget(tileSetIdxToTags, data->i);
-            // for (int j = 0; j < arrlen(tagList); j++) {
-            //     if (tagList[j] == id) {
-            //         arrdel(tagList, j);
-            //         hmput(tileSetIdxToTags, data->i, tagList);
-            //         break;
-            //     }
-            // }
+            long long* tagList = hmget(tileSetIdxToTags, data->i);
+            for (int j = 0; j < arrlen(tagList); j++) {
+                if (tagList[j] == id) {
+                    arrdel(tagList, j);
+                    hmput(tileSetIdxToTags, data->i, tagList);
+                    break;
+                }
+            }
             arrdel(tileSetList, i);
             hmput(tagIdxToTileSets, id, tileSetList);
             return true;
@@ -786,6 +786,7 @@ bool TileHasTags(TileData* data, char* tagString) {
     for (int ti = 0; ti < tagCount; ti++) {
         long long id = _GetTagID(tags[ti]);
         if (id == -1) {
+            ret = false;
             break;
         }
         long long* tiles = hmget(tagIdxToTiles, id);
@@ -814,6 +815,7 @@ bool TileSetHasTags(TileSet* data, char* tagString) {
     for (int ti = 0; ti < tagCount; ti++) {
         long long id = _GetTagID(tags[ti]);
         if (id == -1) {
+            ret = false;
             break;
         }
         long long* tileSets = hmget(tagIdxToTileSets, id);
@@ -836,27 +838,27 @@ bool TileSetHasTags(TileSet* data, char* tagString) {
 
 char** GetTileTags(TileData* data) {
     char** ret = NULL;
-//    long long* tagIndices = hmget(tileIdxToTags, data->i);
-//
-//    for (int i=0; i < arrlen(tagIndices); i++) {
-//        char* t = hmget(tags_IdxToString, tagIndices[i]);
-//        char* tc = malloc(sizeof(char) * (strlen(t)+1));
-//        strcpy(t, tc);
-//        arrpush(ret, tc);
-//    }
+    long long* tagIndices = hmget(tileIdxToTags, data->i);
+
+    for (int i=0; i < arrlen(tagIndices); i++) {
+        char* t = hmget(tags_IdxToString, tagIndices[i]);
+        char* tc = malloc(sizeof(char) * (strlen(t)+1));
+        strcpy(tc, t);
+        arrpush(ret, tc);
+    }
     return ret;
 }
 
 char** GetTileSetTags(TileSet* data) {
     char** ret = NULL;
-//    long long* tagIndices = hmget(tileSetIdxToTags, data->i);
-//
-//    for (int i=0; i < arrlen(tagIndices); i++) {
-//        char* t = hmget(tags_IdxToString, tagIndices[i]);
-//        char* tc = malloc(sizeof(char) * (strlen(t)+1));
-//        strcpy(t, tc);
-//        arrpush(ret, tc);
-//    }
+   long long* tagIndices = hmget(tileSetIdxToTags, data->i);
+
+   for (int i=0; i < arrlen(tagIndices); i++) {
+       char* t = hmget(tags_IdxToString, tagIndices[i]);
+       char* tc = malloc(sizeof(char) * (strlen(t)+1));
+       strcpy(tc, t);
+       arrpush(ret, tc);
+   }
     return ret;
 }
 

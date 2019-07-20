@@ -2719,9 +2719,6 @@ SWIGINTERN int SWIG_lua_isnilstring(lua_State *L, int idx) {
 SWIGINTERN struct sTileSet *new_sTileSet(void){
         return CreateTileSet();
     }
-SWIGINTERN void delete_sTileSet(struct sTileSet *self){
-        DestroyTileSet(self);
-    }
 
     #include "../infrastructure/attributes.h"
 
@@ -4783,7 +4780,7 @@ static int _wrap_TileData_memberSets_get(lua_State* L) {
         lua_settable(L, -3);
       }
     }
-    arrfree(result);
+    // arrfree(result); // don't free if we don't own this memory
     
     SWIG_arg += 1;
   }
@@ -4989,10 +4986,6 @@ fail:
 }
 
 
-static void swig_delete_TileSet(void *obj) {
-struct sTileSet *arg1 = (struct sTileSet *) obj;
-delete_sTileSet(arg1);
-}
 static int _proxy__wrap_new_TileSet(lua_State *L) {
     assert(lua_istable(L,1));
     lua_pushcfunction(L,_wrap_new_TileSet);
@@ -5036,7 +5029,7 @@ static swig_lua_namespace swig_TileSet_Sf_SwigStatic = {
 };
 static swig_lua_class *swig_TileSet_bases[] = {0};
 static const char *swig_TileSet_base_names[] = {0};
-static swig_lua_class _wrap_class_TileSet = { "TileSet", "TileSet", &SWIGTYPE_p_sTileSet,_proxy__wrap_new_TileSet, swig_delete_TileSet, swig_TileSet_methods, swig_TileSet_attributes, &swig_TileSet_Sf_SwigStatic, swig_TileSet_meta, swig_TileSet_bases, swig_TileSet_base_names };
+static swig_lua_class _wrap_class_TileSet = { "TileSet", "TileSet", &SWIGTYPE_p_sTileSet,_proxy__wrap_new_TileSet,0, swig_TileSet_methods, swig_TileSet_attributes, &swig_TileSet_Sf_SwigStatic, swig_TileSet_meta, swig_TileSet_bases, swig_TileSet_base_names };
 
 static int _wrap_InitializeWorld(lua_State* L) {
   int SWIG_arg = 0;
@@ -5865,7 +5858,7 @@ static int _wrap_GetTileSetsTagged(lua_State* L) {
         lua_settable(L, -3);
       }
     }
-    arrfree(result);
+    // arrfree(result); // don't free if we don't own this memory
     
     SWIG_arg += 1;
   }

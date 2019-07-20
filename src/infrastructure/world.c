@@ -246,6 +246,9 @@ TileSet* CreateTileSet() {
 
 void DestroyTileSet(TileSet* ts) {
     RemoveTileSet(ts);
+    for (int i = 0; i < hmlen(ts->tiles); i++) {
+        RemoveTileFromSet(ts, ts->tiles[i].key);
+    }
     hmfree(ts->tiles);
     if (ts->outline != NULL) {
         DestroyOutline(ts->outline);

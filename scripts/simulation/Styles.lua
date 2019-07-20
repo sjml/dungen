@@ -30,7 +30,9 @@ groundBase = {
 
 testRegion = {
   reqs = {
-    tags = "test"
+    tags = "Q"
   },
-  tileFill = {0.0, 1.0, 0.0}
+  tileFill = {0.0, 0.0, 0.0},
+  outlineColor = {1.0, 0.0, 0.0},
+  outlineThickness = 0.15
 }

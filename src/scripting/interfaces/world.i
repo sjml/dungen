@@ -32,7 +32,7 @@
                 lua_settable(L, -3);
             }
         }
-        arrfree($1);
+        // arrfree($1); // don't free if we don't own this memory
 
         SWIG_arg += 1;
     }
@@ -54,8 +54,8 @@ typedef struct {
     TileSet** memberSets;
 } TileData;
 
-%nodefaultctor TileSet;
-%nodefaultdtor TileSet;
+%nodefaultctor sTileSet;
+%nodefaultdtor sTileSet;
 typedef struct sTileSet {
     long long i;
     Outline* outline;
@@ -65,9 +65,6 @@ typedef struct sTileSet {
     sTileSet() {
         return CreateTileSet();
     }
-    ~sTileSet() {
-        DestroyTileSet($self);
-    }
 }
 
 void InitializeWorld(int width, int height, float scale);
@@ -76,13 +73,9 @@ float GetWorldScale(void);
 
 TileData* GetTileAtPosition(int x, int y);
 TileData* GetTileAtIndex(long long i);
-// GetTileNeighbors intentionally omitted in favor of Lua version
-// TileData** GetTileNeighbors(TileData* center, int *numNeighbors);
 
 int AddTileToSet(TileSet* ts, TileData* t);
 int RemoveTileFromSet(TileSet* ts, TileData* t);
 bool IsTileInSet(TileSet* ts, TileData* t);
 int GetTileCount(TileSet* ts);
 TileData** GetTiles(TileSet* ts);
-// DestroyTileSet intentionally omitted in favor of Lua destructor
-// void DestroyTileSet(TileSet* ts);
