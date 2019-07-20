@@ -6,3 +6,4 @@
 %include hlvm.i
 %include world.i
 %include attributes.i
+%include game.i

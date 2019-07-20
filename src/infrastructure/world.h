@@ -44,6 +44,14 @@ TileData* GetTileAtPosition(int x, int y);
 TileData* GetTileAtIndex(long long i);
 TileData** GetTileNeighbors(TileData* center, int *numNeighbors);
 
+
+// TODO: TileSets will leak once they have no members if they
+//       aren't tracked somehow.
+//       Don't want to automatically destroy when members are 0
+//       because might still be working with it. Also hard to track
+//       since they could be sitting in registers or in the Lua runtime.
+//       Smart pointers would help, but too heavyweight.
+//       For now, I don't care about the leaks.
 TileSet* CreateTileSet(void);
 void DestroyTileSet(TileSet* ts);
 int AddTileToSet(TileSet* ts, TileData* t);

@@ -13,4 +13,5 @@ xcuserdata/
 !*.xcworkspace/contents.xcworkspacedata
 /*.gcno
 build/*
+tmp/*
 !.gitkeep

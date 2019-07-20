@@ -212,6 +212,7 @@
 		34CD649822D9DE3B00C33190 /* attributes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = attributes.h; sourceTree = "<group>"; };
 		34CD649922D9DE3B00C33190 /* attributes.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = attributes.c; sourceTree = "<group>"; };
 		34D8E49622DF5EBF00A96E6B /* stb_easy_font.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = stb_easy_font.h; path = "lib/single-file/stb_easy_font.h"; sourceTree = "<group>"; };
+		34FE0B6522E30AEC007A1271 /* game.i */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c.preprocessed; path = game.i; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -438,6 +439,7 @@
 				3482A55D22D62E4300AAD098 /* images.i */,
 				3424314522D7B51E00FC9FBE /* hlvm.i */,
 				3499472B22DB30D700C5BA7E /* attributes.i */,
+				34FE0B6522E30AEC007A1271 /* game.i */,
 			);
 			path = interfaces;
 			sourceTree = "<group>";

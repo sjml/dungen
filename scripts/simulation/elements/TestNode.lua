@@ -127,5 +127,3 @@ ts = nil
 ts2 = nil
 mems = nil
 collectgarbage() -- just to make sure this doesn't trigger segfaults
-
-ResolveStyles()

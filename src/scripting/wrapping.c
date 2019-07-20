@@ -731,6 +731,9 @@ SWIG_UnpackDataName(const char *c, void *ptr, size_t sz, const char *name) {
 
 
 
+// This custom luarun.swg here until SWIG accepts
+//   the PR (https://github.com/swig/swig/pull/1596)
+
 /* -----------------------------------------------------------------------------
  * luarun.swg
  *
@@ -2721,6 +2724,9 @@ SWIGINTERN struct sTileSet *new_sTileSet(void){
     }
 
     #include "../infrastructure/attributes.h"
+
+
+    #include "../infrastructure/game.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -5941,6 +5947,23 @@ fail:
 }
 
 
+static int _wrap_GetTime(lua_State* L) {
+  int SWIG_arg = 0;
+  double result;
+  
+  SWIG_check_num_args("GetTime",0,0)
+  result = (double)GetTime();
+  lua_pushnumber(L, (lua_Number) result); SWIG_arg++;
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
 static swig_lua_attribute swig_SwigModule_attributes[] = {
     {0,0,0}
 };
@@ -5996,6 +6019,7 @@ static swig_lua_method swig_SwigModule_methods[]= {
     { "GetTileSetsTagged", _wrap_GetTileSetsTagged},
     { "TileSetHasTags", _wrap_TileSetHasTags},
     { "GetTileSetTags", _wrap_GetTileSetTags},
+    { "GetTime", _wrap_GetTime},
     {0,0}
 };
 static swig_lua_class* swig_SwigModule_classes[]= {

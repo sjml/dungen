@@ -1,3 +1,6 @@
+// This custom luarun.swg here until SWIG accepts
+//   the PR (https://github.com/swig/swig/pull/1596)
+
 /* -----------------------------------------------------------------------------
  * luarun.swg
  *

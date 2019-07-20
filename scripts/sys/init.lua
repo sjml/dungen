@@ -10,6 +10,8 @@ package.path = './scripts/?.lua;' .. package.path
 require("sys.lib")
 require("sys.styler")
 
+ProFi = require("lib.ProFi")
+
 os.exit = function()
   io.stderr:write("Cannot exit from Lua.\n")
 end
