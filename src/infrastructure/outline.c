@@ -104,6 +104,7 @@ Outline* CreateOutline(TileSet* ts) {
     o->color.r = 1.0f;
     o->color.g = 0.0f;
     o->color.b = 0.0f;
+    o->color.a = 1.0f;
     o->pointLists = NULL;
 
     TileData** tiles = GetTiles(ts);
@@ -239,7 +240,7 @@ void RenderOutline(Outline* o) {
         return;
     }
 
-    glColor3fv(o->color.e);
+    glColor4fv(o->color.e);
 
     glEnableClientState(GL_VERTEX_ARRAY);
 

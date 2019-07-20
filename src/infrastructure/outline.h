@@ -3,7 +3,7 @@
 #include "world.h"
 
 typedef struct sOutline {
-    gbVec3 color;
+    gbVec4 color;
     float** pointLists;
 } Outline;
 

@@ -1,12 +1,6 @@
 ## TODO
 1. More declarative approach to coloring/rendering
     - NB: get tileset by index needed
-    - basic version in, still needs region outlines
-        - outlines drawn after everything
-            - when resolving, remove a region's outline, or set its color to invisible
-            - outlines are only made by styler
-            - remove ability for script to directly make outline
-            - outlines destroyed when region is
     - labels
 2. Tech debt: 
     - null checks in C functions
@@ -14,6 +8,8 @@
     - replace existing string split/munging code with SDS
     - cache SQL statements so they don't need to be recompiled afresh
     - fix randomness (gb_random* funcs all use static seed)
+    - find a consistent spot to call ResolveStyles()
+    - unify ApplyFillStyle and ApplyOutlineStyle
 3. constraint solver (in Lua?)
 4. pathfinding (in Lua?)
 5. choice presentation (tiles, die rolls)

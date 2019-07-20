@@ -106,6 +106,10 @@ void RemoveTileSet(TileSet* ts) {
     fprintf(stderr, "ERROR: removing TileSet that was not part of the world.\n");
 }
 
+TileSet** GetRenderingTileSets() {
+    return tileSets;
+}
+
 int Render() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 

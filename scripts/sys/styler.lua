@@ -44,7 +44,22 @@ function ResolveStyles()
       local m = CheckStyle(style, t)
       if ((m[1] > match[1]) or (match[1] <= m[1] and m[2] > match[2])) then
         match = m
-        ApplyStyle(style, t)
+        ApplyFillStyle(style, t)
+      end
+    end
+  end
+
+  local tilesSet = GetRenderingTileSets()
+  for i=1, #tilesSet, 1 do
+    local ts = tilesSet[i]
+
+    local match = {0, 0}
+
+    for label, style in pairs(styles) do
+      local m = CheckStyle(style, ts)
+      if ((m[1] > match[1]) or (match[1] <= m[1] and m[2] > match[2])) then
+        match = m
+        ApplyOutlineStyle(style, ts)
       end
     end
   end
@@ -60,9 +75,11 @@ function CheckStyle(styleTable, target)
 
   if (reqs.tags ~= nil) then
     local tcount = countInString(reqs.tags, ",") + 1
-    for _, set in pairs(target.memberSets) do
-      if (set:HasTags(reqs.tags) == true) then
-        match[2] = match[2] + tcount
+    if (target.memberSets ~= nil) then
+      for _, set in pairs(target.memberSets) do
+        if (set:HasTags(reqs.tags) == true) then
+          match[2] = match[2] + tcount
+        end
       end
     end
     if (target:HasTags(reqs.tags) == true) then
@@ -73,7 +90,7 @@ function CheckStyle(styleTable, target)
   return match
 end
 
-function ApplyStyle(styleTable, target)
+function ApplyFillStyle(styleTable, target)
   if (styleTable.tileFill ~= nil) then
     if (
           #styleTable.tileFill > 2
@@ -86,6 +103,27 @@ function ApplyStyle(styleTable, target)
       local args = table.slice(styleTable.tileFill, 2)
       table.insert(args, target)
       target.color = styleTable.tileFill[1](table.unpack(args))
+    end
+  end
+end
+
+function ApplyOutlineStyle(styleTable, target)
+  if (styleTable.outlineColor ~= nil) then
+    local c = nil
+    if (
+          #styleTable.outlineColor > 2
+      and type(styleTable.outlineColor[1]) == "number"
+      and type(styleTable.outlineColor[2]) == "number"
+      and type(styleTable.outlineColor[3]) == "number"
+    ) then
+      c = styleTable.outlineColor
+    elseif (type(styleTable.outlineColor[1]) == "function") then
+      local args = table.slice(styleTable.outlineColor, 2)
+      table.insert(args, target)
+      c = styleTable.outlineColor[1](table.unpack(args))
+    end
+    if (c ~= nil) then
+      target:SetOutline(c)
     end
   end
 end

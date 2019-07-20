@@ -42,6 +42,7 @@ void HLVMPush(SimulationElement* sim) {
     }
     arrpush(stack, sim);
     stackTop = arrlen(stack) - 1;
+    RunString("ResolveStyles()");
 }
 
 void HLVMPop(SimulationElement* topCheck) {
@@ -59,6 +60,7 @@ void HLVMPop(SimulationElement* topCheck) {
     }
     luaL_unref(GetLuaState(), LUA_REGISTRYINDEX, (*top).LuaRefKey);
     free(top);
+    RunString("ResolveStyles()");
 }
 
 void HLVMProcess() {
@@ -81,7 +83,7 @@ void HLVMProcess() {
     }
     int retVal = (int)lua_tointeger(L, lua_gettop(L));
     lua_pop(L, 1);
-    
+
     if (retVal == 0) {
         HLVMPop(sim);
     }

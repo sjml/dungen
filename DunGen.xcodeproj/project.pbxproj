@@ -118,6 +118,8 @@
 		340A323222DFB74600685193 /* text.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = text.h; sourceTree = "<group>"; };
 		340A323322DFB74600685193 /* text.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = text.c; sourceTree = "<group>"; };
 		340B5D0F22D21CB700E53DCA /* stb_ds.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = stb_ds.h; path = "lib/single-file/stb_ds.h"; sourceTree = "<group>"; };
+		340E1ECE22E3A4D2004443D1 /* rendering.i */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c.preprocessed; path = rendering.i; sourceTree = "<group>"; };
+		340E1ECF22E3A535004443D1 /* typemaps.i */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c.preprocessed; path = typemaps.i; sourceTree = "<group>"; };
 		3415722822D3873D00FB77F2 /* stb_image.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = stb_image.h; path = "lib/single-file/stb_image.h"; sourceTree = "<group>"; };
 		3417E22322D1486100762C69 /* liblua.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = liblua.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		341F128F22D1FCA9009C844F /* lopcodes.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = lopcodes.c; path = "lib/lua-5.3.5/src/lopcodes.c"; sourceTree = "<group>"; };
@@ -434,10 +436,12 @@
 			isa = PBXGroup;
 			children = (
 				3482A55922D6247800AAD098 /* dungen.i */,
-				3482A55622D6198400AAD098 /* world.i */,
+				340E1ECF22E3A535004443D1 /* typemaps.i */,
 				3482A55B22D624A800AAD098 /* vectors.i */,
 				3482A55D22D62E4300AAD098 /* images.i */,
+				340E1ECE22E3A4D2004443D1 /* rendering.i */,
 				3424314522D7B51E00FC9FBE /* hlvm.i */,
+				3482A55622D6198400AAD098 /* world.i */,
 				3499472B22DB30D700C5BA7E /* attributes.i */,
 				34FE0B6522E30AEC007A1271 /* game.i */,
 			);

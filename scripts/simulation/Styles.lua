@@ -27,12 +27,3 @@ groundBase = {
   },
   tileFill = {colorTable, "GroundColors", "depth"}
 }
-
-testRegion = {
-  reqs = {
-    tags = "Q"
-  },
-  tileFill = {0.0, 0.0, 0.0},
-  outlineColor = {1.0, 0.0, 0.0},
-  outlineThickness = 0.15
-}

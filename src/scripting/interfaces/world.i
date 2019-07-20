@@ -4,40 +4,6 @@
 %}
 
 
-%typemap(out) TileData**
-%{
-    {
-        lua_newtable(L);
-        if (arrlen($1) > 0) {
-            for (unsigned int i=1; i <= arrlen($1); i++) {
-                lua_pushnumber(L, i);
-                SWIG_NewPointerObj(L, $1[i-1], SWIGTYPE_p_TileData, 1);
-                lua_settable(L, -3);
-            }
-        }
-        arrfree($1);
-
-        SWIG_arg += 1;
-    }
-%}
-
-%typemap(out) TileSet**
-%{
-    {
-        lua_newtable(L);
-        if (arrlen($1) > 0) {
-            for (unsigned int i=1; i <= arrlen($1); i++) {
-                lua_pushnumber(L, i);
-                SWIG_NewPointerObj(L, $1[i-1], SWIGTYPE_p_sTileSet, 0);
-                lua_settable(L, -3);
-            }
-        }
-        // arrfree($1); // don't free if we don't own this memory
-
-        SWIG_arg += 1;
-    }
-%}
-
 %nodefaultdtor TileData;
 typedef struct {
     long long i;
@@ -58,7 +24,6 @@ typedef struct {
 %nodefaultdtor sTileSet;
 typedef struct sTileSet {
     long long i;
-    Outline* outline;
 } TileSet;
 
 %extend sTileSet {
@@ -79,3 +44,5 @@ int RemoveTileFromSet(TileSet* ts, TileData* t);
 bool IsTileInSet(TileSet* ts, TileData* t);
 int GetTileCount(TileSet* ts);
 TileData** GetTiles(TileSet* ts);
+void SetTileSetOutline(TileSet* ts, gbVec4* color);
+void ClearTileSetOutline(TileSet* ts);

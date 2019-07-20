@@ -20,5 +20,6 @@ void FinalizeRendering(void);
 
 void AddTileSet(TileSet* ts);
 void RemoveTileSet(TileSet* ts);
+TileSet** GetRenderingTileSets(void);
 
 int Render(void);

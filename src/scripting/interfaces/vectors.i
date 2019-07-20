@@ -4,6 +4,45 @@
     #include "../infrastructure/util.h"
 %}
 
+%typemap(in) gbVec4*
+{
+    // gbVec4 conversion
+    gbVec4 *vecPtr;
+    gbVec4 vec;
+    if (SWIG_IsOK(SWIG_ConvertPtr(L,$input,(void**)&vecPtr,SWIGTYPE_p_gbVec4,0))) {
+        $1 = vecPtr;
+    }
+    else {
+        // convert table parameters to floats
+        lua_pushinteger(L, 1);
+        lua_gettable(L, $input);
+        float x = lua_tonumber(L, -1);
+        lua_pop(L, 1);
+        
+        lua_pushinteger(L, 2);
+        lua_gettable(L, $input);
+        float y = lua_tonumber(L, -1);
+        lua_pop(L, 1);
+        
+        lua_pushinteger(L, 3);
+        lua_gettable(L, $input);
+        float z = lua_tonumber(L, -1);
+        lua_pop(L, 1);
+        
+        lua_pushinteger(L, 4);
+        lua_gettable(L, $input);
+        float w = lua_tonumber(L, -1);
+        lua_pop(L, 1);
+        
+        // build the vector
+        vec.x = x;
+        vec.y = y;
+        vec.z = z;
+        vec.w = w;
+        $1 = &vec;
+    }
+}
+
 %typemap(in) gbVec3*
 {
     // gbVec3 conversion

@@ -176,3 +176,31 @@ end
 tsft.GetTags = function(ts)
   return GetTileSetTags(ts)
 end
+
+tsft.AddTile = function(ts, t)
+  return AddTileToSet(ts, t)
+end
+
+tsft.RemoveTile = function(ts, t)
+  return RemoveTileFromSet(ts, t)
+end
+
+tsft.HasTile = function(ts, t)
+  return IsTileInSetFromSet(ts, t)
+end
+
+tsft.GetTileCount = function(ts)
+  return GetTileCountFromSet(ts)
+end
+
+tsft.GetTiles = function(ts)
+  return GetTiles(ts)
+end
+
+tsft.SetOutline = function(ts, c)
+  return SetTileSetOutline(ts, c)
+end
+
+tsft.ClearOutline = function(ts)
+  return ClearTileSetOutline(ts)
+end

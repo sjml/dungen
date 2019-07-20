@@ -42,7 +42,6 @@ int GameTick(void) {
         int hlvmTickCount = 0;
         while (hlvmTickCount++ < TICKS_PER_CYCLE) {
             HLVMProcess();
-            RunString("ResolveStyles()");
         }
     }
 
