@@ -13,6 +13,7 @@
     - have world setup wrapped in a transaction?
     - replace existing string split/munging code with SDS
     - cache SQL statements so they don't need to be recompiled afresh
+    - get tileset by index
 3. constraint solver (in Lua?)
 4. pathfinding (in Lua?)
 5. choice presentation (tiles, die rolls)

@@ -1,6 +1,15 @@
 #include "../stdafx.h"
 #include "attributes.h"
 
+long long __tagIdx = 0;
+struct { char* key; long long value; } *tags_StringToIdx = NULL;
+struct { long long key; char* value; } *tags_IdxToString = NULL;
+struct { long long key; long long* value; } *tagIdxToTiles = NULL;
+struct { long long key; long long* value; } *tagIdxToTileSets = NULL;
+// struct { long long key; long long* value; } *tileIdxToTags = NULL;
+// struct { long long key; long long* value; } *tileSetIdxToTags = NULL;
+
+
 // Doing all this with SQLite may be... overkill?
 //     Using a sledgehammer to crack a walnut?
 //     Whatever. It's done. Here it is.
@@ -14,6 +23,13 @@ typedef enum eAttrType {
 } AttrType;
 
 void InitializeAttributes() {
+    shdefault(tags_StringToIdx, -1);
+    hmdefault(tags_IdxToString, "");
+    hmdefault(tagIdxToTiles, NULL);
+    hmdefault(tagIdxToTileSets, NULL);
+    // hmdefault(tileIdxToTags, NULL);
+    // hmdefault(tileSetIdxToTags, NULL);
+
     char* err = 0;
     const char* dbPath = ":memory:";
 
@@ -558,419 +574,289 @@ char* GetTileSetAttributeString(TileSet* data, char* name) {
 }
 
 
-sqlite3_int64 _GetTagID(char* tag) {
-    sqlite3_stmt* stmt;
-
-    if (sqlite3_prepare(db, "SELECT tag_id FROM tags WHERE value = ?;", -1, &stmt, NULL) != SQLITE_OK) {
-        fprintf(stderr, "SQL ERROR: could not prepare tag check statement: %s\n", sqlite3_errmsg(db));
-        sqlite3_finalize(stmt);
-        return false;
-    }
-    if (sqlite3_bind_text(stmt, 1, tag, (int)strlen(tag), NULL) != SQLITE_OK) {
-        fprintf(stderr, "SQL ERROR: could not bind tag value to check statement: %s\n", sqlite3_errmsg(db));
-        sqlite3_finalize(stmt);
-        return false;
-    }
-
-    if (sqlite3_step(stmt) == SQLITE_DONE) {
-        sqlite3_finalize(stmt);
-        return -1;
-    }
-    else {
-        sqlite_int64 tagID = sqlite3_column_int64(stmt, 0);
-        sqlite3_finalize(stmt);
-        return tagID;
-    }
-}
-
-bool _AddTag(void* data, AttrType dType, char* tag) {
-    sqlite3_stmt* stmt;
-
-    sqlite_int64 tagID = _GetTagID(tag);
-    if (tagID == -1) {
-        // Tag not in DB yet
-        if (sqlite3_prepare(db, "INSERT INTO tags(value) VALUES(?);", -1, &stmt, NULL) != SQLITE_OK) {
-            fprintf(stderr, "SQL ERROR: could not prepare tag insert statement: %s\n", sqlite3_errmsg(db));
-            sqlite3_finalize(stmt);
-            return false;
-        }
-        if (sqlite3_bind_text(stmt, 1, tag, (int)strlen(tag), NULL) != SQLITE_OK) {
-            fprintf(stderr, "SQL ERROR: could not bind tag value to insert statement: %s\n", sqlite3_errmsg(db));
-            sqlite3_finalize(stmt);
-            return false;
-        }
-        if (sqlite3_step(stmt) != SQLITE_DONE) {
-            fprintf(stderr, "SQL ERROR: could not execute tag insert statement: %s\n", sqlite3_errmsg(db));
-            sqlite3_finalize(stmt);
-            return false;
-        }
-        tagID = sqlite3_last_insert_rowid(db);
-        sqlite3_finalize(stmt);
-    }
-
-    char* tableName = "";
-    char* idName = "";
-    TileData* tileData = NULL;
-    TileSet* tileSetData = NULL;
-    if (dType == TILE) {
-        tableName = "tiles_tags";
-        idName = "tile_id";
-        tileData = (TileData*)data;
-    }
-    else if (dType == TILESET) {
-        tableName = "tilesets_tags";
-        idName = "tileset_id";
-        tileSetData = (TileSet*)data;
-    }
-
-    char query[1024];
-    sprintf(query, "INSERT OR IGNORE INTO %s(%s, tag_id) VALUES (?, ?);", tableName, idName);
-
-    if (sqlite3_prepare(db, query, -1, &stmt, NULL) != SQLITE_OK) {
-        fprintf(stderr, "SQL ERROR: could not prepare %s insert statement: %s\n", tableName, sqlite3_errmsg(db));
-        sqlite3_finalize(stmt);
-        return false;
-    }
-    int bindRes = -1;
-    if (dType == TILE) {
-        bindRes = sqlite3_bind_int64(stmt, 1, (*tileData).i);
-    }
-    else if (dType == TILESET) {
-        bindRes = sqlite3_bind_int64(stmt, 1, (*tileSetData).i);
-    }
-    if (bindRes != SQLITE_OK) {
-        fprintf(stderr, "SQL ERROR: could not bind %s to %s insert statement: %s\n", idName, tableName, sqlite3_errmsg(db));
-        sqlite3_finalize(stmt);
-        return false;
-    }
-    if (sqlite3_bind_int64(stmt, 2, tagID) != SQLITE_OK) {
-        fprintf(stderr, "SQL ERROR: could not bind tag_id to %s insert statement: %s\n", tableName, sqlite3_errmsg(db));
-        sqlite3_finalize(stmt);
-        return false;
-    }
-    if (sqlite3_step(stmt) != SQLITE_DONE) {
-        fprintf(stderr, "SQL ERROR: could not execute %s insert statement: %s\n", tableName, sqlite3_errmsg(db));
-        sqlite3_finalize(stmt);
-        return false;
-    }
-
-    sqlite3_finalize(stmt);
-    return true;
+long long _GetTagID(char* tag) {
+    return shget(tags_StringToIdx, tag);
 }
 
 bool AddTileTag(TileData* data, char* tag) {
-    return _AddTag((void*)data, TILE, tag);
+    long long id = _GetTagID(tag);
+    if (id == -1) {
+        hmput(tags_IdxToString, __tagIdx, tag);
+        shput(tags_StringToIdx, tag, __tagIdx);
+        id = __tagIdx;
+        __tagIdx++;
+    }
+    long long* tileList = hmget(tagIdxToTiles, id);
+    bool already = false;
+    for (int i=0; i < arrlen(tileList); i++) {
+        if (tileList[i] == data->i) {
+            already = true;
+            break;
+        }
+    }
+    if (already) {
+        return false;
+    }
+    arrpush(tileList, data->i);
+    hmput(tagIdxToTiles, id, tileList);
+
+    // long long* tagList = hmget(tileIdxToTags, data->i);
+    // arrpush(tagList, id);
+    // hmput(tileIdxToTags, data->i, tagList);
+
+    return true;
 }
 
 bool AddTileSetTag(TileSet* data, char* tag) {
-    return _AddTag((void*)data, TILESET, tag);
-}
-
-
-bool _RemoveTag(void* data, AttrType dType, char* tag) {
-    sqlite_int64 tagID = _GetTagID(tag);
-    if (tagID == -1) {
-        fprintf(stderr, "ERROR: Trying to remove tag '%s' that does not exist.\n", tag);
+    long long id = _GetTagID(tag);
+    if (id == -1) {
+        hmput(tags_IdxToString, __tagIdx, tag);
+        shput(tags_StringToIdx, tag, __tagIdx);
+        id = __tagIdx;
+        __tagIdx++;
+    }
+    long long* tileSetList = hmget(tagIdxToTileSets, id);
+    bool already = false;
+    for (int i=0; i < arrlen(tileSetList); i++) {
+        if (tileSetList[i] == data->i) {
+            already = true;
+            break;
+        }
+    }
+    if (already) {
         return false;
     }
+    arrpush(tileSetList, data->i);
+    hmput(tagIdxToTileSets, id, tileSetList);
 
-    char* tableName = "";
-    char* idName = "";
-    TileData* tileData = NULL;
-    TileSet* tileSetData = NULL;
-    if (dType == TILE) {
-        tableName = "tiles_tags";
-        idName = "tile_id";
-        tileData = (TileData*)data;
-    }
-    else if (dType == TILESET) {
-        tableName = "tilesets_tags";
-        idName = "tileset_id";
-        tileSetData = (TileSet*)data;
-    }
+    // long long* tagList = hmget(tileIdxToTags, data->i);
+    // arrpush(tagList, id);
+    // hmput(tileIdxToTags, data->i, tagList);
 
-    sqlite3_stmt* stmt;
-    char query[1024];
-    sprintf(query, "DELETE FROM %s WHERE %s = ? AND tag_id = ?;", tableName, idName);
-
-    if (sqlite3_prepare(db, query, -1, &stmt, NULL) != SQLITE_OK) {
-        fprintf(stderr, "SQL ERROR: could not prepare tag removal statement: %s\n", sqlite3_errmsg(db));
-        sqlite3_finalize(stmt);
-        return false;
-    }
-    int bindRes = -1;
-    if (dType == TILE) {
-        bindRes = sqlite3_bind_int64(stmt, 1, (*tileData).i);
-    }
-    else if (dType == TILESET) {
-        bindRes = sqlite3_bind_int64(stmt, 1, (*tileSetData).i);
-    }
-    if (bindRes != SQLITE_OK) {
-        fprintf(stderr, "SQL ERROR: could not bind %s to tag removal statement: %s\n", idName, sqlite3_errmsg(db));
-        sqlite3_finalize(stmt);
-        return false;
-    }
-    if (sqlite3_bind_int64(stmt, 2, tagID) != SQLITE_OK) {
-        fprintf(stderr, "SQL ERROR: could not bind tag_id to tag removal statement: %s\n", sqlite3_errmsg(db));
-        sqlite3_finalize(stmt);
-        return false;
-    }
-    if (sqlite3_step(stmt) != SQLITE_DONE) {
-        fprintf(stderr, "SQL ERROR: could not execute tag removal statement: %s\n", sqlite3_errmsg(db));
-        sqlite3_finalize(stmt);
-        return false;
-    }
-
-    sqlite3_finalize(stmt);
     return true;
 }
 
 bool RemoveTileTag(TileData* data, char* tag) {
-    return _RemoveTag(data, TILE, tag);
+    long long id = _GetTagID(tag);
+    if (id == -1) {
+        return false;
+    }
+    long long* tileList = hmget(tagIdxToTiles, id);
+    for (int i = 0; i < arrlen(tileList); i++) {
+        if (tileList[i] == data->i) {
+            // long long* tagList = hmget(tileIdxToTags, data->i);
+            // for (int j = 0; j < arrlen(tagList); j++) {
+            //     if (tagList[j] == id) {
+            //         arrdel(tagList, j);
+            //         hmput(tileIdxToTags, data->i, tagList);
+            //         break;
+            //     }
+            // }
+            arrdel(tileList, i);
+            hmput(tagIdxToTiles, id, tileList);
+            return true;
+        }
+    }
+    return false;
 }
 
 bool RemoveTileSetTag(TileSet* data, char* tag) {
-    return _RemoveTag(data, TILESET, tag);
-}
-
-
-void* _GetTagged(AttrType dType, char* tagString) {
-    if (strlen(tagString) == 0) {
-        return NULL;
+    long long id = _GetTagID(tag);
+    if (id == -1) {
+        return false;
     }
-
-    char* tableName = "";
-    char* idName = "";
-    char* tagTableName = "";
-    if (dType == TILE) {
-        tableName = "tiles";
-        idName = "tile_id";
-        tagTableName = "tiles_tags";
-    }
-    else if (dType == TILESET) {
-        tableName = "tilesets";
-        idName = "tileset_id";
-        tagTableName = "tilesets_tags";
-    }
-
-    int tagCount;
-    sds* tags = sdssplitlen(tagString, strlen(tagString), ",", 1, &tagCount);
-
-    sds query = sdsempty();
-    query = sdscatprintf(query, "SELECT %s.%s ", tableName, idName);
-    query = sdscatprintf(query, "FROM %s, %s, tags ", tagTableName, tableName);
-    query = sdscatprintf(query, "WHERE %s.tag_id = tags.tag_id ", tagTableName);
-    query = sdscat(query, "AND (tags.value IN (?");
-    for (int i=0; i < tagCount-1; i++) {
-        query = sdscat(query, ", ?");
-    }
-    query = sdscatprintf(query, ")) AND %s.%s = %s.%s ", tableName, idName, tagTableName, idName);
-    query = sdscatprintf(query, "GROUP BY %s.%s ", tableName, idName);
-    query = sdscatprintf(query, "HAVING COUNT(%s.%s)=?;", tableName, idName);
-
-    sqlite3_stmt *stmt;
-    if (sqlite3_prepare(db, query, -1, &stmt, NULL) != SQLITE_OK) {
-        fprintf(stderr, "SQL ERROR: could not prepare tag search statement: %s\n", sqlite3_errmsg(db));
-        sdsfree(query);
-        sqlite3_finalize(stmt);
-        return NULL;
-    }
-    sdsfree(query);
-    for (int i=0; i < tagCount; i++) {
-        if (sqlite3_bind_text(stmt, i+1, tags[i], (int)sdslen(tags[i]), NULL) != SQLITE_OK) {
-            fprintf(stderr, "SQL ERROR: could not bind tag '%s' to tag search statement: %s\n", tags[i], sqlite3_errmsg(db));
-            sqlite3_finalize(stmt);
-            return NULL;
+    long long* tileSetList = hmget(tagIdxToTileSets, id);
+    for (int i = 0; i < arrlen(tileSetList); i++) {
+        if (tileSetList[i] == data->i) {
+            // long long* tagList = hmget(tileSetIdxToTags, data->i);
+            // for (int j = 0; j < arrlen(tagList); j++) {
+            //     if (tagList[j] == id) {
+            //         arrdel(tagList, j);
+            //         hmput(tileSetIdxToTags, data->i, tagList);
+            //         break;
+            //     }
+            // }
+            arrdel(tileSetList, i);
+            hmput(tagIdxToTileSets, id, tileSetList);
+            return true;
         }
     }
-    if (sqlite3_bind_int(stmt, (int)tagCount+1, (int)tagCount) != SQLITE_OK) {
-        fprintf(stderr, "SQL ERROR: could not bind number of tags to tag search statement: %s\n", sqlite3_errmsg(db));
-        sqlite3_finalize(stmt);
-        return NULL;
-    }
-
-    void* ret = NULL;
-    if (dType == TILE) {
-        TileData** tdRet = NULL;
-        while (sqlite3_step(stmt) == SQLITE_ROW) {
-            TileData* td = GetTileAtIndex(sqlite3_column_int64(stmt, 0));
-            arrpush(tdRet, td);
-        }
-        ret = (void*)tdRet;
-    }
-    else if (dType == TILESET) {
-
-    }
-
-    sqlite3_finalize(stmt);
-    sdsfreesplitres(tags, tagCount);
-
-    return ret;
+    return false;
 }
 
 TileData** GetTilesTagged(char* tagString) {
-    return (TileData**)_GetTagged(TILE, tagString);
-}
-
-TileSet** GetTileSetsTagged(char* tagString) {
-    return (TileSet**)_GetTagged(TILESET, tagString);
-}
-
-
-// this is mostly cut-and-paste from _GetTagged
-bool _HasTags(void* data, AttrType dType, char* tagString) {
-    if (strlen(tagString) == 0) {
-        return false;
-    }
-
-    char* tableName = "";
-    char* idName = "";
-    char* tagTableName = "";
-    TileData* tileData = NULL;
-    TileSet* tileSetData = NULL;
-    if (dType == TILE) {
-        tableName = "tiles";
-        idName = "tile_id";
-        tagTableName = "tiles_tags";
-        tileData = (TileData*)data;
-    }
-    else if (dType == TILESET) {
-        tableName = "tilesets";
-        idName = "tileset_id";
-        tagTableName = "tilesets_tags";
-        tileSetData = (TileSet*)data;
-    }
-
     int tagCount;
     sds* tags = sdssplitlen(tagString, strlen(tagString), ",", 1, &tagCount);
 
-    sds query = sdsempty();
-    query = sdscatprintf(query, "SELECT %s.%s ", tableName, idName);
-    query = sdscatprintf(query, "FROM %s, %s, tags ", tagTableName, tableName);
-    query = sdscatprintf(query, "WHERE %s.tag_id = tags.tag_id ", tagTableName);
-    query = sdscat(query, "AND (tags.value IN (?");
-    for (int i=0; i < tagCount-1; i++) {
-        query = sdscat(query, ", ?");
-    }
-    query = sdscatprintf(query, ")) AND %s.%s = %s.%s ", tableName, idName, tagTableName, idName);
-    query = sdscatprintf(query, "AND %s.%s = ? ", tableName, idName);
-    query = sdscatprintf(query, "GROUP BY %s.%s ", tableName, idName);
-    query = sdscatprintf(query, "HAVING COUNT(%s.%s)=?;", tableName, idName);
+    TileData** ret = NULL;
+    long long* indices = NULL;
 
-    sqlite3_stmt *stmt;
-    if (sqlite3_prepare(db, query, -1, &stmt, NULL) != SQLITE_OK) {
-        fprintf(stderr, "SQL ERROR: could not prepare tag search statement: %s\n", sqlite3_errmsg(db));
-        sdsfree(query);
-        sqlite3_finalize(stmt);
-        return NULL;
-    }
-    sdsfree(query);
-    for (int i=0; i < tagCount; i++) {
-        if (sqlite3_bind_text(stmt, i+1, tags[i], (int)sdslen(tags[i]), NULL) != SQLITE_OK) {
-            fprintf(stderr, "SQL ERROR: could not bind tag '%s' to tag search statement: %s\n", tags[i], sqlite3_errmsg(db));
-            sqlite3_finalize(stmt);
-            return NULL;
+    for (int ti = 0; ti < tagCount; ti++) {
+        long long id = _GetTagID(tags[ti]);
+        if (id == -1) {
+            ret = NULL;
+            break;
+        }
+        long long* tiles = hmget(tagIdxToTiles, id);
+        if (ti == 0) {
+            // first tag, add them all
+            for (int tf=0; tf < arrlen(tiles); tf++) {
+                arrpush(indices, tiles[tf]);
+            }
+        }
+        else {
+            // subsequent tags; remove from indices if they don't have id
+            for (int fi=0; fi < arrlen(indices); fi++) {
+                bool found = false;
+                for (int tf=0; tf < arrlen(tiles); tf++) {
+                    if (indices[fi] == tiles[tf]) {
+                        // tile is in both; we're good
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found) {
+                    arrdel(indices, fi);
+                }
+            }
         }
     }
-    int bindRes = -1;
-    if (dType == TILE) {
-        bindRes = sqlite3_bind_int64(stmt, (int)tagCount+1, (*tileData).i);
-    }
-    else if (dType == TILESET) {
-        bindRes = sqlite3_bind_int64(stmt, (int)tagCount+1, (*tileSetData).i);
-    }
-    if (bindRes != SQLITE_OK) {
-        fprintf(stderr, "SQL ERROR: could not bind index to tag search statement: %s\n", sqlite3_errmsg(db));
-        sqlite3_finalize(stmt);
-        return NULL;
-    }
-    if (sqlite3_bind_int(stmt, (int)tagCount+2, (int)tagCount) != SQLITE_OK) {
-        fprintf(stderr, "SQL ERROR: could not bind number of tags to tag search statement: %s\n", sqlite3_errmsg(db));
-        sqlite3_finalize(stmt);
-        return NULL;
+
+    for (int i=0; i < arrlen(indices); i++) {
+        arrpush(ret, GetTileAtIndex(indices[i]));
     }
 
-    bool ret = false;
-    while (sqlite3_step(stmt) == SQLITE_ROW) {
-        ret = true;
-    }
-
-    sqlite3_finalize(stmt);
     sdsfreesplitres(tags, tagCount);
+    arrfree(indices);
+    return ret;
+}
 
+TileSet** GetTileSetsTagged(char* tagString) {
+    int tagCount;
+    sds* tags = sdssplitlen(tagString, strlen(tagString), ",", 1, &tagCount);
+
+    TileSet** ret = NULL;
+    long long* indices = NULL;
+
+    for (int ti = 0; ti < tagCount; ti++) {
+        long long id = _GetTagID(tags[ti]);
+        if (id == -1) {
+            ret = NULL;
+            break;
+        }
+        long long* tileSets = hmget(tagIdxToTileSets, id);
+        if (ti == 0) {
+            // first tag, add them all
+            for (int tsf=0; tsf < arrlen(tileSets); tsf++) {
+                arrpush(indices, tileSets[tsf]);
+            }
+        }
+        else {
+            // subsequent tags; remove from indices if they don't have id
+            for (int fi=0; fi < arrlen(indices); fi++) {
+                bool found = false;
+                for (int tsf=0; tsf < arrlen(tileSets); tsf++) {
+                    if (indices[fi] == tileSets[tsf]) {
+                        // tile is in both; we're good
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found) {
+                    arrdel(indices, fi);
+                }
+            }
+        }
+    }
+
+    for (int i=0; i < arrlen(indices); i++) {
+//        arrpush(ret, GetTileSetAtIndex(indices[i]));
+    }
+
+    sdsfreesplitres(tags, tagCount);
+    arrfree(indices);
     return ret;
 }
 
 bool TileHasTags(TileData* data, char* tagString) {
-    return _HasTags((void*)data, TILE, tagString);
+    int tagCount;
+    sds* tags = sdssplitlen(tagString, strlen(tagString), ",", 1, &tagCount);
+
+    bool ret = true;
+    for (int ti = 0; ti < tagCount; ti++) {
+        long long id = _GetTagID(tags[ti]);
+        if (id == -1) {
+            break;
+        }
+        long long* tiles = hmget(tagIdxToTiles, id);
+        bool found = false;
+        for (int t=0; t < arrlen(tiles); t++) {
+            if (tiles[t] == data->i) {
+                found = true;
+                break;
+            }
+        }
+        if (!found) {
+            ret = false;
+            break;
+        }
+    }
+
+    sdsfreesplitres(tags, tagCount);
+    return ret;
 }
 
 bool TileSetHasTags(TileSet* data, char* tagString) {
-    return _HasTags((void*)data, TILESET, tagString);
-}
+    int tagCount;
+    sds* tags = sdssplitlen(tagString, strlen(tagString), ",", 1, &tagCount);
 
-
-char** _GetTags(void* data, AttrType dType) {
-    char* tableName = "";
-    char* idName = "";
-    char* tagTableName = "";
-    TileData* tileData = NULL;
-    TileSet* tileSetData = NULL;
-    if (dType == TILE) {
-        tableName = "tiles";
-        idName = "tile_id";
-        tagTableName = "tiles_tags";
-        tileData = (TileData*)data;
-    }
-    else if (dType == TILESET) {
-        tableName = "tilesets";
-        idName = "tileset_id";
-        tagTableName = "tilesets_tags";
-        tileSetData = (TileSet*)data;
-    }
-
-    sqlite3_stmt* stmt;
-
-    sds query = sdsnew("SELECT value FROM tags ");
-    query = sdscatprintf(query, "JOIN %s ON tags.tag_id = %s.tag_id ", tagTableName, tagTableName);
-    query = sdscatprintf(query, "JOIN %s ON %s.%s = %s.%s ", tableName, tableName, idName, tagTableName, idName);
-    query = sdscatprintf(query, "WHERE %s.%s = ?;", tableName, idName);
-
-    if (sqlite3_prepare(db, query, -1, &stmt, NULL) != SQLITE_OK) {
-        fprintf(stderr, "SQL ERROR: could not prepare tag get statement: %s\n", sqlite3_errmsg(db));
-        sqlite3_finalize(stmt);
-        return NULL;
-    }
-    int bindRes = -1;
-    if (dType == TILE) {
-        bindRes = sqlite3_bind_int64(stmt, 1, (*tileData).i);
-    }
-    else if (dType == TILESET) {
-        bindRes = sqlite3_bind_int64(stmt, 1, (*tileSetData).i);
-    }
-    if (bindRes != SQLITE_OK) {
-        fprintf(stderr, "SQL ERROR: could not bind %s to tag get statement: %s\n", idName, sqlite3_errmsg(db));
-        sqlite3_finalize(stmt);
-        return NULL;
+    bool ret = true;
+    for (int ti = 0; ti < tagCount; ti++) {
+        long long id = _GetTagID(tags[ti]);
+        if (id == -1) {
+            break;
+        }
+        long long* tileSets = hmget(tagIdxToTileSets, id);
+        bool found = false;
+        for (int ts=0; ts < arrlen(tileSets); ts++) {
+            if (tileSets[ts] == data->i) {
+                found = true;
+                break;
+            }
+        }
+        if (!found) {
+            ret = false;
+            break;
+        }
     }
 
-    char** ret = NULL;
-    while (sqlite3_step(stmt) == SQLITE_ROW) {
-        char* vp = (char *)sqlite3_column_text(stmt, 0);
-        char* v = malloc(sizeof(char) * strlen(vp)+1);
-        strcpy(v, vp);
-        arrpush(ret, v);
-    }
-
-    sqlite3_finalize(stmt);
+    sdsfreesplitres(tags, tagCount);
     return ret;
 }
 
 char** GetTileTags(TileData* data) {
-    return _GetTags((void*)data, TILE);
+    char** ret = NULL;
+//    long long* tagIndices = hmget(tileIdxToTags, data->i);
+//
+//    for (int i=0; i < arrlen(tagIndices); i++) {
+//        char* t = hmget(tags_IdxToString, tagIndices[i]);
+//        char* tc = malloc(sizeof(char) * (strlen(t)+1));
+//        strcpy(t, tc);
+//        arrpush(ret, tc);
+//    }
+    return ret;
 }
 
 char** GetTileSetTags(TileSet* data) {
-    return _GetTags((void*)data, TILESET);
+    char** ret = NULL;
+//    long long* tagIndices = hmget(tileSetIdxToTags, data->i);
+//
+//    for (int i=0; i < arrlen(tagIndices); i++) {
+//        char* t = hmget(tags_IdxToString, tagIndices[i]);
+//        char* tc = malloc(sizeof(char) * (strlen(t)+1));
+//        strcpy(t, tc);
+//        arrpush(ret, tc);
+//    }
+    return ret;
 }
 
