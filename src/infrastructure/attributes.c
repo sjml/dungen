@@ -51,18 +51,6 @@ void InitializeAttributes() {
     char *creation =
         "CREATE TABLE tiles(tile_id INTEGER PRIMARY KEY, ptr INTEGER);"
         "CREATE TABLE tilesets(tileset_id INTEGER PRIMARY KEY, ptr INTEGER);"
-        "CREATE TABLE tags(tag_id INTEGER PRIMARY KEY, value STRING UNIQUE);"
-        "CREATE INDEX tagIdx ON tags(value);"
-        "CREATE TABLE tiles_tags(tile_id INTEGER, tag_id INTEGER, "
-            "FOREIGN KEY(tile_id) REFERENCES tiles(tile_id), "
-            "FOREIGN KEY(tag_id) REFERENCES tags(tag_id), "
-            "PRIMARY KEY(tile_id, tag_id)"
-        ");"
-        "CREATE TABLE tilesets_tags(tileset_id INTEGER, tag_id INTEGER, "
-            "FOREIGN KEY(tileset_id) REFERENCES tilesets(tileset_id), "
-            "FOREIGN KEY(tag_id) REFERENCES tags(tag_id), "
-            "PRIMARY KEY(tileset_id, tag_id)"
-        ");"
     ;
     ret = sqlite3_exec(db, creation, 0, 0, &err);
     if (ret != SQLITE_OK) {
