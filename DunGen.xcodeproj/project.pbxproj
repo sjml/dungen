@@ -182,8 +182,6 @@
 		3466A4B722D4EDEB00ED6CAA /* gb_math.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = gb_math.h; path = "lib/single-file/gb_math.h"; sourceTree = "<group>"; };
 		346CC51122DB507900E24845 /* outline.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = outline.h; sourceTree = "<group>"; };
 		346CC51222DB507900E24845 /* outline.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = outline.c; sourceTree = "<group>"; };
-		346CC51422DB532300E24845 /* rendering.i */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c.preprocessed; path = rendering.i; sourceTree = "<group>"; };
-		346CC51522DB536B00E24845 /* outline.i */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c.preprocessed; path = outline.i; sourceTree = "<group>"; };
 		347A941122D1B85F002BF97F /* scripting.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = scripting.c; sourceTree = "<group>"; };
 		347A941222D1B85F002BF97F /* scripting.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = scripting.h; sourceTree = "<group>"; };
 		347A941322D1B85F002BF97F /* rendering.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = rendering.h; sourceTree = "<group>"; };
@@ -440,8 +438,6 @@
 				3482A55D22D62E4300AAD098 /* images.i */,
 				3424314522D7B51E00FC9FBE /* hlvm.i */,
 				3499472B22DB30D700C5BA7E /* attributes.i */,
-				346CC51422DB532300E24845 /* rendering.i */,
-				346CC51522DB536B00E24845 /* outline.i */,
 			);
 			path = interfaces;
 			sourceTree = "<group>";
@@ -718,7 +714,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "swig -lua -o ${PROJECT_DIR}/src/scripting/wrapping.c ${PROJECT_DIR}/src/scripting/interfaces/dungen.i\n";
+			shellScript = "swig -lua -Werror -I${PROJECT_DIR}/lib/swiglib -o ${PROJECT_DIR}/src/scripting/wrapping.c ${PROJECT_DIR}/src/scripting/interfaces/dungen.i\n";
 			showEnvVarsInLog = 0;
 		};
 		34279F6122DA28F100B825D0 /* Copy .app to build directory */ = {

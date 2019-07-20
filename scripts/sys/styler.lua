@@ -62,18 +62,18 @@ function CheckStyle(styleTable, target)
 end
 
 function ApplyStyle(styleTable, target)
-  if (styleTable.fill ~= nil) then
+  if (styleTable.tileFill ~= nil) then
     if (
-          #styleTable.fill > 2
-      and type(styleTable.fill[1]) == "number"
-      and type(styleTable.fill[2]) == "number"
-      and type(styleTable.fill[3]) == "number"
+          #styleTable.tileFill > 2
+      and type(styleTable.tileFill[1]) == "number"
+      and type(styleTable.tileFill[2]) == "number"
+      and type(styleTable.tileFill[3]) == "number"
     ) then
-      target.color = styleTable.fill
-    elseif (type(styleTable.fill[1]) == "function") then
-      local args = table.slice(styleTable.fill, 2)
+      target.color = styleTable.tileFill
+    elseif (type(styleTable.tileFill[1]) == "function") then
+      local args = table.slice(styleTable.tileFill, 2)
       table.insert(args, target)
-      target.color = styleTable.fill[1](table.unpack(args))
+      target.color = styleTable.tileFill[1](table.unpack(args))
     end
   end
 end

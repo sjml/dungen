@@ -92,35 +92,35 @@ tdft.GetNeighbors = function(td)
 end
 
 tdft.SetAttributeInt = function(td, name, value)
-  SetAttributeInt(td, name, value)
+  SetTileAttributeInt(td, name, value)
 end
 
 tdft.SetAttributeFloat = function(td, name, value)
-  SetAttributeFloat(td, name, value)
+  SetTileAttributeFloat(td, name, value)
 end
 
 tdft.SetAttributeString = function(td, name, value)
-  SetAttributeString(td, name, value)
+  SetTileAttributeString(td, name, value)
 end
 
 tdft.GetAttributeInt = function(td, name)
-  return GetAttributeInt(td, name)
+  return GetTileAttributeInt(td, name)
 end
 
 tdft.GetAttributeFloat = function(td, name)
-  return GetAttributeFloat(td, name)
+  return GetTileAttributeFloat(td, name)
 end
 
 tdft.GetAttributeString = function(td, name)
-  return GetAttributeString(td, name)
+  return GetTileAttributeString(td, name)
 end
 
 tdft.AddTag = function(td, tag)
-  AddTag(td, tag)
+  AddTileTag(td, tag)
 end
 
 tdft.RemoveTag = function(td, tag)
-  RemoveTag(td, tag)
+  RemoveTileTag(td, tag)
 end
 
 tdft.HasTags = function(td, tagStr)
@@ -128,5 +128,47 @@ tdft.HasTags = function(td, tagStr)
 end
 
 tdft.GetTags = function(td)
-  return GetTags(td)
+  return GetTileTags(td)
+end
+
+
+tsft = getfntable("TileSet")
+tsft.SetAttributeInt = function(ts, name, value)
+  SetTileSetAttributeInt(ts, name, value)
+end
+
+tsft.SetAttributeFloat = function(ts, name, value)
+  SetTileSetAttributeFloat(ts, name, value)
+end
+
+tsft.SetAttributeString = function(ts, name, value)
+  SetTileSetAttributeString(ts, name, value)
+end
+
+tsft.GetAttributeInt = function(ts, name)
+  return GetTileSetAttributeInt(ts, name)
+end
+
+tsft.GetAttributeFloat = function(ts, name)
+  return GetTileSetAttributeFloat(ts, name)
+end
+
+tsft.GetAttributeString = function(ts, name)
+  return GetTileSetAttributeString(ts, name)
+end
+
+tsft.AddTag = function(ts, tag)
+  AddTileSetTag(ts, tag)
+end
+
+tsft.RemoveTag = function(ts, tag)
+  RemoveTileSetTag(ts, tag)
+end
+
+tsft.HasTags = function(ts, tagStr)
+  return TileSetHasTags(ts, tagStr)
+end
+
+tsft.GetTags = function(ts)
+  return GetTileSetTags(ts)
 end

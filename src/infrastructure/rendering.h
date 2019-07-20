@@ -1,7 +1,7 @@
 #pragma once
 #include "../stdafx.h"
 
-#include "outline.h"
+#include "world.h"
 
 typedef struct {
     int windowWidth;
@@ -18,7 +18,7 @@ typedef struct {
 void InitializeRendering(void);
 void FinalizeRendering(void);
 
-void AddOutline(Outline* o);
-void RemoveOutline(Outline* o);
+void AddTileSet(TileSet* ts);
+void RemoveTileSet(TileSet* ts);
 
 int Render(void);

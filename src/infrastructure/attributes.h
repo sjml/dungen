@@ -5,18 +5,34 @@
 void InitializeAttributes(void);
 void FinalizeAttributes(void);
 
-void SetupAttributeData(TileData* data);
+void SetupTileAttributeData(TileData* data);
+long long SetupTileSetAttributeData(TileSet* ts);
 
-void SetAttributeInt(TileData* data, char* name, int value);
-void SetAttributeFloat(TileData* data, char* name, float value);
-void SetAttributeString(TileData* data, char* name, char* value);
+void SetTileAttributeInt(TileData* data, char* name, int value);
+void SetTileAttributeFloat(TileData* data, char* name, float value);
+void SetTileAttributeString(TileData* data, char* name, char* value);
 
-int GetAttributeInt(TileData* data, char* name);
-float GetAttributeFloat(TileData* data, char* name);
-char* GetAttributeString(TileData* data, char* name);
+int GetTileAttributeInt(TileData* data, char* name);
+float GetTileAttributeFloat(TileData* data, char* name);
+char* GetTileAttributeString(TileData* data, char* name);
 
-bool AddTag(TileData* td, char* tag);
-bool RemoveTag(TileData* td, char* tag);
+bool AddTileTag(TileData* td, char* tag);
+bool RemoveTileTag(TileData* td, char* tag);
 TileData** GetTilesTagged(char* tagString);
 bool TileHasTags(TileData* td, char* tagString);
-char** GetTags(TileData* td);
+char** GetTileTags(TileData* td);
+
+
+void SetTileSetAttributeInt(TileSet* data, char* name, int value);
+void SetTileSetAttributeFloat(TileSet* data, char* name, float value);
+void SetTileSetAttributeString(TileSet* data, char* name, char* value);
+
+int GetTileSetAttributeInt(TileSet* data, char* name);
+float GetTileSetAttributeFloat(TileSet* data, char* name);
+char* GetTileSetAttributeString(TileSet* data, char* name);
+
+bool AddTileSetTag(TileSet* td, char* tag);
+bool RemoveTileSetTag(TileSet* td, char* tag);
+TileSet** GetTileSetsTagged(char* tagString);
+bool TileSetHasTags(TileSet* td, char* tagString);
+char** GetTileSetTags(TileSet* td);

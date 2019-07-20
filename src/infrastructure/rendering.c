@@ -4,6 +4,7 @@
 #include "util.h"
 #include "world.h"
 #include "text.h"
+#include "outline.h"
 
 const int windowWidth  = 1024;
 const int windowHeight = 768;
@@ -14,7 +15,7 @@ CameraData MainCamera;
 gbMat4 perspectiveMatrix;
 gbMat4 orthoMatrix;
 
-Outline** outlines = NULL;
+TileSet** tileSets = NULL;
 
 void InitializeRendering() {
     glfwInitHint(GLFW_COCOA_CHDIR_RESOURCES, GLFW_TRUE);
@@ -91,18 +92,18 @@ void FinalizeRendering() {
     glfwTerminate();
 }
 
-void AddOutline(Outline* o) {
-    arrpush(outlines, o);
+void AddTileSet(TileSet* ts) {
+    arrpush(tileSets, ts);
 }
 
-void RemoveOutline(Outline* o) {
-    for (int i = 0; i < arrlen(outlines); i++) {
-        if (outlines[i] == o) {
-            arrdel(outlines, i);
+void RemoveTileSet(TileSet* ts) {
+    for (int i = 0; i < arrlen(tileSets); i++) {
+        if (tileSets[i] == ts) {
+            arrdel(tileSets, i);
             return;
         }
     }
-    fprintf(stderr, "ERROR: removing outline that was not part of the world.\n");
+    fprintf(stderr, "ERROR: removing TileSet that was not part of the world.\n");
 }
 
 int Render() {
@@ -113,8 +114,10 @@ int Render() {
     glMatrixMode(GL_MODELVIEW);
     glPushMatrix();
         RenderTiles();
-        for (int i = 0; i < arrlen(outlines); i++) {
-            RenderOutline(outlines[i]);
+        for (int i = 0; i < arrlen(tileSets); i++) {
+            if (tileSets[i]->outline != NULL) {
+                RenderOutline(tileSets[i]->outline);
+            }
         }
     glPopMatrix();
     

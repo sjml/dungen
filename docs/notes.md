@@ -1,8 +1,18 @@
 ## TODO
 1. More declarative approach to coloring/rendering
-    - basic version in, still needs region outlines, overlays
+    - basic version in, still needs region outlines
+        - tiles get list of their regions
+        - tilesets can be tagged and attributed
+        - styler checks region styles first before individual
+        - outlines drawn after everything
+            - when resolving, remove a region's outline, or set its color to invisible
+            - outlines are only made by styler
+            - remove ability for script to directly make outline
+            - outlines destroyed when region is
     - labels
 2. Tech debt: 
+    - null checks in C functions
+    - have world setup wrapped in a transaction?
     - replace existing string split/munging code with SDS
     - cache SQL statements so they don't need to be recompiled afresh
 3. constraint solver (in Lua?)
@@ -15,6 +25,7 @@
 ## Horizon
 * setup debugger in VS Code or ZeroBrane?
 * specify (and store) random seed
+* let outlines specify inner/outer/center
 * let simulation elements be nested in directories
 * Windows build
 * Azure pipeline -> GitHub release (draft)

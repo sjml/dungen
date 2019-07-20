@@ -18,12 +18,19 @@ sky = {
   reqs = {
     tags = "sky"
   },
-  fill = colors.sky
+  tileFill = colors.sky
 }
 
 groundBase = {
   reqs = {
     tags = "ground"
   },
-  fill = {colorTable, "GroundColors", "depth"}
+  tileFill = {colorTable, "GroundColors", "depth"}
+}
+
+testRegion = {
+  reqs = {
+    tags = "test"
+  },
+  tileFill = {0.0, 1.0, 0.0}
 }

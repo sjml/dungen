@@ -3,6 +3,7 @@
 
 #include "attributes.h"
 #include "outline.h"
+#include "rendering.h"
 
 const float hexVertices[] = {
     0.0f,               0.0f,
@@ -90,6 +91,7 @@ void InitializeWorld(int width, int height, float scale) {
         for (int i = 0; i < width; i++) {
             TileData* td = &WorldArray[j*width + i];
             td->i = j*width + i;
+            td->memberSets = NULL;
             td->hexPos.x = i;
             td->hexPos.y = j;
             td->color.r = gb_random01(); // 0.0f;
@@ -135,7 +137,7 @@ void InitializeWorld(int width, int height, float scale) {
         }
     }
 
-    SetupAttributeData(WorldArray);
+    SetupTileAttributeData(WorldArray);
 }
 
 void FinalizeWorld() {
@@ -237,16 +239,37 @@ TileSet* CreateTileSet() {
     TileSet* ts = malloc(sizeof(TileSet));
     ts->tiles = NULL;
     ts->outline = NULL;
+    AddTileSet(ts);
+    ts->i = SetupTileSetAttributeData(ts);
     return ts;
 }
 
+void DestroyTileSet(TileSet* ts) {
+    RemoveTileSet(ts);
+    hmfree(ts->tiles);
+    if (ts->outline != NULL) {
+        DestroyOutline(ts->outline);
+    }
+    free(ts);
+}
+
 int AddTileToSet(TileSet* ts, TileData* t) {
+    long len = hmlen(ts->tiles);
     hmput(ts->tiles, t, 1);
+    if (len != hmlen(ts->tiles)) {
+        arrpush(t->memberSets, ts);
+    }
     return (int)hmlen(ts);
 }
 
 int RemoveTileFromSet(TileSet* ts, TileData* t) {
     hmdel(ts->tiles, t);
+    for (int i = 0; i < arrlen(t->memberSets); i++) {
+        if (t->memberSets[i] == ts) {
+            arrdel(t->memberSets, i);
+            break;
+        }
+    }
     return (int)hmlen(ts);
 }
 
@@ -268,10 +291,3 @@ TileData** GetTiles(TileSet* ts) {
     return ret;
 }
 
-void DestroyTileSet(TileSet* ts) {
-    hmfree(ts->tiles);
-    if (ts->outline != NULL) {
-        DestroyOutline(ts->outline);
-    }
-    free(ts);
-}

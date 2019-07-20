@@ -3,6 +3,7 @@
 #include "util.h"
 
 typedef struct sOutline Outline;
+typedef struct sTileSet TileSet;
 
 typedef struct {
     long long i;
@@ -16,13 +17,17 @@ typedef struct {
     int neighborE;
     int neighborSE;
     int neighborSW;
+
+    TileSet** memberSets;
 } TileData;
 
 typedef struct {
     TileData* key;
     int value;
 } TileHash;
-typedef struct {
+
+typedef struct sTileSet {
+    long long i;
     TileHash* tiles;
     Outline* outline;
 } TileSet;
@@ -40,9 +45,9 @@ TileData* GetTileAtIndex(long long i);
 TileData** GetTileNeighbors(TileData* center, int *numNeighbors);
 
 TileSet* CreateTileSet(void);
+void DestroyTileSet(TileSet* ts);
 int AddTileToSet(TileSet* ts, TileData* t);
 int RemoveTileFromSet(TileSet* ts, TileData* t);
 bool IsTileInSet(TileSet* ts, TileData* t);
 int GetTileCount(TileSet* ts);
 TileData** GetTiles(TileSet* ts);
-void DestroyTileSet(TileSet* ts);

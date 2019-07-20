@@ -65,10 +65,11 @@ td:RemoveTag("D")
 td:RemoveTag("D")
 
 tags = td:GetTags()
-lazyBasicAssert(3, #tags, "Tag count")
-lazyBasicAssert("A", tags[1], "Tag retrieval 1")
-lazyBasicAssert("B", tags[2], "Tag retrieval 2")
-lazyBasicAssert("C", tags[3], "Tag retrieval 3")
+lazyBasicAssert(4, #tags, "Tag count")
+lazyBasicAssert("ground", tags[1], "Tag retrieval 1")
+lazyBasicAssert("A", tags[2], "Tag retrieval 2")
+lazyBasicAssert("B", tags[3], "Tag retrieval 3")
+lazyBasicAssert("C", tags[4], "Tag retrieval 4")
 
 tiles = GetTilesTagged("B,C")
 lazyBasicAssert(2, #tiles, "Multi-tag count")
@@ -81,16 +82,17 @@ lazyBasicAssert(td.i,  tiles[1].i, "Tile retrieval by tag 3")
 lazyBasicAssert(td2.i, tiles[2].i, "Tile retrieval by tag 4")
 lazyBasicAssert(td3.i, tiles[3].i, "Tile retrieval by tag 5")
 
--- no asserts for this, just checking it doesn't trash memory
---   (and display can be checked by commenting last line)
-ts = TileSet()
-AddTileToSet(ts, GetTileAtIndex(0))
-AddTileToSet(ts, GetTileAtIndex(1))
-AddTileToSet(ts, GetTileAtPosition(1, 1))
-AddTileToSet(ts, GetTileAtPosition(3, 2))
-o = CreateOutline(ts)
-AddOutline(o)
-DestroyOutline(o)
+ts2 = TileSet()
+AddTileToSet(ts2, GetTileAtIndex(0))
+AddTileToSet(ts2, GetTileAtIndex(1))
+AddTileToSet(ts2, GetTileAtPosition(1, 1))
+AddTileToSet(ts2, GetTileAtPosition(3, 2))
+ts2:AddTag("Q")
+lazyBasicAssert(ts2:HasTags("Q"), true, "TileSet tag check")
+lazyBasicAssert(GetTileAtIndex(0):HasTags("Q"), false, "TileSet tags not propagated")
+mems = GetTileAtIndex(0).memberSets
+lazyBasicAssert(#mems, 1, "Tile membership count")
+lazyBasicAssert(mems[1].i, ts2.i, "Tile membership check")
 
 SetIntRegister("A", 5682)
 SetFloatRegister("B", 3.14)
@@ -114,4 +116,6 @@ td3 = nil
 tiles = nil
 tags = nil
 ts = nil
+ts2 = nil
+mems = nil
 collectgarbage() -- just to make sure this doesn't trigger segfaults
