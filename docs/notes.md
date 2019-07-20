@@ -1,8 +1,6 @@
 ## TODO
 1. More declarative approach to coloring/rendering
     - basic version in, still needs region outlines
-        - tiles get list of their regions
-        - tilesets can be tagged and attributed
         - styler checks region styles first before individual
         - outlines drawn after everything
             - when resolving, remove a region's outline, or set its color to invisible
