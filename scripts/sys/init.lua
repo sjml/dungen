@@ -11,6 +11,7 @@ require("sys.lib")
 require("sys.styler")
 
 ProFi = require("lib.ProFi")
+ordered_table = require("lib.ordered_table")
 
 os.exit = function()
   io.stderr:write("Cannot exit from Lua.\n")

@@ -15,7 +15,7 @@ function ReloadStyles()
   local preload = {
     colorTable = colorTable
   }
-  styles = {}
+  styles = ordered_table()
   for k,v in pairs(preload) do styles[k] = v end
   styleLoad, err = loadfile("scripts/simulation/Styles.lua", "bt", styles)
   if (err) then
