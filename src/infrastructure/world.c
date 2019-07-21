@@ -239,20 +239,21 @@ TileSet* CreateTileSet() {
     TileSet* ts = malloc(sizeof(TileSet));
     ts->tiles = NULL;
     ts->outline = NULL;
-    AddTileSet(ts);
+    AddTileSetToRendering(ts);
     ts->i = SetupTileSetAttributeData(ts);
     return ts;
 }
 
 void DestroyTileSet(TileSet* ts) {
-    RemoveTileSet(ts);
+    ClearTileSetAttributeData(ts);
+    RemoveTileSetFromRendering(ts);
+    if (ts->outline != NULL) {
+        DestroyOutline(ts->outline);
+    }
     for (int i = 0; i < hmlen(ts->tiles); i++) {
         RemoveTileFromSet(ts, ts->tiles[i].key);
     }
     hmfree(ts->tiles);
-    if (ts->outline != NULL) {
-        DestroyOutline(ts->outline);
-    }
     free(ts);
 }
 

@@ -7,6 +7,7 @@ void FinalizeAttributes(void);
 
 void SetupTileAttributeData(TileData* data);
 long long SetupTileSetAttributeData(TileSet* ts);
+void ClearTileSetAttributeData(TileSet* ts);
 
 void SetTileAttributeInt(TileData* data, char* name, int value);
 void SetTileAttributeFloat(TileData* data, char* name, float value);

@@ -92,11 +92,11 @@ void FinalizeRendering() {
     glfwTerminate();
 }
 
-void AddTileSet(TileSet* ts) {
+void AddTileSetToRendering(TileSet* ts) {
     arrpush(tileSets, ts);
 }
 
-void RemoveTileSet(TileSet* ts) {
+void RemoveTileSetFromRendering(TileSet* ts) {
     for (int i = 0; i < arrlen(tileSets); i++) {
         if (tileSets[i] == ts) {
             arrdel(tileSets, i);

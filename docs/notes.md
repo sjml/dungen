@@ -1,6 +1,5 @@
 ## TODO
 1. More declarative approach to coloring/rendering
-    - NB: get tileset by index needed
     - labels
 2. Tech debt: 
     - null checks in C functions
@@ -18,7 +17,6 @@
 7. player choice to overrule random tiles or die rolls (in Lua?)
 
 ## Horizon
-* setup debugger in VS Code or ZeroBrane?
 * specify (and store) random seed
 * let outlines specify inner/outer/center
 * let simulation elements be nested in directories

@@ -1,6 +1,8 @@
 #include "../stdafx.h"
 #include "attributes.h"
 
+#include "rendering.h"
+
 long long __tagIdx = 0;
 struct { char* key; long long value; } *tags_StringToIdx = NULL;
 struct { long long key; char* value; } *tags_IdxToString = NULL;
@@ -109,7 +111,7 @@ long long SetupTileSetAttributeData(TileSet* ts) {
         return -1;
     }
 
-    if (sqlite3_bind_pointer(stmt, 1, (void*)ts, "pTileSetData", NULL) != SQLITE_OK) {
+    if (sqlite3_bind_pointer(stmt, 1, (void*)ts, "pTileSet", NULL) != SQLITE_OK) {
         fprintf(stderr, "SQL ERROR: could not bind pointer value to statement: %s\n", sqlite3_errmsg(db));
         sqlite3_finalize(stmt);
         return -1;
@@ -122,6 +124,27 @@ long long SetupTileSetAttributeData(TileSet* ts) {
 
     sqlite3_finalize(stmt);
     return sqlite3_last_insert_rowid(db);
+}
+
+void ClearTileSetAttributeData(TileSet* ts) {
+    sqlite3_stmt *stmt;
+    if (sqlite3_prepare(db, "DELETE FROM tilesets WHERE id = ?;", -1, &stmt, 0) != SQLITE_OK) {
+        fprintf(stderr, "SQL ERROR: could not prepare deletion statement: %s\n", sqlite3_errmsg(db));
+        return;
+    }
+    
+    if (sqlite3_bind_int64(stmt, 1, ts->i) != SQLITE_OK) {
+        fprintf(stderr, "SQL ERROR: could not bind index to deletion statement: %s\n", sqlite3_errmsg(db));
+        sqlite3_finalize(stmt);
+        return;
+    }
+    if (sqlite3_step(stmt) != SQLITE_DONE) {
+        fprintf(stderr, "SQL ERROR: couldn't execute deletion statement: %s\n", sqlite3_errmsg(db));
+        sqlite3_finalize(stmt);
+        return;
+    }
+    
+    sqlite3_finalize(stmt);
 }
 
 bool _DoesColumnExist(char* name, AttrType dType) {
@@ -617,9 +640,9 @@ bool AddTileSetTag(TileSet* data, char* tag) {
     arrpush(tileSetList, data->i);
     hmput(tagIdxToTileSets, id, tileSetList);
 
-    // long long* tagList = hmget(tileIdxToTags, data->i);
-    // arrpush(tagList, id);
-    // hmput(tileIdxToTags, data->i, tagList);
+    long long* tagList = hmget(tileSetIdxToTags, data->i);
+    arrpush(tagList, id);
+    hmput(tileSetIdxToTags, data->i, tagList);
 
     return true;
 }
@@ -745,7 +768,7 @@ TileSet** GetTileSetsTagged(char* tagString) {
                 bool found = false;
                 for (int tsf=0; tsf < arrlen(tileSets); tsf++) {
                     if (indices[fi] == tileSets[tsf]) {
-                        // tile is in both; we're good
+                        // tileset is in both; we're good
                         found = true;
                         break;
                     }
@@ -757,10 +780,18 @@ TileSet** GetTileSetsTagged(char* tagString) {
         }
     }
 
+    // <sigh> couldn't get the pointer to pull out from the SQLite db, so we're stuck
+    //    doing it this way. Inefficient AF, but this function is called rarely, so eh.
+    TileSet** tss = GetRenderingTileSets();
     for (int i=0; i < arrlen(indices); i++) {
-//        arrpush(ret, GetTileSetAtIndex(indices[i]));
+        for (int tsi=0; tsi < arrlen(tss); tsi++) {
+            if (indices[i] == tss[tsi]->i) {
+                arrpush(ret, tss[tsi]);
+                break;
+            }
+        }
     }
-
+    
     sdsfreesplitres(tags, tagCount);
     arrfree(indices);
     return ret;

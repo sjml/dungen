@@ -18,8 +18,8 @@ typedef struct {
 void InitializeRendering(void);
 void FinalizeRendering(void);
 
-void AddTileSet(TileSet* ts);
-void RemoveTileSet(TileSet* ts);
+void AddTileSetToRendering(TileSet* ts);
+void RemoveTileSetFromRendering(TileSet* ts);
 TileSet** GetRenderingTileSets(void);
 
 int Render(void);
