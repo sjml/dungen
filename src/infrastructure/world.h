@@ -8,6 +8,7 @@ typedef struct sTileSet TileSet;
 typedef struct {
     long long i;
     Vec2i hexPos;
+    gbVec2 worldPos;
     gbVec3 color;
 
     // clockwise neighbors
@@ -43,7 +44,6 @@ void RenderTiles(void);
 TileData* GetTileAtPosition(int x, int y);
 TileData* GetTileAtIndex(long long i);
 TileData** GetTileNeighbors(TileData* center, int *numNeighbors);
-
 
 // TODO: TileSets will leak once they have no members if they
 //       aren't tracked somehow.

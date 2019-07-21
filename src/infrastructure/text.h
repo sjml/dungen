@@ -1,3 +1,3 @@
 #pragma once
 
-void PrintTextString(char *text, float x, float y, gbVec3* color, float scale, float spacing);
+void PrintTextString(char *text, gbVec2* pos, gbVec4* color, float scale, float spacing);

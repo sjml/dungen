@@ -1,26 +1,29 @@
 ## TODO
-1. More declarative approach to coloring/rendering
-    - labels
-2. Tech debt: 
+1. Tech debt: 
     - null checks in C functions
     - have world setup wrapped in a transaction?
     - replace existing string split/munging code with SDS
+        - also use const char* where appropriate
     - cache SQL statements so they don't need to be recompiled afresh
     - fix randomness (gb_random* funcs all use static seed)
     - find a consistent spot to call ResolveStyles()
     - unify ApplyFillStyle and ApplyOutlineStyle
-3. constraint solver (in Lua?)
-4. pathfinding (in Lua?)
-5. choice presentation (tiles, die rolls)
+    - specify outline thickness
+    - take the pointer check code from old angel for vector typemaps
+2. constraint solver (in Lua?)
+3. pathfinding (in Lua?)
+4. choice presentation (tiles, die rolls)
     - means some kind of UI description from Lua, plus "wait for it" where VM stops processing momentarily
-6. HLVM exceptions (C + Lua invoking)
-7. player choice to overrule random tiles or die rolls (in Lua?)
+5. HLVM exceptions (C + Lua invoking)
+6. player choice to overrule random tiles or die rolls (in Lua?)
 
 ## Horizon
 * specify (and store) random seed
 * let outlines specify inner/outer/center
 * let simulation elements be nested in directories
 * Windows build
+* better text rendering
+    - then let regions label themselves too
 * Azure pipeline -> GitHub release (draft)
 * history recording -- optional live captioning
     - banner: "The Primordial Age"

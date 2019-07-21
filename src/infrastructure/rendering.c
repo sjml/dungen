@@ -12,10 +12,21 @@ const int windowHeight = 768;
 GLFWwindow* window = NULL;
 
 CameraData MainCamera;
+gbMat4 viewMatrix;
+gbMat4 modelMatrix;
 gbMat4 perspectiveMatrix;
 gbMat4 orthoMatrix;
 
 TileSet** tileSets = NULL;
+
+typedef struct {
+    char* text;
+    gbVec2 pos;
+    float scale;
+    gbVec4 color;
+} textInfo;
+textInfo* textInfos = NULL;
+
 
 void InitializeRendering() {
     glfwInitHint(GLFW_COCOA_CHDIR_RESOURCES, GLFW_TRUE);
@@ -49,9 +60,10 @@ void InitializeRendering() {
     glPolygonMode(GL_FRONT, GL_FILL);
     glShadeModel(GL_FLAT);
     glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
-//    glEnable(GL_CULL_FACE);
-//    glFrontFace(GL_CCW);
-//    glCullFace(GL_BACK);
+    // commented because of easy_text; restore culling if text gets fancier
+    // glEnable(GL_CULL_FACE);
+    // glFrontFace(GL_CCW);
+    // glCullFace(GL_BACK);
     glDepthFunc(GL_LEQUAL);
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_BLEND);
@@ -74,11 +86,10 @@ void InitializeRendering() {
     MainCamera.windowWidth = windowWidth;
     MainCamera.windowHeight = windowHeight;
 
-    gb_mat4_perspective(&perspectiveMatrix, MainCamera.aperture, (float)MainCamera.windowWidth / (float)MainCamera.windowHeight, MainCamera.zNearClip, MainCamera.zFarClip);
-    gbMat4 look;
-    gb_mat4_look_at(&look, MainCamera.position, MainCamera.view, MainCamera.up);
-    gb_mat4_mul(&perspectiveMatrix, &perspectiveMatrix, &look);
-    
+    gb_mat4_perspective(&viewMatrix, MainCamera.aperture, (float)MainCamera.windowWidth / (float)MainCamera.windowHeight, MainCamera.zNearClip, MainCamera.zFarClip);
+    gb_mat4_look_at(&modelMatrix, MainCamera.position, MainCamera.view, MainCamera.up);
+    gb_mat4_mul(&perspectiveMatrix, &viewMatrix, &modelMatrix);
+
     gb_mat4_ortho2d(&orthoMatrix, 0.0f, 1024.0f, 768.0f, 0.0f);
 
     glMatrixMode(GL_MODELVIEW);
@@ -110,11 +121,56 @@ TileSet** GetRenderingTileSets() {
     return tileSets;
 }
 
+gbVec2 WorldToScreen(gbVec2* worldCoordinates) {
+    gbVec4 wc = {worldCoordinates->x, worldCoordinates->y, 0.0f, 1.0f};
+    gbVec4 clip;
+    gb_mat4_mul_vec4(&clip, &viewMatrix, wc);
+    gb_mat4_mul_vec4(&clip, &perspectiveMatrix, wc);
+    gbVec3 ndc;
+    gb_vec3_div(&ndc, clip.xyz, clip.w);
+
+    // these would properly come from the viewport function if we had one
+    gbVec2 viewDim = { 1024.0f, 768.0f };
+    gbVec2 viewOffset = { 0.0f, 0.0f };
+    
+    gbVec2 spos = {
+            (
+                (ndc.x + 1.0) / 2.0
+            ) * viewDim.x + viewOffset.x,
+            (
+                (1.0 - ndc.y) / 2.0
+            ) * viewDim.y + viewOffset.y
+    };
+
+    return spos;
+}
+
+void ClearTextStrings(void) {
+    while (arrlen(textInfos) > 0) {
+        textInfo ti = arrpop(textInfos);
+        free(ti.text);
+    }
+}
+
+void AddTextString(char* text, gbVec2* pos, float scale, gbVec4* color) {
+    textInfo ti;
+    ti.text = malloc(sizeof(char) * (strlen(text) + 1));
+    strcpy(ti.text, text);
+    ti.pos.x = pos->x;
+    ti.pos.y = pos->y;
+    ti.scale = scale;
+    ti.color.r = color->r;
+    ti.color.g = color->g;
+    ti.color.b = color->b;
+    ti.color.a = color->a;
+    arrpush(textInfos, ti);
+}
+
 int Render() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     glEnableClientState(GL_VERTEX_ARRAY);
-    
+
     glMatrixMode(GL_MODELVIEW);
     glPushMatrix();
         RenderTiles();
@@ -124,12 +180,14 @@ int Render() {
             }
         }
     glPopMatrix();
-    
+
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     glPushMatrix();
         glMultMatrixf(orthoMatrix.e);
-        // Print text strings here
+        for (int i=0; i < arrlen(textInfos); i++) {
+            PrintTextString(textInfos[i].text, &textInfos[i].pos, &textInfos[i].color, textInfos[i].scale, -1.0f);
+        }
     glMatrixMode(GL_PROJECTION);
     glPopMatrix();
 

@@ -6,12 +6,12 @@
 #pragma clang diagnostic pop
 
 
-void PrintTextString(char *text, float x, float y, gbVec3* color, float scale, float spacing) {
+void PrintTextString(char *text, gbVec2* pos, gbVec4* color, float scale, float spacing) {
     static char buffer[99999]; // ~500 chars
     int num_quads;
     
     stb_easy_font_spacing(spacing);
-    num_quads = stb_easy_font_print(x, y, text, NULL, buffer, sizeof(buffer));
+    num_quads = stb_easy_font_print(pos->x, pos->y, text, NULL, buffer, sizeof(buffer));
 
     glColor3fv(color->e);
     

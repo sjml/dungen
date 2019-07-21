@@ -18,22 +18,25 @@
         lua_gettable(L, $input);
         float x = lua_tonumber(L, -1);
         lua_pop(L, 1);
-        
+
         lua_pushinteger(L, 2);
         lua_gettable(L, $input);
         float y = lua_tonumber(L, -1);
         lua_pop(L, 1);
-        
+
         lua_pushinteger(L, 3);
         lua_gettable(L, $input);
         float z = lua_tonumber(L, -1);
         lua_pop(L, 1);
-        
-        lua_pushinteger(L, 4);
-        lua_gettable(L, $input);
-        float w = lua_tonumber(L, -1);
-        lua_pop(L, 1);
-        
+
+        float w = 1.0f;
+        if (lua_rawlen(L, $input) >= 4) {
+            lua_pushinteger(L, 4);
+            lua_gettable(L, $input);
+            w = lua_tonumber(L, -1);
+            lua_pop(L, 1);
+        }
+
         // build the vector
         vec.x = x;
         vec.y = y;
@@ -90,12 +93,12 @@
         lua_gettable(L, $input);
         float x = lua_tonumber(L, -1);
         lua_pop(L, 1);
-        
+
         lua_pushinteger(L, 2);
         lua_gettable(L, $input);
         float y = lua_tonumber(L, -1);
         lua_pop(L, 1);
-        
+
         // build the vector
         vec.x = x;
         vec.y = y;
@@ -117,12 +120,12 @@
         lua_gettable(L, $input);
         int x = (int)lua_tointeger(L, -1);
         lua_pop(L, 1);
-        
+
         lua_pushinteger(L, 2);
         lua_gettable(L, $input);
         int y = (int)lua_tointeger(L, -1);
         lua_pop(L, 1);
-        
+
         // build the vector
         vec.x = x;
         vec.y = y;

@@ -33,6 +33,8 @@ function ReloadStyles()
 end
 
 function ResolveStyles()
+  ClearTextStrings()
+
   local dims = GetWorldDimensions()
   local max = dims.x * dims.y
   for i=0, max - 1, 1 do
@@ -42,9 +44,15 @@ function ResolveStyles()
 
     for label, style in pairs(styles) do
       local m = CheckStyle(style, t)
-      if ((m[1] > match[1]) or (match[1] <= m[1] and m[2] > match[2])) then
+      if  ((m[1] > match[1])  -- more specific tile match
+        or (m[1] == match[1] and m[2] <= match[2])  -- equal tile match and equal or lesser region
+                                                    -- match (equality loses because of ordered
+                                                    -- application)
+        or (match[1] <= m[1] and m[2] >= match[2])  -- tile less/equal but region equal or more
+      ) then
         match = m
         ApplyFillStyle(style, t)
+        ApplyLabelStyle(style, t)
       end
     end
   end
@@ -60,6 +68,7 @@ function ResolveStyles()
       if ((m[1] > match[1]) or (match[1] <= m[1] and m[2] > match[2])) then
         match = m
         ApplyOutlineStyle(style, ts)
+        -- ApplyLabelStyle(style, ts)
       end
     end
   end
@@ -126,4 +135,16 @@ function ApplyOutlineStyle(styleTable, target)
       target:SetOutline(c)
     end
   end
+end
+
+function ApplyLabelStyle(styleTable, target)
+  if (styleTable.labelText == nil) then
+    return
+  end
+  local text = styleTable.labelText or ""
+  local position = WorldToScreen(target.worldPos)
+  -- local scale = styleTable.labelScale or 1.0
+  local scale = 1.0 -- scaling messes up coords for now
+  local color = styleTable.labelColor or {1.0, 1.0, 1.0}
+  AddTextString(text, {position.x, position.y}, scale, color)
 end

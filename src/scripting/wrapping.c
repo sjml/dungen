@@ -3813,6 +3813,159 @@ fail:
 }
 
 
+static int _wrap_WorldToScreen(lua_State* L) {
+  int SWIG_arg = 0;
+  gbVec2 *arg1 = (gbVec2 *) 0 ;
+  gbVec2 result;
+  
+  SWIG_check_num_args("WorldToScreen",1,1)
+  {
+    // gbVec2 conversion
+    gbVec2 *vecPtr;
+    gbVec2 vec;
+    if (SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&vecPtr,SWIGTYPE_p_gbVec2,0))) {
+      arg1 = vecPtr;
+    }
+    else {
+      // convert table parameters to floats
+      lua_pushinteger(L, 1);
+      lua_gettable(L, 1);
+      float x = lua_tonumber(L, -1);
+      lua_pop(L, 1);
+      
+      lua_pushinteger(L, 2);
+      lua_gettable(L, 1);
+      float y = lua_tonumber(L, -1);
+      lua_pop(L, 1);
+      
+      // build the vector
+      vec.x = x;
+      vec.y = y;
+      arg1 = &vec;
+    }
+  }
+  result = WorldToScreen(arg1);
+  {
+    gbVec2 * resultptr;
+    resultptr = (gbVec2 *) malloc(sizeof(gbVec2));
+    memmove(resultptr, &result, sizeof(gbVec2));
+    SWIG_NewPointerObj(L,(void *) resultptr,SWIGTYPE_p_gbVec2,1); SWIG_arg++;
+  }
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_ClearTextStrings(lua_State* L) {
+  int SWIG_arg = 0;
+  
+  SWIG_check_num_args("ClearTextStrings",0,0)
+  ClearTextStrings();
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_AddTextString(lua_State* L) {
+  int SWIG_arg = 0;
+  char *arg1 = (char *) 0 ;
+  gbVec2 *arg2 = (gbVec2 *) 0 ;
+  float arg3 ;
+  gbVec4 *arg4 = (gbVec4 *) 0 ;
+  
+  SWIG_check_num_args("AddTextString",4,4)
+  if(!SWIG_lua_isnilstring(L,1)) SWIG_fail_arg("AddTextString",1,"char *");
+  if(!lua_isnumber(L,3)) SWIG_fail_arg("AddTextString",3,"float");
+  arg1 = (char *)lua_tostring(L, 1);
+  {
+    // gbVec2 conversion
+    gbVec2 *vecPtr;
+    gbVec2 vec;
+    if (SWIG_IsOK(SWIG_ConvertPtr(L,2,(void**)&vecPtr,SWIGTYPE_p_gbVec2,0))) {
+      arg2 = vecPtr;
+    }
+    else {
+      // convert table parameters to floats
+      lua_pushinteger(L, 1);
+      lua_gettable(L, 2);
+      float x = lua_tonumber(L, -1);
+      lua_pop(L, 1);
+      
+      lua_pushinteger(L, 2);
+      lua_gettable(L, 2);
+      float y = lua_tonumber(L, -1);
+      lua_pop(L, 1);
+      
+      // build the vector
+      vec.x = x;
+      vec.y = y;
+      arg2 = &vec;
+    }
+  }
+  arg3 = (float)lua_tonumber(L, 3);
+  {
+    // gbVec4 conversion
+    gbVec4 *vecPtr;
+    gbVec4 vec;
+    if (SWIG_IsOK(SWIG_ConvertPtr(L,4,(void**)&vecPtr,SWIGTYPE_p_gbVec4,0))) {
+      arg4 = vecPtr;
+    }
+    else {
+      // convert table parameters to floats
+      lua_pushinteger(L, 1);
+      lua_gettable(L, 4);
+      float x = lua_tonumber(L, -1);
+      lua_pop(L, 1);
+      
+      lua_pushinteger(L, 2);
+      lua_gettable(L, 4);
+      float y = lua_tonumber(L, -1);
+      lua_pop(L, 1);
+      
+      lua_pushinteger(L, 3);
+      lua_gettable(L, 4);
+      float z = lua_tonumber(L, -1);
+      lua_pop(L, 1);
+      
+      float w = 1.0f;
+      if (lua_rawlen(L, 4) >= 4) {
+        lua_pushinteger(L, 4);
+        lua_gettable(L, 4);
+        w = lua_tonumber(L, -1);
+        lua_pop(L, 1);
+      }
+      
+      // build the vector
+      vec.x = x;
+      vec.y = y;
+      vec.z = z;
+      vec.w = w;
+      arg4 = &vec;
+    }
+  }
+  AddTextString(arg1,arg2,arg3,arg4);
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
 static int _wrap_SimulationElement_LuaRefKey_set(lua_State* L) {
   int SWIG_arg = 0;
   SimulationElement *arg1 = (SimulationElement *) 0 ;
@@ -4388,6 +4541,79 @@ fail:
 }
 
 
+static int _wrap_TileData_worldPos_set(lua_State* L) {
+  int SWIG_arg = 0;
+  TileData *arg1 = (TileData *) 0 ;
+  gbVec2 *arg2 = (gbVec2 *) 0 ;
+  
+  SWIG_check_num_args("TileData::worldPos",2,2)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("TileData::worldPos",1,"TileData *");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_TileData,0))){
+    SWIG_fail_ptr("TileData_worldPos_set",1,SWIGTYPE_p_TileData);
+  }
+  
+  {
+    // gbVec2 conversion
+    gbVec2 *vecPtr;
+    gbVec2 vec;
+    if (SWIG_IsOK(SWIG_ConvertPtr(L,2,(void**)&vecPtr,SWIGTYPE_p_gbVec2,0))) {
+      arg2 = vecPtr;
+    }
+    else {
+      // convert table parameters to floats
+      lua_pushinteger(L, 1);
+      lua_gettable(L, 2);
+      float x = lua_tonumber(L, -1);
+      lua_pop(L, 1);
+      
+      lua_pushinteger(L, 2);
+      lua_gettable(L, 2);
+      float y = lua_tonumber(L, -1);
+      lua_pop(L, 1);
+      
+      // build the vector
+      vec.x = x;
+      vec.y = y;
+      arg2 = &vec;
+    }
+  }
+  if (arg1) (arg1)->worldPos = *arg2;
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_TileData_worldPos_get(lua_State* L) {
+  int SWIG_arg = 0;
+  TileData *arg1 = (TileData *) 0 ;
+  gbVec2 *result = 0 ;
+  
+  SWIG_check_num_args("TileData::worldPos",1,1)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("TileData::worldPos",1,"TileData *");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_TileData,0))){
+    SWIG_fail_ptr("TileData_worldPos_get",1,SWIGTYPE_p_TileData);
+  }
+  
+  result = (gbVec2 *)& ((arg1)->worldPos);
+  SWIG_NewPointerObj(L,result,SWIGTYPE_p_gbVec2,0); SWIG_arg++; 
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
 static int _wrap_TileData_color_set(lua_State* L) {
   int SWIG_arg = 0;
   TileData *arg1 = (TileData *) 0 ;
@@ -4863,6 +5089,7 @@ static int _proxy__wrap_new_TileData(lua_State *L) {
 static swig_lua_attribute swig_TileData_attributes[] = {
     { "i", _wrap_TileData_i_get, _wrap_TileData_i_set },
     { "hexPos", _wrap_TileData_hexPos_get, _wrap_TileData_hexPos_set },
+    { "worldPos", _wrap_TileData_worldPos_get, _wrap_TileData_worldPos_set },
     { "color", _wrap_TileData_color_get, _wrap_TileData_color_set },
     { "neighborW", _wrap_TileData_neighborW_get, _wrap_TileData_neighborW_set },
     { "neighborNW", _wrap_TileData_neighborNW_get, _wrap_TileData_neighborNW_set },
@@ -5314,10 +5541,13 @@ static int _wrap_SetTileSetOutline(lua_State* L) {
       float z = lua_tonumber(L, -1);
       lua_pop(L, 1);
       
-      lua_pushinteger(L, 4);
-      lua_gettable(L, 2);
-      float w = lua_tonumber(L, -1);
-      lua_pop(L, 1);
+      float w = 1.0f;
+      if (lua_rawlen(L, 2) >= 4) {
+        lua_pushinteger(L, 4);
+        lua_gettable(L, 2);
+        w = lua_tonumber(L, -1);
+        lua_pop(L, 1);
+      }
       
       // build the vector
       vec.x = x;
@@ -6038,6 +6268,9 @@ static swig_lua_method swig_SwigModule_methods[]= {
     { "GetColorByIndex", _wrap_GetColorByIndex},
     { "GetColorByPercent", _wrap_GetColorByPercent},
     { "GetRenderingTileSets", _wrap_GetRenderingTileSets},
+    { "WorldToScreen", _wrap_WorldToScreen},
+    { "ClearTextStrings", _wrap_ClearTextStrings},
+    { "AddTextString", _wrap_AddTextString},
     { "CreateSimulationElement", _wrap_CreateSimulationElement},
     { "HLVMPush", _wrap_HLVMPush},
     { "HLVMPop", _wrap_HLVMPop},

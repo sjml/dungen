@@ -8,6 +8,7 @@
 typedef struct {
     long long i;
     Vec2i hexPos;
+    gbVec2 worldPos;
     gbVec3 color;
 
     int neighborW;

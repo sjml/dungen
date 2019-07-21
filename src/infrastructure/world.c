@@ -87,6 +87,10 @@ void InitializeWorld(int width, int height, float scale) {
         }
     }
 
+    startingPos.x = (worldSize.x * -0.5f) + tileRadius;
+    startingPos.y = (worldSize.y *  0.5f) + (tileFullHeight * -0.5f);
+    gbVec2 modVector;
+
     for (int j = 0; j < height; j++) {
         for (int i = 0; i < width; i++) {
             TileData* td = &WorldArray[j*width + i];
@@ -97,6 +101,13 @@ void InitializeWorld(int width, int height, float scale) {
             td->color.r = gb_random01(); // 0.0f;
             td->color.g = gb_random01(); // 0.0f;
             td->color.b = gb_random01(); // 0.0f;
+
+            modVector.x = tileFullWidth * i;
+            modVector.y = -((tileFullHeight - tileBottomDisplacement) * j);
+            if (j % 2) {
+                modVector.x += tileRadius;
+            }
+            gb_vec2_add(&td->worldPos, startingPos, modVector);
 
             td->neighborE = j * width + i + 1;
             td->neighborW = j * width + i - 1;
@@ -206,25 +217,14 @@ TileData** GetTileNeighbors(TileData* center, int *numNeighbors) {
 }
 
 void RenderTiles(void) {
-    gbVec2 startingPosition = {worldSize.x * -0.5f, worldSize.y * 0.5f};
-    startingPosition.x += tileRadius;
-    startingPosition.y += tileFullHeight * -0.5f;
-    gbVec2 modVector;
-
     glVertexPointer(2, GL_FLOAT, 0, hexVertices);
 
     for (int j = 0; j < worldHeight; j++) {
         for (int i = 0; i < worldWidth; i++) {
-            modVector.x = tileFullWidth * i;
-            modVector.y = -((tileFullHeight - tileBottomDisplacement) * j);
-            if (j % 2) {
-                modVector.x += tileRadius;
-            }
-
             glPushMatrix();
                 glTranslatef(
-                             startingPosition.x + modVector.x,
-                             startingPosition.y + modVector.y,
+                             WorldArray[j*worldWidth + i].worldPos.x,
+                             WorldArray[j*worldWidth + i].worldPos.y,
                              0.0f
                 );
                 glScalef(tileFullHeight, tileFullHeight, 1.0f);
