@@ -1,6 +1,6 @@
 ## This CMake file is a test. It's pretty thrown together and may not work well.
 ##   In fact, it just exits right now to make sure you don't think it'll do stuff.
-# message(FATAL_ERROR "This CMake file isn't in use at the moment, but could be a reference. Comment out this line to give it a try.")
+message(FATAL_ERROR "This CMake file isn't in use at the moment, but could be a reference. Comment out this line to give it a try.")
 
 cmake_minimum_required (VERSION 3.0)
 project (DunGen)
