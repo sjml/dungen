@@ -11,10 +11,10 @@ set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
 add_subdirectory(lib/glfw-3.3.0)
 include_directories(lib/glfw-3.3.0/include)
 
-add_library(sqlite lib/sds-0bb446e/sds.c)
+add_library(sds lib/sds-0bb446e/sds.c)
 include_directories(lib/sds-0bb446e)
 
-add_library(sds lib/sqlite-amalgamation-3290000/sqlite3.c)
+add_library(sqlite lib/sqlite-amalgamation-3290000/sqlite3.c)
 include_directories(lib/sqlite-amalgamation-3290000)
 
 add_library(lua
