@@ -1,0 +1,93 @@
+## This CMake file is a test. It's pretty thrown together and may not work well.
+##   In fact, it just exits right now to make sure you don't think it'll do stuff.
+message(FATAL_ERROR "This CMake file isn't in use at the moment, but could be a reference. Comment out this line to give it a try.")
+
+cmake_minimum_required (VERSION 3.0)
+project (DunGen)
+
+set(GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE)
+set(GLFW_BUILD_TESTS OFF CACHE BOOL "" FORCE)
+set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
+add_subdirectory(lib/glfw-3.3.0)
+include_directories(lib/glfw-3.3.0/include)
+
+add_library(sqlite lib/sds-0bb446e/sds.c)
+include_directories(lib/sds-0bb446e)
+
+add_library(sds lib/sqlite-amalgamation-3290000/sqlite3.c)
+include_directories(lib/sqlite-amalgamation-3290000)
+
+add_library(lua
+    lib/lua-5.3.5/src/lapi.c
+    lib/lua-5.3.5/src/lauxlib.c
+    lib/lua-5.3.5/src/lbaselib.c
+    lib/lua-5.3.5/src/lbitlib.c
+    lib/lua-5.3.5/src/lcode.c
+    lib/lua-5.3.5/src/lcorolib.c
+    lib/lua-5.3.5/src/lctype.c
+    lib/lua-5.3.5/src/ldblib.c
+    lib/lua-5.3.5/src/ldebug.c
+    lib/lua-5.3.5/src/ldo.c
+    lib/lua-5.3.5/src/ldump.c
+    lib/lua-5.3.5/src/lfunc.c
+    lib/lua-5.3.5/src/lgc.c
+    lib/lua-5.3.5/src/linit.c
+    lib/lua-5.3.5/src/liolib.c
+    lib/lua-5.3.5/src/llex.c
+    lib/lua-5.3.5/src/lmathlib.c
+    lib/lua-5.3.5/src/lmem.c
+    lib/lua-5.3.5/src/loadlib.c
+    lib/lua-5.3.5/src/lobject.c
+    lib/lua-5.3.5/src/lopcodes.c
+    lib/lua-5.3.5/src/loslib.c
+    lib/lua-5.3.5/src/lparser.c
+    lib/lua-5.3.5/src/lstate.c
+    lib/lua-5.3.5/src/lstring.c
+    lib/lua-5.3.5/src/lstrlib.c
+    lib/lua-5.3.5/src/ltable.c
+    lib/lua-5.3.5/src/ltablib.c
+    lib/lua-5.3.5/src/ltm.c
+    lib/lua-5.3.5/src/lua.c
+    lib/lua-5.3.5/src/luac.c
+    lib/lua-5.3.5/src/lundump.c
+    lib/lua-5.3.5/src/lutf8lib.c
+    lib/lua-5.3.5/src/lvm.c
+    lib/lua-5.3.5/src/lzio.c
+
+    lib/luafilesystem-1.7.0-2/src/lfs.c
+)
+include_directories(lib/lua-5.3.5/src)
+include_directories(lib/luafilesystem-1.7.0-2/src)
+
+include_directories(lib/single-file)
+
+add_executable (DunGen MACOSX_BUNDLE
+    src/main.c
+    src/scripting/scripting.c
+    src/scripting/wrapping.c
+    src/infrastructure/attributes.c
+    src/infrastructure/game.c
+    src/infrastructure/images.c
+    src/infrastructure/outline.c
+    src/infrastructure/rendering.c
+    src/infrastructure/text.c
+    src/infrastructure/util.c
+    src/infrastructure/world.c
+    src/hlvm/hlvm.c
+)
+
+set_target_properties(DunGen PROPERTIES MACOSX_BUNDLE_INFO_PLIST ${CMAKE_SOURCE_DIR}/platform/macOS/Info.plist)
+
+target_link_libraries(DunGen
+    glfw "-framework Cocoa" "-framework OpenGL" "-framework IOKit" "-framework CoreFoundation" "-framework CoreVideo"
+    lua
+    sqlite
+    sds
+)
+
+add_custom_command(TARGET DunGen POST_BUILD
+                   COMMAND ${CMAKE_COMMAND} -E copy_directory
+                   ${CMAKE_SOURCE_DIR}/images $<TARGET_FILE_DIR:DunGen>/../Resources/images)
+add_custom_command(TARGET DunGen POST_BUILD
+                   COMMAND ${CMAKE_COMMAND} -E copy_directory
+                   ${CMAKE_SOURCE_DIR}/scripts $<TARGET_FILE_DIR:DunGen>/../Resources/scripts)

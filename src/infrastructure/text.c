@@ -1,3 +1,4 @@
+#include "../stdafx.h"
 #include "text.h"
 
 #pragma clang diagnostic push
@@ -9,12 +10,12 @@
 void PrintTextString(char *text, gbVec2* pos, gbVec4* color, float scale, float spacing) {
     static char buffer[99999]; // ~500 chars
     int num_quads;
-    
+
     stb_easy_font_spacing(spacing);
     num_quads = stb_easy_font_print(pos->x, pos->y, text, NULL, buffer, sizeof(buffer));
 
     glColor3fv(color->e);
-    
+
     glMatrixMode(GL_MODELVIEW);
     glPushMatrix();
         glLoadIdentity();
