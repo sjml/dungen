@@ -1,6 +1,6 @@
 ## This CMake file is a test. It's pretty thrown together and may not work well.
 ##   In fact, it just exits right now to make sure you don't think it'll do stuff.
-message(FATAL_ERROR "This CMake file isn't in use at the moment, but could be a reference. Comment out this line to give it a try.")
+# message(FATAL_ERROR "This CMake file isn't in use at the moment, but could be a reference. Comment out this line to give it a try.")
 
 cmake_minimum_required (VERSION 3.0)
 project (DunGen)
@@ -9,13 +9,7 @@ set(GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE)
 set(GLFW_BUILD_TESTS OFF CACHE BOOL "" FORCE)
 set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
 add_subdirectory(lib/glfw-3.3.0)
-include_directories(lib/glfw-3.3.0/include)
-
-add_library(sds lib/sds-0bb446e/sds.c)
-include_directories(lib/sds-0bb446e)
-
-add_library(sqlite lib/sqlite-amalgamation-3290000/sqlite3.c)
-include_directories(lib/sqlite-amalgamation-3290000)
+find_package(OpenGL REQUIRED)
 
 add_library(lua
     lib/lua-5.3.5/src/lapi.c
@@ -59,6 +53,12 @@ add_library(lua
 include_directories(lib/lua-5.3.5/src)
 include_directories(lib/luafilesystem-1.7.0-2/src)
 
+add_library(sds lib/sds-0bb446e/sds.c)
+include_directories(lib/sds-0bb446e)
+
+add_library(sqlite lib/sqlite-amalgamation-3290000/sqlite3.c)
+include_directories(lib/sqlite-amalgamation-3290000)
+
 include_directories(lib/single-file)
 
 add_executable (DunGen MACOSX_BUNDLE
@@ -79,7 +79,7 @@ add_executable (DunGen MACOSX_BUNDLE
 set_target_properties(DunGen PROPERTIES MACOSX_BUNDLE_INFO_PLIST ${CMAKE_SOURCE_DIR}/platform/macOS/Info.plist)
 
 target_link_libraries(DunGen
-    glfw "-framework Cocoa" "-framework OpenGL" "-framework IOKit" "-framework CoreFoundation" "-framework CoreVideo"
+    glfw OpenGL::GL
     lua
     sqlite
     sds
