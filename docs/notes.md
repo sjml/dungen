@@ -1,6 +1,7 @@
 ## TODO
 1. Tech debt: 
     - null checks in C functions
+    - make a screentoworld function
     - have world setup wrapped in a transaction?
     - replace existing string split/munging code with SDS
         - also use const char* where appropriate
