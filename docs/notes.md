@@ -1,6 +1,5 @@
 ## TODO
 1. Tech debt: 
-    - fix randomness (gb_random* funcs all use static seed)
     - unify ApplyFillStyle and ApplyOutlineStyle
     - specify outline thickness
 2. pathfinding (in Lua?)

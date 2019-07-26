@@ -48,3 +48,23 @@ int handleGLErrors(const char* f, int line) {
     
     return errorFound;
 }
+
+// modified from gb_random*
+float RandomRangeFloat(float min, float max) {
+    int int_result = RandomRangeInt(0, 2147483646); /* Prevent integer overflow */
+    float result = int_result/(float)2147483646;
+    result *= max - min;
+    result += min;
+    return result;
+}
+
+int RandomRangeInt(int min, int max) {
+    unsigned int random_value = rand();
+    unsigned int diff, result;
+    random_value = random_value * 2147001325 + 715136305; /* BCPL generator */
+    diff = max - min + 1;
+    result = random_value % diff;
+    result += min;
+    
+    return result;
+}

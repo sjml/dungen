@@ -14,8 +14,11 @@ double SECONDS_PER_CYCLE = 0.0;
 
 double previousTime, currentTime;
 
+unsigned int randomSeed;
+
 void InitializeGame(void) {
-    srand((unsigned int)time(NULL));
+    randomSeed = (unsigned int)time(NULL);
+    srand(randomSeed);
 
     previousTime = glfwGetTime();
 

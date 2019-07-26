@@ -4,6 +4,7 @@
 #include "attributes.h"
 #include "outline.h"
 #include "rendering.h"
+#include "util.h"
 
 const float hexVertices[] = {
     0.0f,               0.0f,
@@ -98,9 +99,9 @@ void InitializeWorld(int width, int height, float scale) {
             td->memberSets = NULL;
             td->hexPos.x = i;
             td->hexPos.y = j;
-            td->color.r = gb_random01(); // 0.0f;
-            td->color.g = gb_random01(); // 0.0f;
-            td->color.b = gb_random01(); // 0.0f;
+            td->color.r = RandomRangeFloat(0.0f, 1.0f); // 0.0f;
+            td->color.g = RandomRangeFloat(0.0f, 1.0f); // 0.0f;
+            td->color.b = RandomRangeFloat(0.0f, 1.0f); // 0.0f;
 
             modVector.x = tileFullWidth * i;
             modVector.y = -((tileFullHeight - tileBottomDisplacement) * j);

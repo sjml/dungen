@@ -35,6 +35,10 @@ end
 function ResolveStyles()
   ClearTextStrings()
 
+  if (styles == nil) then
+    return
+  end
+
   local dims = GetWorldDimensions()
   local max = dims.x * dims.y
   for i=0, max - 1, 1 do
