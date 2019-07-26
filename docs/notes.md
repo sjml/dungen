@@ -1,6 +1,5 @@
 ## TODO
 1. Tech debt: 
-    - unify ApplyFillStyle and ApplyOutlineStyle
     - specify outline thickness
 2. pathfinding (in Lua?)
 3. constraint solver (in Lua?)
