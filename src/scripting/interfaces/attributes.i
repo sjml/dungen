@@ -3,31 +3,31 @@
     #include "../infrastructure/attributes.h"
 %}
 
-void SetTileAttributeInt(TileData* data, char* name, int value);
-void SetTileAttributeFloat(TileData* data, char* name, float value);
-void SetTileAttributeString(TileData* data, char* name, char* value);
+void SetTileAttributeInt(TileData* data, const char* name, int value);
+void SetTileAttributeFloat(TileData* data, const char* name, float value);
+void SetTileAttributeString(TileData* data, const char* name, const char* value);
 
-int GetTileAttributeInt(TileData* data, char* name);
-float GetTileAttributeFloat(TileData* data, char* name);
-char* GetTileAttributeString(TileData* data, char* name);
+int GetTileAttributeInt(TileData* data, const char* name);
+float GetTileAttributeFloat(TileData* data, const char* name);
+char* GetTileAttributeString(TileData* data, const char* name);
 
 bool AddTileTag(TileData* td, char* tag);
-bool RemoveTileTag(TileData* td, char* tag);
-TileData** GetTilesTagged(char* tagString);
-bool TileHasTags(TileData* td, char* tagString);
+bool RemoveTileTag(TileData* td, const char* tag);
+TileData** GetTilesTagged(const char* tagString);
+bool TileHasTags(TileData* td, const char* tagString);
 char** GetTileTags(TileData* td);
 
 
-void SetTileSetAttributeInt(TileSet* data, char* name, int value);
-void SetTileSetAttributeFloat(TileSet* data, char* name, float value);
-void SetTileSetAttributeString(TileSet* data, char* name, char* value);
+void SetTileSetAttributeInt(TileSet* data, const char* name, int value);
+void SetTileSetAttributeFloat(TileSet* data, const char* name, float value);
+void SetTileSetAttributeString(TileSet* data, const char* name, const char* value);
 
-int GetTileSetAttributeInt(TileSet* data, char* name);
-float GetTileSetAttributeFloat(TileSet* data, char* name);
-char* GetTileSetAttributeString(TileSet* data, char* name);
+int GetTileSetAttributeInt(TileSet* data, const char* name);
+float GetTileSetAttributeFloat(TileSet* data, const char* name);
+char* GetTileSetAttributeString(TileSet* data, const char* name);
 
 bool AddTileSetTag(TileSet* td, char* tag);
-bool RemoveTileSetTag(TileSet* td, char* tag);
-TileSet** GetTileSetsTagged(char* tagString);
-bool TileSetHasTags(TileSet* td, char* tagString);
+bool RemoveTileSetTag(TileSet* td, const char* tag);
+TileSet** GetTileSetsTagged(const char* tagString);
+bool TileSetHasTags(TileSet* td, const char* tagString);
 char** GetTileSetTags(TileSet* td);

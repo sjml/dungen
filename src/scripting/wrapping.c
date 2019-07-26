@@ -3885,7 +3885,7 @@ static int _wrap_AddTextString(lua_State* L) {
   gbVec4 *arg4 = (gbVec4 *) 0 ;
   
   SWIG_check_num_args("AddTextString",4,4)
-  if(!SWIG_lua_isnilstring(L,1)) SWIG_fail_arg("AddTextString",1,"char *");
+  if(!SWIG_lua_isnilstring(L,1)) SWIG_fail_arg("AddTextString",1,"char const *");
   if(!lua_isnumber(L,3)) SWIG_fail_arg("AddTextString",3,"float");
   arg1 = (char *)lua_tostring(L, 1);
   {
@@ -3954,7 +3954,7 @@ static int _wrap_AddTextString(lua_State* L) {
       arg4 = &vec;
     }
   }
-  AddTextString(arg1,arg2,arg3,arg4);
+  AddTextString((char const *)arg1,arg2,arg3,arg4);
   
   return SWIG_arg;
   
@@ -5600,7 +5600,7 @@ static int _wrap_SetTileAttributeInt(lua_State* L) {
   
   SWIG_check_num_args("SetTileAttributeInt",3,3)
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("SetTileAttributeInt",1,"TileData *");
-  if(!SWIG_lua_isnilstring(L,2)) SWIG_fail_arg("SetTileAttributeInt",2,"char *");
+  if(!SWIG_lua_isnilstring(L,2)) SWIG_fail_arg("SetTileAttributeInt",2,"char const *");
   if(!lua_isnumber(L,3)) SWIG_fail_arg("SetTileAttributeInt",3,"int");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_TileData,0))){
@@ -5609,7 +5609,7 @@ static int _wrap_SetTileAttributeInt(lua_State* L) {
   
   arg2 = (char *)lua_tostring(L, 2);
   arg3 = (int)lua_tonumber(L, 3);
-  SetTileAttributeInt(arg1,arg2,arg3);
+  SetTileAttributeInt(arg1,(char const *)arg2,arg3);
   
   return SWIG_arg;
   
@@ -5629,7 +5629,7 @@ static int _wrap_SetTileAttributeFloat(lua_State* L) {
   
   SWIG_check_num_args("SetTileAttributeFloat",3,3)
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("SetTileAttributeFloat",1,"TileData *");
-  if(!SWIG_lua_isnilstring(L,2)) SWIG_fail_arg("SetTileAttributeFloat",2,"char *");
+  if(!SWIG_lua_isnilstring(L,2)) SWIG_fail_arg("SetTileAttributeFloat",2,"char const *");
   if(!lua_isnumber(L,3)) SWIG_fail_arg("SetTileAttributeFloat",3,"float");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_TileData,0))){
@@ -5638,7 +5638,7 @@ static int _wrap_SetTileAttributeFloat(lua_State* L) {
   
   arg2 = (char *)lua_tostring(L, 2);
   arg3 = (float)lua_tonumber(L, 3);
-  SetTileAttributeFloat(arg1,arg2,arg3);
+  SetTileAttributeFloat(arg1,(char const *)arg2,arg3);
   
   return SWIG_arg;
   
@@ -5658,8 +5658,8 @@ static int _wrap_SetTileAttributeString(lua_State* L) {
   
   SWIG_check_num_args("SetTileAttributeString",3,3)
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("SetTileAttributeString",1,"TileData *");
-  if(!SWIG_lua_isnilstring(L,2)) SWIG_fail_arg("SetTileAttributeString",2,"char *");
-  if(!SWIG_lua_isnilstring(L,3)) SWIG_fail_arg("SetTileAttributeString",3,"char *");
+  if(!SWIG_lua_isnilstring(L,2)) SWIG_fail_arg("SetTileAttributeString",2,"char const *");
+  if(!SWIG_lua_isnilstring(L,3)) SWIG_fail_arg("SetTileAttributeString",3,"char const *");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_TileData,0))){
     SWIG_fail_ptr("SetTileAttributeString",1,SWIGTYPE_p_TileData);
@@ -5667,7 +5667,7 @@ static int _wrap_SetTileAttributeString(lua_State* L) {
   
   arg2 = (char *)lua_tostring(L, 2);
   arg3 = (char *)lua_tostring(L, 3);
-  SetTileAttributeString(arg1,arg2,arg3);
+  SetTileAttributeString(arg1,(char const *)arg2,(char const *)arg3);
   
   return SWIG_arg;
   
@@ -5687,14 +5687,14 @@ static int _wrap_GetTileAttributeInt(lua_State* L) {
   
   SWIG_check_num_args("GetTileAttributeInt",2,2)
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("GetTileAttributeInt",1,"TileData *");
-  if(!SWIG_lua_isnilstring(L,2)) SWIG_fail_arg("GetTileAttributeInt",2,"char *");
+  if(!SWIG_lua_isnilstring(L,2)) SWIG_fail_arg("GetTileAttributeInt",2,"char const *");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_TileData,0))){
     SWIG_fail_ptr("GetTileAttributeInt",1,SWIGTYPE_p_TileData);
   }
   
   arg2 = (char *)lua_tostring(L, 2);
-  result = (int)GetTileAttributeInt(arg1,arg2);
+  result = (int)GetTileAttributeInt(arg1,(char const *)arg2);
   lua_pushnumber(L, (lua_Number) result); SWIG_arg++;
   return SWIG_arg;
   
@@ -5714,14 +5714,14 @@ static int _wrap_GetTileAttributeFloat(lua_State* L) {
   
   SWIG_check_num_args("GetTileAttributeFloat",2,2)
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("GetTileAttributeFloat",1,"TileData *");
-  if(!SWIG_lua_isnilstring(L,2)) SWIG_fail_arg("GetTileAttributeFloat",2,"char *");
+  if(!SWIG_lua_isnilstring(L,2)) SWIG_fail_arg("GetTileAttributeFloat",2,"char const *");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_TileData,0))){
     SWIG_fail_ptr("GetTileAttributeFloat",1,SWIGTYPE_p_TileData);
   }
   
   arg2 = (char *)lua_tostring(L, 2);
-  result = (float)GetTileAttributeFloat(arg1,arg2);
+  result = (float)GetTileAttributeFloat(arg1,(char const *)arg2);
   lua_pushnumber(L, (lua_Number) result); SWIG_arg++;
   return SWIG_arg;
   
@@ -5741,14 +5741,14 @@ static int _wrap_GetTileAttributeString(lua_State* L) {
   
   SWIG_check_num_args("GetTileAttributeString",2,2)
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("GetTileAttributeString",1,"TileData *");
-  if(!SWIG_lua_isnilstring(L,2)) SWIG_fail_arg("GetTileAttributeString",2,"char *");
+  if(!SWIG_lua_isnilstring(L,2)) SWIG_fail_arg("GetTileAttributeString",2,"char const *");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_TileData,0))){
     SWIG_fail_ptr("GetTileAttributeString",1,SWIGTYPE_p_TileData);
   }
   
   arg2 = (char *)lua_tostring(L, 2);
-  result = (char *)GetTileAttributeString(arg1,arg2);
+  result = (char *)GetTileAttributeString(arg1,(char const *)arg2);
   lua_pushstring(L,(const char *)result); SWIG_arg++;
   return SWIG_arg;
   
@@ -5795,14 +5795,14 @@ static int _wrap_RemoveTileTag(lua_State* L) {
   
   SWIG_check_num_args("RemoveTileTag",2,2)
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("RemoveTileTag",1,"TileData *");
-  if(!SWIG_lua_isnilstring(L,2)) SWIG_fail_arg("RemoveTileTag",2,"char *");
+  if(!SWIG_lua_isnilstring(L,2)) SWIG_fail_arg("RemoveTileTag",2,"char const *");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_TileData,0))){
     SWIG_fail_ptr("RemoveTileTag",1,SWIGTYPE_p_TileData);
   }
   
   arg2 = (char *)lua_tostring(L, 2);
-  result = (bool)RemoveTileTag(arg1,arg2);
+  result = (bool)RemoveTileTag(arg1,(char const *)arg2);
   lua_pushboolean(L,(int)(result!=0)); SWIG_arg++;
   return SWIG_arg;
   
@@ -5820,9 +5820,9 @@ static int _wrap_GetTilesTagged(lua_State* L) {
   TileData **result = 0 ;
   
   SWIG_check_num_args("GetTilesTagged",1,1)
-  if(!SWIG_lua_isnilstring(L,1)) SWIG_fail_arg("GetTilesTagged",1,"char *");
+  if(!SWIG_lua_isnilstring(L,1)) SWIG_fail_arg("GetTilesTagged",1,"char const *");
   arg1 = (char *)lua_tostring(L, 1);
-  result = (TileData **)GetTilesTagged(arg1);
+  result = (TileData **)GetTilesTagged((char const *)arg1);
   
   {
     lua_newtable(L);
@@ -5856,14 +5856,14 @@ static int _wrap_TileHasTags(lua_State* L) {
   
   SWIG_check_num_args("TileHasTags",2,2)
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("TileHasTags",1,"TileData *");
-  if(!SWIG_lua_isnilstring(L,2)) SWIG_fail_arg("TileHasTags",2,"char *");
+  if(!SWIG_lua_isnilstring(L,2)) SWIG_fail_arg("TileHasTags",2,"char const *");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_TileData,0))){
     SWIG_fail_ptr("TileHasTags",1,SWIGTYPE_p_TileData);
   }
   
   arg2 = (char *)lua_tostring(L, 2);
-  result = (bool)TileHasTags(arg1,arg2);
+  result = (bool)TileHasTags(arg1,(char const *)arg2);
   lua_pushboolean(L,(int)(result!=0)); SWIG_arg++;
   return SWIG_arg;
   
@@ -5924,7 +5924,7 @@ static int _wrap_SetTileSetAttributeInt(lua_State* L) {
   
   SWIG_check_num_args("SetTileSetAttributeInt",3,3)
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("SetTileSetAttributeInt",1,"TileSet *");
-  if(!SWIG_lua_isnilstring(L,2)) SWIG_fail_arg("SetTileSetAttributeInt",2,"char *");
+  if(!SWIG_lua_isnilstring(L,2)) SWIG_fail_arg("SetTileSetAttributeInt",2,"char const *");
   if(!lua_isnumber(L,3)) SWIG_fail_arg("SetTileSetAttributeInt",3,"int");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_sTileSet,0))){
@@ -5933,7 +5933,7 @@ static int _wrap_SetTileSetAttributeInt(lua_State* L) {
   
   arg2 = (char *)lua_tostring(L, 2);
   arg3 = (int)lua_tonumber(L, 3);
-  SetTileSetAttributeInt(arg1,arg2,arg3);
+  SetTileSetAttributeInt(arg1,(char const *)arg2,arg3);
   
   return SWIG_arg;
   
@@ -5953,7 +5953,7 @@ static int _wrap_SetTileSetAttributeFloat(lua_State* L) {
   
   SWIG_check_num_args("SetTileSetAttributeFloat",3,3)
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("SetTileSetAttributeFloat",1,"TileSet *");
-  if(!SWIG_lua_isnilstring(L,2)) SWIG_fail_arg("SetTileSetAttributeFloat",2,"char *");
+  if(!SWIG_lua_isnilstring(L,2)) SWIG_fail_arg("SetTileSetAttributeFloat",2,"char const *");
   if(!lua_isnumber(L,3)) SWIG_fail_arg("SetTileSetAttributeFloat",3,"float");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_sTileSet,0))){
@@ -5962,7 +5962,7 @@ static int _wrap_SetTileSetAttributeFloat(lua_State* L) {
   
   arg2 = (char *)lua_tostring(L, 2);
   arg3 = (float)lua_tonumber(L, 3);
-  SetTileSetAttributeFloat(arg1,arg2,arg3);
+  SetTileSetAttributeFloat(arg1,(char const *)arg2,arg3);
   
   return SWIG_arg;
   
@@ -5982,8 +5982,8 @@ static int _wrap_SetTileSetAttributeString(lua_State* L) {
   
   SWIG_check_num_args("SetTileSetAttributeString",3,3)
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("SetTileSetAttributeString",1,"TileSet *");
-  if(!SWIG_lua_isnilstring(L,2)) SWIG_fail_arg("SetTileSetAttributeString",2,"char *");
-  if(!SWIG_lua_isnilstring(L,3)) SWIG_fail_arg("SetTileSetAttributeString",3,"char *");
+  if(!SWIG_lua_isnilstring(L,2)) SWIG_fail_arg("SetTileSetAttributeString",2,"char const *");
+  if(!SWIG_lua_isnilstring(L,3)) SWIG_fail_arg("SetTileSetAttributeString",3,"char const *");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_sTileSet,0))){
     SWIG_fail_ptr("SetTileSetAttributeString",1,SWIGTYPE_p_sTileSet);
@@ -5991,7 +5991,7 @@ static int _wrap_SetTileSetAttributeString(lua_State* L) {
   
   arg2 = (char *)lua_tostring(L, 2);
   arg3 = (char *)lua_tostring(L, 3);
-  SetTileSetAttributeString(arg1,arg2,arg3);
+  SetTileSetAttributeString(arg1,(char const *)arg2,(char const *)arg3);
   
   return SWIG_arg;
   
@@ -6011,14 +6011,14 @@ static int _wrap_GetTileSetAttributeInt(lua_State* L) {
   
   SWIG_check_num_args("GetTileSetAttributeInt",2,2)
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("GetTileSetAttributeInt",1,"TileSet *");
-  if(!SWIG_lua_isnilstring(L,2)) SWIG_fail_arg("GetTileSetAttributeInt",2,"char *");
+  if(!SWIG_lua_isnilstring(L,2)) SWIG_fail_arg("GetTileSetAttributeInt",2,"char const *");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_sTileSet,0))){
     SWIG_fail_ptr("GetTileSetAttributeInt",1,SWIGTYPE_p_sTileSet);
   }
   
   arg2 = (char *)lua_tostring(L, 2);
-  result = (int)GetTileSetAttributeInt(arg1,arg2);
+  result = (int)GetTileSetAttributeInt(arg1,(char const *)arg2);
   lua_pushnumber(L, (lua_Number) result); SWIG_arg++;
   return SWIG_arg;
   
@@ -6038,14 +6038,14 @@ static int _wrap_GetTileSetAttributeFloat(lua_State* L) {
   
   SWIG_check_num_args("GetTileSetAttributeFloat",2,2)
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("GetTileSetAttributeFloat",1,"TileSet *");
-  if(!SWIG_lua_isnilstring(L,2)) SWIG_fail_arg("GetTileSetAttributeFloat",2,"char *");
+  if(!SWIG_lua_isnilstring(L,2)) SWIG_fail_arg("GetTileSetAttributeFloat",2,"char const *");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_sTileSet,0))){
     SWIG_fail_ptr("GetTileSetAttributeFloat",1,SWIGTYPE_p_sTileSet);
   }
   
   arg2 = (char *)lua_tostring(L, 2);
-  result = (float)GetTileSetAttributeFloat(arg1,arg2);
+  result = (float)GetTileSetAttributeFloat(arg1,(char const *)arg2);
   lua_pushnumber(L, (lua_Number) result); SWIG_arg++;
   return SWIG_arg;
   
@@ -6065,14 +6065,14 @@ static int _wrap_GetTileSetAttributeString(lua_State* L) {
   
   SWIG_check_num_args("GetTileSetAttributeString",2,2)
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("GetTileSetAttributeString",1,"TileSet *");
-  if(!SWIG_lua_isnilstring(L,2)) SWIG_fail_arg("GetTileSetAttributeString",2,"char *");
+  if(!SWIG_lua_isnilstring(L,2)) SWIG_fail_arg("GetTileSetAttributeString",2,"char const *");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_sTileSet,0))){
     SWIG_fail_ptr("GetTileSetAttributeString",1,SWIGTYPE_p_sTileSet);
   }
   
   arg2 = (char *)lua_tostring(L, 2);
-  result = (char *)GetTileSetAttributeString(arg1,arg2);
+  result = (char *)GetTileSetAttributeString(arg1,(char const *)arg2);
   lua_pushstring(L,(const char *)result); SWIG_arg++;
   return SWIG_arg;
   
@@ -6119,14 +6119,14 @@ static int _wrap_RemoveTileSetTag(lua_State* L) {
   
   SWIG_check_num_args("RemoveTileSetTag",2,2)
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("RemoveTileSetTag",1,"TileSet *");
-  if(!SWIG_lua_isnilstring(L,2)) SWIG_fail_arg("RemoveTileSetTag",2,"char *");
+  if(!SWIG_lua_isnilstring(L,2)) SWIG_fail_arg("RemoveTileSetTag",2,"char const *");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_sTileSet,0))){
     SWIG_fail_ptr("RemoveTileSetTag",1,SWIGTYPE_p_sTileSet);
   }
   
   arg2 = (char *)lua_tostring(L, 2);
-  result = (bool)RemoveTileSetTag(arg1,arg2);
+  result = (bool)RemoveTileSetTag(arg1,(char const *)arg2);
   lua_pushboolean(L,(int)(result!=0)); SWIG_arg++;
   return SWIG_arg;
   
@@ -6144,9 +6144,9 @@ static int _wrap_GetTileSetsTagged(lua_State* L) {
   TileSet **result = 0 ;
   
   SWIG_check_num_args("GetTileSetsTagged",1,1)
-  if(!SWIG_lua_isnilstring(L,1)) SWIG_fail_arg("GetTileSetsTagged",1,"char *");
+  if(!SWIG_lua_isnilstring(L,1)) SWIG_fail_arg("GetTileSetsTagged",1,"char const *");
   arg1 = (char *)lua_tostring(L, 1);
-  result = (TileSet **)GetTileSetsTagged(arg1);
+  result = (TileSet **)GetTileSetsTagged((char const *)arg1);
   
   {
     lua_newtable(L);
@@ -6180,14 +6180,14 @@ static int _wrap_TileSetHasTags(lua_State* L) {
   
   SWIG_check_num_args("TileSetHasTags",2,2)
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("TileSetHasTags",1,"TileSet *");
-  if(!SWIG_lua_isnilstring(L,2)) SWIG_fail_arg("TileSetHasTags",2,"char *");
+  if(!SWIG_lua_isnilstring(L,2)) SWIG_fail_arg("TileSetHasTags",2,"char const *");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_sTileSet,0))){
     SWIG_fail_ptr("TileSetHasTags",1,SWIGTYPE_p_sTileSet);
   }
   
   arg2 = (char *)lua_tostring(L, 2);
-  result = (bool)TileSetHasTags(arg1,arg2);
+  result = (bool)TileSetHasTags(arg1,(char const *)arg2);
   lua_pushboolean(L,(int)(result!=0)); SWIG_arg++;
   return SWIG_arg;
   

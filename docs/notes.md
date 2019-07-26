@@ -2,14 +2,14 @@
 1. Tech debt: 
     - null checks in C functions
     - replace existing string split/munging code with SDS
-        - also use const char* where appropriate
+        - let spaces appear in tag strings 
+    - (*) --> ->
     - cache SQL statements so they don't need to be recompiled afresh
     - fix randomness (gb_random* funcs all use static seed)
-    - find a consistent spot to call ResolveStyles()
     - unify ApplyFillStyle and ApplyOutlineStyle
     - specify outline thickness
-2. constraint solver (in Lua?)
-3. pathfinding (in Lua?)
+2. pathfinding (in Lua?)
+3. constraint solver (in Lua?)
 4. choice presentation (tiles, die rolls)
     - means some kind of UI description from Lua, plus "wait for it" where VM stops processing momentarily
 5. HLVM exceptions (C + Lua invoking)

@@ -26,6 +26,6 @@ gbVec2 WorldToScreen(gbVec2* worldCoordinates);
 gbVec2 ScreenToWorld(gbVec2* screenCoordinates);
 
 void ClearTextStrings(void);
-void AddTextString(char* text, gbVec2* pos, float scale, gbVec4* color);
+void AddTextString(const char* text, gbVec2* pos, float scale, gbVec4* color);
 
 int Render(void);

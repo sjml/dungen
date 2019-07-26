@@ -42,7 +42,6 @@ void HLVMPush(SimulationElement* sim) {
     }
     arrpush(stack, sim);
     stackTop = arrlen(stack) - 1;
-    RunString("ResolveStyles()");
 }
 
 void HLVMPop(SimulationElement* topCheck) {
@@ -60,7 +59,6 @@ void HLVMPop(SimulationElement* topCheck) {
     }
     luaL_unref(GetLuaState(), LUA_REGISTRYINDEX, (*top).LuaRefKey);
     free(top);
-    RunString("ResolveStyles()");
 }
 
 void HLVMProcess() {
@@ -79,6 +77,7 @@ void HLVMProcess() {
         fprintf(stderr, "LUA ERROR: %s; HLVM popping %s\n", lua_tostring(L, -1), (*sim).Name);
         lua_pop(L, 1);
         HLVMPop(sim);
+        RunString("ResolveStyles()");
         return;
     }
     int retVal = (int)lua_tointeger(L, lua_gettop(L));
@@ -87,6 +86,8 @@ void HLVMProcess() {
     if (retVal == 0) {
         HLVMPop(sim);
     }
+
+    RunString("ResolveStyles()");
 }
 
 
@@ -98,7 +99,7 @@ float GetFloatRegister(const char* key) {
     return shget(floatRegisters, key);
 }
 
-char* GetStringRegister(const char* key) {
+const char* GetStringRegister(const char* key) {
     return shget(stringRegisters, key);
 }
 

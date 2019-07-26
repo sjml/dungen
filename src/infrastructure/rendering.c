@@ -185,7 +185,7 @@ void ClearTextStrings(void) {
     }
 }
 
-void AddTextString(char* text, gbVec2* pos, float scale, gbVec4* color) {
+void AddTextString(const char* text, gbVec2* pos, float scale, gbVec4* color) {
     textInfo ti;
     ti.text = malloc(sizeof(char) * (strlen(text) + 1));
     strcpy(ti.text, text);

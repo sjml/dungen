@@ -147,7 +147,7 @@ void ClearTileSetAttributeData(TileSet* ts) {
     sqlite3_finalize(stmt);
 }
 
-bool _DoesColumnExist(char* name, AttrType dType) {
+bool _DoesColumnExist(const char* name, AttrType dType) {
     char* query = "";
     if (dType == TILE) {
         query = "SELECT COUNT(*) AS CNTREC FROM pragma_table_info('tiles') WHERE name=?;";
@@ -175,7 +175,7 @@ bool _DoesColumnExist(char* name, AttrType dType) {
     return val == 1;
 }
 
-void _SetAttributeInt(void* data, AttrType dType, char* name, int value) {
+void _SetAttributeInt(void* data, AttrType dType, const char* name, int value) {
     char* tableName = "";
     char* idName = "";
     TileData* tileData = NULL;
@@ -240,16 +240,16 @@ void _SetAttributeInt(void* data, AttrType dType, char* name, int value) {
     sqlite3_finalize(stmt);
 }
 
-void SetTileAttributeInt(TileData* data, char* name, int value) {
+void SetTileAttributeInt(TileData* data, const char* name, int value) {
     _SetAttributeInt((void*)data, TILE, name, value);
 }
 
-void SetTileSetAttributeInt(TileSet* data, char* name, int value) {
+void SetTileSetAttributeInt(TileSet* data, const char* name, int value) {
     _SetAttributeInt((void*)data, TILESET, name, value);
 }
 
 
-void _SetAttributeFloat(void* data, AttrType dType, char* name, float value) {
+void _SetAttributeFloat(void* data, AttrType dType, const char* name, float value) {
     char* tableName = "";
     char* idName = "";
     TileData* tileData = NULL;
@@ -314,16 +314,16 @@ void _SetAttributeFloat(void* data, AttrType dType, char* name, float value) {
     sqlite3_finalize(stmt);
 }
 
-void SetTileAttributeFloat(TileData* data, char* name, float value) {
+void SetTileAttributeFloat(TileData* data, const char* name, float value) {
     _SetAttributeFloat((void*)data, TILE, name, value);
 }
 
-void SetTileSetAttributeFloat(TileSet* data, char* name, float value) {
+void SetTileSetAttributeFloat(TileSet* data, const char* name, float value) {
     _SetAttributeFloat((void*)data, TILESET, name, value);
 }
 
 
-void _SetAttributeString(void* data, AttrType dType, char* name, char* value) {
+void _SetAttributeString(void* data, AttrType dType, const char* name, const char* value) {
     char* tableName = "";
     char* idName = "";
     TileData* tileData = NULL;
@@ -388,16 +388,16 @@ void _SetAttributeString(void* data, AttrType dType, char* name, char* value) {
     sqlite3_finalize(stmt);
 }
 
-void SetTileAttributeString(TileData* data, char* name, char* value) {
+void SetTileAttributeString(TileData* data, const char* name, const char* value) {
     _SetAttributeString((void*)data, TILE, name, value);
 }
 
-void SetTileSetAttributeString(TileSet* data, char* name, char* value) {
+void SetTileSetAttributeString(TileSet* data, const char* name, const char* value) {
     _SetAttributeString((void*)data, TILESET, name, value);
 }
 
 
-int _GetAttributeInt(void* data, AttrType dType, char* name) {
+int _GetAttributeInt(void* data, AttrType dType, const char* name) {
     if (!_DoesColumnExist(name, dType)) {
         return 0;
     }
@@ -450,16 +450,16 @@ int _GetAttributeInt(void* data, AttrType dType, char* name) {
     return val;
 }
 
-int GetTileAttributeInt(TileData* data, char* name) {
+int GetTileAttributeInt(TileData* data, const char* name) {
     return _GetAttributeInt((void*)data, TILE, name);
 }
 
-int GetTileSetAttributeInt(TileSet* data, char* name) {
+int GetTileSetAttributeInt(TileSet* data, const char* name) {
     return _GetAttributeInt((void*)data, TILESET, name);
 }
 
 
-float _GetAttributeFloat(void* data, AttrType dType, char* name) {
+float _GetAttributeFloat(void* data, AttrType dType, const char* name) {
     if (!_DoesColumnExist(name, dType)) {
         return 0.0f;
     }
@@ -512,16 +512,16 @@ float _GetAttributeFloat(void* data, AttrType dType, char* name) {
     return val;
 }
 
-float GetTileAttributeFloat(TileData* data, char* name) {
+float GetTileAttributeFloat(TileData* data, const char* name) {
     return _GetAttributeFloat((void*)data, TILE, name);
 }
 
-float GetTileSetAttributeFloat(TileSet* data, char* name) {
+float GetTileSetAttributeFloat(TileSet* data, const char* name) {
     return _GetAttributeFloat((void*)data, TILESET, name);
 }
 
 
-char* _GetAttributeString(void* data, AttrType dType, char* name) {
+char* _GetAttributeString(void* data, AttrType dType, const char* name) {
     if (!_DoesColumnExist(name, dType)) {
         return "";
     }
@@ -576,16 +576,16 @@ char* _GetAttributeString(void* data, AttrType dType, char* name) {
     return val;
 }
 
-char* GetTileAttributeString(TileData* data, char* name) {
+char* GetTileAttributeString(TileData* data, const char* name) {
     return _GetAttributeString((void*)data, TILE, name);
 }
 
-char* GetTileSetAttributeString(TileSet* data, char* name) {
+char* GetTileSetAttributeString(TileSet* data, const char* name) {
     return _GetAttributeString((void*)data, TILESET, name);
 }
 
 
-long long _GetTagID(char* tag) {
+long long _GetTagID(const char* tag) {
     return shget(tags_StringToIdx, tag);
 }
 
@@ -647,7 +647,7 @@ bool AddTileSetTag(TileSet* data, char* tag) {
     return true;
 }
 
-bool RemoveTileTag(TileData* data, char* tag) {
+bool RemoveTileTag(TileData* data, const char* tag) {
     long long id = _GetTagID(tag);
     if (id == -1) {
         return false;
@@ -671,7 +671,7 @@ bool RemoveTileTag(TileData* data, char* tag) {
     return false;
 }
 
-bool RemoveTileSetTag(TileSet* data, char* tag) {
+bool RemoveTileSetTag(TileSet* data, const char* tag) {
     long long id = _GetTagID(tag);
     if (id == -1) {
         return false;
@@ -695,7 +695,7 @@ bool RemoveTileSetTag(TileSet* data, char* tag) {
     return false;
 }
 
-TileData** GetTilesTagged(char* tagString) {
+TileData** GetTilesTagged(const char* tagString) {
     int tagCount;
     sds* tags = sdssplitlen(tagString, strlen(tagString), ",", 1, &tagCount);
 
@@ -742,7 +742,7 @@ TileData** GetTilesTagged(char* tagString) {
     return ret;
 }
 
-TileSet** GetTileSetsTagged(char* tagString) {
+TileSet** GetTileSetsTagged(const char* tagString) {
     int tagCount;
     sds* tags = sdssplitlen(tagString, strlen(tagString), ",", 1, &tagCount);
 
@@ -797,7 +797,7 @@ TileSet** GetTileSetsTagged(char* tagString) {
     return ret;
 }
 
-bool TileHasTags(TileData* data, char* tagString) {
+bool TileHasTags(TileData* data, const char* tagString) {
     int tagCount;
     sds* tags = sdssplitlen(tagString, strlen(tagString), ",", 1, &tagCount);
 
@@ -826,7 +826,7 @@ bool TileHasTags(TileData* data, char* tagString) {
     return ret;
 }
 
-bool TileSetHasTags(TileSet* data, char* tagString) {
+bool TileSetHasTags(TileSet* data, const char* tagString) {
     int tagCount;
     sds* tags = sdssplitlen(tagString, strlen(tagString), ",", 1, &tagCount);
 
