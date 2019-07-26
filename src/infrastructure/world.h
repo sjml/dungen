@@ -43,6 +43,7 @@ void RenderTiles(void);
 
 TileData* GetTileAtPosition(int x, int y);
 TileData* GetTileAtIndex(long long i);
+TileData* ScreenToTile(gbVec2* screenCoordinates);
 TileData** GetTileNeighbors(TileData* center, int *numNeighbors);
 
 // TODO: TileSets will leak once they have no members if they

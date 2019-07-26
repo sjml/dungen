@@ -33,29 +33,23 @@ const float hexVertices[] = {
 TileData* WorldArray = NULL;
 gbVec2** PointList = NULL;
 
-float tileSideLength;
-float tileBottomDisplacement;
-float tileRadius;
-float tileFullHeight;
-float tileFullWidth;
+float tileSize;
+gbVec2 tileDimensions;
 gbVec2 worldSize;
-int worldWidth;
-int worldHeight;
+Vec2i tileSetSize;
 
 void InitializeWorld(int width, int height, float scale) {
-    worldWidth = width;
-    worldHeight = height;
+    tileSetSize.x = width;
+    tileSetSize.y = height;
 
-    tileSideLength = scale;
-    tileBottomDisplacement = sinf(M_PI / 6.0f) * tileSideLength;
-    tileRadius = cosf(M_PI / 6.0f) * tileSideLength;
-    tileFullHeight = tileSideLength + (2.0f * tileBottomDisplacement);
-    tileFullWidth = 2.0f * tileRadius;
+    tileSize = scale;
+    tileDimensions.y = 2.0f * scale;
+    tileDimensions.x = sqrtf(3.0f) * scale;
 
-    worldSize.x = tileFullWidth * width;
-    worldSize.y = (tileFullHeight * height) - (tileBottomDisplacement * (height - 1));
+    worldSize.x = tileDimensions.x * width;
+    worldSize.y = (tileDimensions.y * height) - ((tileSize * 0.5f) * (height - 1));
     if (height > 1) {
-        worldSize.x += tileRadius;
+        worldSize.x += tileDimensions.x / 2.0f;
     }
 
     arrsetlen(WorldArray, width * height);
@@ -71,8 +65,8 @@ void InitializeWorld(int width, int height, float scale) {
         arrsetlen(PointList[j], 2 * (width+1));
 
         high = (j % 2 != 0);
-        yHigh = startingPos.y - (j * (tileBottomDisplacement + tileSideLength));
-        yLow = yHigh - tileBottomDisplacement;
+        yHigh = startingPos.y - (j * ((tileSize * 0.5f) + tileSize));
+        yLow = yHigh - (tileSize * 0.5f);
         currentX = startingPos.x;
 
         for (int i = 0; i < arrlen(PointList[j]); i++) {
@@ -83,13 +77,13 @@ void InitializeWorld(int width, int height, float scale) {
             else {
                 PointList[j][i].y = yLow;
             }
-            currentX += tileRadius;
+            currentX += tileDimensions.x * 0.5f;
             high = !high;
         }
     }
 
-    startingPos.x = (worldSize.x * -0.5f) + tileRadius;
-    startingPos.y = (worldSize.y *  0.5f) + (tileFullHeight * -0.5f);
+    startingPos.x = (worldSize.x * -0.5f) + (tileDimensions.x  *  0.5f);
+    startingPos.y = (worldSize.y *  0.5f) + (tileDimensions.y * -0.5f);
     gbVec2 modVector;
 
     for (int j = 0; j < height; j++) {
@@ -103,10 +97,10 @@ void InitializeWorld(int width, int height, float scale) {
             td->color.g = RandomRangeFloat(0.0f, 1.0f); // 0.0f;
             td->color.b = RandomRangeFloat(0.0f, 1.0f); // 0.0f;
 
-            modVector.x = tileFullWidth * i;
-            modVector.y = -((tileFullHeight - tileBottomDisplacement) * j);
+            modVector.x = tileDimensions.x * i;
+            modVector.y = -((tileDimensions.y - (tileSize * 0.5f)) * j);
             if (j % 2) {
-                modVector.x += tileRadius;
+                modVector.x += tileDimensions.x * 0.5f;
             }
             gb_vec2_add(&td->worldPos, startingPos, modVector);
 
@@ -161,12 +155,12 @@ void FinalizeWorld() {
 }
 
 Vec2i GetWorldDimensions() {
-    Vec2i dim = {worldWidth, worldHeight};
+    Vec2i dim = {tileSetSize.x, tileSetSize.y};
     return dim;
 }
 
 float GetWorldScale() {
-    return tileSideLength;
+    return tileSize;
 }
 
 gbVec2** GetWorldPointList() {
@@ -174,15 +168,15 @@ gbVec2** GetWorldPointList() {
 }
 
 TileData* GetTileAtPosition(int x, int y) {
-    if (x < 0 || x >= worldWidth) {
+    if (x < 0 || x >= tileSetSize.x) {
         fprintf(stderr, "Invalid tile x index: %d\n", x);
         return NULL;
     }
-    if (y < 0 || y >= worldWidth) {
+    if (y < 0 || y >= tileSetSize.x) {
         fprintf(stderr, "Invalid tile y index: %d\n", y);
         return NULL;
     }
-    return &WorldArray[y*worldWidth + x];
+    return &WorldArray[y*tileSetSize.x + x];
 }
 
 TileData* GetTileAtIndex(long long i) {
@@ -191,6 +185,77 @@ TileData* GetTileAtIndex(long long i) {
         return NULL;
     }
     return &WorldArray[i];
+}
+
+// this is probably not as efficient as it could be, but not the bottleneck
+TileData* ScreenToTile(gbVec2* screenCoordinates) {
+    if (   screenCoordinates->x < 0 || screenCoordinates->y < 0
+        || screenCoordinates->x > 1024.0f || screenCoordinates->y > 768.0f
+    ) {
+        return NULL;
+    }
+
+    const static float aspect = 1024.0f / 768.0f;
+    const static float height = 20.0f;
+    const static float width = height * aspect;
+    const static float ratio = width / 1024.0f;
+    Vec2i sizePx = { worldSize.x / ratio, worldSize.y / ratio };
+    Vec2i offset = { 1024.0f - sizePx.x, 768.0f - sizePx.y };
+    offset.x /= 2;
+    offset.y /= 2;
+
+    Vec2i absCoord = {screenCoordinates->x - offset.x, screenCoordinates->y - offset.y};
+    const float sideSlope = tan((float)M_PI / 6.0f);
+    gbVec2 absCoordW = {absCoord.x * ratio, absCoord.y * ratio};
+
+    gbVec2 sectionCoordW = {absCoordW.x / tileDimensions.x, absCoordW.y / ((tileSize * 0.5f) + tileSize) };
+    Vec2i sectionCoord = { sectionCoordW.x, sectionCoordW.y };
+
+    gbVec2 remainders = {sectionCoordW.x - sectionCoord.x, sectionCoordW.y - sectionCoord.y };
+    gbVec2 localCoordW = {remainders.x * tileDimensions.x, remainders.y * ((tileSize * 0.5f) + tileSize) };
+
+    Vec2i hexCoord;
+    if ((sectionCoord.y & 1) == 0) {
+        hexCoord.x = sectionCoord.x;
+        hexCoord.y = sectionCoord.y;
+        if (localCoordW.y < (tileSize * 0.5f)) {
+            if (localCoordW.y < ((tileSize * 0.5f) - localCoordW.x * sideSlope)) {
+                hexCoord.x -= 1;
+                hexCoord.y -= 1;
+            }
+
+            if (localCoordW.y < (-(tileSize * 0.5f) + localCoordW.x * sideSlope)) {
+                hexCoord.y -= 1;
+            }
+        }
+    }
+    else {
+        if (localCoordW.x >= (tileDimensions.x * 0.5f)) {
+            if (localCoordW.y < (2 * (tileSize * 0.5f) - localCoordW.x * sideSlope)) {
+                hexCoord.x = sectionCoord.x;
+                hexCoord.y = sectionCoord.y - 1;
+            }
+            else {
+                hexCoord = sectionCoord;
+            }
+        }
+        else {
+            if (localCoordW.y < (localCoordW.x * sideSlope)) {
+                hexCoord.x = sectionCoord.x;
+                hexCoord.y = sectionCoord.y - 1;
+            }
+            else  {
+                hexCoord.x = sectionCoord.x - 1;
+                hexCoord.y = sectionCoord.y;
+            }
+        }
+    }
+
+    if (hexCoord.x < 0 || hexCoord.x >= tileSetSize.x || hexCoord.y < 0 || hexCoord.y >= tileSetSize.y) {
+        return NULL;
+    }
+
+    return GetTileAtPosition(hexCoord.x, hexCoord.y);
 }
 
 TileData** GetTileNeighbors(TileData* center, int *numNeighbors) {
@@ -220,16 +285,16 @@ TileData** GetTileNeighbors(TileData* center, int *numNeighbors) {
 void RenderTiles(void) {
     glVertexPointer(2, GL_FLOAT, 0, hexVertices);
 
-    for (int j = 0; j < worldHeight; j++) {
-        for (int i = 0; i < worldWidth; i++) {
+    for (int j = 0; j < tileSetSize.y; j++) {
+        for (int i = 0; i < tileSetSize.x; i++) {
             glPushMatrix();
                 glTranslatef(
-                             WorldArray[j*worldWidth + i].worldPos.x,
-                             WorldArray[j*worldWidth + i].worldPos.y,
+                             WorldArray[j*tileSetSize.x + i].worldPos.x,
+                             WorldArray[j*tileSetSize.x + i].worldPos.y,
                              0.0f
                 );
-                glScalef(tileFullHeight, tileFullHeight, 1.0f);
-                glColor3fv(WorldArray[j*worldWidth + i].color.e);
+                glScalef(tileDimensions.y, tileDimensions.y, 1.0f);
+                glColor3fv(WorldArray[j*tileSetSize.x + i].color.e);
                 glDrawArrays(GL_TRIANGLE_FAN, 0, 8);
             glPopMatrix();
         }
