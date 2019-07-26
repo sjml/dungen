@@ -1,10 +1,11 @@
 ## TODO
-1. pathfinding (in Lua?)
-2. constraint solver (in Lua?)
-3. choice presentation (tiles, die rolls)
+1. choice presentation (tiles, die rolls)
     - means some kind of UI description from Lua, plus "wait for it" where VM stops processing momentarily
-4. HLVM exceptions (C + Lua invoking)
-5. player choice to overrule random tiles or die rolls (in Lua?)
+    - might mean a more "real" UI system :-/ 
+2. constraint solver (in Lua?)
+    - don't overdo it; just build what is needed as it is needed
+3. HLVM exceptions (C + Lua invoking)
+4. player choice to overrule random tiles or die rolls (in Lua?)
 
 ## Horizon
 * specify (and store) random seed

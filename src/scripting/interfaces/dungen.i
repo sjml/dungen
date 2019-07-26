@@ -10,3 +10,4 @@
 %include world.i
 %include attributes.i
 %include game.i
+%include pathfind.i

@@ -146,6 +146,13 @@ void InitializeWorld(int width, int height, float scale) {
     SetupTileAttributeData(WorldArray);
 }
 
+long GetTileDistance(TileData* t1, TileData* t2) {
+    long dx = abs(t1->hexPos.x - t2->hexPos.x);
+    long dy = abs(t1->hexPos.y - t2->hexPos.y);
+    
+    return dx + dy;
+}
+
 void FinalizeWorld() {
     for (int i=0; i < arrlen(PointList); i++) {
         arrfree(PointList[i]);
