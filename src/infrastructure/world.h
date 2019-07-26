@@ -45,6 +45,7 @@ TileData* GetTileAtPosition(int x, int y);
 TileData* GetTileAtIndex(long long i);
 TileData* ScreenToTile(gbVec2* screenCoordinates);
 TileData** GetTileNeighbors(TileData* center, int *numNeighbors);
+long GetTileDistance(TileData* t1, TileData* t2);
 
 // TODO: TileSets will leak once they have no members if they
 //       aren't tracked somehow.

@@ -183,6 +183,7 @@
 		341F12F322D20196009C844F /* osmesa_context.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = osmesa_context.c; path = "lib/glfw-3.3.0/src/osmesa_context.c"; sourceTree = "<group>"; };
 		341F12F422D20196009C844F /* egl_context.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = egl_context.c; path = "lib/glfw-3.3.0/src/egl_context.c"; sourceTree = "<group>"; };
 		3424314522D7B51E00FC9FBE /* hlvm.i */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c.preprocessed; path = hlvm.i; sourceTree = "<group>"; };
+		344B44F922EB931400A27ADF /* pathfind.i */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c.preprocessed; path = pathfind.i; sourceTree = "<group>"; };
 		344C39E41EC4E0B2007F9466 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = platform/macOS/Assets.xcassets; sourceTree = SOURCE_ROOT; };
 		3455A6961EC4DA71000057E4 /* libglfw.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libglfw.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		345D93DC1EC4C53B003B7C63 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
@@ -488,6 +489,7 @@
 				3482A55622D6198400AAD098 /* world.i */,
 				3499472B22DB30D700C5BA7E /* attributes.i */,
 				34FE0B6522E30AEC007A1271 /* game.i */,
+				344B44F922EB931400A27ADF /* pathfind.i */,
 			);
 			path = interfaces;
 			sourceTree = "<group>";
@@ -1089,7 +1091,6 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
@@ -1137,7 +1138,6 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = macosx;
 			};
@@ -1157,7 +1157,6 @@
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_INHIBIT_ALL_WARNINGS = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.14;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1179,7 +1178,6 @@
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_INHIBIT_ALL_WARNINGS = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.14;
 				MTL_FAST_MATH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -1194,6 +1192,10 @@
 				DEVELOPMENT_TEAM = CFJYV723M9;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = src/stdafx.h;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					GL_SILENCE_DEPRECATION,
+					"$(inherited)",
+				);
 				HEADER_SEARCH_PATHS = (
 					"lib/glfw-3.3.0/include",
 					"lib/lua-5.3.5/src",
@@ -1216,6 +1218,7 @@
 				DEVELOPMENT_TEAM = CFJYV723M9;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = src/stdafx.h;
+				GCC_PREPROCESSOR_DEFINITIONS = GL_SILENCE_DEPRECATION;
 				HEADER_SEARCH_PATHS = (
 					"lib/glfw-3.3.0/include",
 					"lib/lua-5.3.5/src",

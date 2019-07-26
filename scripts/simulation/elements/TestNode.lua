@@ -118,9 +118,21 @@ lazyBasicAssert(GetStringRegister("F"), "", "Null string register check")
 lazyBasicAssert(GetTileRegister("F"), nil, "Null Tile register check")
 lazyBasicAssert(GetTileSetRegister("F"), nil, "Null TileSet set register check")
 
+tdStart = GetTileAtIndex(0)
+tdEnd = GetTileAtIndex(1024)
+path = FindSimplePath(tdStart, tdEnd)
+for _, t in pairs(path) do
+  t.color = {0.0, 0.0, 1.0}
+end
+tdStart.color = {0.0, 1.0, 0.0}
+tdEnd.color = {1.0, 0.0, 0.0}
+
 td = nil
 td2 = nil
 td3 = nil
+tdStart = nil
+tdEnd = nil
+path = nil
 tiles = nil
 tags = nil
 ts = nil

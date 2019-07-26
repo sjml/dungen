@@ -2731,6 +2731,9 @@ SWIGINTERN struct sTileSet *new_sTileSet(void){
 
     #include "../infrastructure/game.h"
 
+
+    #include "../constraints/pathfind.h"
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -6243,6 +6246,51 @@ fail:
 }
 
 
+static int _wrap_FindSimplePath(lua_State* L) {
+  int SWIG_arg = 0;
+  TileData *arg1 = (TileData *) 0 ;
+  TileData *arg2 = (TileData *) 0 ;
+  TileData **result = 0 ;
+  
+  SWIG_check_num_args("FindSimplePath",2,2)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("FindSimplePath",1,"TileData *");
+  if(!SWIG_isptrtype(L,2)) SWIG_fail_arg("FindSimplePath",2,"TileData *");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_TileData,0))){
+    SWIG_fail_ptr("FindSimplePath",1,SWIGTYPE_p_TileData);
+  }
+  
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,2,(void**)&arg2,SWIGTYPE_p_TileData,0))){
+    SWIG_fail_ptr("FindSimplePath",2,SWIGTYPE_p_TileData);
+  }
+  
+  result = (TileData **)FindSimplePath(arg1,arg2);
+  
+  {
+    lua_newtable(L);
+    if (arrlen(result) > 0) {
+      for (unsigned int i=1; i <= arrlen(result); i++) {
+        lua_pushnumber(L, i);
+        SWIG_NewPointerObj(L, result[i-1], SWIGTYPE_p_TileData, 1);
+        lua_settable(L, -3);
+      }
+    }
+    arrfree(result);
+    
+    SWIG_arg += 1;
+  }
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
 static swig_lua_attribute swig_SwigModule_attributes[] = {
     {0,0,0}
 };
@@ -6304,6 +6352,7 @@ static swig_lua_method swig_SwigModule_methods[]= {
     { "TileSetHasTags", _wrap_TileSetHasTags},
     { "GetTileSetTags", _wrap_GetTileSetTags},
     { "GetTime", _wrap_GetTime},
+    { "FindSimplePath", _wrap_FindSimplePath},
     {0,0}
 };
 static swig_lua_class* swig_SwigModule_classes[]= {
