@@ -1,12 +1,10 @@
 ## TODO
-1. Tech debt: 
-    - specify outline thickness
-2. pathfinding (in Lua?)
-3. constraint solver (in Lua?)
-4. choice presentation (tiles, die rolls)
+1. pathfinding (in Lua?)
+2. constraint solver (in Lua?)
+3. choice presentation (tiles, die rolls)
     - means some kind of UI description from Lua, plus "wait for it" where VM stops processing momentarily
-5. HLVM exceptions (C + Lua invoking)
-6. player choice to overrule random tiles or die rolls (in Lua?)
+4. HLVM exceptions (C + Lua invoking)
+5. player choice to overrule random tiles or die rolls (in Lua?)
 
 ## Horizon
 * specify (and store) random seed

@@ -99,12 +99,13 @@ bool DoEdgesShareVertex(Edge *e1, Edge *e2, Vec2i *shared, gbVec2 *crossVec) {
 }
 
 
-Outline* CreateOutline(TileSet* ts) {
+Outline* CreateOutline(TileSet* ts, float thickness) {
     Outline* o = malloc(sizeof(Outline));
     o->color.r = 1.0f;
     o->color.g = 0.0f;
     o->color.b = 0.0f;
     o->color.a = 1.0f;
+    o->thickness = thickness;
     o->pointLists = NULL;
 
     TileData** tiles = GetTiles(ts);
@@ -174,7 +175,7 @@ Outline* CreateOutline(TileSet* ts) {
         Edge lastMatched = startingEdge;
         Vec2i checkVert;
         gbVec2 crossVector;
-        float halfThickness = GetWorldScale() * 0.15f;
+        float halfThickness = GetWorldScale() * o->thickness;
 
         while (arrlen(edges) > 0) {
             int currentSize = (int)arrlen(edges);

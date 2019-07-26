@@ -136,7 +136,8 @@ function ApplyOutlineStyle(styleTable, target)
       c = styleTable.outlineColor[1](table.unpack(args))
     end
     if (c ~= nil) then
-      target:SetOutline(c)
+      thickness = styleTable.outlineThickness or 0.15
+      target:SetOutline(c, thickness)
     end
   end
 end

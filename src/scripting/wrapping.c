@@ -5509,9 +5509,11 @@ static int _wrap_SetTileSetOutline(lua_State* L) {
   int SWIG_arg = 0;
   TileSet *arg1 = (TileSet *) 0 ;
   gbVec4 *arg2 = (gbVec4 *) 0 ;
+  float arg3 ;
   
-  SWIG_check_num_args("SetTileSetOutline",2,2)
+  SWIG_check_num_args("SetTileSetOutline",3,3)
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("SetTileSetOutline",1,"TileSet *");
+  if(!lua_isnumber(L,3)) SWIG_fail_arg("SetTileSetOutline",3,"float");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_sTileSet,0))){
     SWIG_fail_ptr("SetTileSetOutline",1,SWIGTYPE_p_sTileSet);
@@ -5557,7 +5559,8 @@ static int _wrap_SetTileSetOutline(lua_State* L) {
       arg2 = &vec;
     }
   }
-  SetTileSetOutline(arg1,arg2);
+  arg3 = (float)lua_tonumber(L, 3);
+  SetTileSetOutline(arg1,arg2,arg3);
   
   return SWIG_arg;
   

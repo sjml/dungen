@@ -296,9 +296,9 @@ TileData** GetTiles(TileSet* ts) {
     return ret;
 }
 
-void SetTileSetOutline(TileSet* ts, gbVec4* color) {
+void SetTileSetOutline(TileSet* ts, gbVec4* color, float thickness) {
     if (ts->outline == NULL) {
-        ts->outline = CreateOutline(ts);
+        ts->outline = CreateOutline(ts, thickness);
     }
     ts->outline->color.r = color->r;
     ts->outline->color.g = color->g;

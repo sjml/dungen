@@ -197,8 +197,8 @@ tsft.GetTiles = function(ts)
   return GetTiles(ts)
 end
 
-tsft.SetOutline = function(ts, c)
-  return SetTileSetOutline(ts, c)
+tsft.SetOutline = function(ts, c, t)
+  return SetTileSetOutline(ts, c, t)
 end
 
 tsft.ClearOutline = function(ts)
