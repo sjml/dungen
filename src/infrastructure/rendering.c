@@ -5,6 +5,7 @@
 #include "world.h"
 #include "text.h"
 #include "outline.h"
+#include "game.h"
 
 const int windowWidth  = 1024;
 const int windowHeight = 768;
@@ -12,8 +13,8 @@ const int windowHeight = 768;
 GLFWwindow* window = NULL;
 
 CameraData MainCamera;
-gbMat4 viewMatrix;
-gbMat4 modelMatrix;
+gbMat4 projectionMatrix;
+gbMat4 modelViewMatrix;
 gbMat4 perspectiveMatrix;
 gbMat4 orthoMatrix;
 
@@ -47,11 +48,13 @@ void InitializeRendering() {
     glfwMakeContextCurrent(window);
 
     glfwSwapInterval(1);
+
+    glfwSetCursorPosCallback(window, MouseMoveCallback);
+
 //    glfwSetWindowSizeCallback(Camera::ResizeCallback);
 //    glfwSetKeyCallback(keyboardInput);
 //    glfwSetCharCallback(charInput);
 //    glfwDisable(GLFW_KEY_REPEAT);
-//    glfwSetMousePosCallback(MouseMotion);
 //    glfwSetMouseButtonCallback(MouseButton);
 //    glfwSetMouseWheelCallback(MouseWheel);
 //    glfwSetWindowCloseCallback(windowClosed);
@@ -81,14 +84,14 @@ void InitializeRendering() {
     MainCamera.up.x = 0.0f;
     MainCamera.up.y = 1.0f;
     MainCamera.up.z = 0.0f;
-    MainCamera.zFarClip = 200.0f;
-    MainCamera.zNearClip = 0.001f;
+    MainCamera.zFarClip = 1.0f;
+    MainCamera.zNearClip = -1.0f;
     MainCamera.windowWidth = windowWidth;
     MainCamera.windowHeight = windowHeight;
 
-    gb_mat4_perspective(&viewMatrix, MainCamera.aperture, (float)MainCamera.windowWidth / (float)MainCamera.windowHeight, MainCamera.zNearClip, MainCamera.zFarClip);
-    gb_mat4_look_at(&modelMatrix, MainCamera.position, MainCamera.view, MainCamera.up);
-    gb_mat4_mul(&perspectiveMatrix, &viewMatrix, &modelMatrix);
+    gb_mat4_perspective(&projectionMatrix, MainCamera.aperture, (float)MainCamera.windowWidth / (float)MainCamera.windowHeight, MainCamera.zNearClip, MainCamera.zFarClip);
+    gb_mat4_look_at(&modelViewMatrix, MainCamera.position, MainCamera.view, MainCamera.up);
+    gb_mat4_mul(&perspectiveMatrix, &projectionMatrix, &modelViewMatrix);
 
     gb_mat4_ortho2d(&orthoMatrix, 0.0f, 1024.0f, 768.0f, 0.0f);
 
@@ -124,7 +127,7 @@ TileSet** GetRenderingTileSets() {
 gbVec2 WorldToScreen(gbVec2* worldCoordinates) {
     gbVec4 wc = {worldCoordinates->x, worldCoordinates->y, 0.0f, 1.0f};
     gbVec4 clip;
-    gb_mat4_mul_vec4(&clip, &viewMatrix, wc);
+    gb_mat4_mul_vec4(&clip, &projectionMatrix, wc);
     gb_mat4_mul_vec4(&clip, &perspectiveMatrix, wc);
     gbVec3 ndc;
     gb_vec3_div(&ndc, clip.xyz, clip.w);
@@ -132,7 +135,7 @@ gbVec2 WorldToScreen(gbVec2* worldCoordinates) {
     // these would properly come from the viewport function if we had one
     gbVec2 viewDim = { 1024.0f, 768.0f };
     gbVec2 viewOffset = { 0.0f, 0.0f };
-    
+
     gbVec2 spos = {
             (
                 (ndc.x + 1.0) / 2.0
@@ -143,6 +146,36 @@ gbVec2 WorldToScreen(gbVec2* worldCoordinates) {
     };
 
     return spos;
+}
+
+gbVec2 ScreenToWorld(gbVec2* screenCoordinates) {
+    gbMat4 persp, final;
+    gb_mat4_mul(&persp, &projectionMatrix, &modelViewMatrix);
+    gb_mat4_inverse(&final, &persp);
+    gbVec4 in = {
+        screenCoordinates->x, screenCoordinates->y, 0.0f, 1.0f
+    };
+
+    // these would properly come from the viewport function if we had one
+    gbVec2 viewDim = { 1024.0f, 768.0f };
+    gbVec2 viewOffset = { 0.0f, 0.0f };
+
+    in.x = (in.x - viewOffset.x) / viewDim.x;
+    in.y = (in.y - viewOffset.y) / viewDim.y;
+
+    in.x = in.x * 2 - 1;
+    in.y = in.y * 2 - 1;
+    in.z = in.z * 2 - 1;
+
+    gbVec4 out;
+    gb_mat4_mul_vec4(&out, &final, in);
+    out.x /= out.w;
+    out.y /= out.w;
+    out.z /= out.w;
+
+    float multFactor = 10.0f; // TODO: this shouldn't be necessary :-/
+    gbVec2 ret = {out.x * -multFactor, out.y * multFactor};
+    return ret;
 }
 
 void ClearTextStrings(void) {

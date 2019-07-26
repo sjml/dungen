@@ -1,8 +1,6 @@
 ## TODO
 1. Tech debt: 
     - null checks in C functions
-    - make a screentoworld function
-    - have world setup wrapped in a transaction?
     - replace existing string split/munging code with SDS
         - also use const char* where appropriate
     - cache SQL statements so they don't need to be recompiled afresh
@@ -10,7 +8,6 @@
     - find a consistent spot to call ResolveStyles()
     - unify ApplyFillStyle and ApplyOutlineStyle
     - specify outline thickness
-    - take the pointer check code from old angel for vector typemaps
 2. constraint solver (in Lua?)
 3. pathfinding (in Lua?)
 4. choice presentation (tiles, die rolls)
@@ -34,3 +31,5 @@
     - name generator?
 * whitelist environment for simulation elements (removing coroutine functions, for instance)
 * https://github.com/nothings/stb/blob/master/stb_leakcheck.h
+* take the pointer check code from old angel for vector typemaps
+* figure out why ScreenToWorld needs that multiplier at the end :-/ 

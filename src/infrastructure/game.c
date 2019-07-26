@@ -51,3 +51,6 @@ int GameTick(void) {
 double GetTime() {
     return glfwGetTime();
 }
+
+void MouseMoveCallback(GLFWwindow* window, double xpos, double ypos) {
+}
