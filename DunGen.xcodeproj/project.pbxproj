@@ -61,6 +61,9 @@
 		341F12F622D20196009C844F /* egl_context.c in Sources */ = {isa = PBXBuildFile; fileRef = 341F12F422D20196009C844F /* egl_context.c */; };
 		344C39E51EC4E0B2007F9466 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 344C39E41EC4E0B2007F9466 /* Assets.xcassets */; };
 		3455A6B41EC4DB8F000057E4 /* libglfw.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3455A6961EC4DA71000057E4 /* libglfw.a */; };
+		345E93AC22EB279D006FD334 /* pqueue.c in Sources */ = {isa = PBXBuildFile; fileRef = 345E93A022EB25B3006FD334 /* pqueue.c */; };
+		345E93AF22EB27A9006FD334 /* libpqueue.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 345E93A722EB2787006FD334 /* libpqueue.a */; };
+		345E93B322EB2AE4006FD334 /* pathfind.c in Sources */ = {isa = PBXBuildFile; fileRef = 345E93B222EB2AE4006FD334 /* pathfind.c */; };
 		3466A4B622D4D71B00ED6CAA /* images.c in Sources */ = {isa = PBXBuildFile; fileRef = 3466A4B522D4D71B00ED6CAA /* images.c */; };
 		346CC51322DB507900E24845 /* outline.c in Sources */ = {isa = PBXBuildFile; fileRef = 346CC51222DB507900E24845 /* outline.c */; };
 		347A941622D1B85F002BF97F /* scripting.c in Sources */ = {isa = PBXBuildFile; fileRef = 347A941122D1B85F002BF97F /* scripting.c */; };
@@ -111,6 +114,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = 34C5B3F422DB2753007F0A79;
 			remoteInfo = sds;
+		};
+		345E93AD22EB27A5006FD334 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 345D93721EC4C47D003B7C63 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 345E93A622EB2787006FD334;
+			remoteInfo = pqueue;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -179,6 +189,11 @@
 		345D93DE1EC4C540003B7C63 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
 		345D93E01EC4C543003B7C63 /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
 		345D93E21EC4C54C003B7C63 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
+		345E93A022EB25B3006FD334 /* pqueue.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = pqueue.c; path = "lib/libpqueue-f319ea0/src/pqueue.c"; sourceTree = "<group>"; };
+		345E93A122EB25B3006FD334 /* pqueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = pqueue.h; path = "lib/libpqueue-f319ea0/src/pqueue.h"; sourceTree = "<group>"; };
+		345E93A722EB2787006FD334 /* libpqueue.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libpqueue.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		345E93B122EB2AE4006FD334 /* pathfind.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = pathfind.h; sourceTree = "<group>"; };
+		345E93B222EB2AE4006FD334 /* pathfind.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = pathfind.c; sourceTree = "<group>"; };
 		3466A4B422D4D71B00ED6CAA /* images.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = images.h; sourceTree = "<group>"; };
 		3466A4B522D4D71B00ED6CAA /* images.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = images.c; sourceTree = "<group>"; };
 		3466A4B722D4EDEB00ED6CAA /* gb_math.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = gb_math.h; path = "lib/single-file/gb_math.h"; sourceTree = "<group>"; };
@@ -232,10 +247,18 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		345E93A522EB2787006FD334 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		349C53AF1EC4D6B9008D42C6 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				345E93AF22EB27A9006FD334 /* libpqueue.a in Frameworks */,
 				34C5B3FA22DB2798007F0A79 /* libsds.a in Frameworks */,
 				34CD649722D9DD4900C33190 /* libsqlite.a in Frameworks */,
 				3417E26922D149B000762C69 /* liblua.a in Frameworks */,
@@ -336,6 +359,7 @@
 				3482A56322D683FD00AAD098 /* luafilesystem */,
 				34CD648C22D9DC8800C33190 /* sqlite */,
 				34C5B3D722DB10D3007F0A79 /* sds */,
+				345E93AB22EB2792006FD334 /* pqueue */,
 				340B5D0E22D21C9200E53DCA /* single-file */,
 			);
 			name = lib;
@@ -382,6 +406,7 @@
 				3417E22322D1486100762C69 /* liblua.a */,
 				34CD649122D9DD2F00C33190 /* libsqlite.a */,
 				34C5B3F522DB2753007F0A79 /* libsds.a */,
+				345E93A722EB2787006FD334 /* libpqueue.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -397,12 +422,31 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		345E93AB22EB2792006FD334 /* pqueue */ = {
+			isa = PBXGroup;
+			children = (
+				345E93A122EB25B3006FD334 /* pqueue.h */,
+				345E93A022EB25B3006FD334 /* pqueue.c */,
+			);
+			name = pqueue;
+			sourceTree = "<group>";
+		};
+		345E93B022EB2AC1006FD334 /* constraints */ = {
+			isa = PBXGroup;
+			children = (
+				345E93B122EB2AE4006FD334 /* pathfind.h */,
+				345E93B222EB2AE4006FD334 /* pathfind.c */,
+			);
+			path = constraints;
+			sourceTree = "<group>";
+		};
 		347A941022D1B85F002BF97F /* src */ = {
 			isa = PBXGroup;
 			children = (
 				347A945222D1DDC9002BF97F /* stdafx.h */,
 				347A941522D1B85F002BF97F /* main.c */,
 				3482A55F22D63C2E00AAD098 /* hlvm */,
+				345E93B022EB2AC1006FD334 /* constraints */,
 				340B5D1022D221CB00E53DCA /* scripting */,
 				347A941922D1B868002BF97F /* infrastructure */,
 			);
@@ -507,6 +551,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		345E93A322EB2787006FD334 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		34C5B3F122DB2753007F0A79 /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
@@ -558,6 +609,23 @@
 			productReference = 3455A6961EC4DA71000057E4 /* libglfw.a */;
 			productType = "com.apple.product-type.library.static";
 		};
+		345E93A622EB2787006FD334 /* pqueue */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 345E93A822EB2787006FD334 /* Build configuration list for PBXNativeTarget "pqueue" */;
+			buildPhases = (
+				345E93A322EB2787006FD334 /* Headers */,
+				345E93A422EB2787006FD334 /* Sources */,
+				345E93A522EB2787006FD334 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = pqueue;
+			productName = pqueue;
+			productReference = 345E93A722EB2787006FD334 /* libpqueue.a */;
+			productType = "com.apple.product-type.library.static";
+		};
 		349C53B11EC4D6B9008D42C6 /* DunGen */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 349C53E41EC4D6B9008D42C6 /* Build configuration list for PBXNativeTarget "DunGen" */;
@@ -572,6 +640,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				345E93AE22EB27A5006FD334 /* PBXTargetDependency */,
 				3450505722DB77A300D3485B /* PBXTargetDependency */,
 				3450505922DB77A300D3485B /* PBXTargetDependency */,
 				3450505B22DB77A300D3485B /* PBXTargetDependency */,
@@ -635,6 +704,11 @@
 						DevelopmentTeam = CFJYV723M9;
 						ProvisioningStyle = Automatic;
 					};
+					345E93A622EB2787006FD334 = {
+						CreatedOnToolsVersion = 10.3;
+						DevelopmentTeam = CFJYV723M9;
+						ProvisioningStyle = Automatic;
+					};
 					349C53B11EC4D6B9008D42C6 = {
 						CreatedOnToolsVersion = 8.3.2;
 						DevelopmentTeam = CFJYV723M9;
@@ -670,6 +744,7 @@
 				3417E22222D1486100762C69 /* lua */,
 				34CD649022D9DD2F00C33190 /* sqlite */,
 				34C5B3F422DB2753007F0A79 /* sds */,
+				345E93A622EB2787006FD334 /* pqueue */,
 			);
 		};
 /* End PBXProject section */
@@ -810,6 +885,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		345E93A422EB2787006FD334 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				345E93AC22EB279D006FD334 /* pqueue.c in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		349C53AE1EC4D6B9008D42C6 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -817,6 +900,7 @@
 				347A945522D1E949002BF97F /* world.c in Sources */,
 				346CC51322DB507900E24845 /* outline.c in Sources */,
 				347A941F22D1BE74002BF97F /* util.c in Sources */,
+				345E93B322EB2AE4006FD334 /* pathfind.c in Sources */,
 				3482A55822D61C6700AAD098 /* wrapping.c in Sources */,
 				347A941722D1B85F002BF97F /* rendering.c in Sources */,
 				34CD649A22D9DE3B00C33190 /* attributes.c in Sources */,
@@ -867,6 +951,11 @@
 			isa = PBXTargetDependency;
 			target = 34C5B3F422DB2753007F0A79 /* sds */;
 			targetProxy = 3450505C22DB77A300D3485B /* PBXContainerItemProxy */;
+		};
+		345E93AE22EB27A5006FD334 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 345E93A622EB2787006FD334 /* pqueue */;
+			targetProxy = 345E93AD22EB27A5006FD334 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -1054,6 +1143,47 @@
 			};
 			name = Release;
 		};
+		345E93A922EB2787006FD334 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = CFJYV723M9;
+				EXECUTABLE_PREFIX = lib;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		345E93AA22EB2787006FD334 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = CFJYV723M9;
+				EXECUTABLE_PREFIX = lib;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
 		349C53C31EC4D6B9008D42C6 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1067,6 +1197,7 @@
 					"lib/lua-5.3.5/src",
 					"lib/sqlite-amalgamation-3290000",
 					"lib/sds-0bb446e",
+					"lib/libpqueue-f319ea0/src",
 					"lib/single-file",
 				);
 				INFOPLIST_FILE = platform/macOS/Info.plist;
@@ -1088,6 +1219,7 @@
 					"lib/lua-5.3.5/src",
 					"lib/sqlite-amalgamation-3290000",
 					"lib/sds-0bb446e",
+					"lib/libpqueue-f319ea0/src",
 					"lib/single-file",
 				);
 				INFOPLIST_FILE = platform/macOS/Info.plist;
@@ -1200,6 +1332,15 @@
 			buildConfigurations = (
 				345D937F1EC4C47D003B7C63 /* Debug */,
 				345D93801EC4C47D003B7C63 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		345E93A822EB2787006FD334 /* Build configuration list for PBXNativeTarget "pqueue" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				345E93A922EB2787006FD334 /* Debug */,
+				345E93AA22EB2787006FD334 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

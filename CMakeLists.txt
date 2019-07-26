@@ -5,6 +5,8 @@ message(FATAL_ERROR "This CMake file isn't in use at the moment, but could be a 
 cmake_minimum_required (VERSION 3.0)
 project (DunGen)
 
+set(CMAKE_C_STANDARD 11)
+
 set(GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE)
 set(GLFW_BUILD_TESTS OFF CACHE BOOL "" FORCE)
 set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
@@ -59,8 +61,12 @@ include_directories(lib/sds-0bb446e)
 add_library(sqlite lib/sqlite-amalgamation-3290000/sqlite3.c)
 include_directories(lib/sqlite-amalgamation-3290000)
 
+add_library(pqueue lib/libpqueue-f319ea0/src/pqueue.c)
+include_directories(lib/libpqueue-f319ea0/src)
+
 include_directories(lib/single-file)
 
+add_compile_definitions(GL_SILENCE_DEPRECATION)
 add_executable (DunGen MACOSX_BUNDLE
     src/main.c
     src/scripting/scripting.c
@@ -74,6 +80,7 @@ add_executable (DunGen MACOSX_BUNDLE
     src/infrastructure/util.c
     src/infrastructure/world.c
     src/hlvm/hlvm.c
+    src/constraints/pathfind.c
 )
 
 set_target_properties(DunGen PROPERTIES MACOSX_BUNDLE_INFO_PLIST ${CMAKE_SOURCE_DIR}/platform/macOS/Info.plist)
@@ -83,11 +90,21 @@ target_link_libraries(DunGen
     lua
     sqlite
     sds
+    pqueue
 )
+
+find_program(SWIG_EXE "swig")
+if(SWIG_EXE)
+    add_custom_command(TARGET DunGen PRE_BUILD
+                       COMMAND ${SWIG_EXE} -lua -Werror -I${CMAKE_SOURCE_DIR}/lib/swiglib -o ${CMAKE_SOURCE_DIR}/src/scripting/wrapping.c ${CMAKE_SOURCE_DIR}/src/scripting/interfaces/dungen.i
+                      )
+endif()
 
 add_custom_command(TARGET DunGen POST_BUILD
                    COMMAND ${CMAKE_COMMAND} -E copy_directory
-                   ${CMAKE_SOURCE_DIR}/images $<TARGET_FILE_DIR:DunGen>/../Resources/images)
+                   ${CMAKE_SOURCE_DIR}/images $<TARGET_FILE_DIR:DunGen>/../Resources/images
+                  )
 add_custom_command(TARGET DunGen POST_BUILD
                    COMMAND ${CMAKE_COMMAND} -E copy_directory
-                   ${CMAKE_SOURCE_DIR}/scripts $<TARGET_FILE_DIR:DunGen>/../Resources/scripts)
+                   ${CMAKE_SOURCE_DIR}/scripts $<TARGET_FILE_DIR:DunGen>/../Resources/scripts
+                  )

@@ -4183,23 +4183,6 @@ fail:
 }
 
 
-static int _wrap_HLVMPop(lua_State* L) {
-  int SWIG_arg = 0;
-  SimulationElement *result = 0 ;
-  
-  SWIG_check_num_args("HLVMPop",0,0)
-  result = (SimulationElement *)HLVMPop();
-  SWIG_NewPointerObj(L,result,SWIGTYPE_p_SimulationElement,0); SWIG_arg++; 
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
 static int _wrap_GetIntRegister(lua_State* L) {
   int SWIG_arg = 0;
   char *arg1 = (char *) 0 ;
@@ -6276,7 +6259,6 @@ static swig_lua_method swig_SwigModule_methods[]= {
     { "AddTextString", _wrap_AddTextString},
     { "CreateSimulationElement", _wrap_CreateSimulationElement},
     { "HLVMPush", _wrap_HLVMPush},
-    { "HLVMPop", _wrap_HLVMPop},
     { "GetIntRegister", _wrap_GetIntRegister},
     { "GetFloatRegister", _wrap_GetFloatRegister},
     { "GetStringRegister", _wrap_GetStringRegister},

@@ -10,7 +10,6 @@ typedef struct {
 
 SimulationElement* CreateSimulationElement(char* name);
 void HLVMPush(SimulationElement* sim);
-SimulationElement* HLVMPop(void);
 
 int         GetIntRegister     (const char* key);
 float       GetFloatRegister   (const char* key);
