@@ -1,10 +1,5 @@
 ## TODO
 1. Tech debt: 
-    - null checks in C functions
-    - replace existing string split/munging code with SDS
-        - let spaces appear in tag strings 
-    - (*) --> ->
-    - cache SQL statements so they don't need to be recompiled afresh
     - fix randomness (gb_random* funcs all use static seed)
     - unify ApplyFillStyle and ApplyOutlineStyle
     - specify outline thickness

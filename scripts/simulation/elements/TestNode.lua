@@ -78,7 +78,7 @@ lazyBasicAssert("A", tags[2], "Tag retrieval 2")
 lazyBasicAssert("B", tags[3], "Tag retrieval 3")
 lazyBasicAssert("C", tags[4], "Tag retrieval 4")
 
-tiles = GetTilesTagged("B,C")
+tiles = GetTilesTagged("B, C")
 lazyBasicAssert(2, #tiles, "Multi-tag count")
 tileIndices = {tiles[1].i, tiles[2].i}
 lazyBasicAssert(td.i,  tileIndices, "Tile retrieval by tag 1")

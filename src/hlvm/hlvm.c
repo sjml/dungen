@@ -30,8 +30,8 @@ SimulationElement* CreateSimulationElement(char* name) {
         return NULL;
     }
     SimulationElement* sim = malloc(sizeof(SimulationElement));
-    (*sim).LuaRefKey = luaL_ref(L, LUA_REGISTRYINDEX);
-    (*sim).Name = name;
+    sim->LuaRefKey = luaL_ref(L, LUA_REGISTRYINDEX);
+    sim->Name = name;
     return sim;
 }
 
@@ -57,7 +57,7 @@ void HLVMPop(SimulationElement* topCheck) {
         fprintf(stderr, "ERROR: HLVM stack corruption! (incorrect top of stack)\n");
         return;
     }
-    luaL_unref(GetLuaState(), LUA_REGISTRYINDEX, (*top).LuaRefKey);
+    luaL_unref(GetLuaState(), LUA_REGISTRYINDEX, top->LuaRefKey);
     free(top);
 }
 
@@ -69,12 +69,12 @@ void HLVMProcess() {
     lua_State* L = GetLuaState();
     SimulationElement* sim = stack[stackTop];
 
-    lua_rawgeti(L, LUA_REGISTRYINDEX, (*sim).LuaRefKey);
+    lua_rawgeti(L, LUA_REGISTRYINDEX, sim->LuaRefKey);
     // TODO: should this be pcallk?
     int status = lua_pcall(L, 0, 1, 0);
     if (status != LUA_OK) {
         // error of some kind
-        fprintf(stderr, "LUA ERROR: %s; HLVM popping %s\n", lua_tostring(L, -1), (*sim).Name);
+        fprintf(stderr, "LUA ERROR: %s; HLVM popping %s\n", lua_tostring(L, -1), sim->Name);
         lua_pop(L, 1);
         HLVMPop(sim);
         RunString("ResolveStyles()");

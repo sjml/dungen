@@ -132,7 +132,7 @@ void ClearTileSetAttributeData(TileSet* ts) {
         fprintf(stderr, "SQL ERROR: could not prepare deletion statement: %s\n", sqlite3_errmsg(db));
         return;
     }
-    
+
     if (sqlite3_bind_int64(stmt, 1, ts->i) != SQLITE_OK) {
         fprintf(stderr, "SQL ERROR: could not bind index to deletion statement: %s\n", sqlite3_errmsg(db));
         sqlite3_finalize(stmt);
@@ -143,7 +143,7 @@ void ClearTileSetAttributeData(TileSet* ts) {
         sqlite3_finalize(stmt);
         return;
     }
-    
+
     sqlite3_finalize(stmt);
 }
 
@@ -222,10 +222,10 @@ void _SetAttributeInt(void* data, AttrType dType, const char* name, int value) {
     }
     int bindRes = -1;
     if (dType == TILE) {
-        bindRes = sqlite3_bind_int64(stmt, 2, (*tileData).i);
+        bindRes = sqlite3_bind_int64(stmt, 2, tileData->i);
     }
     else if (dType == TILESET) {
-        bindRes = sqlite3_bind_int64(stmt, 2, (*tileSetData).i);
+        bindRes = sqlite3_bind_int64(stmt, 2, tileSetData->i);
     }
     if (bindRes != SQLITE_OK) {
         fprintf(stderr, "SQL ERROR: could not bind index value to update statement: %s\n", sqlite3_errmsg(db));
@@ -296,10 +296,10 @@ void _SetAttributeFloat(void* data, AttrType dType, const char* name, float valu
     }
     int bindRes = -1;
     if (dType == TILE) {
-        bindRes = sqlite3_bind_int64(stmt, 2, (*tileData).i);
+        bindRes = sqlite3_bind_int64(stmt, 2, tileData->i);
     }
     else if (dType == TILESET) {
-        bindRes = sqlite3_bind_int64(stmt, 2, (*tileSetData).i);
+        bindRes = sqlite3_bind_int64(stmt, 2, tileSetData->i);
     }
     if (bindRes != SQLITE_OK) {
         fprintf(stderr, "SQL ERROR: could not bind index value to update statement: %s\n", sqlite3_errmsg(db));
@@ -370,10 +370,10 @@ void _SetAttributeString(void* data, AttrType dType, const char* name, const cha
     }
     int bindRes = -1;
     if (dType == TILE) {
-        bindRes = sqlite3_bind_int64(stmt, 2, (*tileData).i);
+        bindRes = sqlite3_bind_int64(stmt, 2, tileData->i);
     }
     else if (dType == TILESET) {
-        bindRes = sqlite3_bind_int64(stmt, 2, (*tileSetData).i);
+        bindRes = sqlite3_bind_int64(stmt, 2, tileSetData->i);
     }
     if (bindRes != SQLITE_OK) {
         fprintf(stderr, "SQL ERROR: could not bind index value to update statement: %s\n", sqlite3_errmsg(db));
@@ -428,10 +428,10 @@ int _GetAttributeInt(void* data, AttrType dType, const char* name) {
     }
     int bindRes = -1;
     if (dType == TILE) {
-        bindRes = sqlite3_bind_int64(stmt, 1, (*tileData).i);
+        bindRes = sqlite3_bind_int64(stmt, 1, tileData->i);
     }
     else if (dType == TILESET) {
-        bindRes = sqlite3_bind_int64(stmt, 1, (*tileSetData).i);
+        bindRes = sqlite3_bind_int64(stmt, 1, tileSetData->i);
     }
     if (bindRes != SQLITE_OK) {
         fprintf(stderr, "SQL ERROR: could not bind index value to insert statement: %s\n", sqlite3_errmsg(db));
@@ -490,10 +490,10 @@ float _GetAttributeFloat(void* data, AttrType dType, const char* name) {
     }
     int bindRes = -1;
     if (dType == TILE) {
-        bindRes = sqlite3_bind_int64(stmt, 1, (*tileData).i);
+        bindRes = sqlite3_bind_int64(stmt, 1, tileData->i);
     }
     else if (dType == TILESET) {
-        bindRes = sqlite3_bind_int64(stmt, 1, (*tileSetData).i);
+        bindRes = sqlite3_bind_int64(stmt, 1, tileSetData->i);
     }
     if (bindRes != SQLITE_OK) {
         fprintf(stderr, "SQL ERROR: could not bind index value to insert statement: %s\n", sqlite3_errmsg(db));
@@ -552,10 +552,10 @@ char* _GetAttributeString(void* data, AttrType dType, const char* name) {
     }
     int bindRes = -1;
     if (dType == TILE) {
-        bindRes = sqlite3_bind_int64(stmt, 1, (*tileData).i);
+        bindRes = sqlite3_bind_int64(stmt, 1, tileData->i);
     }
     else if (dType == TILESET) {
-        bindRes = sqlite3_bind_int64(stmt, 1, (*tileSetData).i);
+        bindRes = sqlite3_bind_int64(stmt, 1, tileSetData->i);
     }
     if (bindRes != SQLITE_OK) {
         fprintf(stderr, "SQL ERROR: could not bind index value to insert statement: %s\n", sqlite3_errmsg(db));
@@ -695,9 +695,19 @@ bool RemoveTileSetTag(TileSet* data, const char* tag) {
     return false;
 }
 
+sds* _TagSplit(const char* tagString, int* tagCount) {
+    sds* tags = sdssplitlen(tagString, strlen(tagString), ",", 1, tagCount);
+
+    for (int i = 0; i < *tagCount; i++) {
+        tags[i] = sdstrim(tags[i], " ");
+    }
+
+    return tags;
+}
+
 TileData** GetTilesTagged(const char* tagString) {
     int tagCount;
-    sds* tags = sdssplitlen(tagString, strlen(tagString), ",", 1, &tagCount);
+    sds* tags = _TagSplit(tagString, &tagCount);
 
     TileData** ret = NULL;
     long long* indices = NULL;
@@ -744,7 +754,7 @@ TileData** GetTilesTagged(const char* tagString) {
 
 TileSet** GetTileSetsTagged(const char* tagString) {
     int tagCount;
-    sds* tags = sdssplitlen(tagString, strlen(tagString), ",", 1, &tagCount);
+    sds* tags = _TagSplit(tagString, &tagCount);
 
     TileSet** ret = NULL;
     long long* indices = NULL;
@@ -791,7 +801,7 @@ TileSet** GetTileSetsTagged(const char* tagString) {
             }
         }
     }
-    
+
     sdsfreesplitres(tags, tagCount);
     arrfree(indices);
     return ret;
@@ -799,7 +809,7 @@ TileSet** GetTileSetsTagged(const char* tagString) {
 
 bool TileHasTags(TileData* data, const char* tagString) {
     int tagCount;
-    sds* tags = sdssplitlen(tagString, strlen(tagString), ",", 1, &tagCount);
+    sds* tags = _TagSplit(tagString, &tagCount);
 
     bool ret = true;
     for (int ti = 0; ti < tagCount; ti++) {
@@ -828,7 +838,7 @@ bool TileHasTags(TileData* data, const char* tagString) {
 
 bool TileSetHasTags(TileSet* data, const char* tagString) {
     int tagCount;
-    sds* tags = sdssplitlen(tagString, strlen(tagString), ",", 1, &tagCount);
+    sds* tags = _TagSplit(tagString, &tagCount);
 
     bool ret = true;
     for (int ti = 0; ti < tagCount; ti++) {
@@ -877,7 +887,7 @@ char** GetTileSetTags(TileSet* data) {
        char* tc = malloc(sizeof(char) * (strlen(t)+1));
        strcpy(tc, t);
        arrpush(ret, tc);
-   }
+    }
     return ret;
 }
 

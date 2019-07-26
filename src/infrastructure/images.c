@@ -54,9 +54,9 @@ gbVec3 GetColorByIndex(const char* tablename, int i) {
         return ret;
     }
 
-    ret.r = (*ct).r;
-    ret.g = (*ct).g;
-    ret.b = (*ct).b;
+    ret.r = ct->r;
+    ret.g = ct->g;
+    ret.b = ct->b;
     return ret;
 }
 
@@ -78,8 +78,8 @@ gbVec3 GetColorByPercent(const char* tablename, float p) {
         ret.b = ct[indexBase].b;
         return ret;
     }
-    
+
     gb_vec3_lerp(&ret, ct[indexBase-1], ct[indexBase], offset);
-    
+
     return ret;
 }
