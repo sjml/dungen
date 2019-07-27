@@ -32,53 +32,20 @@ function ReloadStyles()
   ResolveStyles()
 end
 
-function ResolveStyles()
-  ClearTextStrings()
-
-  if (styles == nil) then
-    return
-  end
-
-  local dims = GetWorldDimensions()
-  local max = dims.x * dims.y
-  for i=0, max - 1, 1 do
-    local t = GetTileAtIndex(i)
-
-    local match = {0, 0}
-
-    for label, style in pairs(styles) do
-      local m = CheckStyle(style, t)
-      if  ((m[1] > match[1])  -- more specific tile match
-        or (m[1] == match[1] and m[2] <= match[2])  -- equal tile match and equal or lesser region
-                                                    -- match (equality loses because of ordered
-                                                    -- application)
-        or (match[1] <= m[1] and m[2] >= match[2])  -- tile less/equal but region equal or more
-      ) then
-        match = m
-        ApplyFillStyle(style, t)
-        ApplyLabelStyle(style, t)
-      end
-    end
-  end
-
-  local tilesSet = GetRenderingTileSets()
-  for i=1, #tilesSet, 1 do
-    local ts = tilesSet[i]
-
-    local match = {0, 0}
-
-    for label, style in pairs(styles) do
-      local m = CheckStyle(style, ts)
-      if ((m[1] > match[1]) or (match[1] <= m[1] and m[2] > match[2])) then
-        match = m
-        ApplyOutlineStyle(style, ts)
-        -- ApplyLabelStyle(style, ts)
-      end
-    end
+local function higherMatch(m1, m2)
+  if  ((m1[1] > m2[1])  -- more specific tile match
+    or (m1[1] == m2[1] and m1[2] <= m2[2])  -- equal tile match and equal or lesser region
+                                            -- match (equality loses because of ordered
+                                            -- application)
+    or (m2[1] <= m1[1] and m1[2] >= m2[2])  -- tile less/equal but region equal or more
+  ) then
+    return true
+  else
+    return false
   end
 end
 
-function CheckStyle(styleTable, target)
+local function checkStyle(styleTable, target)
   local reqs = styleTable.reqs
   if (reqs == nil) then
     return true
@@ -103,7 +70,7 @@ function CheckStyle(styleTable, target)
   return match
 end
 
-function ApplyFillStyle(styleTable, target)
+local function applyFillStyle(styleTable, target)
   if (styleTable.tileFill ~= nil) then
     if (
           #styleTable.tileFill > 2
@@ -120,7 +87,7 @@ function ApplyFillStyle(styleTable, target)
   end
 end
 
-function ApplyOutlineStyle(styleTable, target)
+local function applyOutlineStyle(styleTable, target)
   if (styleTable.outlineColor ~= nil) then
     local c = nil
     if (
@@ -142,7 +109,7 @@ function ApplyOutlineStyle(styleTable, target)
   end
 end
 
-function ApplyLabelStyle(styleTable, target)
+local function applyLabelStyle(styleTable, target)
   if (styleTable.labelText == nil) then
     return
   end
@@ -156,4 +123,46 @@ function ApplyLabelStyle(styleTable, target)
   sPos.y = sPos.y + (extents.y / 2)
 
   AddTextString(text, {sPos.x, sPos.y}, scale, color)
+end
+
+
+function ResolveStyles()
+  ClearTextStrings()
+
+  if (styles == nil) then
+    return
+  end
+
+  local dims = GetWorldDimensions()
+  local max = dims.x * dims.y
+  for i=0, max - 1, 1 do
+    local t = GetTileAtIndex(i)
+
+    local match = {0, 0}
+
+    for label, style in pairs(styles) do
+      local m = checkStyle(style, t)
+      if higherMatch(m, match) then
+        match = m
+        applyFillStyle(style, t)
+        applyLabelStyle(style, t)
+      end
+    end
+  end
+
+  local tilesSet = GetRenderingTileSets()
+  for i=1, #tilesSet, 1 do
+    local ts = tilesSet[i]
+
+    local match = {0, 0}
+
+    for label, style in pairs(styles) do
+      local m = checkStyle(style, ts)
+      if higherMatch(m, match) then
+        match = m
+        applyOutlineStyle(style, ts)
+        -- applyLabelStyle(style, ts)
+      end
+    end
+  end
 end

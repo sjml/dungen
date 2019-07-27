@@ -19,6 +19,17 @@ function string:trim()
 end
 
 
+function table.slice(tbl, first, last, step)
+  local sliced = {}
+
+  for i = first or 1, last or #tbl, step or 1 do
+    sliced[#sliced+1] = tbl[i]
+  end
+
+  return sliced
+end
+
+
 local sims = {}
 
 function loadFiles(dir)
@@ -49,16 +60,6 @@ function VM_wrap(sim)
   end
 
   return coroutine.wrap(f)
-end
-
-function table.slice(tbl, first, last, step)
-  local sliced = {}
-
-  for i = first or 1, last or #tbl, step or 1 do
-    sliced[#sliced+1] = tbl[i]
-  end
-
-  return sliced
 end
 
 function countInString(s1, s2)
@@ -92,7 +93,7 @@ function getfntable(classname)
   return classTable[".fn"]
 end
 
-tdft = getfntable("TileData")
+local tdft = getfntable("TileData")
 tdft.GetNeighbors = function(td)
   local ret = {}
   if (td.neighborW ~= -1) then
@@ -157,7 +158,7 @@ tdft.GetTags = function(td)
 end
 
 
-tsft = getfntable("TileSet")
+local tsft = getfntable("TileSet")
 tsft.SetAttributeInt = function(ts, name, value)
   SetTileSetAttributeInt(ts, name, value)
 end
