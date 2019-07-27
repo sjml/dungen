@@ -13,6 +13,9 @@ set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
 add_subdirectory(lib/glfw-3.3.0)
 find_package(OpenGL REQUIRED)
 
+add_subdirectory(lib/freetype-2.10.1 freetype)
+include_directories(lib/freetype-2.10.1/include)
+
 add_library(lua
     lib/lua-5.3.5/src/lapi.c
     lib/lua-5.3.5/src/lauxlib.c
@@ -87,6 +90,7 @@ set_target_properties(DunGen PROPERTIES MACOSX_BUNDLE_INFO_PLIST ${CMAKE_SOURCE_
 
 target_link_libraries(DunGen
     glfw OpenGL::GL
+    freetype
     lua
     sqlite
     sds
