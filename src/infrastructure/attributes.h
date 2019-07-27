@@ -23,6 +23,16 @@ TileData** GetTilesTagged(const char* tagString);
 bool TileHasTags(TileData* td, const char* tagString);
 char** GetTileTags(TileData* td);
 
+typedef enum {
+    LessThan,
+    LessThanOrEqual,
+    GreaterThan,
+    GreaterThanOrEqual,
+    Equal,
+    NotEqual
+} AttrComparison;
+
+TileData** GetTilesByAttribute(const char* attrName, AttrComparison comp, const char* value);
 
 void SetTileSetAttributeInt(TileSet* data, const char* name, int value);
 void SetTileSetAttributeFloat(TileSet* data, const char* name, float value);

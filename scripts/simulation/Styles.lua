@@ -27,3 +27,10 @@ groundBase = {
   },
   tileFill = {colorTable, "GroundColors", "depth"}
 }
+
+mithral = {
+  reqs = {
+    tags = "mithral"
+  },
+  tileFill = colors.mithral
+}

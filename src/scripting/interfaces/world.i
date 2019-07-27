@@ -37,6 +37,7 @@ void InitializeWorld(int width, int height, float scale);
 Vec2i GetWorldDimensions(void);
 float GetWorldScale(void);
 
+TileData** GetAllTiles();
 TileData* GetTileAtPosition(int x, int y);
 TileData* GetTileAtIndex(long long i);
 

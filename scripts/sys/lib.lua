@@ -1,3 +1,24 @@
+function string:split(sep)
+  local sep, fields = sep or " ", {}
+  local pattern = string.format("([^%s]+)", sep)
+  self:gsub(pattern, function(c) fields[#fields+1] = c end)
+  return fields
+end
+
+function string:starts(startString)
+  return string.sub(self, 1, string.len(startString)) == startString
+end
+
+function string:ends(endString)
+  return endString == "" or string.sub(self, -string.len(endString)) == endString
+end
+
+function string:trim()
+  local n = self:find"%S"
+  return n and self:match(".*%S", n) or ""
+end
+
+
 local sims = {}
 
 function loadFiles(dir)
@@ -203,4 +224,45 @@ end
 
 tsft.ClearOutline = function(ts)
   return ClearTileSetOutline(ts)
+end
+
+
+function gsr(key)
+  return GetStringRegister(key)
+end
+
+function gir(key)
+  return GetIntRegister(key)
+end
+
+function gfr(key)
+  return GetFloatRegister(key)
+end
+
+function gtr(key)
+  return GetTileRegister(key)
+end
+
+function gtsr(key)
+  return GetTileSetRegister(key)
+end
+
+function ssr(key, value)
+  SetStringRegister(key, value)
+end
+
+function sir(key, value)
+  SetIntRegister(key, value)
+end
+
+function sfr(key, value)
+  SetFloatRegister(key, value)
+end
+
+function str(key, value)
+  SetTileRegister(key, value)
+end
+
+function stsr(key, value)
+  SetTileSetRegister(key, value)
 end

@@ -880,14 +880,63 @@ char** GetTileTags(TileData* data) {
 
 char** GetTileSetTags(TileSet* data) {
     char** ret = NULL;
-   long long* tagIndices = hmget(tileSetIdxToTags, data->i);
+    long long* tagIndices = hmget(tileSetIdxToTags, data->i);
 
-   for (int i=0; i < arrlen(tagIndices); i++) {
-       char* t = hmget(tags_IdxToString, tagIndices[i]);
-       char* tc = malloc(sizeof(char) * (strlen(t)+1));
-       strcpy(tc, t);
-       arrpush(ret, tc);
+    for (int i=0; i < arrlen(tagIndices); i++) {
+        char* t = hmget(tags_IdxToString, tagIndices[i]);
+        char* tc = malloc(sizeof(char) * (strlen(t)+1));
+        strcpy(tc, t);
+        arrpush(ret, tc);
     }
     return ret;
 }
 
+TileData** GetTilesByAttribute(const char* attrName, AttrComparison comp, const char* value) {
+    TileData** ret = NULL;
+    
+    sds query = sdsnew("SELECT tile_id FROM tiles WHERE ");
+    query = sdscat(query, attrName);
+    switch (comp) {
+        case LessThan:
+            query = sdscat(query, " < \"");
+            break;
+        case LessThanOrEqual:
+            query = sdscat(query, " <= \"");
+            break;
+        case GreaterThan:
+            query = sdscat(query, " > \"");
+            break;
+        case GreaterThanOrEqual:
+            query = sdscat(query, " >= \"");
+            break;
+        case Equal:
+            query = sdscat(query, " = \"");
+            break;
+        case NotEqual:
+            query = sdscat(query, " != \"");
+            break;
+    }
+    query = sdscat(query, value);
+    query = sdscat(query, "\";");
+
+    sqlite3_stmt* stmt;
+    if (sqlite3_prepare(db, query, -1, &stmt, NULL) != SQLITE_OK) {
+        fprintf(stderr, "SQL WARNING: could not prepare attribute selection statement: %s\n", sqlite3_errmsg(db));
+        sqlite3_finalize(stmt);
+        return ret;
+    }
+
+    while(sqlite3_step(stmt) == SQLITE_ROW) {
+        long long idx = sqlite3_column_int64(stmt, 0);
+        TileData* td = GetTileAtIndex(idx);
+        if (td != NULL) {
+            arrpush(ret, td);
+        }
+        else {
+            fprintf(stderr, "SQL ERROR: Returning ids of non-existent tiles?\n");
+        }
+    }
+
+    sqlite3_finalize(stmt);
+    return ret;
+}

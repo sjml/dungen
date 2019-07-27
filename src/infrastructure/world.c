@@ -174,6 +174,14 @@ gbVec2** GetWorldPointList() {
     return PointList;
 }
 
+TileData** GetAllTiles() {
+    TileData** ret = NULL;
+    for (int i=0; i < arrlen(WorldArray); i++) {
+        arrpush(ret, &WorldArray[i]);
+    }
+    return ret;
+}
+
 TileData* GetTileAtPosition(int x, int y) {
     if (x < 0 || x >= tileSetSize.x) {
         fprintf(stderr, "Invalid tile x index: %d\n", x);

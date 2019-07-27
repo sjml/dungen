@@ -6,6 +6,7 @@
 %include images.i
 %include rendering.i
 %include text.i
+%include util.i
 
 %include hlvm.i
 %include world.i

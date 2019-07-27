@@ -1785,7 +1785,7 @@ SWIGINTERN int  SWIG_Lua_class_tostring(lua_State *L)
   lua_getfield(L, -1, ".type");
   className = lua_tostring(L, -1);
 
-  lua_pushfstring(L, "<%s userdata: %p>", className, userData->ptr);
+  lua_pushfstring(L, "<%s userdata: %p::%p>", className, userData, userData->ptr);
   return 1;
 }
 
@@ -2677,17 +2677,18 @@ SWIG_Lua_dostring(lua_State *L, const char *str) {
 
 /* -------- TYPES TABLE (BEGIN) -------- */
 
-#define SWIGTYPE_p_SimulationElement swig_types[0]
-#define SWIGTYPE_p_TileData swig_types[1]
-#define SWIGTYPE_p_Vec2i swig_types[2]
-#define SWIGTYPE_p_float swig_types[3]
-#define SWIGTYPE_p_gbVec2 swig_types[4]
-#define SWIGTYPE_p_gbVec3 swig_types[5]
-#define SWIGTYPE_p_gbVec4 swig_types[6]
-#define SWIGTYPE_p_p_sTileSet swig_types[7]
-#define SWIGTYPE_p_sTileSet swig_types[8]
-static swig_type_info *swig_types[10];
-static swig_module_info swig_module = {swig_types, 9, 0, 0, 0, 0};
+#define SWIGTYPE_p_AttrComparison swig_types[0]
+#define SWIGTYPE_p_SimulationElement swig_types[1]
+#define SWIGTYPE_p_TileData swig_types[2]
+#define SWIGTYPE_p_Vec2i swig_types[3]
+#define SWIGTYPE_p_float swig_types[4]
+#define SWIGTYPE_p_gbVec2 swig_types[5]
+#define SWIGTYPE_p_gbVec3 swig_types[6]
+#define SWIGTYPE_p_gbVec4 swig_types[7]
+#define SWIGTYPE_p_p_sTileSet swig_types[8]
+#define SWIGTYPE_p_sTileSet swig_types[9]
+static swig_type_info *swig_types[11];
+static swig_module_info swig_module = {swig_types, 10, 0, 0, 0, 0};
 #define SWIG_TypeQuery(name) SWIG_TypeQueryModule(&swig_module, &swig_module, name)
 #define SWIG_MangledTypeQuery(name) SWIG_MangledTypeQueryModule(&swig_module, &swig_module, name)
 
@@ -2718,6 +2719,9 @@ SWIGINTERN int SWIG_lua_isnilstring(lua_State *L, int idx) {
 
 
     #include "../infrastructure/text.h"
+
+
+    #include "../infrastructure/util.h"
 
 
     #include "../hlvm/hlvm.h"
@@ -4015,6 +4019,52 @@ static int _wrap_GetTextAscenderHeight(lua_State* L) {
   arg1 = (char *)lua_tostring(L, 1);
   arg2 = (float)lua_tonumber(L, 2);
   result = (float)GetTextAscenderHeight((char const *)arg1,arg2);
+  lua_pushnumber(L, (lua_Number) result); SWIG_arg++;
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_RandomRangeFloat(lua_State* L) {
+  int SWIG_arg = 0;
+  float arg1 ;
+  float arg2 ;
+  float result;
+  
+  SWIG_check_num_args("RandomRangeFloat",2,2)
+  if(!lua_isnumber(L,1)) SWIG_fail_arg("RandomRangeFloat",1,"float");
+  if(!lua_isnumber(L,2)) SWIG_fail_arg("RandomRangeFloat",2,"float");
+  arg1 = (float)lua_tonumber(L, 1);
+  arg2 = (float)lua_tonumber(L, 2);
+  result = (float)RandomRangeFloat(arg1,arg2);
+  lua_pushnumber(L, (lua_Number) result); SWIG_arg++;
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_RandomRangeInt(lua_State* L) {
+  int SWIG_arg = 0;
+  int arg1 ;
+  int arg2 ;
+  int result;
+  
+  SWIG_check_num_args("RandomRangeInt",2,2)
+  if(!lua_isnumber(L,1)) SWIG_fail_arg("RandomRangeInt",1,"int");
+  if(!lua_isnumber(L,2)) SWIG_fail_arg("RandomRangeInt",2,"int");
+  arg1 = (int)lua_tonumber(L, 1);
+  arg2 = (int)lua_tonumber(L, 2);
+  result = (int)RandomRangeInt(arg1,arg2);
   lua_pushnumber(L, (lua_Number) result); SWIG_arg++;
   return SWIG_arg;
   
@@ -5350,6 +5400,37 @@ fail:
 }
 
 
+static int _wrap_GetAllTiles(lua_State* L) {
+  int SWIG_arg = 0;
+  TileData **result = 0 ;
+  
+  SWIG_check_num_args("GetAllTiles",0,0)
+  result = (TileData **)GetAllTiles();
+  
+  {
+    lua_newtable(L);
+    if (arrlen(result) > 0) {
+      for (unsigned int i=1; i <= arrlen(result); i++) {
+        lua_pushnumber(L, i);
+        SWIG_NewPointerObj(L, result[i-1], SWIGTYPE_p_TileData, 1);
+        lua_settable(L, -3);
+      }
+    }
+    arrfree(result);
+    
+    SWIG_arg += 1;
+  }
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
 static int _wrap_GetTileAtPosition(lua_State* L) {
   int SWIG_arg = 0;
   int arg1 ;
@@ -5962,6 +6043,46 @@ fail:
 }
 
 
+static int _wrap_GetTilesByAttribute(lua_State* L) {
+  int SWIG_arg = 0;
+  char *arg1 = (char *) 0 ;
+  AttrComparison arg2 ;
+  char *arg3 = (char *) 0 ;
+  TileData **result = 0 ;
+  
+  SWIG_check_num_args("GetTilesByAttribute",3,3)
+  if(!SWIG_lua_isnilstring(L,1)) SWIG_fail_arg("GetTilesByAttribute",1,"char const *");
+  if(!lua_isnumber(L,2)) SWIG_fail_arg("GetTilesByAttribute",2,"AttrComparison");
+  if(!SWIG_lua_isnilstring(L,3)) SWIG_fail_arg("GetTilesByAttribute",3,"char const *");
+  arg1 = (char *)lua_tostring(L, 1);
+  arg2 = (AttrComparison)(int)lua_tonumber(L, 2);
+  arg3 = (char *)lua_tostring(L, 3);
+  result = (TileData **)GetTilesByAttribute((char const *)arg1,arg2,(char const *)arg3);
+  
+  {
+    lua_newtable(L);
+    if (arrlen(result) > 0) {
+      for (unsigned int i=1; i <= arrlen(result); i++) {
+        lua_pushnumber(L, i);
+        SWIG_NewPointerObj(L, result[i-1], SWIGTYPE_p_TileData, 1);
+        lua_settable(L, -3);
+      }
+    }
+    arrfree(result);
+    
+    SWIG_arg += 1;
+  }
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
 static int _wrap_SetTileSetAttributeInt(lua_State* L) {
   int SWIG_arg = 0;
   TileSet *arg1 = (TileSet *) 0 ;
@@ -6352,6 +6473,12 @@ static swig_lua_attribute swig_SwigModule_attributes[] = {
     {0,0,0}
 };
 static swig_lua_const_info swig_SwigModule_constants[]= {
+    {SWIG_LUA_CONSTTAB_INT("LessThan", LessThan)},
+    {SWIG_LUA_CONSTTAB_INT("LessThanOrEqual", LessThanOrEqual)},
+    {SWIG_LUA_CONSTTAB_INT("GreaterThan", GreaterThan)},
+    {SWIG_LUA_CONSTTAB_INT("GreaterThanOrEqual", GreaterThanOrEqual)},
+    {SWIG_LUA_CONSTTAB_INT("Equal", Equal)},
+    {SWIG_LUA_CONSTTAB_INT("NotEqual", NotEqual)},
     {0,0,0,0,0,0}
 };
 static swig_lua_method swig_SwigModule_methods[]= {
@@ -6364,6 +6491,8 @@ static swig_lua_method swig_SwigModule_methods[]= {
     { "AddTextString", _wrap_AddTextString},
     { "MeasureTextExtents", _wrap_MeasureTextExtents},
     { "GetTextAscenderHeight", _wrap_GetTextAscenderHeight},
+    { "RandomRangeFloat", _wrap_RandomRangeFloat},
+    { "RandomRangeInt", _wrap_RandomRangeInt},
     { "CreateSimulationElement", _wrap_CreateSimulationElement},
     { "HLVMPush", _wrap_HLVMPush},
     { "GetIntRegister", _wrap_GetIntRegister},
@@ -6379,6 +6508,7 @@ static swig_lua_method swig_SwigModule_methods[]= {
     { "InitializeWorld", _wrap_InitializeWorld},
     { "GetWorldDimensions", _wrap_GetWorldDimensions},
     { "GetWorldScale", _wrap_GetWorldScale},
+    { "GetAllTiles", _wrap_GetAllTiles},
     { "GetTileAtPosition", _wrap_GetTileAtPosition},
     { "GetTileAtIndex", _wrap_GetTileAtIndex},
     { "AddTileToSet", _wrap_AddTileToSet},
@@ -6399,6 +6529,7 @@ static swig_lua_method swig_SwigModule_methods[]= {
     { "GetTilesTagged", _wrap_GetTilesTagged},
     { "TileHasTags", _wrap_TileHasTags},
     { "GetTileTags", _wrap_GetTileTags},
+    { "GetTilesByAttribute", _wrap_GetTilesByAttribute},
     { "SetTileSetAttributeInt", _wrap_SetTileSetAttributeInt},
     { "SetTileSetAttributeFloat", _wrap_SetTileSetAttributeFloat},
     { "SetTileSetAttributeString", _wrap_SetTileSetAttributeString},
@@ -6441,6 +6572,7 @@ static swig_lua_namespace swig_SwigModule = {
 
 /* -------- TYPE CONVERSION AND EQUIVALENCE RULES (BEGIN) -------- */
 
+static swig_type_info _swigt__p_AttrComparison = {"_p_AttrComparison", "enum AttrComparison *|AttrComparison *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_SimulationElement = {"_p_SimulationElement", "SimulationElement *", 0, 0, (void*)&_wrap_class_SimulationElement, 0};
 static swig_type_info _swigt__p_TileData = {"_p_TileData", "TileData *", 0, 0, (void*)&_wrap_class_TileData, 0};
 static swig_type_info _swigt__p_Vec2i = {"_p_Vec2i", "Vec2i *", 0, 0, (void*)&_wrap_class_Vec2i, 0};
@@ -6452,6 +6584,7 @@ static swig_type_info _swigt__p_p_sTileSet = {"_p_p_sTileSet", "struct sTileSet 
 static swig_type_info _swigt__p_sTileSet = {"_p_sTileSet", "struct sTileSet *|TileSet *|sTileSet *", 0, 0, (void*)&_wrap_class_TileSet, 0};
 
 static swig_type_info *swig_type_initial[] = {
+  &_swigt__p_AttrComparison,
   &_swigt__p_SimulationElement,
   &_swigt__p_TileData,
   &_swigt__p_Vec2i,
@@ -6463,6 +6596,7 @@ static swig_type_info *swig_type_initial[] = {
   &_swigt__p_sTileSet,
 };
 
+static swig_cast_info _swigc__p_AttrComparison[] = {  {&_swigt__p_AttrComparison, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_SimulationElement[] = {  {&_swigt__p_SimulationElement, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_TileData[] = {  {&_swigt__p_TileData, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_Vec2i[] = {  {&_swigt__p_Vec2i, 0, 0, 0},{0, 0, 0, 0}};
@@ -6474,6 +6608,7 @@ static swig_cast_info _swigc__p_p_sTileSet[] = {  {&_swigt__p_p_sTileSet, 0, 0, 
 static swig_cast_info _swigc__p_sTileSet[] = {  {&_swigt__p_sTileSet, 0, 0, 0},{0, 0, 0, 0}};
 
 static swig_cast_info *swig_cast_initial[] = {
+  _swigc__p_AttrComparison,
   _swigc__p_SimulationElement,
   _swigc__p_TileData,
   _swigc__p_Vec2i,

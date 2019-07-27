@@ -6,12 +6,11 @@
         - this is going to be tricky -- how to handle this? some kind of "native push"? 
     - do something similar for picking a tile
     - also do banners with whatever pausing we figure out
-2. constraint solver (in Lua?)
-    - don't overdo it; just build what is needed as it is needed
-3. HLVM exceptions (C + Lua invoking)
-4. player choice to overrule random tiles or die rolls (in Lua?)
+2. HLVM exceptions (C + Lua invoking)
+3. player choice to overrule random tiles or die rolls (in Lua?)
 
 ## Horizon
+* sandbox individual elements; don't let them declare globals, etc.
 * specify (and store) random seed
 * let outlines specify inner/outer/center
 * let simulation elements be nested in directories

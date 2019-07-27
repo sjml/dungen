@@ -1,5 +1,5 @@
 
-function lazyBasicAssert(item1, item2, desc)
+local function lazyBasicAssert(item1, item2, desc)
   if (desc == nil) then
     desc = ""
   else
@@ -127,6 +127,29 @@ end
 tdStart.color = {0.0, 1.0, 0.0}
 tdEnd.color = {1.0, 0.0, 0.0}
 
+hc = HasAllTags("B, ground")
+hc_tagged = hc:GetTiles()
+lazyBasicAssert(hc_tagged.isSet, true, "Constraints returning sets")
+lazyBasicAssert(#hc_tagged:toList(), 2, "Has tags constraint in isolation 1")
+hc2 = HasAllTags("A")
+hc_tagged2 = hc2:GetTiles()
+lazyBasicAssert(#hc_tagged2:toList(), 1, "Has tags constraint in isolation 2")
+hc_tag_combine = hc_tagged:intersection(hc_tagged2)
+lazyBasicAssert(#hc_tag_combine:toList(), 1, "Tag constraint combinations")
+lazyBasicAssert(hc_tag_combine:toList()[1].i, td.i, "Constraint outcome")
+hc3 = HasNoneOfTags("Non-Existent, A")
+lazyBasicAssert(true, hc3:CheckTile(td3), "Has none of tags constraint positive")
+hc4 = HasNoneOfTags("A, B, C")
+lazyBasicAssert(false, hc4:CheckTile(td3), "Has none of tags constraint negative")
+
+ac = HasAttributes("open", GreaterThan, 0)
+openTiles = ac:GetTiles()
+openTileList = openTiles:toList()
+lazyBasicAssert(183, #openTileList, "Attribute queries")
+hc = HasAllTags("sky")
+hc_tagged = hc:GetTiles()
+lazyBasicAssert(#hc_tagged:toList(), #openTileList, "Attributes matching lengths")
+
 td = nil
 td2 = nil
 td3 = nil
@@ -138,4 +161,15 @@ tags = nil
 ts = nil
 ts2 = nil
 mems = nil
+hc = nil
+hc_tagged = nil
+hc2 = nil
+hc_tagged2 = nil
+hc_tag_combine = nil
+hc3 = nil
+hc4 = nil
+ac = nil
 collectgarbage() -- just to make sure this doesn't trigger segfaults
+
+a = "what up?"
+print(a)

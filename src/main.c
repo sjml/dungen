@@ -26,4 +26,5 @@ int main(int argc, const char * argv[]) {
     FinalizeRendering();
     
     return EXIT_SUCCESS;
+
 }

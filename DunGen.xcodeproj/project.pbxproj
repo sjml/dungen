@@ -320,6 +320,7 @@
 		34DB950822EC3DBB0066EC6A /* ftdebug.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = ftdebug.c; path = "lib/freetype-2.10.1/src/base/ftdebug.c"; sourceTree = "<group>"; };
 		34DB950A22EC9B990066EC6A /* text.i */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c.preprocessed; path = text.i; sourceTree = "<group>"; };
 		34FE0B6522E30AEC007A1271 /* game.i */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c.preprocessed; path = game.i; sourceTree = "<group>"; };
+		34FEFE6422ECF6AF00266420 /* util.i */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c.preprocessed; path = util.i; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -589,6 +590,7 @@
 				34FE0B6522E30AEC007A1271 /* game.i */,
 				344B44F922EB931400A27ADF /* pathfind.i */,
 				34DB950A22EC9B990066EC6A /* text.i */,
+				34FEFE6422ECF6AF00266420 /* util.i */,
 			);
 			path = interfaces;
 			sourceTree = "<group>";
