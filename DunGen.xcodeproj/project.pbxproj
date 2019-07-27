@@ -277,7 +277,6 @@
 		34CD649522D9DD3D00C33190 /* sqlite3.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = sqlite3.c; path = "lib/sqlite-amalgamation-3290000/sqlite3.c"; sourceTree = "<group>"; };
 		34CD649822D9DE3B00C33190 /* attributes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = attributes.h; sourceTree = "<group>"; };
 		34CD649922D9DE3B00C33190 /* attributes.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = attributes.c; sourceTree = "<group>"; };
-		34D8E49622DF5EBF00A96E6B /* stb_easy_font.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = stb_easy_font.h; path = "lib/single-file/stb_easy_font.h"; sourceTree = "<group>"; };
 		34DB94B222EC370B0066EC6A /* libfreetype.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libfreetype.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		34DB94B722EC37680066EC6A /* autofit.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = autofit.c; path = "lib/freetype-2.10.1/src/autofit/autofit.c"; sourceTree = "<group>"; };
 		34DB94B922EC37E90066EC6A /* ftglyph.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = ftglyph.c; path = "lib/freetype-2.10.1/src/base/ftglyph.c"; sourceTree = "<group>"; };
@@ -391,7 +390,6 @@
 				3415722822D3873D00FB77F2 /* stb_image.h */,
 				340B5D0F22D21CB700E53DCA /* stb_ds.h */,
 				3466A4B722D4EDEB00ED6CAA /* gb_math.h */,
-				34D8E49622DF5EBF00A96E6B /* stb_easy_font.h */,
 			);
 			name = "single-file";
 			sourceTree = "<group>";
