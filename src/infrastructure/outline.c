@@ -243,10 +243,6 @@ void RenderOutline(Outline* o) {
 
     glColor4fv(o->color.e);
 
-    glEnableClientState(GL_VERTEX_ARRAY);
-
-    glLineWidth(5.0f);
-
     for (int i = 0; i < arrlen(o->pointLists); i++) {
         if (arrlen(o->pointLists[0]) == 0) {
             continue;

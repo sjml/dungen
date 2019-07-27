@@ -2717,6 +2717,9 @@ SWIGINTERN int SWIG_lua_isnilstring(lua_State *L, int idx) {
     #include "../infrastructure/rendering.h"
 
 
+    #include "../infrastructure/text.h"
+
+
     #include "../hlvm/hlvm.h"
 
 
@@ -3959,6 +3962,60 @@ static int _wrap_AddTextString(lua_State* L) {
   }
   AddTextString((char const *)arg1,arg2,arg3,arg4);
   
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_MeasureTextExtents(lua_State* L) {
+  int SWIG_arg = 0;
+  char *arg1 = (char *) 0 ;
+  char *arg2 = (char *) 0 ;
+  float arg3 ;
+  gbVec2 result;
+  
+  SWIG_check_num_args("MeasureTextExtents",3,3)
+  if(!SWIG_lua_isnilstring(L,1)) SWIG_fail_arg("MeasureTextExtents",1,"char const *");
+  if(!SWIG_lua_isnilstring(L,2)) SWIG_fail_arg("MeasureTextExtents",2,"char const *");
+  if(!lua_isnumber(L,3)) SWIG_fail_arg("MeasureTextExtents",3,"float");
+  arg1 = (char *)lua_tostring(L, 1);
+  arg2 = (char *)lua_tostring(L, 2);
+  arg3 = (float)lua_tonumber(L, 3);
+  result = MeasureTextExtents((char const *)arg1,(char const *)arg2,arg3);
+  {
+    gbVec2 * resultptr;
+    resultptr = (gbVec2 *) malloc(sizeof(gbVec2));
+    memmove(resultptr, &result, sizeof(gbVec2));
+    SWIG_NewPointerObj(L,(void *) resultptr,SWIGTYPE_p_gbVec2,1); SWIG_arg++;
+  }
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_GetTextAscenderHeight(lua_State* L) {
+  int SWIG_arg = 0;
+  char *arg1 = (char *) 0 ;
+  float arg2 ;
+  float result;
+  
+  SWIG_check_num_args("GetTextAscenderHeight",2,2)
+  if(!SWIG_lua_isnilstring(L,1)) SWIG_fail_arg("GetTextAscenderHeight",1,"char const *");
+  if(!lua_isnumber(L,2)) SWIG_fail_arg("GetTextAscenderHeight",2,"float");
+  arg1 = (char *)lua_tostring(L, 1);
+  arg2 = (float)lua_tonumber(L, 2);
+  result = (float)GetTextAscenderHeight((char const *)arg1,arg2);
+  lua_pushnumber(L, (lua_Number) result); SWIG_arg++;
   return SWIG_arg;
   
   if(0) SWIG_fail;
@@ -6305,6 +6362,8 @@ static swig_lua_method swig_SwigModule_methods[]= {
     { "WorldToScreen", _wrap_WorldToScreen},
     { "ClearTextStrings", _wrap_ClearTextStrings},
     { "AddTextString", _wrap_AddTextString},
+    { "MeasureTextExtents", _wrap_MeasureTextExtents},
+    { "GetTextAscenderHeight", _wrap_GetTextAscenderHeight},
     { "CreateSimulationElement", _wrap_CreateSimulationElement},
     { "HLVMPush", _wrap_HLVMPush},
     { "GetIntRegister", _wrap_GetIntRegister},

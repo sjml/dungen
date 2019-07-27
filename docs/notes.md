@@ -1,6 +1,5 @@
 ## TODO
 1. choice presentation (tiles, die rolls)
-    - get font rendering better (truetype)
     - lua can push a button list that waits for a response
         - if buttons have the same text, merge them
     - HLVM pauses while choices are up, resumes when button is clicked

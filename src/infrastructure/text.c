@@ -1,3 +1,12 @@
+// NB: This file provides an implementation of flexible, good-looking font-rendering.
+//     It enables the use of multiple fonts at multiple sizes without needing to prebake
+//     or manage them too specifically.
+//     HOWEVER: it is pretty wasteful with memory. Could use a smarter packing algorithm,
+//     at the minimum, but lots of other optimizations are possible. The lookups it has
+//     to do on every draw call could be also be cached. It could try to make a tri-strip
+//     instead of each glyph individually with two triangles. Et cetera.
+//     Only use this if you don't care too much about memory or performance.
+
 #include "../stdafx.h"
 #include "text.h"
 
@@ -37,7 +46,7 @@ typedef struct {
 typedef struct {
     bool isValid;
     FT_Face* ftFace;
-    bool hasKerning;
+    // bool hasKerning;
     bool isDrawing;
 
     Vec2i textureDimensions;
@@ -59,7 +68,7 @@ FontCacheEntry* _GetFontInfo(const char* fontPath) {
         }
         else {
             // TODO: implement kerning
-            fce->hasKerning = (FT_HAS_KERNING(*(fce->ftFace)) != 0);
+            // fce->hasKerning = (FT_HAS_KERNING(*(fce->ftFace)) != 0);
 
             fce->textureDimensions.x = fce->textureDimensions.y = TEXTURE_SIZE;
             fce->inverseTextureDimensions.x = 1.0f / (float)fce->textureDimensions.x;
@@ -384,7 +393,7 @@ bool PurgeFont(const char* path) {
     FT_Done_Face(*fce->ftFace);
     free(fce->ftFace);
     free(fce);
-    
+
     hmdel(fontCache, path);
     return true;
 }
@@ -396,44 +405,58 @@ float DrawGameText(const char* text, const char* fontPath, float size, int pixel
         return 0.0f;
     }
 
-    glMatrixMode(GL_PROJECTION);
-    glPushMatrix();
-    glLoadIdentity();
-    glOrtho(0.0f, 1024.0f, 0.0f, 768.0f, -1, 1);
-    handleGLErrors(__FILE__, __LINE__);
-
     glMatrixMode(GL_MODELVIEW);
     glPushMatrix();
     glLoadIdentity();
     glTranslatef((GLfloat)pixelX, 768 - (GLfloat)pixelY, 0.0f);
     glRotatef(angle, 0.0f, 0.0f, 1.0f);
-    handleGLErrors(__FILE__, __LINE__);
-
     glEnable(GL_TEXTURE_2D);
-    glDisable(GL_DEPTH_TEST);
-    glEnableClientState(GL_VERTEX_ARRAY);
-    glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-    handleGLErrors(__FILE__, __LINE__);
 
     _StartDrawing(fce);
         float dx = _DrawText(fce, size, text);
     _EndDrawing(fce);
-    handleGLErrors(__FILE__, __LINE__);
 
     glDisable(GL_TEXTURE_2D);
-    glEnable(GL_DEPTH_TEST);
-    glDisableClientState(GL_VERTEX_ARRAY);
-    glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-    handleGLErrors(__FILE__, __LINE__);
-
-    glPopMatrix();
-    glMatrixMode(GL_PROJECTION);
     glPopMatrix();
     glMatrixMode(GL_MODELVIEW);
-    handleGLErrors(__FILE__, __LINE__);
 
     return dx;
 }
 
-void PrintTextString(char *text, gbVec2* pos, gbVec4* color, float scale, float spacing) {
+gbVec2 MeasureTextExtents(const char* text, const char* fontPath, float size) {
+    gbVec2 ret = {0.0f, 0.0f};
+
+    FontCacheEntry* fce = _GetFontInfo(fontPath);
+    if (!fce->isValid) {
+        fprintf(stderr, "ERROR: Could not initialize font `%s`.\n", fontPath);
+        return ret;
+    }
+
+    uint32_t state = 0;
+    uint32_t codepoint = 0;
+    for (; *text; ++text) {
+        decode_utf8(&state, &codepoint, *(unsigned char*)text);
+        if (state != UTF8_ACCEPT) {
+            continue;
+        }
+
+        codepoint = FT_Get_Char_Index(*fce->ftFace, codepoint);
+
+        Glyph g = _GetGlyph(fce, size, codepoint);
+        ret.x += g.advance;
+        if (g.offset.y > ret.y) {
+            ret.y = g.offset.y;
+        }
+    }
+    return ret;
+}
+
+float GetTextAscenderHeight(const char* fontPath, float size) {
+    FontCacheEntry* fce = _GetFontInfo(fontPath);
+    if (!fce->isValid) {
+        return 0.0f;
+    }
+
+    FT_Set_Char_Size(*fce->ftFace, 0L, size * 64, 72, 72);
+    return (*fce->ftFace)->size->metrics.ascender / 64.0f;
 }

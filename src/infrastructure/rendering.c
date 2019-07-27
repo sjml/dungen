@@ -63,11 +63,12 @@ void InitializeRendering() {
     glPolygonMode(GL_FRONT, GL_FILL);
     glShadeModel(GL_FLAT);
     glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
-    // commented because of easy_text; restore culling if text gets fancier
-    // glEnable(GL_CULL_FACE);
-    // glFrontFace(GL_CCW);
-    // glCullFace(GL_BACK);
+    glEnable(GL_CULL_FACE);
+    glFrontFace(GL_CCW);
+    glCullFace(GL_BACK);
     glDepthFunc(GL_LEQUAL);
+    glEnableClientState(GL_VERTEX_ARRAY);
+    glEnableClientState(GL_TEXTURE_COORD_ARRAY);
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -93,7 +94,7 @@ void InitializeRendering() {
     gb_mat4_look_at(&modelViewMatrix, MainCamera.position, MainCamera.view, MainCamera.up);
     gb_mat4_mul(&perspectiveMatrix, &projectionMatrix, &modelViewMatrix);
 
-    gb_mat4_ortho2d(&orthoMatrix, 0.0f, 1024.0f, 768.0f, 0.0f);
+    gb_mat4_ortho2d(&orthoMatrix, 0.0f, 1024.0f, 0.0f, 768.0f);
 
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
@@ -206,8 +207,6 @@ void AddTextString(const char* text, gbVec2* pos, float scale, gbVec4* color) {
 int Render() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    glEnableClientState(GL_VERTEX_ARRAY);
-
     glMatrixMode(GL_MODELVIEW);
     glPushMatrix();
         RenderTiles();
@@ -222,14 +221,10 @@ int Render() {
     glLoadIdentity();
     glPushMatrix();
         glMultMatrixf(orthoMatrix.e);
-//        gbVec2 pos = {512.0f, 384.0f};
-//        gbVec4 col = {0.0f, 0.0f, 0.0f, 1.0f};
-//        PrintTextString("F", &pos, &col, 1.0f, 0.0f);
-        glColor3f(1.0f, 1.0f, 1.0f);
-        DrawGameText("Hello!", "fonts/04B_03__.TTF", 144.0f, 0.0f, 768.0f, 30.0f);
-//        for (int i=0; i < arrlen(textInfos); i++) {
-//            PrintTextString(textInfos[i].text, &textInfos[i].pos, &textInfos[i].color, textInfos[i].scale, -1.0f);
-//        }
+        for (int i=0; i < arrlen(textInfos); i++) {
+            glColor4fv(textInfos[i].color.e);
+            DrawGameText(textInfos[i].text, "fonts/04B_03__.TTF", textInfos[i].scale, textInfos[i].pos.x, textInfos[i].pos.y, 0.0f);
+        }
     glMatrixMode(GL_PROJECTION);
     glPopMatrix();
 

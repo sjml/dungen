@@ -147,9 +147,13 @@ function ApplyLabelStyle(styleTable, target)
     return
   end
   local text = styleTable.labelText or ""
-  local position = WorldToScreen(target.worldPos)
-  -- local scale = styleTable.labelScale or 1.0
-  local scale = 1.0 -- scaling messes up coords for now
+  local scale = styleTable.labelSize or 14.0
   local color = styleTable.labelColor or {1.0, 1.0, 1.0}
-  AddTextString(text, {position.x, position.y}, scale, color)
+
+  local sPos = WorldToScreen(target.worldPos)
+  local extents = MeasureTextExtents(text, "fonts/04B_03__.TTF", scale)
+  sPos.x = sPos.x - (extents.x / 2)
+  sPos.y = sPos.y + (extents.y / 2)
+
+  AddTextString(text, {sPos.x, sPos.y}, scale, color)
 end
