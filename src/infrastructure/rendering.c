@@ -222,9 +222,11 @@ int Render() {
     glLoadIdentity();
     glPushMatrix();
         glMultMatrixf(orthoMatrix.e);
-        gbVec2 pos = {512.0f, 384.0f};
-        gbVec4 col = {0.0f, 0.0f, 0.0f, 1.0f};
-        PrintTextString("F", &pos, &col, 1.0f, 0.0f);
+//        gbVec2 pos = {512.0f, 384.0f};
+//        gbVec4 col = {0.0f, 0.0f, 0.0f, 1.0f};
+//        PrintTextString("F", &pos, &col, 1.0f, 0.0f);
+        glColor3f(1.0f, 1.0f, 1.0f);
+        DrawGameText("Hello!", "fonts/04B_03__.TTF", 144.0f, 0.0f, 768.0f, 30.0f);
 //        for (int i=0; i < arrlen(textInfos); i++) {
 //            PrintTextString(textInfos[i].text, &textInfos[i].pos, &textInfos[i].color, textInfos[i].scale, -1.0f);
 //        }
