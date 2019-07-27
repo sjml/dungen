@@ -15,8 +15,7 @@
 * let outlines specify inner/outer/center
 * let simulation elements be nested in directories
 * Windows build
-* better text rendering
-    - then let regions label themselves too
+* then let regions label themselves too
 * Azure pipeline -> GitHub release (draft)
 * history recording -- optional live captioning
     - banner: "The Primordial Age"
@@ -26,5 +25,4 @@
     - name generator?
 * whitelist environment for simulation elements (removing coroutine functions, for instance)
 * https://github.com/nothings/stb/blob/master/stb_leakcheck.h
-* take the pointer check code from old angel for vector typemaps
 * figure out why ScreenToWorld needs that multiplier at the end :-/ 

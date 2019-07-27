@@ -77,7 +77,6 @@ void HLVMProcess() {
         fprintf(stderr, "LUA ERROR: %s; HLVM popping %s\n", lua_tostring(L, -1), sim->Name);
         lua_pop(L, 1);
         HLVMPop(sim);
-        RunString("ResolveStyles()");
         return;
     }
     int retVal = (int)lua_tointeger(L, lua_gettop(L));
@@ -86,8 +85,6 @@ void HLVMProcess() {
     if (retVal == 0) {
         HLVMPop(sim);
     }
-
-    RunString("ResolveStyles()");
 }
 
 
