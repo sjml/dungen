@@ -1,7 +1,12 @@
 ## TODO
 1. choice presentation (tiles, die rolls)
-    - means some kind of UI description from Lua, plus "wait for it" where VM stops processing momentarily
-    - might mean a more "real" UI system :-/ 
+    - get font rendering better (truetype)
+    - lua can push a button list that waits for a response
+        - if buttons have the same text, merge them
+    - HLVM pauses while choices are up, resumes when button is clicked
+        - this is going to be tricky -- how to handle this? some kind of "native push"? 
+    - do something similar for picking a tile
+    - also do banners with whatever pausing we figure out
 2. constraint solver (in Lua?)
     - don't overdo it; just build what is needed as it is needed
 3. HLVM exceptions (C + Lua invoking)

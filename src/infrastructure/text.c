@@ -6,21 +6,26 @@
 #include <stb_easy_font.h>
 #pragma clang diagnostic pop
 
+#include <stb_rect_pack.h>
+
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunused-function"
+#pragma clang diagnostic ignored "-Wcomma"
+#define STB_TRUETYPE_IMPLEMENTATION
+#define STBTT_STATIC
+#include <stb_truetype.h>
+#pragma clang diagnostic pop
+
+
+
+void InitializeText() {
+
+}
+
+void FinalizeText() {
+
+}
 
 void PrintTextString(char *text, gbVec2* pos, gbVec4* color, float scale, float spacing) {
-    static char buffer[99999]; // ~500 chars
-    int num_quads;
 
-    stb_easy_font_spacing(spacing);
-    num_quads = stb_easy_font_print(pos->x, pos->y, text, NULL, buffer, sizeof(buffer));
-
-    glColor3fv(color->e);
-
-    glMatrixMode(GL_MODELVIEW);
-    glPushMatrix();
-        glLoadIdentity();
-        glScalef(scale, scale, 1.0f);
-        glVertexPointer(2, GL_FLOAT, 16, buffer);
-        glDrawArrays(GL_QUADS, 0, num_quads*4);
-    glPopMatrix();
 }

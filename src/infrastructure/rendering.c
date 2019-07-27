@@ -99,9 +99,13 @@ void InitializeRendering() {
     glLoadIdentity();
     glMultMatrixf(perspectiveMatrix.e);
     handleGLErrors(__FILE__, __LINE__);
+
+    InitializeText();
 }
 
 void FinalizeRendering() {
+    FinalizeText();
+
     glfwDestroyWindow(window);
     glfwTerminate();
 }
@@ -218,9 +222,12 @@ int Render() {
     glLoadIdentity();
     glPushMatrix();
         glMultMatrixf(orthoMatrix.e);
-        for (int i=0; i < arrlen(textInfos); i++) {
-            PrintTextString(textInfos[i].text, &textInfos[i].pos, &textInfos[i].color, textInfos[i].scale, -1.0f);
-        }
+        gbVec2 pos = {512.0f, 384.0f};
+        gbVec4 col = {0.0f, 0.0f, 0.0f, 1.0f};
+        PrintTextString("F", &pos, &col, 1.0f, 0.0f);
+//        for (int i=0; i < arrlen(textInfos); i++) {
+//            PrintTextString(textInfos[i].text, &textInfos[i].pos, &textInfos[i].color, textInfos[i].scale, -1.0f);
+//        }
     glMatrixMode(GL_PROJECTION);
     glPopMatrix();
 

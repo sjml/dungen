@@ -108,3 +108,7 @@ add_custom_command(TARGET DunGen POST_BUILD
                    COMMAND ${CMAKE_COMMAND} -E copy_directory
                    ${CMAKE_SOURCE_DIR}/scripts $<TARGET_FILE_DIR:DunGen>/../Resources/scripts
                   )
+add_custom_command(TARGET DunGen POST_BUILD
+                  COMMAND ${CMAKE_COMMAND} -E copy_directory
+                  ${CMAKE_SOURCE_DIR}/fonts $<TARGET_FILE_DIR:DunGen>/../Resources/fonts
+                  )
