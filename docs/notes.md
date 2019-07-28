@@ -25,12 +25,13 @@
         - "Adventurers come into territory owned by demons."
 6. Design and implement agents/entities
     - individuals
-    - civilizations
-        - have zones
-    - both
         - attributes
         - ascribe agency to actions
-            - "Tunneling came to a region owned by demons; resolve conflict with $CURRENT_AGENT."
+    - civilizations
+        - have zones
+        - special case? or just an individual with a zone?
+    - HtHaD calls both "groups"...
+    - "Tunneling came to a region owned by demons; resolve conflict with $CURRENT_AGENT."
 
 ## Tech Debt
 * pull dimensions from central spot instead of `1024.0f`-ing all over the place
