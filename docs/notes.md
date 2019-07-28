@@ -21,6 +21,7 @@
 
 ## Horizon
 * in-game console
+* pull sim settings and other stuff out into config file that Lua pulls in
 * let regions label themselves too (position in center of set based on farthest X and Y)
 * specify (and store) random seed
 * let outlines specify inner/outer/center
