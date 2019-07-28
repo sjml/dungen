@@ -3,11 +3,14 @@ local sims = {}
 local simStack = {}
 
 local forbidden = {
+  _G = 1,
   rawequal = 1,
   rawget = 1,
   rawset = 1,
+  rawlen = 1,
   setfenv = 1,
   setmetatable = 1,
+  getmetatable = 1,
   coroutine = 1,
   module = 1,
   require = 1,
@@ -15,6 +18,13 @@ local forbidden = {
   io = 1,
   os = 1,
   debug = 1,
+  loadfile = 1,
+  load = 1,
+  dofile = 1,
+
+  lfs = 1,
+
+  ResolveStyles = 1,
 }
 
 local function makeSimEnv()

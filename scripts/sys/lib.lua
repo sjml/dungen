@@ -55,7 +55,7 @@ function table.slice(tbl, first, last, step)
   return sliced
 end
 
-function getfntable(classname)
+local function getfntable(classname)
   local reg = debug.getregistry()
   local classTable = reg["SWIG"][classname]
   if (classTable == nil) then
