@@ -10,6 +10,7 @@ package.path = './scripts/?.lua;' .. package.path
 require("sys.lib")
 require("sys.styler")
 require("sys.constraint-solver")
+require("sys.hlvm")
 
 ProFi = require("lib.ProFi")
 ordered_table = require("lib.ordered_table")
