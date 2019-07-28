@@ -81,6 +81,7 @@
 		349C53EA1EC4D70D008D42C6 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 345D93DE1EC4C540003B7C63 /* CoreVideo.framework */; };
 		34C5B3F922DB2767007F0A79 /* sds.c in Sources */ = {isa = PBXBuildFile; fileRef = 34C5B3EE22DB2128007F0A79 /* sds.c */; };
 		34C5B3FA22DB2798007F0A79 /* libsds.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 34C5B3F522DB2753007F0A79 /* libsds.a */; };
+		34C5D6EF22EE32BC004B8F80 /* ftcache.c in Sources */ = {isa = PBXBuildFile; fileRef = 34C5D6EE22EE32BB004B8F80 /* ftcache.c */; };
 		34CD649622D9DD3E00C33190 /* sqlite3.c in Sources */ = {isa = PBXBuildFile; fileRef = 34CD649522D9DD3D00C33190 /* sqlite3.c */; };
 		34CD649722D9DD4900C33190 /* libsqlite.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 34CD649122D9DD2F00C33190 /* libsqlite.a */; };
 		34CD649A22D9DE3B00C33190 /* attributes.c in Sources */ = {isa = PBXBuildFile; fileRef = 34CD649922D9DE3B00C33190 /* attributes.c */; };
@@ -110,7 +111,6 @@
 		34DB94EB22EC38450066EC6A /* ftlzw.c in Sources */ = {isa = PBXBuildFile; fileRef = 34DB94E322EC38450066EC6A /* ftlzw.c */; };
 		34DB94EC22EC38450066EC6A /* pfr.c in Sources */ = {isa = PBXBuildFile; fileRef = 34DB94E422EC38450066EC6A /* pfr.c */; };
 		34DB94ED22EC38450066EC6A /* cff.c in Sources */ = {isa = PBXBuildFile; fileRef = 34DB94E522EC38450066EC6A /* cff.c */; };
-		34DB94EE22EC38450066EC6A /* ftccache.c in Sources */ = {isa = PBXBuildFile; fileRef = 34DB94E622EC38450066EC6A /* ftccache.c */; };
 		34DB94EF22EC38450066EC6A /* ftgzip.c in Sources */ = {isa = PBXBuildFile; fileRef = 34DB94E722EC38450066EC6A /* ftgzip.c */; };
 		34DB94F022EC38450066EC6A /* type1cid.c in Sources */ = {isa = PBXBuildFile; fileRef = 34DB94E822EC38450066EC6A /* type1cid.c */; };
 		34DB94FB22EC38950066EC6A /* type42.c in Sources */ = {isa = PBXBuildFile; fileRef = 34DB94F122EC38940066EC6A /* type42.c */; };
@@ -273,6 +273,7 @@
 		349C53C21EC4D6B9008D42C6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = platform/macOS/Info.plist; sourceTree = SOURCE_ROOT; };
 		34C5B3EE22DB2128007F0A79 /* sds.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = sds.c; path = "lib/sds-0bb446e/sds.c"; sourceTree = "<group>"; };
 		34C5B3F522DB2753007F0A79 /* libsds.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libsds.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		34C5D6EE22EE32BB004B8F80 /* ftcache.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = ftcache.c; path = "lib/freetype-2.10.1/src/cache/ftcache.c"; sourceTree = "<group>"; };
 		34CD649122D9DD2F00C33190 /* libsqlite.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libsqlite.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		34CD649522D9DD3D00C33190 /* sqlite3.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = sqlite3.c; path = "lib/sqlite-amalgamation-3290000/sqlite3.c"; sourceTree = "<group>"; };
 		34CD649822D9DE3B00C33190 /* attributes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = attributes.h; sourceTree = "<group>"; };
@@ -304,7 +305,6 @@
 		34DB94E322EC38450066EC6A /* ftlzw.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = ftlzw.c; path = "lib/freetype-2.10.1/src/lzw/ftlzw.c"; sourceTree = "<group>"; };
 		34DB94E422EC38450066EC6A /* pfr.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = pfr.c; path = "lib/freetype-2.10.1/src/pfr/pfr.c"; sourceTree = "<group>"; };
 		34DB94E522EC38450066EC6A /* cff.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = cff.c; path = "lib/freetype-2.10.1/src/cff/cff.c"; sourceTree = "<group>"; };
-		34DB94E622EC38450066EC6A /* ftccache.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = ftccache.c; path = "lib/freetype-2.10.1/src/cache/ftccache.c"; sourceTree = "<group>"; };
 		34DB94E722EC38450066EC6A /* ftgzip.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = ftgzip.c; path = "lib/freetype-2.10.1/src/gzip/ftgzip.c"; sourceTree = "<group>"; };
 		34DB94E822EC38450066EC6A /* type1cid.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = type1cid.c; path = "lib/freetype-2.10.1/src/cid/type1cid.c"; sourceTree = "<group>"; };
 		34DB94F122EC38940066EC6A /* type42.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = type42.c; path = "lib/freetype-2.10.1/src/type42/type42.c"; sourceTree = "<group>"; };
@@ -664,7 +664,7 @@
 				34DB94DF22EC37FC0066EC6A /* bdf.c */,
 				34DB94E522EC38450066EC6A /* cff.c */,
 				34DB94E222EC38450066EC6A /* ftbzip2.c */,
-				34DB94E622EC38450066EC6A /* ftccache.c */,
+				34C5D6EE22EE32BB004B8F80 /* ftcache.c */,
 				34DB94E722EC38450066EC6A /* ftgzip.c */,
 				34DB94E322EC38450066EC6A /* ftlzw.c */,
 				34DB94E122EC38440066EC6A /* pcf.c */,
@@ -1126,11 +1126,11 @@
 				34DB950122EC38950066EC6A /* psaux.c in Sources */,
 				34DB94B822EC37680066EC6A /* autofit.c in Sources */,
 				34DB94CE22EC37EA0066EC6A /* ftbase.c in Sources */,
-				34DB94EE22EC38450066EC6A /* ftccache.c in Sources */,
 				34DB94D622EC37EA0066EC6A /* ftpfr.c in Sources */,
 				34DB94E022EC37FC0066EC6A /* bdf.c in Sources */,
 				34DB94FE22EC38950066EC6A /* smooth.c in Sources */,
 				34DB94FF22EC38950066EC6A /* type1.c in Sources */,
+				34C5D6EF22EE32BC004B8F80 /* ftcache.c in Sources */,
 				34DB94DC22EC37EA0066EC6A /* ftinit.c in Sources */,
 				34DB94F022EC38450066EC6A /* type1cid.c in Sources */,
 				34DB950922EC3DBB0066EC6A /* ftdebug.c in Sources */,
