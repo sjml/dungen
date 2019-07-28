@@ -15,6 +15,7 @@
 3. HLVM exceptions (C + Lua invoking)
 
 ## Horizon
+* in-game console
 * pull dimensions from central spot instead of 1024.0f all over the place
 * specify (and store) random seed
 * let outlines specify inner/outer/center
