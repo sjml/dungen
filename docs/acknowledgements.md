@@ -17,7 +17,7 @@ This license available with a FAQ at: http://scripts.sil.org/OFL
 
 ## Software
 ### Public Domain
-* [SQLite 3.2.9](https://sqlite.org/index.html)
+* [SQLite 3.29.0](https://sqlite.org/index.html)
 * [gb_math.h](https://github.com/gingerBill/gb/blob/master/gb_math.h)
 * [stb_ds.h](http://nothings.org/stb_ds/)
 * [stb_image.h](https://github.com/nothings/stb/blob/master/stb_image.h)
