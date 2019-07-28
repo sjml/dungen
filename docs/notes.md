@@ -12,7 +12,8 @@
     5. tile choice with label
     6. checkboxes? 
 2. random tiles and die rolls in Lua with optional player overrides
-3. HLVM exceptions (C + Lua invoking)
+3. Relaxable constraint sets
+4. HLVM exceptions (C + Lua invoking)
 
 ## Tech Debt
 * pull dimensions from central spot instead of 1024.0f all over the place
@@ -25,7 +26,7 @@
 * let regions label themselves too (position in center of set based on farthest X and Y)
 * specify (and store) random seed
 * let outlines specify inner/outer/center
-* Windows build
+* Windows+Linux builds
     - Azure pipeline -> GitHub release (draft)
     - copy acknowledgements alongside exe
     - make readme
