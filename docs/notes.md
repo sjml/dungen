@@ -6,23 +6,26 @@
         - this is going to be tricky -- how to handle this? some kind of "native push"? 
     - do something similar for picking a tile
     - also do banners with whatever pausing we figure out
-2. HLVM exceptions (C + Lua invoking)
-3. player choice to overrule random tiles or die rolls (in Lua?)
+2. player choice to overrule random tiles or die rolls (in Lua?)
+3. Sandbox individual elements
+    - don't let them declare globals, etc.
+    - whitelist environment without yield, etc.
+    - while we're here, figure out directory nesting for them
+    - (this will likely mean redoing the architecture for how HLVM calls Lua)
+4. HLVM exceptions (C + Lua invoking)
 
 ## Horizon
-* sandbox individual elements; don't let them declare globals, etc.
+* pull dimensions from central spot instead of 1024.0f all over the place
 * specify (and store) random seed
 * let outlines specify inner/outer/center
-* let simulation elements be nested in directories
 * Windows build
-* then let regions label themselves too
-* Azure pipeline -> GitHub release (draft)
+    - Azure pipeline -> GitHub release (draft)
+* let regions label themselves too
 * history recording -- optional live captioning
     - banner: "The Primordial Age"
     - little in-place captions "Natural caverns form with pockets of liquid hot magma" etc.
     - write all out to text and pretty formatting (or JSON+HTML renderer)
     - screenshots/video
     - name generator?
-* whitelist environment for simulation elements (removing coroutine functions, for instance)
 * https://github.com/nothings/stb/blob/master/stb_leakcheck.h
 * figure out why ScreenToWorld needs that multiplier at the end :-/ 

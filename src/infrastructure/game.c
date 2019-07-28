@@ -8,9 +8,9 @@
 #include "../scripting/scripting.h"
 #include "../hlvm/hlvm.h"
 
-double MAX_TIMESTEP = 1.0;
-int TICKS_PER_CYCLE = 1;
-double SECONDS_PER_CYCLE = 0.0;
+#define MAX_TIMESTEP      1.0
+#define TICKS_PER_CYCLE   1
+#define SECONDS_PER_CYCLE 0.0
 
 double previousTime, currentTime;
 
