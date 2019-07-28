@@ -36,9 +36,7 @@ function loadFiles(dir, prefix)
         if (f ~= nil) then
           sims[prefix .. simName] = f
         else
-          io.stderr:write("LUA ERROR: Couldn't load code for " .. prefix .. simName .. ":")
-          io.stderr:write(err)
-          io.stderr:write("\n")
+          io.stderr:write("LUA ERROR: Couldn't load code for " .. prefix .. simName .. ":" .. err .. "\n")
         end
       end
       local attr = lfs.attributes(dir .. "/" .. file)
