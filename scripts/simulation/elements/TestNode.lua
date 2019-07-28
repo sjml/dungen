@@ -1,24 +1,4 @@
 
-local function lazyBasicAssert(item1, item2, desc)
-  if (desc == nil) then
-    desc = ""
-  else
-    desc = "("..desc..")"
-  end
-  if (item1 == item2) then
-    print("✅ OK " .. desc)
-    return
-  elseif (type(item1) ~= "table" and type(item2) == "table") then
-    for _, v in pairs(item2) do
-      if (item1 == v) then
-        print("✅ OK " .. desc)
-        return
-      end
-    end
-  end
-  io.stderr:write("❌ FAIL! " .. desc .. "\n")
-  io.stderr:write("\t" .. tostring(item1) .. " not equal to " .. tostring(item2) .. "\n")
-end
 
 td = GetTileAtPosition(25, 25)
 td2 = GetTileAtPosition(25, 27)

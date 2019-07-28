@@ -1,3 +1,25 @@
+
+function lazyBasicAssert(item1, item2, desc)
+  if (desc == nil) then
+    desc = ""
+  else
+    desc = "("..desc..")"
+  end
+  if (item1 == item2) then
+    print("✅ OK " .. desc)
+    return
+  elseif (type(item1) ~= "table" and type(item2) == "table") then
+    for _, v in pairs(item2) do
+      if (item1 == v) then
+        print("✅ OK " .. desc)
+        return
+      end
+    end
+  end
+  io.stderr:write("❌ FAIL! " .. desc .. "\n")
+  io.stderr:write("\t" .. tostring(item1) .. " not equal to " .. tostring(item2) .. "\n")
+end
+
 function string:split(sep)
   local sep, fields = sep or " ", {}
   local pattern = string.format("([^%s]+)", sep)
@@ -18,6 +40,10 @@ function string:trim()
   return n and self:match(".*%S", n) or ""
 end
 
+function countInString(s1, s2)
+  return select(2, s1:gsub(s2, ""))
+end
+
 
 function table.slice(tbl, first, last, step)
   local sliced = {}
@@ -27,60 +53,6 @@ function table.slice(tbl, first, last, step)
   end
 
   return sliced
-end
-
-
-local sims = {}
-
-function loadFiles(dir)
-  for file in lfs.dir(dir) do
-    if string.find(file, ".lua$") then
-      local simName = file:sub(1, -5)
-      local f, err = loadfile(dir .. "/" .. file)
-      if (f ~= nil) then
-        sims[simName] = f
-      else
-        io.stderr:write("LUA ERROR: Couldn't load code for " .. simName .. ":")
-        io.stderr:write(err)
-        io.stderr:write("\n")
-      end
-    end
-  end
-
-  if (sims["Null"] == nil) then
-    sims["Null"] = function() end
-  end
-end
-
-function VM_wrap(sim)
-  local f = sims[sim]
-  if (f == nil) then
-    io.stderr:write("LUA WARNING: No element called " .. sim .. ".\n")
-    f = sims["Null"]
-  end
-
-  return coroutine.wrap(f)
-end
-
-function countInString(s1, s2)
-  return select(2, s1:gsub(s2, ""))
-end
-
-function push(className)
-  if (className == nil) then
-    className = "Null"
-  end
-
-  sim = CreateSimulationElement(className)
-  HLVMPush(sim)
-
-  local f, r = coroutine.running()
-  if (r ~= true) then
-    --  TODO: this is a hack because the C code is not
-    --        calling sim elements as true coroutines
-    --        because of reasons
-    coroutine.yield(1)
-  end
 end
 
 function getfntable(classname)
