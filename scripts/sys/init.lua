@@ -19,5 +19,5 @@ os.exit = function()
   io.stderr:write("Cannot exit from Lua.\n")
 end
 
-loadFiles("scripts/simulation/elements")
+loadFiles("scripts/simulation/elements", "")
 

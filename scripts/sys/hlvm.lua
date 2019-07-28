@@ -27,17 +27,23 @@ local function makeSimEnv()
   return env
 end
 
-function loadFiles(dir)
+function loadFiles(dir, prefix)
   for file in lfs.dir(dir) do
-    if string.find(file, ".lua$") then
-      local simName = file:sub(1, -5)
-      local f, err = loadfile(dir .. "/" .. file, "t", makeSimEnv())
-      if (f ~= nil) then
-        sims[simName] = f
-      else
-        io.stderr:write("LUA ERROR: Couldn't load code for " .. simName .. ":")
-        io.stderr:write(err)
-        io.stderr:write("\n")
+    if file ~= "." and file ~= ".." then
+      if string.find(file, ".lua$") then
+        local simName = file:sub(1, -5)
+        local f, err = loadfile(dir .. "/" .. file, "t", makeSimEnv())
+        if (f ~= nil) then
+          sims[prefix .. simName] = f
+        else
+          io.stderr:write("LUA ERROR: Couldn't load code for " .. prefix .. simName .. ":")
+          io.stderr:write(err)
+          io.stderr:write("\n")
+        end
+      end
+      local attr = lfs.attributes(dir .. "/" .. file)
+      if attr.mode == "directory" then
+        loadFiles(dir .. "/" .. file, prefix .. file .. ".")
       end
     end
   end
