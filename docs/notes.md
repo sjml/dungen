@@ -14,19 +14,21 @@
 2. random tiles and die rolls in Lua with optional player overrides
 3. HLVM exceptions (C + Lua invoking)
 
+## Tech Debt
+* pull dimensions from central spot instead of 1024.0f all over the place
+* figure out why ScreenToWorld needs that multiplier at the end :-/ 
+* https://github.com/nothings/stb/blob/master/stb_leakcheck.h
+
 ## Horizon
 * in-game console
-* pull dimensions from central spot instead of 1024.0f all over the place
+* let regions label themselves too (position in center of set based on farthest X and Y)
 * specify (and store) random seed
 * let outlines specify inner/outer/center
 * Windows build
     - Azure pipeline -> GitHub release (draft)
-* let regions label themselves too
 * history recording -- optional live captioning
     - banner: "The Primordial Age"
     - little in-place captions "Natural caverns form with pockets of liquid hot magma" etc.
     - write all out to text and pretty formatting (or JSON+HTML renderer)
     - screenshots/video
     - name generator?
-* https://github.com/nothings/stb/blob/master/stb_leakcheck.h
-* figure out why ScreenToWorld needs that multiplier at the end :-/ 
