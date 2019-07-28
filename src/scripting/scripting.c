@@ -41,7 +41,7 @@ int RunFile(const char* filename) {
 int RunString(const char* string) {
     int error = luaL_dostring(L, string);
     if (error) {
-        fprintf(stderr, "%s\n", lua_tostring(L, -1));
+        fprintf(stderr, "LUA ERROR: %s\n", lua_tostring(L, -1));
         lua_pop(L, 1);
         return 1;
     }

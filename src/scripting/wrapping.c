@@ -2678,17 +2678,16 @@ SWIG_Lua_dostring(lua_State *L, const char *str) {
 /* -------- TYPES TABLE (BEGIN) -------- */
 
 #define SWIGTYPE_p_AttrComparison swig_types[0]
-#define SWIGTYPE_p_SimulationElement swig_types[1]
-#define SWIGTYPE_p_TileData swig_types[2]
-#define SWIGTYPE_p_Vec2i swig_types[3]
-#define SWIGTYPE_p_float swig_types[4]
-#define SWIGTYPE_p_gbVec2 swig_types[5]
-#define SWIGTYPE_p_gbVec3 swig_types[6]
-#define SWIGTYPE_p_gbVec4 swig_types[7]
-#define SWIGTYPE_p_p_sTileSet swig_types[8]
-#define SWIGTYPE_p_sTileSet swig_types[9]
-static swig_type_info *swig_types[11];
-static swig_module_info swig_module = {swig_types, 10, 0, 0, 0, 0};
+#define SWIGTYPE_p_TileData swig_types[1]
+#define SWIGTYPE_p_Vec2i swig_types[2]
+#define SWIGTYPE_p_float swig_types[3]
+#define SWIGTYPE_p_gbVec2 swig_types[4]
+#define SWIGTYPE_p_gbVec3 swig_types[5]
+#define SWIGTYPE_p_gbVec4 swig_types[6]
+#define SWIGTYPE_p_p_sTileSet swig_types[7]
+#define SWIGTYPE_p_sTileSet swig_types[8]
+static swig_type_info *swig_types[10];
+static swig_module_info swig_module = {swig_types, 9, 0, 0, 0, 0};
 #define SWIG_TypeQuery(name) SWIG_TypeQueryModule(&swig_module, &swig_module, name)
 #define SWIG_MangledTypeQuery(name) SWIG_MangledTypeQueryModule(&swig_module, &swig_module, name)
 
@@ -4066,223 +4065,6 @@ static int _wrap_RandomRangeInt(lua_State* L) {
   arg2 = (int)lua_tonumber(L, 2);
   result = (int)RandomRangeInt(arg1,arg2);
   lua_pushnumber(L, (lua_Number) result); SWIG_arg++;
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_SimulationElement_LuaRefKey_set(lua_State* L) {
-  int SWIG_arg = 0;
-  SimulationElement *arg1 = (SimulationElement *) 0 ;
-  int arg2 ;
-  
-  SWIG_check_num_args("SimulationElement::LuaRefKey",2,2)
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("SimulationElement::LuaRefKey",1,"SimulationElement *");
-  if(!lua_isnumber(L,2)) SWIG_fail_arg("SimulationElement::LuaRefKey",2,"int");
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_SimulationElement,0))){
-    SWIG_fail_ptr("SimulationElement_LuaRefKey_set",1,SWIGTYPE_p_SimulationElement);
-  }
-  
-  arg2 = (int)lua_tonumber(L, 2);
-  if (arg1) (arg1)->LuaRefKey = arg2;
-  
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_SimulationElement_LuaRefKey_get(lua_State* L) {
-  int SWIG_arg = 0;
-  SimulationElement *arg1 = (SimulationElement *) 0 ;
-  int result;
-  
-  SWIG_check_num_args("SimulationElement::LuaRefKey",1,1)
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("SimulationElement::LuaRefKey",1,"SimulationElement *");
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_SimulationElement,0))){
-    SWIG_fail_ptr("SimulationElement_LuaRefKey_get",1,SWIGTYPE_p_SimulationElement);
-  }
-  
-  result = (int) ((arg1)->LuaRefKey);
-  lua_pushnumber(L, (lua_Number) result); SWIG_arg++;
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_SimulationElement_Name_set(lua_State* L) {
-  int SWIG_arg = 0;
-  SimulationElement *arg1 = (SimulationElement *) 0 ;
-  char *arg2 = (char *) 0 ;
-  
-  SWIG_check_num_args("SimulationElement::Name",2,2)
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("SimulationElement::Name",1,"SimulationElement *");
-  if(!SWIG_lua_isnilstring(L,2)) SWIG_fail_arg("SimulationElement::Name",2,"char *");
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_SimulationElement,0))){
-    SWIG_fail_ptr("SimulationElement_Name_set",1,SWIGTYPE_p_SimulationElement);
-  }
-  
-  arg2 = (char *)lua_tostring(L, 2);
-  {
-    free(arg1->Name);
-    if (arg2) {
-      arg1->Name = (char *) malloc(strlen((const char *)arg2)+1);
-      strcpy((char *)arg1->Name, (const char *)arg2);
-    } else {
-      arg1->Name = 0;
-    }
-  }
-  
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_SimulationElement_Name_get(lua_State* L) {
-  int SWIG_arg = 0;
-  SimulationElement *arg1 = (SimulationElement *) 0 ;
-  char *result = 0 ;
-  
-  SWIG_check_num_args("SimulationElement::Name",1,1)
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("SimulationElement::Name",1,"SimulationElement *");
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_SimulationElement,0))){
-    SWIG_fail_ptr("SimulationElement_Name_get",1,SWIGTYPE_p_SimulationElement);
-  }
-  
-  result = (char *) ((arg1)->Name);
-  lua_pushstring(L,(const char *)result); SWIG_arg++;
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_new_SimulationElement(lua_State* L) {
-  int SWIG_arg = 0;
-  SimulationElement *result = 0 ;
-  
-  SWIG_check_num_args("SimulationElement::SimulationElement",0,0)
-  result = (SimulationElement *)calloc(1, sizeof(SimulationElement));
-  SWIG_NewPointerObj(L,result,SWIGTYPE_p_SimulationElement,1); SWIG_arg++; 
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static void swig_delete_SimulationElement(void *obj) {
-SimulationElement *arg1 = (SimulationElement *) obj;
-free((char *) arg1);
-}
-static int _proxy__wrap_new_SimulationElement(lua_State *L) {
-    assert(lua_istable(L,1));
-    lua_pushcfunction(L,_wrap_new_SimulationElement);
-    assert(!lua_isnil(L,-1));
-    lua_replace(L,1); /* replace our table with real constructor */
-    lua_call(L,lua_gettop(L)-1,1);
-    return 1;
-}
-static swig_lua_attribute swig_SimulationElement_attributes[] = {
-    { "LuaRefKey", _wrap_SimulationElement_LuaRefKey_get, _wrap_SimulationElement_LuaRefKey_set },
-    { "Name", _wrap_SimulationElement_Name_get, _wrap_SimulationElement_Name_set },
-    {0,0,0}
-};
-static swig_lua_method swig_SimulationElement_methods[]= {
-    {0,0}
-};
-static swig_lua_method swig_SimulationElement_meta[] = {
-    {0,0}
-};
-
-static swig_lua_attribute swig_SimulationElement_Sf_SwigStatic_attributes[] = {
-    {0,0,0}
-};
-static swig_lua_const_info swig_SimulationElement_Sf_SwigStatic_constants[]= {
-    {0,0,0,0,0,0}
-};
-static swig_lua_method swig_SimulationElement_Sf_SwigStatic_methods[]= {
-    {0,0}
-};
-static swig_lua_class* swig_SimulationElement_Sf_SwigStatic_classes[]= {
-    0
-};
-
-static swig_lua_namespace swig_SimulationElement_Sf_SwigStatic = {
-    "SimulationElement",
-    swig_SimulationElement_Sf_SwigStatic_methods,
-    swig_SimulationElement_Sf_SwigStatic_attributes,
-    swig_SimulationElement_Sf_SwigStatic_constants,
-    swig_SimulationElement_Sf_SwigStatic_classes,
-    0
-};
-static swig_lua_class *swig_SimulationElement_bases[] = {0};
-static const char *swig_SimulationElement_base_names[] = {0};
-static swig_lua_class _wrap_class_SimulationElement = { "SimulationElement", "SimulationElement", &SWIGTYPE_p_SimulationElement,_proxy__wrap_new_SimulationElement, swig_delete_SimulationElement, swig_SimulationElement_methods, swig_SimulationElement_attributes, &swig_SimulationElement_Sf_SwigStatic, swig_SimulationElement_meta, swig_SimulationElement_bases, swig_SimulationElement_base_names };
-
-static int _wrap_CreateSimulationElement(lua_State* L) {
-  int SWIG_arg = 0;
-  char *arg1 = (char *) 0 ;
-  SimulationElement *result = 0 ;
-  
-  SWIG_check_num_args("CreateSimulationElement",1,1)
-  if(!SWIG_lua_isnilstring(L,1)) SWIG_fail_arg("CreateSimulationElement",1,"char *");
-  arg1 = (char *)lua_tostring(L, 1);
-  result = (SimulationElement *)CreateSimulationElement(arg1);
-  SWIG_NewPointerObj(L,result,SWIGTYPE_p_SimulationElement,0); SWIG_arg++; 
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_HLVMPush(lua_State* L) {
-  int SWIG_arg = 0;
-  SimulationElement *arg1 = (SimulationElement *) 0 ;
-  
-  SWIG_check_num_args("HLVMPush",1,1)
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("HLVMPush",1,"SimulationElement *");
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_SimulationElement,0))){
-    SWIG_fail_ptr("HLVMPush",1,SWIGTYPE_p_SimulationElement);
-  }
-  
-  HLVMPush(arg1);
-  
   return SWIG_arg;
   
   if(0) SWIG_fail;
@@ -6493,8 +6275,6 @@ static swig_lua_method swig_SwigModule_methods[]= {
     { "GetTextAscenderHeight", _wrap_GetTextAscenderHeight},
     { "RandomRangeFloat", _wrap_RandomRangeFloat},
     { "RandomRangeInt", _wrap_RandomRangeInt},
-    { "CreateSimulationElement", _wrap_CreateSimulationElement},
-    { "HLVMPush", _wrap_HLVMPush},
     { "GetIntRegister", _wrap_GetIntRegister},
     { "GetFloatRegister", _wrap_GetFloatRegister},
     { "GetStringRegister", _wrap_GetStringRegister},
@@ -6549,7 +6329,6 @@ static swig_lua_class* swig_SwigModule_classes[]= {
 &_wrap_class_Vec2i,
 &_wrap_class_gbVec2,
 &_wrap_class_gbVec3,
-&_wrap_class_SimulationElement,
 &_wrap_class_TileData,
 &_wrap_class_TileSet,
     0
@@ -6573,7 +6352,6 @@ static swig_lua_namespace swig_SwigModule = {
 /* -------- TYPE CONVERSION AND EQUIVALENCE RULES (BEGIN) -------- */
 
 static swig_type_info _swigt__p_AttrComparison = {"_p_AttrComparison", "enum AttrComparison *|AttrComparison *", 0, 0, (void*)0, 0};
-static swig_type_info _swigt__p_SimulationElement = {"_p_SimulationElement", "SimulationElement *", 0, 0, (void*)&_wrap_class_SimulationElement, 0};
 static swig_type_info _swigt__p_TileData = {"_p_TileData", "TileData *", 0, 0, (void*)&_wrap_class_TileData, 0};
 static swig_type_info _swigt__p_Vec2i = {"_p_Vec2i", "Vec2i *", 0, 0, (void*)&_wrap_class_Vec2i, 0};
 static swig_type_info _swigt__p_float = {"_p_float", "float *", 0, 0, (void*)0, 0};
@@ -6585,7 +6363,6 @@ static swig_type_info _swigt__p_sTileSet = {"_p_sTileSet", "struct sTileSet *|Ti
 
 static swig_type_info *swig_type_initial[] = {
   &_swigt__p_AttrComparison,
-  &_swigt__p_SimulationElement,
   &_swigt__p_TileData,
   &_swigt__p_Vec2i,
   &_swigt__p_float,
@@ -6597,7 +6374,6 @@ static swig_type_info *swig_type_initial[] = {
 };
 
 static swig_cast_info _swigc__p_AttrComparison[] = {  {&_swigt__p_AttrComparison, 0, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_SimulationElement[] = {  {&_swigt__p_SimulationElement, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_TileData[] = {  {&_swigt__p_TileData, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_Vec2i[] = {  {&_swigt__p_Vec2i, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_float[] = {  {&_swigt__p_float, 0, 0, 0},{0, 0, 0, 0}};
@@ -6609,7 +6385,6 @@ static swig_cast_info _swigc__p_sTileSet[] = {  {&_swigt__p_sTileSet, 0, 0, 0},{
 
 static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_AttrComparison,
-  _swigc__p_SimulationElement,
   _swigc__p_TileData,
   _swigc__p_Vec2i,
   _swigc__p_float,

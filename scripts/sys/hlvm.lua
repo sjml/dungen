@@ -1,11 +1,37 @@
 
 local sims = {}
+local simStack = {}
+
+local forbidden = {
+  rawequal = 1,
+  rawget = 1,
+  rawset = 1,
+  setfenv = 1,
+  setmetatable = 1,
+  coroutine = 1,
+  module = 1,
+  require = 1,
+  package = 1,
+  io = 1,
+  os = 1,
+  debug = 1,
+}
+
+local function makeSimEnv()
+  local env = {}
+  for k, v in pairs(_G) do
+    if (forbidden[k] == nil) then
+      env[k] = _G[k]
+    end
+  end
+  return env
+end
 
 function loadFiles(dir)
   for file in lfs.dir(dir) do
     if string.find(file, ".lua$") then
       local simName = file:sub(1, -5)
-      local f, err = loadfile(dir .. "/" .. file)
+      local f, err = loadfile(dir .. "/" .. file, "t", makeSimEnv())
       if (f ~= nil) then
         sims[simName] = f
       else
@@ -21,29 +47,38 @@ function loadFiles(dir)
   end
 end
 
-function VM_wrap(sim)
-  local f = sims[sim]
+function push(simName)
+  if (simName == nil) then
+    simName = "Null"
+  end
+
+  local f = sims[simName]
   if (f == nil) then
-    io.stderr:write("LUA WARNING: No element called " .. sim .. ".\n")
+    io.stderr:write("LUA WARNING: No element called `" .. tostring(simName) .. "`.\n")
     f = sims["Null"]
   end
 
-  return coroutine.wrap(f)
-end
+  local co = coroutine.create(f)
 
-function push(className)
-  if (className == nil) then
-    className = "Null"
-  end
-
-  sim = CreateSimulationElement(className)
-  HLVMPush(sim)
+  table.insert(simStack, co)
 
   local f, r = coroutine.running()
-  if (r ~= true) then
-    --  TODO: this is a hack because the C code is not
-    --        calling sim elements as true coroutines
-    --        because of reasons
-    coroutine.yield(1)
+  if not r then
+    coroutine.yield()
+  end
+end
+
+function HLVMProcess()
+  if #simStack == 0 then return end
+
+  local success, error = coroutine.resume(simStack[#simStack])
+  if not success then
+    io.stderr:write("LUA ERROR: " .. error .. "; HLVM popping.\n")
+    table.remove(simStack)
+    return
+  end
+
+  if coroutine.status(simStack[#simStack]) == "dead" then
+    table.remove(simStack)
   end
 end

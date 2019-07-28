@@ -2,16 +2,7 @@
 
 #include "../infrastructure/world.h"
 
-typedef struct {
-    int LuaRefKey;
-    char* Name;
-} SimulationElement;
-
 void InitializeHLVM(void);
-
-SimulationElement* CreateSimulationElement(char* name);
-void HLVMPush(SimulationElement* sim);
-void HLVMProcess(void);
 
 int         GetIntRegister     (const char* key);
 float       GetFloatRegister   (const char* key);

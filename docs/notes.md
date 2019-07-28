@@ -1,10 +1,6 @@
 ## TODO
 1. Rearchitect HLVM stack
-    - probably move more of it into Lua
-    - Sandbox individual elements
-        - don't let them declare globals, etc.
-        - whitelist environment without yield, etc.
-        - while we're here, figure out directory nesting for them
+    - while we're here, figure out directory nesting for them
 2. UI
     - choice presentation (tiles, die rolls)
     - lua can push a button list that waits for a response

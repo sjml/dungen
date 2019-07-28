@@ -150,6 +150,3 @@ hc3 = nil
 hc4 = nil
 ac = nil
 collectgarbage() -- just to make sure this doesn't trigger segfaults
-
-a = "what up?"
-print(a)

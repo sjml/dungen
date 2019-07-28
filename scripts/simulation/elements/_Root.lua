@@ -1,5 +1,5 @@
--- push("TestNode")
+push("TestNode")
 
 -- push("stackA")
 
-push("Mithral")
+-- push("Mithral")
