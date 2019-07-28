@@ -32,7 +32,7 @@ function loadFiles(dir, prefix)
     if file ~= "." and file ~= ".." then
       if string.find(file, ".lua$") then
         local simName = file:sub(1, -5)
-        local f, err = loadfile(dir .. "/" .. file, "t", makeSimEnv())
+        local f, err = loadfile(dir .. "/" .. file)
         if (f ~= nil) then
           sims[prefix .. simName] = f
         else
@@ -64,6 +64,7 @@ function push(simName)
     f = sims["Null"]
   end
 
+  debug.setupvalue(f, 1, makeSimEnv())
   local co = coroutine.create(f)
 
   table.insert(simStack, co)
