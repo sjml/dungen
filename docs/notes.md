@@ -1,13 +1,17 @@
 ## TODO
 1. UI
-    - choice presentation (tiles, die rolls)
-    - lua can push a button list that waits for a response
-        - if buttons have the same text, merge them
-    - HLVM pauses while choices are up, resumes when button is clicked
-        - this is going to be tricky -- how to handle this? some kind of "native push"? 
-    - do something similar for picking a tile
-    - also do banners with whatever pausing we figure out
-2. player choice to overrule random tiles or die rolls (in Lua?)
+    1. banner rendering
+        - set of strings, sizes, and background colors
+        - durations (or click / button press to dismiss)
+    2. single button rendering, detecting rollover and push
+        - buttons on banner screen?
+    3. layout of up to 12 buttons from list of strings
+    4. lua creation of button list and pausing to wait for response
+        - merge buttons with same description
+        - description text at top (or have banner integrated?)
+    5. tile choice with label
+    6. checkboxes? 
+2. random tiles and die rolls in Lua with optional player overrides
 3. HLVM exceptions (C + Lua invoking)
 
 ## Horizon
