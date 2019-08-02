@@ -1,5 +1,7 @@
 ## TODO
 1. UI
+    0. get vector typemaps to work for more than just pointers
+        - then look at API to see where they're screwy
     1. banner rendering
         - set of strings, sizes, and background colors
         - durations (or click / button press to dismiss)
