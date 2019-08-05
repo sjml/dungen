@@ -13,6 +13,7 @@ set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
 add_subdirectory(lib/glfw-3.3.0)
 find_package(OpenGL REQUIRED)
 
+set(CMAKE_DISABLE_FIND_PACKAGE_HarfBuzz TRUE)
 add_subdirectory(lib/freetype-2.10.1 freetype)
 include_directories(lib/freetype-2.10.1/include)
 
