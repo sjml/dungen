@@ -13,7 +13,13 @@ set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
 add_subdirectory(lib/glfw-3.3.0)
 find_package(OpenGL REQUIRED)
 
+# Nothing against these libraries; we're just not using them
+#  in the Xcode build so for the sake of consistency preventing
+#  them getting found by CMake if they're installed otherwise.
 set(CMAKE_DISABLE_FIND_PACKAGE_HarfBuzz TRUE)
+set(CMAKE_DISABLE_FIND_PACKAGE_BZip2 TRUE)
+set(CMAKE_DISABLE_FIND_PACKAGE_ZLIB TRUE)
+set(CMAKE_DISABLE_FIND_PACKAGE_PNG TRUE)
 add_subdirectory(lib/freetype-2.10.1 freetype)
 include_directories(lib/freetype-2.10.1/include)
 
