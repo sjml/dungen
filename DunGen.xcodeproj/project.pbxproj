@@ -976,7 +976,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "swig -lua -Werror -I${PROJECT_DIR}/lib/swiglib -o ${PROJECT_DIR}/src/scripting/wrapping.c ${PROJECT_DIR}/src/scripting/interfaces/dungen.i\n";
+			shellScript = "swig -lua -Werror -o ${PROJECT_DIR}/src/scripting/wrapping.c ${PROJECT_DIR}/src/scripting/interfaces/dungen.i\n";
 			showEnvVarsInLog = 0;
 		};
 		34279F6122DA28F100B825D0 /* Copy .app to build directory */ = {
