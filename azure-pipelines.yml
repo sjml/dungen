@@ -23,3 +23,19 @@ jobs:
       PathtoPublish: '$(Build.ArtifactStagingDirectory)'
       ArtifactName: 'Mac Build'
       publishLocation: 'Container'
+
+- job: Windows
+  pool:
+    vmImage: 'windows-latest'
+  steps:
+  - task: VSBuild@1
+    inputs:
+      solution: 'DunGen.sln'
+      configuration: 'Release'
+      maximumCpuCount: true
+      msbuildArchitecture: 'x64'
+  - task: PublishBuildArtifacts@1
+    inputs:
+      PathToPublish: '$(Build.ArtifactStagingDirectory)'
+      ArtifactName: 'Windows Build'
+      publishLocation: 'Container'
