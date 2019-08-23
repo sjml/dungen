@@ -47,11 +47,9 @@
 * let regions label themselves too (position in center of set based on farthest X and Y)
 * specify (and store) random seed
 * let outlines specify inner/outer/center
-* Windows+Linux builds
+* Linux build
     - Azure pipeline -> GitHub release (draft)
-    - copy acknowledgements alongside exe
-    - make readme
-    - expose resources directory on mac?
+* expose resources directory on mac?
 * history recording -- optional live captioning
     - banner: "The Primordial Age"
     - little in-place captions "Natural caverns form with pockets of liquid hot magma" etc.

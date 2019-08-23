@@ -138,12 +138,12 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IntDir>$(SolutionDir)build\$(ProjectName)\$(Configuration)\</IntDir>
-    <OutDir>$(SolutionDir)build\$(Configuration)\</OutDir>
+    <IntDir>$(ProjectDir)..\..\..\build\$(ProjectName)\$(Configuration)\</IntDir>
+    <OutDir>$(ProjectDir)..\..\..\build\$(Configuration)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IntDir>$(SolutionDir)build\$(ProjectName)\$(Configuration)\</IntDir>
-    <OutDir>$(SolutionDir)build\$(Configuration)\</OutDir>
+    <IntDir>$(ProjectDir)..\..\..\build\$(ProjectName)\$(Configuration)\</IntDir>
+    <OutDir>$(ProjectDir)..\..\..\build\$(Configuration)\</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -152,8 +152,8 @@
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <PrecompiledHeaderFile>$(SolutionDir)src\stdafx.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(SolutionDir)lib\glfw-3.3.0\include;$(SolutionDir)lib\lua-5.3.5\src;$(SolutionDir)lib\sqlite-amalgamation-3290000;$(SolutionDir)lib\sds-0bb446e;$(SolutionDir)lib\libpqueue-f319ea0\src;$(SolutionDir)lib\freetype-2.10.1\include;$(SolutionDir)lib\single-file</AdditionalIncludeDirectories>
+      <PrecompiledHeaderFile>$(ProjectDir)..\..\..\src\stdafx.h</PrecompiledHeaderFile>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\..\..\lib\glfw-3.3.0\include;$(ProjectDir)..\..\..\lib\lua-5.3.5\src;$(ProjectDir)..\..\..\lib\sqlite-amalgamation-3290000;$(ProjectDir)..\..\..\lib\sds-0bb446e;$(ProjectDir)..\..\..\lib\libpqueue-f319ea0\src;$(ProjectDir)..\..\..\lib\freetype-2.10.1\include;$(ProjectDir)..\..\..\lib\single-file</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_MBCS;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
       <AdditionalOptions>/experimental:external /external:anglebrackets /external:W0 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
@@ -181,8 +181,8 @@
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <PrecompiledHeaderFile>$(SolutionDir)src\stdafx.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(SolutionDir)lib\glfw-3.3.0\include;$(SolutionDir)lib\lua-5.3.5\src;$(SolutionDir)lib\sqlite-amalgamation-3290000;$(SolutionDir)lib\sds-0bb446e;$(SolutionDir)lib\libpqueue-f319ea0\src;$(SolutionDir)lib\freetype-2.10.1\include;$(SolutionDir)lib\single-file</AdditionalIncludeDirectories>
+      <PrecompiledHeaderFile>$(ProjectDir)..\..\..\src\stdafx.h</PrecompiledHeaderFile>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\..\..\lib\glfw-3.3.0\include;$(ProjectDir)..\..\..\lib\lua-5.3.5\src;$(ProjectDir)..\..\..\lib\sqlite-amalgamation-3290000;$(ProjectDir)..\..\..\lib\sds-0bb446e;$(ProjectDir)..\..\..\lib\libpqueue-f319ea0\src;$(ProjectDir)..\..\..\lib\freetype-2.10.1\include;$(ProjectDir)..\..\..\lib\single-file</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_MBCS;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
       <AdditionalOptions>/experimental:external /external:anglebrackets /external:W0 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
@@ -194,7 +194,7 @@
       <EntryPointSymbol>mainCRTStartup</EntryPointSymbol>
     </Link>
     <PostBuildEvent>
-      <Command>for %%a in ("scripts" "images" "fonts") do (xcopy /y /q /e /i "$(SolutionDir)%%~a" "$(OutDir)Resources\%%~a")</Command>
+      <Command>for %%a in ("scripts" "images" "fonts") do (xcopy /y /q /e /i "$(ProjectDir)..\..\..\%%~a" "$(OutDir)Resources\%%~a")</Command>
     </PostBuildEvent>
     <PostBuildEvent>
       <Message>Copy Resources</Message>

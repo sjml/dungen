@@ -59,6 +59,7 @@
 		341F12F222D200BC009C844F /* posix_thread.c in Sources */ = {isa = PBXBuildFile; fileRef = 341F12F122D200BC009C844F /* posix_thread.c */; };
 		341F12F522D20196009C844F /* osmesa_context.c in Sources */ = {isa = PBXBuildFile; fileRef = 341F12F322D20196009C844F /* osmesa_context.c */; };
 		341F12F622D20196009C844F /* egl_context.c in Sources */ = {isa = PBXBuildFile; fileRef = 341F12F422D20196009C844F /* egl_context.c */; };
+		342E3B11231041A6008AD361 /* macOS.c in Sources */ = {isa = PBXBuildFile; fileRef = 342E3B0E231041A6008AD361 /* macOS.c */; };
 		344C39E51EC4E0B2007F9466 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 344C39E41EC4E0B2007F9466 /* Assets.xcassets */; };
 		3455A6B41EC4DB8F000057E4 /* libglfw.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3455A6961EC4DA71000057E4 /* libglfw.a */; };
 		345E93AC22EB279D006FD334 /* pqueue.c in Sources */ = {isa = PBXBuildFile; fileRef = 345E93A022EB25B3006FD334 /* pqueue.c */; };
@@ -231,6 +232,8 @@
 		341F12F322D20196009C844F /* osmesa_context.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = osmesa_context.c; path = "lib/glfw-3.3.0/src/osmesa_context.c"; sourceTree = "<group>"; };
 		341F12F422D20196009C844F /* egl_context.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = egl_context.c; path = "lib/glfw-3.3.0/src/egl_context.c"; sourceTree = "<group>"; };
 		3424314522D7B51E00FC9FBE /* hlvm.i */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c.preprocessed; path = hlvm.i; sourceTree = "<group>"; };
+		342E3B0E231041A6008AD361 /* macOS.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = macOS.c; sourceTree = "<group>"; };
+		342E3B10231041A6008AD361 /* platform.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = platform.h; sourceTree = "<group>"; };
 		344B44F922EB931400A27ADF /* pathfind.i */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c.preprocessed; path = pathfind.i; sourceTree = "<group>"; };
 		344C39E41EC4E0B2007F9466 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = platform/macOS/Assets.xcassets; sourceTree = SOURCE_ROOT; };
 		3455A6961EC4DA71000057E4 /* libglfw.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libglfw.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -449,6 +452,15 @@
 			name = lua;
 			sourceTree = "<group>";
 		};
+		342E3B0D231041A5008AD361 /* platform */ = {
+			isa = PBXGroup;
+			children = (
+				342E3B0E231041A6008AD361 /* macOS.c */,
+				342E3B10231041A6008AD361 /* platform.h */,
+			);
+			path = platform;
+			sourceTree = "<group>";
+		};
 		3455A6901EC4DA41000057E4 /* lib */ = {
 			isa = PBXGroup;
 			children = (
@@ -549,6 +561,7 @@
 				345E93B022EB2AC1006FD334 /* constraints */,
 				340B5D1022D221CB00E53DCA /* scripting */,
 				347A941922D1B868002BF97F /* infrastructure */,
+				342E3B0D231041A5008AD361 /* platform */,
 			);
 			path = src;
 			sourceTree = "<group>";
@@ -787,7 +800,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 349C53E41EC4D6B9008D42C6 /* Build configuration list for PBXNativeTarget "DunGen" */;
 			buildPhases = (
-				3424314622D7B56B00FC9FBE /* Generate SWIG Wrappings */,
+				3424314622D7B56B00FC9FBE /* Try to Generate SWIG Wrappings */,
 				349C53AE1EC4D6B9008D42C6 /* Sources */,
 				349C53AF1EC4D6B9008D42C6 /* Frameworks */,
 				349C53B01EC4D6B9008D42C6 /* Resources */,
@@ -960,7 +973,7 @@
 			shellPath = /bin/sh;
 			shellScript = "cp -R ${PROJECT_DIR}/scripts ${CONFIGURATION_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}\ncp -R ${PROJECT_DIR}/images ${CONFIGURATION_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}\ncp -R ${PROJECT_DIR}/fonts ${CONFIGURATION_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}\n";
 		};
-		3424314622D7B56B00FC9FBE /* Generate SWIG Wrappings */ = {
+		3424314622D7B56B00FC9FBE /* Try to Generate SWIG Wrappings */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -969,14 +982,14 @@
 			);
 			inputPaths = (
 			);
-			name = "Generate SWIG Wrappings";
+			name = "Try to Generate SWIG Wrappings";
 			outputFileListPaths = (
 			);
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "swig -lua -Werror -o ${PROJECT_DIR}/src/scripting/wrapping.c ${PROJECT_DIR}/src/scripting/interfaces/dungen.i\n";
+			shellScript = "type swig >/dev/null 2>&1 || exit 0\n\nswig -lua -Werror -o ${PROJECT_DIR}/src/scripting/wrapping.c ${PROJECT_DIR}/src/scripting/interfaces/dungen.i\n";
 			showEnvVarsInLog = 0;
 		};
 		34279F6122DA28F100B825D0 /* Copy .app to build directory */ = {
@@ -995,7 +1008,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if [ -n \"${BUILD_ARTIFACTSTAGINGDIRECTORY}\" ]; \nthen\n    # Building on an Azure pipeline\n    cp -R \"${BUILT_PRODUCTS_DIR}/${FULL_PRODUCT_NAME}\" \"${BUILD_ARTIFACTSTAGINGDIRECTORY}\"\nelif [ \"${BUILT_PRODUCTS_DIR}/${FULL_PRODUCT_NAME}\" != \"${PROJECT_DIR}/build/${CONFIGURATION}/${FULL_PRODUCT_NAME}\" ];\nthen\n    # Building on a Mac as part of normal Xcode build (non-CLI)\n    mkdir -p \"${PROJECT_DIR}/build/${CONFIGURATION}\"\n    rm -rf \"${PROJECT_DIR}/build/${CONFIGURATION}/${FULL_PRODUCT_NAME}\"\n    cp -r \"${BUILT_PRODUCTS_DIR}/${FULL_PRODUCT_NAME}\" \"${PROJECT_DIR}/build/${CONFIGURATION}\"\nfi\n";
+			shellScript = "buildProduct=\"${BUILT_PRODUCTS_DIR}/${FULL_PRODUCT_NAME}\"\noutputDir=\"${PROJECT_DIR}/build/${CONFIGURATION}\"\noutputProduct=\"$outputDir/${FULL_PRODUCT_NAME}\"\n\nif [ $buildProduct != $outputProduct ]; then\n    mkdir -p $outputDir\n    rm -rf $outputProduct\n    cp -r $buildProduct $outputDir\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -1083,6 +1096,7 @@
 				347A941F22D1BE74002BF97F /* util.c in Sources */,
 				345E93B322EB2AE4006FD334 /* pathfind.c in Sources */,
 				3482A55822D61C6700AAD098 /* wrapping.c in Sources */,
+				342E3B11231041A6008AD361 /* macOS.c in Sources */,
 				347A941722D1B85F002BF97F /* rendering.c in Sources */,
 				34CD649A22D9DE3B00C33190 /* attributes.c in Sources */,
 				347A941C22D1B9C5002BF97F /* game.c in Sources */,
