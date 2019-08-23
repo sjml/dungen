@@ -106,7 +106,7 @@ target_link_libraries(DunGen
 find_program(SWIG_EXE "swig")
 if(SWIG_EXE)
     add_custom_command(TARGET DunGen PRE_BUILD
-                       COMMAND ${SWIG_EXE} -lua -Werror -I${CMAKE_SOURCE_DIR}/lib/swiglib -o ${CMAKE_SOURCE_DIR}/src/scripting/wrapping.c ${CMAKE_SOURCE_DIR}/src/scripting/interfaces/dungen.i
+                       COMMAND ${SWIG_EXE} -lua -Werror -o ${CMAKE_SOURCE_DIR}/src/scripting/wrapping.c ${CMAKE_SOURCE_DIR}/src/scripting/interfaces/dungen.i
                       )
 endif()
 

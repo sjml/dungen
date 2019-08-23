@@ -1,5 +1,9 @@
 %module dungen
 
+#if SWIG_VERSION < 0x040001
+    #error Minimum SWIG version is 4.0.1
+#endif
+
 %include typemaps.i
 
 %include vectors.i
