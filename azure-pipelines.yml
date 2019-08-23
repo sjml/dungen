@@ -1,23 +1,28 @@
 trigger:
 - master
 
+strategy:
+    matrix:
+        mac:
+            imageName: 'macos-latest'
+
 pool:
-  vmImage: 'macos-latest'
+    vmImage: $(imageName)
 
 steps:
 - task: CmdLine@2
-  inputs:
-    script: 'brew update; brew install swig'
+    inputs:
+        script: 'brew update; brew install swig'
 - task: Xcode@5
-  inputs:
-    actions: 'build'
-    scheme: ''
-    sdk: 'macosx'
-    configuration: 'Release'
-    xcWorkspacePath: 'DunGen.xcodeproj'
-    xcodeVersion: 10
+    inputs:
+        actions: 'build'
+        scheme: ''
+        sdk: 'macosx'
+        configuration: 'Release'
+        xcWorkspacePath: 'DunGen.xcodeproj'
+        xcodeVersion: 10
 - task: PublishBuildArtifacts@1
-  inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-    ArtifactName: 'Mac Build'
-    publishLocation: 'Container'
+    inputs:
+        PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+        ArtifactName: 'Mac Build'
+        publishLocation: 'Container'
