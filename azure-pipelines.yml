@@ -34,7 +34,6 @@ jobs:
       vsVersion: '15.0'
       configuration: 'Release'
       maximumCpuCount: true
-      msbuildArchitecture: 'x64'
   - task: PublishBuildArtifacts@1
     inputs:
       PathToPublish: '$(Build.ArtifactStagingDirectory)'
