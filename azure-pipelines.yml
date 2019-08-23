@@ -26,7 +26,7 @@ jobs:
 
 - job: Windows
   pool:
-    vmImage: 'windows-latest'
+    vmImage: 'vs2017-win2016'
   steps:
   - task: VSBuild@1
     inputs:
@@ -34,6 +34,7 @@ jobs:
       vsVersion: '15.0'
       configuration: 'Release'
       maximumCpuCount: true
+      msbuildArchitecture: 'x64'
   - task: PublishBuildArtifacts@1
     inputs:
       PathToPublish: '$(Build.ArtifactStagingDirectory)'
