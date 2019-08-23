@@ -69,7 +69,7 @@ gbVec3 GetColorByPercent(const char* tablename, float p) {
         return ret;
     }
     float fIndex = p * (float)arrlen(ct);
-    int indexBase = fIndex;
+    int indexBase = (int)fIndex;
     float offset = fIndex - (float)indexBase;
     if (++indexBase >= arrlen(ct)) {
         indexBase--;

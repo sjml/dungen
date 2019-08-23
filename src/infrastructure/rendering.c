@@ -76,7 +76,7 @@ void InitializeRendering() {
     glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 //    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
-    MainCamera.aperture = M_PI / 2;
+    MainCamera.aperture = GB_MATH_PI / 2;
     MainCamera.position.x = 0.0f;
     MainCamera.position.y = 0.0f;
     MainCamera.position.z = 10.0f;
@@ -144,10 +144,10 @@ gbVec2 WorldToScreen(gbVec2* worldCoordinates) {
 
     gbVec2 spos = {
             (
-                (ndc.x + 1.0) / 2.0
+                (ndc.x + 1.0f) / 2.0f
             ) * viewDim.x + viewOffset.x,
             (
-                (1.0 - ndc.y) / 2.0
+                (1.0f - ndc.y) / 2.0f
             ) * viewDim.y + viewOffset.y
     };
 
@@ -224,7 +224,7 @@ int Render() {
         glMultMatrixf(orthoMatrix.e);
         for (int i=0; i < arrlen(textInfos); i++) {
             glColor4fv(textInfos[i].color.e);
-            DrawGameText(textInfos[i].text, "fonts/04B_03__.TTF", textInfos[i].scale, textInfos[i].pos.x, textInfos[i].pos.y, 0.0f);
+            DrawGameText(textInfos[i].text, "fonts/04B_03__.TTF", textInfos[i].scale, (int)textInfos[i].pos.x, (int)textInfos[i].pos.y, 0.0f);
         }
     glMatrixMode(GL_PROJECTION);
     glPopMatrix();

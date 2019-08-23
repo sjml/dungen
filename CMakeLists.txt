@@ -53,7 +53,6 @@ add_library(lua
     lib/lua-5.3.5/src/ltable.c
     lib/lua-5.3.5/src/ltablib.c
     lib/lua-5.3.5/src/ltm.c
-    lib/lua-5.3.5/src/lua.c
     lib/lua-5.3.5/src/luac.c
     lib/lua-5.3.5/src/lundump.c
     lib/lua-5.3.5/src/lutf8lib.c

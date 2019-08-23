@@ -1,5 +1,6 @@
 #include "stdafx.h"
 
+#include "platform/platform.h"
 #include "infrastructure/rendering.h"
 #include "scripting/scripting.h"
 #include "infrastructure/attributes.h"
@@ -7,6 +8,7 @@
 
 int main(int argc, const char * argv[]) {
     
+	InitializePlatform();
     InitializeRendering();
     InitializeLua();
     InitializeAttributes();
@@ -24,6 +26,7 @@ int main(int argc, const char * argv[]) {
     FinalizeAttributes();
     FinalizeLua();
     FinalizeRendering();
+	FinalizePlatform();
     
     return EXIT_SUCCESS;
 

@@ -1,3 +1,5 @@
+// Includes edits to compile on Windows. 
+
 /* SDSLib 2.0 -- A C dynamic strings library
  *
  * Copyright (c) 2006-2015, Salvatore Sanfilippo <antirez at gmail dot com>
@@ -42,31 +44,40 @@ const char *SDS_NOINIT;
 
 typedef char *sds;
 
+#ifdef _MSC_VER
+	#  define PACKED_STRUCT(name) \
+		__pragma(pack(push, 1)) struct name __pragma(pack(pop))
+	#include <basetsd.h>
+	typedef SSIZE_T ssize_t;
+#else
+#  define PACKED_STRUCT(name) struct __attribute__((packed)) name
+#endif
+
 /* Note: sdshdr5 is never used, we just access the flags byte directly.
  * However is here to document the layout of type 5 SDS strings. */
-struct __attribute__ ((__packed__)) sdshdr5 {
+PACKED_STRUCT(sdshdr5) {
     unsigned char flags; /* 3 lsb of type, and 5 msb of string length */
     char buf[];
 };
-struct __attribute__ ((__packed__)) sdshdr8 {
+PACKED_STRUCT(sdshdr8) {
     uint8_t len; /* used */
     uint8_t alloc; /* excluding the header and null terminator */
     unsigned char flags; /* 3 lsb of type, 5 unused bits */
     char buf[];
 };
-struct __attribute__ ((__packed__)) sdshdr16 {
+PACKED_STRUCT(sdshdr16) {
     uint16_t len; /* used */
     uint16_t alloc; /* excluding the header and null terminator */
     unsigned char flags; /* 3 lsb of type, 5 unused bits */
     char buf[];
 };
-struct __attribute__ ((__packed__)) sdshdr32 {
+PACKED_STRUCT(sdshdr32) {
     uint32_t len; /* used */
     uint32_t alloc; /* excluding the header and null terminator */
     unsigned char flags; /* 3 lsb of type, 5 unused bits */
     char buf[];
 };
-struct __attribute__ ((__packed__)) sdshdr64 {
+PACKED_STRUCT(sdshdr64) {
     uint64_t len; /* used */
     uint64_t alloc; /* excluding the header and null terminator */
     unsigned char flags; /* 3 lsb of type, 5 unused bits */

@@ -12,11 +12,15 @@
 
 #include "util.h"
 
+#ifdef __clang__
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdocumentation"
+#endif // __clang__
 #include <ft2build.h>
 #include FT_FREETYPE_H
+#ifdef __clang__
 #pragma clang diagnostic pop
+#endif // __clang__
 
 #define MAX_VERTS (4*128)
 #define TEXTURE_SIZE 512
@@ -141,7 +145,7 @@ Glyph _GetGlyph(FontCacheEntry* fce, float fontSize, unsigned int codepoint) {
     if (hmgeti(fce->glyphMap, codepoint) < 0) {
         // create and add glyph
         int error = 0;
-        error = FT_Set_Char_Size(*fce->ftFace, 0L, fontSize * 64, 72, 72);
+        error = FT_Set_Char_Size(*fce->ftFace, 0L, (FT_F26Dot6)(fontSize * 64.0f), 72, 72);
         error = FT_Load_Glyph(*fce->ftFace, codepoint, FT_LOAD_NO_HINTING);
         error = FT_Render_Glyph((*fce->ftFace)->glyph, FT_RENDER_MODE_NORMAL);
 
@@ -208,9 +212,9 @@ Glyph _GetGlyph(FontCacheEntry* fce, float fontSize, unsigned int codepoint) {
         ret.topLeft.y = row->y;
         ret.bottomRight.x = row->x + glyphWidth;
         ret.bottomRight.y = row->y + glyphHeight;
-        ret.advance = (*fce->ftFace)->glyph->advance.x / 64;
-        ret.offset.x = (*fce->ftFace)->glyph->bitmap_left;
-        ret.offset.y = (*fce->ftFace)->glyph->bitmap_top;
+        ret.advance = (float)(*fce->ftFace)->glyph->advance.x / 64.0f;
+        ret.offset.x = (float)(*fce->ftFace)->glyph->bitmap_left;
+        ret.offset.y = (float)(*fce->ftFace)->glyph->bitmap_top;
 
         row->x += glyphWidth + 1;
 
@@ -296,12 +300,12 @@ float _DrawText(FontCacheEntry* fce, float fontSize, const char* text) {
         }
 
         int rx, ry;
-        rx = floorf(dx + g.offset.x);
-        ry = floorf(g.offset.y);
+        rx = (int)floorf(dx + g.offset.x);
+        ry = (int)floorf(g.offset.y);
 
         float x0, y0, x1, y1, s0, t0, s1, t1;
-        x0 = x1 = rx;
-        y0 = y1 = ry;
+        x0 = x1 = (float)rx;
+        y0 = y1 = (float)ry;
         x1 += (g.bottomRight.x - g.topLeft.x);
         y1 -= (g.bottomRight.y - g.topLeft.y);
 
@@ -457,6 +461,6 @@ float GetTextAscenderHeight(const char* fontPath, float size) {
         return 0.0f;
     }
 
-    FT_Set_Char_Size(*fce->ftFace, 0L, size * 64, 72, 72);
+    FT_Set_Char_Size(*fce->ftFace, 0L, (FT_F26Dot6)(size * 64.0f), 72, 72);
     return (*fce->ftFace)->size->metrics.ascender / 64.0f;
 }

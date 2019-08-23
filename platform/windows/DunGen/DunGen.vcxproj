@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\src\constraints\pathfind.h" />
+    <ClInclude Include="..\..\..\src\hlvm\hlvm.h" />
+    <ClInclude Include="..\..\..\src\infrastructure\attributes.h" />
+    <ClInclude Include="..\..\..\src\infrastructure\game.h" />
+    <ClInclude Include="..\..\..\src\infrastructure\images.h" />
+    <ClInclude Include="..\..\..\src\infrastructure\outline.h" />
+    <ClInclude Include="..\..\..\src\infrastructure\rendering.h" />
+    <ClInclude Include="..\..\..\src\infrastructure\text.h" />
+    <ClInclude Include="..\..\..\src\infrastructure\util.h" />
+    <ClInclude Include="..\..\..\src\infrastructure\world.h" />
+    <ClInclude Include="..\..\..\src\platform\platform.h" />
+    <ClInclude Include="..\..\..\src\scripting\scripting.h" />
+    <ClInclude Include="..\..\..\src\stdafx.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\src\constraints\pathfind.c" />
+    <ClCompile Include="..\..\..\src\hlvm\hlvm.c" />
+    <ClCompile Include="..\..\..\src\infrastructure\attributes.c" />
+    <ClCompile Include="..\..\..\src\infrastructure\game.c" />
+    <ClCompile Include="..\..\..\src\infrastructure\images.c" />
+    <ClCompile Include="..\..\..\src\infrastructure\outline.c" />
+    <ClCompile Include="..\..\..\src\infrastructure\rendering.c" />
+    <ClCompile Include="..\..\..\src\infrastructure\text.c" />
+    <ClCompile Include="..\..\..\src\infrastructure\util.c" />
+    <ClCompile Include="..\..\..\src\infrastructure\world.c" />
+    <ClCompile Include="..\..\..\src\main.c" />
+    <ClCompile Include="..\..\..\src\platform\windows.c" />
+    <ClCompile Include="..\..\..\src\scripting\scripting.c" />
+    <ClCompile Include="..\..\..\src\scripting\wrapping.c">
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">TurnOffAllWarnings</WarningLevel>
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">TurnOffAllWarnings</WarningLevel>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\..\src\scripting\interfaces\attributes.i" />
+    <None Include="..\..\..\src\scripting\interfaces\dungen.i" />
+    <None Include="..\..\..\src\scripting\interfaces\game.i" />
+    <None Include="..\..\..\src\scripting\interfaces\hlvm.i" />
+    <None Include="..\..\..\src\scripting\interfaces\images.i" />
+    <None Include="..\..\..\src\scripting\interfaces\pathfind.i" />
+    <None Include="..\..\..\src\scripting\interfaces\rendering.i" />
+    <None Include="..\..\..\src\scripting\interfaces\text.i" />
+    <None Include="..\..\..\src\scripting\interfaces\typemaps.i" />
+    <None Include="..\..\..\src\scripting\interfaces\util.i" />
+    <None Include="..\..\..\src\scripting\interfaces\vectors.i" />
+    <None Include="..\..\..\src\scripting\interfaces\world.i" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\FreeType\FreeType.vcxproj">
+      <Project>{ff5877d3-bb64-4863-b8e8-19ec67a25797}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\GLFW\GLFW.vcxproj">
+      <Project>{97bba92d-f277-40af-8d19-d15924e68000}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\Lua\Lua.vcxproj">
+      <Project>{a55e59b7-5f60-47c1-bf22-c666db4fee67}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\pqueue\pqueue.vcxproj">
+      <Project>{d7bb2e71-8831-4bac-b4c5-05a44b4bdd05}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\sds\sds.vcxproj">
+      <Project>{b5fc2dc0-3f05-4e90-b38b-10f427803066}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\SQLite\SQLite.vcxproj">
+      <Project>{5b94c021-85b0-4b0d-a6bb-b421e00b0fd9}</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>15.0</VCProjectVersion>
+    <ProjectGuid>{B7C520BA-61BC-4D9D-A339-80C2BD7E828C}</ProjectGuid>
+    <RootNamespace>DunGen</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <IntDir>$(SolutionDir)build\$(ProjectName)\$(Configuration)\</IntDir>
+    <OutDir>$(SolutionDir)build\$(Configuration)\</OutDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <IntDir>$(SolutionDir)build\$(ProjectName)\$(Configuration)\</IntDir>
+    <OutDir>$(SolutionDir)build\$(Configuration)\</OutDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <ConformanceMode>true</ConformanceMode>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile>$(SolutionDir)src\stdafx.h</PrecompiledHeaderFile>
+      <AdditionalIncludeDirectories>$(SolutionDir)lib\glfw-3.3.0\include;$(SolutionDir)lib\lua-5.3.5\src;$(SolutionDir)lib\sqlite-amalgamation-3290000;$(SolutionDir)lib\sds-0bb446e;$(SolutionDir)lib\libpqueue-f319ea0\src;$(SolutionDir)lib\freetype-2.10.1\include;$(SolutionDir)lib\single-file</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_MBCS;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
+      <AdditionalOptions>/experimental:external /external:anglebrackets /external:W0 %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <SubSystem>Console</SubSystem>
+      <EntryPointSymbol>
+      </EntryPointSymbol>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <ConformanceMode>true</ConformanceMode>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile>$(SolutionDir)src\stdafx.h</PrecompiledHeaderFile>
+      <AdditionalIncludeDirectories>$(SolutionDir)lib\glfw-3.3.0\include;$(SolutionDir)lib\lua-5.3.5\src;$(SolutionDir)lib\sqlite-amalgamation-3290000;$(SolutionDir)lib\sds-0bb446e;$(SolutionDir)lib\libpqueue-f319ea0\src;$(SolutionDir)lib\freetype-2.10.1\include;$(SolutionDir)lib\single-file</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_MBCS;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
+      <AdditionalOptions>/experimental:external /external:anglebrackets /external:W0 %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <Link>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <SubSystem>Windows</SubSystem>
+      <EntryPointSymbol>mainCRTStartup</EntryPointSymbol>
+    </Link>
+    <PostBuildEvent>
+      <Command>for %%a in ("scripts" "images" "fonts") do (xcopy /y /q /e /i "$(SolutionDir)%%~a" "$(OutDir)Resources\%%~a")</Command>
+    </PostBuildEvent>
+    <PostBuildEvent>
+      <Message>Copy Resources</Message>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

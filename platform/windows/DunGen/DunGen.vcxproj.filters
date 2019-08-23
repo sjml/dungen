@@ -1,0 +1,142 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClInclude Include="..\..\..\src\stdafx.h" />
+    <ClInclude Include="..\..\..\src\scripting\scripting.h">
+      <Filter>scripting</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\constraints\pathfind.h">
+      <Filter>constraints</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\hlvm\hlvm.h">
+      <Filter>hlvm</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\infrastructure\attributes.h">
+      <Filter>infrastructure</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\infrastructure\game.h">
+      <Filter>infrastructure</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\infrastructure\images.h">
+      <Filter>infrastructure</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\infrastructure\outline.h">
+      <Filter>infrastructure</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\infrastructure\rendering.h">
+      <Filter>infrastructure</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\infrastructure\text.h">
+      <Filter>infrastructure</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\infrastructure\util.h">
+      <Filter>infrastructure</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\infrastructure\world.h">
+      <Filter>infrastructure</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\platform\platform.h">
+      <Filter>platform</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\src\main.c" />
+    <ClCompile Include="..\..\..\src\scripting\scripting.c">
+      <Filter>scripting</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\scripting\wrapping.c">
+      <Filter>scripting</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\constraints\pathfind.c">
+      <Filter>constraints</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\hlvm\hlvm.c">
+      <Filter>hlvm</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\infrastructure\game.c">
+      <Filter>infrastructure</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\infrastructure\images.c">
+      <Filter>infrastructure</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\infrastructure\outline.c">
+      <Filter>infrastructure</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\infrastructure\rendering.c">
+      <Filter>infrastructure</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\infrastructure\text.c">
+      <Filter>infrastructure</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\infrastructure\util.c">
+      <Filter>infrastructure</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\infrastructure\world.c">
+      <Filter>infrastructure</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\infrastructure\attributes.c">
+      <Filter>infrastructure</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\platform\windows.c">
+      <Filter>platform</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="scripting">
+      <UniqueIdentifier>{757620cf-6683-42e1-8061-c1ae45781b46}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="infrastructure">
+      <UniqueIdentifier>{52b807aa-7bc0-4837-b083-c8cf3720d893}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="hlvm">
+      <UniqueIdentifier>{5374c800-1250-4a83-ab4e-8adb67938596}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="constraints">
+      <UniqueIdentifier>{0c623bd4-1b1a-4e02-bc32-ada16575e965}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="scripting\interfaces">
+      <UniqueIdentifier>{267af344-bf73-40de-9fa8-54eb8471d732}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="platform">
+      <UniqueIdentifier>{1dc25e44-62eb-418b-95a6-c9457db0bd7e}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\..\src\scripting\interfaces\game.i">
+      <Filter>scripting\interfaces</Filter>
+    </None>
+    <None Include="..\..\..\src\scripting\interfaces\hlvm.i">
+      <Filter>scripting\interfaces</Filter>
+    </None>
+    <None Include="..\..\..\src\scripting\interfaces\images.i">
+      <Filter>scripting\interfaces</Filter>
+    </None>
+    <None Include="..\..\..\src\scripting\interfaces\pathfind.i">
+      <Filter>scripting\interfaces</Filter>
+    </None>
+    <None Include="..\..\..\src\scripting\interfaces\rendering.i">
+      <Filter>scripting\interfaces</Filter>
+    </None>
+    <None Include="..\..\..\src\scripting\interfaces\text.i">
+      <Filter>scripting\interfaces</Filter>
+    </None>
+    <None Include="..\..\..\src\scripting\interfaces\typemaps.i">
+      <Filter>scripting\interfaces</Filter>
+    </None>
+    <None Include="..\..\..\src\scripting\interfaces\util.i">
+      <Filter>scripting\interfaces</Filter>
+    </None>
+    <None Include="..\..\..\src\scripting\interfaces\vectors.i">
+      <Filter>scripting\interfaces</Filter>
+    </None>
+    <None Include="..\..\..\src\scripting\interfaces\world.i">
+      <Filter>scripting\interfaces</Filter>
+    </None>
+    <None Include="..\..\..\src\scripting\interfaces\attributes.i">
+      <Filter>scripting\interfaces</Filter>
+    </None>
+    <None Include="..\..\..\src\scripting\interfaces\dungen.i">
+      <Filter>scripting\interfaces</Filter>
+    </None>
+  </ItemGroup>
+</Project>

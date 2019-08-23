@@ -52,8 +52,8 @@ void InitializeWorld(int width, int height, float scale) {
         worldSize.x += tileDimensions.x / 2.0f;
     }
 
-    arrsetlen(WorldArray, width * height);
-    arrsetlen(PointList, height+1);
+    arrsetlen(WorldArray, (unsigned int)(width * height));
+    arrsetlen(PointList, (unsigned int)(height+1));
 
     gbVec2 startingPos = { worldSize.x * -0.5f, worldSize.y * 0.5f };
     float yHigh;
@@ -62,7 +62,7 @@ void InitializeWorld(int width, int height, float scale) {
     bool high = true;
     for (int j = 0; j < height + 1; j++) {
         PointList[j] = NULL;
-        arrsetlen(PointList[j], 2 * (width+1));
+        arrsetlen(PointList[j], (unsigned int)(2 * (width+1)));
 
         high = (j % 2 != 0);
         yHigh = startingPos.y - (j * ((tileSize * 0.5f) + tileSize));
@@ -210,21 +210,21 @@ TileData* ScreenToTile(gbVec2* screenCoordinates) {
         return NULL;
     }
 
-    const static float aspect = 1024.0f / 768.0f;
-    const static float height = 20.0f;
-    const static float width = height * aspect;
-    const static float ratio = width / 1024.0f;
-    Vec2i sizePx = { worldSize.x / ratio, worldSize.y / ratio };
-    Vec2i offset = { 1024.0f - sizePx.x, 768.0f - sizePx.y };
+    const float aspect = 1024.0f / 768.0f;
+    const float height = 20.0f;
+    const float width = height * aspect;
+    const float ratio = width / 1024.0f;
+    Vec2i sizePx = { (int)(worldSize.x / ratio), (int)(worldSize.y / ratio) };
+    Vec2i offset = { (int)(1024.0f - sizePx.x), (int)(768.0f - sizePx.y) };
     offset.x /= 2;
     offset.y /= 2;
 
-    Vec2i absCoord = {screenCoordinates->x - offset.x, screenCoordinates->y - offset.y};
-    const float sideSlope = tan((float)M_PI / 6.0f);
+    Vec2i absCoord = { (int)(screenCoordinates->x - offset.x), (int)(screenCoordinates->y - offset.y) };
+    const float sideSlope = (float)tan(GB_MATH_PI / 6.0);
     gbVec2 absCoordW = {absCoord.x * ratio, absCoord.y * ratio};
 
     gbVec2 sectionCoordW = {absCoordW.x / tileDimensions.x, absCoordW.y / ((tileSize * 0.5f) + tileSize) };
-    Vec2i sectionCoord = { sectionCoordW.x, sectionCoordW.y };
+    Vec2i sectionCoord = { (int)sectionCoordW.x, (int)sectionCoordW.y };
 
     gbVec2 remainders = {sectionCoordW.x - sectionCoord.x, sectionCoordW.y - sectionCoord.y };
     gbVec2 localCoordW = {remainders.x * tileDimensions.x, remainders.y * ((tileSize * 0.5f) + tileSize) };
@@ -368,7 +368,7 @@ int GetTileCount(TileSet* ts) {
 
 TileData** GetTiles(TileSet* ts) {
     TileData** ret = NULL;
-    arrsetlen(ret, hmlen(ts->tiles));
+    arrsetlen(ret, (unsigned int)hmlen(ts->tiles));
     for (int i=0; i < hmlen(ts->tiles); i++) {
         ret[i] = ts->tiles[i].key;
     }

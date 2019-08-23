@@ -7,7 +7,7 @@
 #define GB_MATH_IMPLEMENTATION
 #include <gb_math.h>
 
-int handleGLErrors(const char* f, int line) {
+int handleGLErrors(const char* f, const int line) {
     bool errorFound = false;
     GLenum errorCode;
     const char* errorString;
