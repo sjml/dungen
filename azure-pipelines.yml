@@ -6,10 +6,10 @@ pool:
 
 steps:
 - task: CmdLine@2
-inputs:
+  inputs:
     script: 'brew update; brew install swig'
 - task: Xcode@5
-inputs:
+  inputs:
     actions: 'build'
     scheme: ''
     sdk: 'macosx'
@@ -17,7 +17,7 @@ inputs:
     xcWorkspacePath: 'DunGen.xcodeproj'
     xcodeVersion: 10
 - task: PublishBuildArtifacts@1
-inputs:
+  inputs:
     PathtoPublish: '$(Build.ArtifactStagingDirectory)'
     ArtifactName: 'Mac Build'
     publishLocation: 'Container'
