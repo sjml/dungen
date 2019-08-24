@@ -7,6 +7,7 @@
 #include "outline.h"
 #include "game.h"
 #include  "../ui/banner.h"
+#include  "../ui/choice.h"
 
 const int windowWidth  = 1024;
 const int windowHeight = 768;
@@ -223,6 +224,7 @@ int Render() {
             DrawGameText(tileLabels[i].text, "fonts/04B_03__.TTF", tileLabels[i].scale, (int)tileLabels[i].pos.x, (int)tileLabels[i].pos.y, 0.0f);
         }
         RenderBanners();
+        RenderChoices();
     glMatrixMode(GL_PROJECTION);
     glPopMatrix();
 
