@@ -2731,6 +2731,9 @@ SWIGINTERN struct sTileSet *new_sTileSet(void){
 
     #include "../constraints/pathfind.h"
 
+
+    #include "../ui/banner.h"
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -3863,11 +3866,11 @@ fail:
 }
 
 
-static int _wrap_ClearTextStrings(lua_State* L) {
+static int _wrap_ClearTileLabels(lua_State* L) {
   int SWIG_arg = 0;
   
-  SWIG_check_num_args("ClearTextStrings",0,0)
-  ClearTextStrings();
+  SWIG_check_num_args("ClearTileLabels",0,0)
+  ClearTileLabels();
   
   return SWIG_arg;
   
@@ -3879,16 +3882,16 @@ fail:
 }
 
 
-static int _wrap_AddTextString(lua_State* L) {
+static int _wrap_AddTileLabel(lua_State* L) {
   int SWIG_arg = 0;
   char *arg1 = (char *) 0 ;
   gbVec2 arg2 ;
   float arg3 ;
   gbVec4 arg4 ;
   
-  SWIG_check_num_args("AddTextString",4,4)
-  if(!SWIG_lua_isnilstring(L,1)) SWIG_fail_arg("AddTextString",1,"char const *");
-  if(!lua_isnumber(L,3)) SWIG_fail_arg("AddTextString",3,"float");
+  SWIG_check_num_args("AddTileLabel",4,4)
+  if(!SWIG_lua_isnilstring(L,1)) SWIG_fail_arg("AddTileLabel",1,"char const *");
+  if(!lua_isnumber(L,3)) SWIG_fail_arg("AddTileLabel",3,"float");
   arg1 = (char *)lua_tostring(L, 1);
   {
     // gbVec2 conversion
@@ -3952,7 +3955,7 @@ static int _wrap_AddTextString(lua_State* L) {
       (&arg4)->w = w;
     }
   }
-  AddTextString((char const *)arg1,arg2,arg3,arg4);
+  AddTileLabel((char const *)arg1,arg2,arg3,arg4);
   
   return SWIG_arg;
   
@@ -6251,6 +6254,109 @@ fail:
 }
 
 
+static int _wrap_AddBanner(lua_State* L) {
+  int SWIG_arg = 0;
+  char *arg1 = (char *) 0 ;
+  float arg2 ;
+  gbVec4 arg3 ;
+  gbVec4 arg4 ;
+  float arg5 ;
+  
+  SWIG_check_num_args("AddBanner",5,5)
+  if(!SWIG_lua_isnilstring(L,1)) SWIG_fail_arg("AddBanner",1,"char const *");
+  if(!lua_isnumber(L,2)) SWIG_fail_arg("AddBanner",2,"float");
+  if(!lua_isnumber(L,5)) SWIG_fail_arg("AddBanner",5,"float");
+  arg1 = (char *)lua_tostring(L, 1);
+  arg2 = (float)lua_tonumber(L, 2);
+  {
+    // gbVec4 conversion
+    gbVec4 *vecPtr;
+    if (SWIG_IsOK(SWIG_ConvertPtr(L,3,(void**)&vecPtr,SWIGTYPE_p_gbVec4,0))) {
+      arg3 = *vecPtr;
+    }
+    else {
+      // convert table parameters to floats
+      lua_pushinteger(L, 1);
+      lua_gettable(L, 3);
+      float x = lua_tonumber(L, -1);
+      lua_pop(L, 1);
+      
+      lua_pushinteger(L, 2);
+      lua_gettable(L, 3);
+      float y = lua_tonumber(L, -1);
+      lua_pop(L, 1);
+      
+      lua_pushinteger(L, 3);
+      lua_gettable(L, 3);
+      float z = lua_tonumber(L, -1);
+      lua_pop(L, 1);
+      
+      float w = 1.0f;
+      if (lua_rawlen(L, 3) >= 4) {
+        lua_pushinteger(L, 4);
+        lua_gettable(L, 3);
+        w = lua_tonumber(L, -1);
+        lua_pop(L, 1);
+      }
+      
+      // build the vector
+      (&arg3)->x = x;
+      (&arg3)->y = y;
+      (&arg3)->z = z;
+      (&arg3)->w = w;
+    }
+  }
+  {
+    // gbVec4 conversion
+    gbVec4 *vecPtr;
+    if (SWIG_IsOK(SWIG_ConvertPtr(L,4,(void**)&vecPtr,SWIGTYPE_p_gbVec4,0))) {
+      arg4 = *vecPtr;
+    }
+    else {
+      // convert table parameters to floats
+      lua_pushinteger(L, 1);
+      lua_gettable(L, 4);
+      float x = lua_tonumber(L, -1);
+      lua_pop(L, 1);
+      
+      lua_pushinteger(L, 2);
+      lua_gettable(L, 4);
+      float y = lua_tonumber(L, -1);
+      lua_pop(L, 1);
+      
+      lua_pushinteger(L, 3);
+      lua_gettable(L, 4);
+      float z = lua_tonumber(L, -1);
+      lua_pop(L, 1);
+      
+      float w = 1.0f;
+      if (lua_rawlen(L, 4) >= 4) {
+        lua_pushinteger(L, 4);
+        lua_gettable(L, 4);
+        w = lua_tonumber(L, -1);
+        lua_pop(L, 1);
+      }
+      
+      // build the vector
+      (&arg4)->x = x;
+      (&arg4)->y = y;
+      (&arg4)->z = z;
+      (&arg4)->w = w;
+    }
+  }
+  arg5 = (float)lua_tonumber(L, 5);
+  AddBanner((char const *)arg1,arg2,arg3,arg4,arg5);
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
 static swig_lua_attribute swig_SwigModule_attributes[] = {
     {0,0,0}
 };
@@ -6269,8 +6375,8 @@ static swig_lua_method swig_SwigModule_methods[]= {
     { "GetColorByPercent", _wrap_GetColorByPercent},
     { "GetRenderingTileSets", _wrap_GetRenderingTileSets},
     { "WorldToScreen", _wrap_WorldToScreen},
-    { "ClearTextStrings", _wrap_ClearTextStrings},
-    { "AddTextString", _wrap_AddTextString},
+    { "ClearTileLabels", _wrap_ClearTileLabels},
+    { "AddTileLabel", _wrap_AddTileLabel},
     { "MeasureTextExtents", _wrap_MeasureTextExtents},
     { "GetTextAscenderHeight", _wrap_GetTextAscenderHeight},
     { "RandomRangeFloat", _wrap_RandomRangeFloat},
@@ -6323,6 +6429,7 @@ static swig_lua_method swig_SwigModule_methods[]= {
     { "GetTileSetTags", _wrap_GetTileSetTags},
     { "GetTime", _wrap_GetTime},
     { "FindSimplePath", _wrap_FindSimplePath},
+    { "AddBanner", _wrap_AddBanner},
     {0,0}
 };
 static swig_lua_class* swig_SwigModule_classes[]= {

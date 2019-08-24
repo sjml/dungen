@@ -32,5 +32,6 @@ mithral = {
   reqs = {
     tags = "mithral"
   },
-  tileFill = colors.mithral
+  tileFill = colors.mithral,
+  -- labelText = "Mithral"
 }

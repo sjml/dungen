@@ -31,6 +31,7 @@
     <ClInclude Include="..\..\..\src\infrastructure\world.h" />
     <ClInclude Include="..\..\..\src\platform\platform.h" />
     <ClInclude Include="..\..\..\src\scripting\scripting.h" />
+    <ClInclude Include="..\..\..\src\ui\banner.h" />
     <ClInclude Include="..\..\..\src\stdafx.h" />
   </ItemGroup>
   <ItemGroup>
@@ -48,6 +49,7 @@
     <ClCompile Include="..\..\..\src\platform\windows.c" />
     <ClCompile Include="..\..\..\src\scripting\scripting.c" />
     <ClCompile Include="..\..\..\src\scripting\wrapping.c">
+    <ClCompile Include="..\..\..\src\ui\banner.c">
       <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">TurnOffAllWarnings</WarningLevel>
       <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">TurnOffAllWarnings</WarningLevel>
     </ClCompile>

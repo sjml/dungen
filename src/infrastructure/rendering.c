@@ -6,6 +6,7 @@
 #include "text.h"
 #include "outline.h"
 #include "game.h"
+#include  "../ui/banner.h"
 
 const int windowWidth  = 1024;
 const int windowHeight = 768;
@@ -20,13 +21,7 @@ gbMat4 orthoMatrix;
 
 TileSet** tileSets = NULL;
 
-typedef struct {
-    char* text;
-    gbVec2 pos;
-    float scale;
-    gbVec4 color;
-} textInfo;
-textInfo* textInfos = NULL;
+TextInfo* tileLabels = NULL;
 
 
 void InitializeRendering() {
@@ -154,12 +149,12 @@ gbVec2 WorldToScreen(gbVec2 worldCoordinates) {
     return spos;
 }
 
-gbVec2 ScreenToWorld(gbVec2* screenCoordinates) {
+gbVec2 ScreenToWorld(gbVec2 screenCoordinates) {
     gbMat4 persp, final;
     gb_mat4_mul(&persp, &projectionMatrix, &modelViewMatrix);
     gb_mat4_inverse(&final, &persp);
     gbVec4 in = {
-        screenCoordinates->x, screenCoordinates->y, 0.0f, 1.0f
+        screenCoordinates.x, screenCoordinates.y, 0.0f, 1.0f
     };
 
     // these would properly come from the viewport function if we had one
@@ -184,15 +179,15 @@ gbVec2 ScreenToWorld(gbVec2* screenCoordinates) {
     return ret;
 }
 
-void ClearTextStrings(void) {
-    while (arrlen(textInfos) > 0) {
-        textInfo ti = arrpop(textInfos);
+void ClearTileLabels(void) {
+    while (arrlen(tileLabels) > 0) {
+        TextInfo ti = arrpop(tileLabels);
         free(ti.text);
     }
 }
 
-void AddTextString(const char* text, gbVec2 pos, float scale, gbVec4 color) {
-    textInfo ti;
+void AddTileLabel(const char* text, gbVec2 pos, float scale, gbVec4 color) {
+    TextInfo ti;
     ti.text = malloc(sizeof(char) * (strlen(text) + 1));
     strcpy(ti.text, text);
     ti.pos.x = pos.x;
@@ -202,7 +197,7 @@ void AddTextString(const char* text, gbVec2 pos, float scale, gbVec4 color) {
     ti.color.g = color.g;
     ti.color.b = color.b;
     ti.color.a = color.a;
-    arrpush(textInfos, ti);
+    arrpush(tileLabels, ti);
 }
 
 int Render() {
@@ -222,10 +217,11 @@ int Render() {
     glLoadIdentity();
     glPushMatrix();
         glMultMatrixf(orthoMatrix.e);
-        for (int i=0; i < arrlen(textInfos); i++) {
-            glColor4fv(textInfos[i].color.e);
-            DrawGameText(textInfos[i].text, "fonts/04B_03__.TTF", textInfos[i].scale, (int)textInfos[i].pos.x, (int)textInfos[i].pos.y, 0.0f);
+        for (int i=0; i < arrlen(tileLabels); i++) {
+            glColor4fv(tileLabels[i].color.e);
+            DrawGameText(tileLabels[i].text, "fonts/04B_03__.TTF", tileLabels[i].scale, (int)tileLabels[i].pos.x, (int)tileLabels[i].pos.y, 0.0f);
         }
+        RenderBanners();
     glMatrixMode(GL_PROJECTION);
     glPopMatrix();
 

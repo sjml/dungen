@@ -7,6 +7,7 @@
 #include "world.h"
 #include "../scripting/scripting.h"
 #include "../hlvm/hlvm.h"
+#include "../ui/banner.h"
 
 #define MAX_TIMESTEP      1.0
 #define TICKS_PER_CYCLE   1
@@ -48,6 +49,8 @@ int GameTick(void) {
         }
         RunString("ResolveStyles()");
     }
+    
+    UpdateBanners((float)dt);
 
     return 0;
 }

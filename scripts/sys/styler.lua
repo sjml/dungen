@@ -122,12 +122,12 @@ local function applyLabelStyle(styleTable, target)
   sPos.x = sPos.x - (extents.x / 2)
   sPos.y = sPos.y + (extents.y / 2)
 
-  AddTextString(text, {sPos.x, sPos.y}, scale, color)
+  AddTileLabel(text, {sPos.x, sPos.y}, scale, color)
 end
 
 
 function ResolveStyles()
-  ClearTextStrings()
+  ClearTileLabels()
 
   if (styles == nil) then
     return

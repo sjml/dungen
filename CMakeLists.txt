@@ -78,8 +78,8 @@ include_directories(lib/single-file)
 add_compile_definitions(GL_SILENCE_DEPRECATION)
 add_executable (DunGen MACOSX_BUNDLE
     src/main.c
-    src/scripting/scripting.c
-    src/scripting/wrapping.c
+    src/constraints/pathfind.c
+    src/hlvm/hlvm.c
     src/infrastructure/attributes.c
     src/infrastructure/game.c
     src/infrastructure/images.c
@@ -88,8 +88,9 @@ add_executable (DunGen MACOSX_BUNDLE
     src/infrastructure/text.c
     src/infrastructure/util.c
     src/infrastructure/world.c
-    src/hlvm/hlvm.c
-    src/constraints/pathfind.c
+    src/scripting/scripting.c
+    src/scripting/wrapping.c
+    src/ui/banner.c
 )
 
 set_target_properties(DunGen PROPERTIES MACOSX_BUNDLE_INFO_PLIST ${CMAKE_SOURCE_DIR}/platform/macOS/Info.plist)

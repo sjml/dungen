@@ -1,5 +1,12 @@
 #pragma once
 
+typedef struct {
+    char* text;
+    gbVec2 pos;
+    float scale;
+    gbVec4 color;
+} TextInfo;
+
 void InitializeText(void);
 void FinalizeText(void);
 
