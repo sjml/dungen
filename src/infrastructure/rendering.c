@@ -130,8 +130,8 @@ TileSet** GetRenderingTileSets() {
     return tileSets;
 }
 
-gbVec2 WorldToScreen(gbVec2* worldCoordinates) {
-    gbVec4 wc = {worldCoordinates->x, worldCoordinates->y, 0.0f, 1.0f};
+gbVec2 WorldToScreen(gbVec2 worldCoordinates) {
+    gbVec4 wc = {worldCoordinates.x, worldCoordinates.y, 0.0f, 1.0f};
     gbVec4 clip;
     gb_mat4_mul_vec4(&clip, &projectionMatrix, wc);
     gb_mat4_mul_vec4(&clip, &perspectiveMatrix, wc);
@@ -191,17 +191,17 @@ void ClearTextStrings(void) {
     }
 }
 
-void AddTextString(const char* text, gbVec2* pos, float scale, gbVec4* color) {
+void AddTextString(const char* text, gbVec2 pos, float scale, gbVec4 color) {
     textInfo ti;
     ti.text = malloc(sizeof(char) * (strlen(text) + 1));
     strcpy(ti.text, text);
-    ti.pos.x = pos->x;
-    ti.pos.y = pos->y;
+    ti.pos.x = pos.x;
+    ti.pos.y = pos.y;
     ti.scale = scale;
-    ti.color.r = color->r;
-    ti.color.g = color->g;
-    ti.color.b = color->b;
-    ti.color.a = color->a;
+    ti.color.r = color.r;
+    ti.color.g = color.g;
+    ti.color.b = color.b;
+    ti.color.a = color.a;
     arrpush(textInfos, ti);
 }
 

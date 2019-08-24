@@ -62,5 +62,5 @@ int RemoveTileFromSet(TileSet* ts, TileData* t);
 bool IsTileInSet(TileSet* ts, TileData* t);
 int GetTileCount(TileSet* ts);
 TileData** GetTiles(TileSet* ts);
-void SetTileSetOutline(TileSet* ts, gbVec4* color, float thickness);
+void SetTileSetOutline(TileSet* ts, gbVec4 color, float thickness);
 void ClearTileSetOutline(TileSet* ts);

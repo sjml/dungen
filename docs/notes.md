@@ -1,7 +1,5 @@
 ## TODO
 1. UI
-    0. get vector typemaps to work for more than just pointers
-        - then look at API to see where they're screwy
     1. banner rendering
         - set of strings, sizes, and background colors
         - durations (or click / button press to dismiss)
@@ -36,6 +34,7 @@
     - "Tunneling came to a region owned by demons; resolve conflict with $CURRENT_AGENT."
 
 ## Tech Debt
+* Update CMakeLists.txt; get Linux building
 * pull dimensions from central spot instead of `1024.0f`-ing all over the place
 * figure out why ScreenToWorld needs that multiplier at the end :-/ 
 * https://github.com/nothings/stb/blob/master/stb_leakcheck.h

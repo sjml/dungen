@@ -2742,7 +2742,7 @@ static int _wrap_Vec2i_x_set(lua_State* L) {
   SWIG_check_num_args("Vec2i::x",2,2)
   if(!lua_isnumber(L,2)) SWIG_fail_arg("Vec2i::x",2,"int");
   {
-    // Vec2i conversion
+    // Vec2i pointer conversion
     Vec2i *vecPtr;
     Vec2i vec;
     if (SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&vecPtr,SWIGTYPE_p_Vec2i,0))) {
@@ -2752,12 +2752,12 @@ static int _wrap_Vec2i_x_set(lua_State* L) {
       // convert table parameters to floats
       lua_pushinteger(L, 1);
       lua_gettable(L, 1);
-      int x = (int)lua_tointeger(L, -1);
+      float x = lua_tonumber(L, -1);
       lua_pop(L, 1);
       
       lua_pushinteger(L, 2);
       lua_gettable(L, 1);
-      int y = (int)lua_tointeger(L, -1);
+      float y = lua_tonumber(L, -1);
       lua_pop(L, 1);
       
       // build the vector
@@ -2786,7 +2786,7 @@ static int _wrap_Vec2i_x_get(lua_State* L) {
   
   SWIG_check_num_args("Vec2i::x",1,1)
   {
-    // Vec2i conversion
+    // Vec2i pointer conversion
     Vec2i *vecPtr;
     Vec2i vec;
     if (SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&vecPtr,SWIGTYPE_p_Vec2i,0))) {
@@ -2796,12 +2796,12 @@ static int _wrap_Vec2i_x_get(lua_State* L) {
       // convert table parameters to floats
       lua_pushinteger(L, 1);
       lua_gettable(L, 1);
-      int x = (int)lua_tointeger(L, -1);
+      float x = lua_tonumber(L, -1);
       lua_pop(L, 1);
       
       lua_pushinteger(L, 2);
       lua_gettable(L, 1);
-      int y = (int)lua_tointeger(L, -1);
+      float y = lua_tonumber(L, -1);
       lua_pop(L, 1);
       
       // build the vector
@@ -2830,7 +2830,7 @@ static int _wrap_Vec2i_y_set(lua_State* L) {
   SWIG_check_num_args("Vec2i::y",2,2)
   if(!lua_isnumber(L,2)) SWIG_fail_arg("Vec2i::y",2,"int");
   {
-    // Vec2i conversion
+    // Vec2i pointer conversion
     Vec2i *vecPtr;
     Vec2i vec;
     if (SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&vecPtr,SWIGTYPE_p_Vec2i,0))) {
@@ -2840,12 +2840,12 @@ static int _wrap_Vec2i_y_set(lua_State* L) {
       // convert table parameters to floats
       lua_pushinteger(L, 1);
       lua_gettable(L, 1);
-      int x = (int)lua_tointeger(L, -1);
+      float x = lua_tonumber(L, -1);
       lua_pop(L, 1);
       
       lua_pushinteger(L, 2);
       lua_gettable(L, 1);
-      int y = (int)lua_tointeger(L, -1);
+      float y = lua_tonumber(L, -1);
       lua_pop(L, 1);
       
       // build the vector
@@ -2874,7 +2874,7 @@ static int _wrap_Vec2i_y_get(lua_State* L) {
   
   SWIG_check_num_args("Vec2i::y",1,1)
   {
-    // Vec2i conversion
+    // Vec2i pointer conversion
     Vec2i *vecPtr;
     Vec2i vec;
     if (SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&vecPtr,SWIGTYPE_p_Vec2i,0))) {
@@ -2884,12 +2884,12 @@ static int _wrap_Vec2i_y_get(lua_State* L) {
       // convert table parameters to floats
       lua_pushinteger(L, 1);
       lua_gettable(L, 1);
-      int x = (int)lua_tointeger(L, -1);
+      float x = lua_tonumber(L, -1);
       lua_pop(L, 1);
       
       lua_pushinteger(L, 2);
       lua_gettable(L, 1);
-      int y = (int)lua_tointeger(L, -1);
+      float y = lua_tonumber(L, -1);
       lua_pop(L, 1);
       
       // build the vector
@@ -3514,7 +3514,7 @@ static int _wrap_gbVec3_xy_set(lua_State* L) {
   }
   
   {
-    // gbVec2 conversion
+    // gbVec2 pointer conversion
     gbVec2 *vecPtr;
     gbVec2 vec;
     if (SWIG_IsOK(SWIG_ConvertPtr(L,2,(void**)&vecPtr,SWIGTYPE_p_gbVec2,0))) {
@@ -3538,7 +3538,11 @@ static int _wrap_gbVec3_xy_set(lua_State* L) {
       arg2 = &vec;
     }
   }
-  if (arg1) (arg1)->xy = *arg2;
+  {
+    // gbVec2 member conversion
+    (&arg1->xy)->x = arg2->x;
+    (&arg1->xy)->y = arg2->y;
+  }
   
   return SWIG_arg;
   
@@ -3815,16 +3819,15 @@ fail:
 
 static int _wrap_WorldToScreen(lua_State* L) {
   int SWIG_arg = 0;
-  gbVec2 *arg1 = (gbVec2 *) 0 ;
+  gbVec2 arg1 ;
   gbVec2 result;
   
   SWIG_check_num_args("WorldToScreen",1,1)
   {
     // gbVec2 conversion
     gbVec2 *vecPtr;
-    gbVec2 vec;
     if (SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&vecPtr,SWIGTYPE_p_gbVec2,0))) {
-      arg1 = vecPtr;
+      arg1 = *vecPtr;
     }
     else {
       // convert table parameters to floats
@@ -3839,9 +3842,8 @@ static int _wrap_WorldToScreen(lua_State* L) {
       lua_pop(L, 1);
       
       // build the vector
-      vec.x = x;
-      vec.y = y;
-      arg1 = &vec;
+      (&arg1)->x = x;
+      (&arg1)->y = y;
     }
   }
   result = WorldToScreen(arg1);
@@ -3880,9 +3882,9 @@ fail:
 static int _wrap_AddTextString(lua_State* L) {
   int SWIG_arg = 0;
   char *arg1 = (char *) 0 ;
-  gbVec2 *arg2 = (gbVec2 *) 0 ;
+  gbVec2 arg2 ;
   float arg3 ;
-  gbVec4 *arg4 = (gbVec4 *) 0 ;
+  gbVec4 arg4 ;
   
   SWIG_check_num_args("AddTextString",4,4)
   if(!SWIG_lua_isnilstring(L,1)) SWIG_fail_arg("AddTextString",1,"char const *");
@@ -3891,9 +3893,8 @@ static int _wrap_AddTextString(lua_State* L) {
   {
     // gbVec2 conversion
     gbVec2 *vecPtr;
-    gbVec2 vec;
     if (SWIG_IsOK(SWIG_ConvertPtr(L,2,(void**)&vecPtr,SWIGTYPE_p_gbVec2,0))) {
-      arg2 = vecPtr;
+      arg2 = *vecPtr;
     }
     else {
       // convert table parameters to floats
@@ -3908,18 +3909,16 @@ static int _wrap_AddTextString(lua_State* L) {
       lua_pop(L, 1);
       
       // build the vector
-      vec.x = x;
-      vec.y = y;
-      arg2 = &vec;
+      (&arg2)->x = x;
+      (&arg2)->y = y;
     }
   }
   arg3 = (float)lua_tonumber(L, 3);
   {
     // gbVec4 conversion
     gbVec4 *vecPtr;
-    gbVec4 vec;
     if (SWIG_IsOK(SWIG_ConvertPtr(L,4,(void**)&vecPtr,SWIGTYPE_p_gbVec4,0))) {
-      arg4 = vecPtr;
+      arg4 = *vecPtr;
     }
     else {
       // convert table parameters to floats
@@ -3947,11 +3946,10 @@ static int _wrap_AddTextString(lua_State* L) {
       }
       
       // build the vector
-      vec.x = x;
-      vec.y = y;
-      vec.z = z;
-      vec.w = w;
-      arg4 = &vec;
+      (&arg4)->x = x;
+      (&arg4)->y = y;
+      (&arg4)->z = z;
+      (&arg4)->w = w;
     }
   }
   AddTextString((char const *)arg1,arg2,arg3,arg4);
@@ -4347,7 +4345,7 @@ static int _wrap_TileData_hexPos_set(lua_State* L) {
   }
   
   {
-    // Vec2i conversion
+    // Vec2i pointer conversion
     Vec2i *vecPtr;
     Vec2i vec;
     if (SWIG_IsOK(SWIG_ConvertPtr(L,2,(void**)&vecPtr,SWIGTYPE_p_Vec2i,0))) {
@@ -4357,12 +4355,12 @@ static int _wrap_TileData_hexPos_set(lua_State* L) {
       // convert table parameters to floats
       lua_pushinteger(L, 1);
       lua_gettable(L, 2);
-      int x = (int)lua_tointeger(L, -1);
+      float x = lua_tonumber(L, -1);
       lua_pop(L, 1);
       
       lua_pushinteger(L, 2);
       lua_gettable(L, 2);
-      int y = (int)lua_tointeger(L, -1);
+      float y = lua_tonumber(L, -1);
       lua_pop(L, 1);
       
       // build the vector
@@ -4371,7 +4369,11 @@ static int _wrap_TileData_hexPos_set(lua_State* L) {
       arg2 = &vec;
     }
   }
-  if (arg1) (arg1)->hexPos = *arg2;
+  {
+    // Vec2i member conversion
+    (&arg1->hexPos)->x = arg2->x;
+    (&arg1->hexPos)->y = arg2->y;
+  }
   
   return SWIG_arg;
   
@@ -4420,7 +4422,7 @@ static int _wrap_TileData_worldPos_set(lua_State* L) {
   }
   
   {
-    // gbVec2 conversion
+    // gbVec2 pointer conversion
     gbVec2 *vecPtr;
     gbVec2 vec;
     if (SWIG_IsOK(SWIG_ConvertPtr(L,2,(void**)&vecPtr,SWIGTYPE_p_gbVec2,0))) {
@@ -4444,7 +4446,11 @@ static int _wrap_TileData_worldPos_set(lua_State* L) {
       arg2 = &vec;
     }
   }
-  if (arg1) (arg1)->worldPos = *arg2;
+  {
+    // gbVec2 member conversion
+    (&arg1->worldPos)->x = arg2->x;
+    (&arg1->worldPos)->y = arg2->y;
+  }
   
   return SWIG_arg;
   
@@ -4493,7 +4499,7 @@ static int _wrap_TileData_color_set(lua_State* L) {
   }
   
   {
-    // gbVec3 conversion
+    // gbVec3 pointer conversion
     gbVec3 *vecPtr;
     gbVec3 vec;
     if (SWIG_IsOK(SWIG_ConvertPtr(L,2,(void**)&vecPtr,SWIGTYPE_p_gbVec3,0))) {
@@ -4523,7 +4529,12 @@ static int _wrap_TileData_color_set(lua_State* L) {
       arg2 = &vec;
     }
   }
-  if (arg1) (arg1)->color = *arg2;
+  {
+    // gbVec3 member conversion
+    (&arg1->color)->x = arg2->x;
+    (&arg1->color)->y = arg2->y;
+    (&arg1->color)->z = arg2->z;
+  }
   
   return SWIG_arg;
   
@@ -5405,7 +5416,7 @@ fail:
 static int _wrap_SetTileSetOutline(lua_State* L) {
   int SWIG_arg = 0;
   TileSet *arg1 = (TileSet *) 0 ;
-  gbVec4 *arg2 = (gbVec4 *) 0 ;
+  gbVec4 arg2 ;
   float arg3 ;
   
   SWIG_check_num_args("SetTileSetOutline",3,3)
@@ -5419,9 +5430,8 @@ static int _wrap_SetTileSetOutline(lua_State* L) {
   {
     // gbVec4 conversion
     gbVec4 *vecPtr;
-    gbVec4 vec;
     if (SWIG_IsOK(SWIG_ConvertPtr(L,2,(void**)&vecPtr,SWIGTYPE_p_gbVec4,0))) {
-      arg2 = vecPtr;
+      arg2 = *vecPtr;
     }
     else {
       // convert table parameters to floats
@@ -5449,11 +5459,10 @@ static int _wrap_SetTileSetOutline(lua_State* L) {
       }
       
       // build the vector
-      vec.x = x;
-      vec.y = y;
-      vec.z = z;
-      vec.w = w;
-      arg2 = &vec;
+      (&arg2)->x = x;
+      (&arg2)->y = y;
+      (&arg2)->z = z;
+      (&arg2)->w = w;
     }
   }
   arg3 = (float)lua_tonumber(L, 3);

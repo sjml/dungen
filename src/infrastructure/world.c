@@ -149,7 +149,7 @@ void InitializeWorld(int width, int height, float scale) {
 long GetTileDistance(TileData* t1, TileData* t2) {
     long dx = abs(t1->hexPos.x - t2->hexPos.x);
     long dy = abs(t1->hexPos.y - t2->hexPos.y);
-    
+
     return dx + dy;
 }
 
@@ -376,14 +376,14 @@ TileData** GetTiles(TileSet* ts) {
     return ret;
 }
 
-void SetTileSetOutline(TileSet* ts, gbVec4* color, float thickness) {
+void SetTileSetOutline(TileSet* ts, gbVec4 color, float thickness) {
     if (ts->outline == NULL) {
         ts->outline = CreateOutline(ts, thickness);
     }
-    ts->outline->color.r = color->r;
-    ts->outline->color.g = color->g;
-    ts->outline->color.b = color->b;
-    ts->outline->color.a = color->a;
+    ts->outline->color.r = color.r;
+    ts->outline->color.g = color.g;
+    ts->outline->color.b = color.b;
+    ts->outline->color.a = color.a;
 }
 
 void ClearTileSetOutline(TileSet* ts) {
