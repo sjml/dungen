@@ -53,8 +53,8 @@
       <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">TurnOffAllWarnings</WarningLevel>
       <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">TurnOffAllWarnings</WarningLevel>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\ui\banner.c">
-    <ClCompile Include="..\..\..\src\ui\choice.c">
+    <ClCompile Include="..\..\..\src\ui\banner.c" />
+    <ClCompile Include="..\..\..\src\ui\choice.c" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\src\scripting\interfaces\attributes.i" />
