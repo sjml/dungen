@@ -4,7 +4,6 @@
         - buttons on banner screen?
     2. layout of up to 12 buttons from list of strings
     3. lua creation of button list and pausing to wait for response
-        - merge buttons with same description
         - description text at top (or have banner integrated?)
     4. tile choice with label
     5. checkboxes? 
@@ -33,6 +32,8 @@
 
 ## Tech Debt
 * Update CMakeLists.txt; get Linux building
+* set precompiled headers up in Visual Studio
+* handle newlines in next rendering?
 * pull dimensions from central spot instead of `1024.0f`-ing all over the place
 * figure out why ScreenToWorld needs that multiplier at the end :-/ 
 * https://github.com/nothings/stb/blob/master/stb_leakcheck.h

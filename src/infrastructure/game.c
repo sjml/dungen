@@ -8,6 +8,7 @@
 #include "../scripting/scripting.h"
 #include "../hlvm/hlvm.h"
 #include "../ui/banner.h"
+#include "../ui/choice.h"
 
 #define MAX_TIMESTEP      1.0
 #define TICKS_PER_CYCLE   1
@@ -28,6 +29,12 @@ void InitializeGame(void) {
     if (RunFile("scripts/simulation/WorldSetup.lua") == 0) {
         RunString("push(\"_Root\")");
     }
+    
+    AddChoice("Option A");
+    AddChoice("Option A");
+    AddChoice("Option B");
+    
+    PresentChoiceSelection("Here is a choice.");
 }
 
 void FinalizeGame(void) {
@@ -53,7 +60,7 @@ int GameTick(void) {
         }
     }
 
-    if (!UpdateBanners((float)dt) && waiting) {
+    if (!UpdateBanners((float)dt) && waiting && GetChoiceStatus() <= 0) {
         SetIntRegister("WaitForUI", 0);
     }
 
@@ -65,4 +72,14 @@ double GetTime() {
 }
 
 void MouseMoveCallback(GLFWwindow* window, double xpos, double ypos) {
+    if (GetChoiceStatus() >= 0) {
+        gbVec2 pos = {(float)xpos, (float)ypos};
+        ProcessMouseMovement(pos);
+    }
+}
+
+void MouseClickCallback(GLFWwindow* window, int button, int action, int mods) {
+    if (GetChoiceStatus() >= 0 && button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_RELEASE) {
+        ProcessMouseClick();
+    }
 }

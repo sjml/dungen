@@ -45,6 +45,7 @@ void InitializeRendering() {
     glfwSwapInterval(1);
 
     glfwSetCursorPosCallback(window, MouseMoveCallback);
+    glfwSetMouseButtonCallback(window, MouseClickCallback);
 
 //    glfwSetWindowSizeCallback(Camera::ResizeCallback);
 //    glfwSetKeyCallback(keyboardInput);
