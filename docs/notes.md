@@ -1,8 +1,7 @@
 ## TODO
 1. UI
-    1. banner rendering
-        - set of strings, sizes, and background colors
-        - durations (or click / button press to dismiss)
+    1. banners
+        - be able to push a banner and have Lua wait until it's disappeared
     2. single button rendering, detecting rollover and push
         - buttons on banner screen?
     3. layout of up to 12 buttons from list of strings
