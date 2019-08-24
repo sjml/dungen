@@ -50,7 +50,11 @@ void AddBanner(const char* text, float scale, gbVec4 textColor, gbVec4 bgColor, 
     _repositionBanners();
 }
 
-void UpdateBanners(float dt) {
+bool UpdateBanners(float dt) {
+    if (arrlen(banners) == 0) {
+        return false;
+    }
+
     long* deadIndices = NULL;
     for (long i=0; i < arrlen(banners); i++) {
         banners[i].duration -= dt;
@@ -64,6 +68,8 @@ void UpdateBanners(float dt) {
         }
         _repositionBanners();
     }
+
+    return true;
 }
 
 void RenderBanners() {
@@ -73,7 +79,7 @@ void RenderBanners() {
         float x2 = 1024.0f;
         float y1 = 768.0f - (banners[i].ti.pos.y + (padding * 0.5f));
         float y2 = 768.0f - (banners[i].ti.pos.y - (banners[i].extents.y + (padding * 0.5f)));
-        
+
         glMatrixMode(GL_MODELVIEW);
         glPushMatrix();
         glLoadIdentity();

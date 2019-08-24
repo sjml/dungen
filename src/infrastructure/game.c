@@ -40,17 +40,22 @@ int GameTick(void) {
     currentTime = glfwGetTime();
     double dt = gb_clamp(currentTime - previousTime, 0.0, MAX_TIMESTEP);
 
-    hlvmAccum += dt;
-    if (hlvmAccum >= SECONDS_PER_CYCLE) {
-        hlvmAccum = 0.0;
-        int hlvmTickCount = 0;
-        while (hlvmTickCount++ < TICKS_PER_CYCLE) {
-            RunString("HLVMProcess()");
+    bool waiting = GetIntRegister("WaitForUI") != 0;
+    if (!waiting) {
+        hlvmAccum += dt;
+        if (hlvmAccum >= SECONDS_PER_CYCLE) {
+            hlvmAccum = 0.0;
+            int hlvmTickCount = 0;
+            while (hlvmTickCount++ < TICKS_PER_CYCLE) {
+                RunString("HLVMProcess()");
+            }
+            RunString("ResolveStyles()");
         }
-        RunString("ResolveStyles()");
     }
-    
-    UpdateBanners((float)dt);
+
+    if (!UpdateBanners((float)dt) && waiting) {
+        SetIntRegister("WaitForUI", 0);
+    }
 
     return 0;
 }

@@ -1,20 +1,19 @@
 ## TODO
 1. UI
-    1. banners
-        - be able to push a banner and have Lua wait until it's disappeared
-    2. single button rendering, detecting rollover and push
+    1. single button rendering, detecting rollover and push
         - buttons on banner screen?
-    3. layout of up to 12 buttons from list of strings
-    4. lua creation of button list and pausing to wait for response
+    2. layout of up to 12 buttons from list of strings
+    3. lua creation of button list and pausing to wait for response
         - merge buttons with same description
         - description text at top (or have banner integrated?)
-    5. tile choice with label
-    6. checkboxes? 
+    4. tile choice with label
+    5. checkboxes? 
 2. random tiles and die rolls in Lua with optional player overrides
 3. Relaxable constraint sets
 4. Primordial Age
     - image output / movie (can be manual for now)
 5. Chamber/region/room model design
+    - (see brainstorm notes)
     - somewhat more than tilesets
         - entering a tile needs to be equivalent to entering the chamber it belongs to
         - currently some linguistic grey areas around tilesets/lists/etc. 
