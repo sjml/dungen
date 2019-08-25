@@ -1,12 +1,9 @@
 ## TODO
 1. UI
-    1. single button rendering, detecting rollover and push
-        - buttons on banner screen?
-    2. layout of up to 12 buttons from list of strings
-    3. lua creation of button list and pausing to wait for response
+    1. layout of up to 12 buttons from list of strings
         - description text at top (or have banner integrated?)
-    4. tile choice with label
-    5. checkboxes? 
+    2. tile choice with label
+    3. checkboxes? 
 2. random tiles and die rolls in Lua with optional player overrides
 3. Relaxable constraint sets
 4. Primordial Age
