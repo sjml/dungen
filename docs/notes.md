@@ -1,6 +1,7 @@
 ## TODO
-1. random tiles and die rolls in Lua with optional player overrides
-2. Relaxable constraint sets
+1. Relaxable constraint sets
+    - first optimize constraint solver -- currently the cavern finder takes nearly a full second
+2. random tiles and die rolls in Lua with optional player overrides
 3. Primordial Age
     - image output / movie (can be manual for now)
 4. Chamber/region/room model design
