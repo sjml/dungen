@@ -6,6 +6,6 @@ void ClearChoices(void);
 
 void RenderChoices(void);
 int GetChoiceStatus(void);
-void ProcessMouseMovement(gbVec2 position);
-void ProcessMouseClick(bool down);
+void ChoiceProcessMouseMovement(gbVec2 position);
+void ChoiceProcessMouseClick(bool down);
 

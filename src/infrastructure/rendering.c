@@ -8,6 +8,7 @@
 #include "game.h"
 #include  "../ui/banner.h"
 #include  "../ui/choice.h"
+#include  "../ui/tile_choice.h"
 
 static const int windowWidth  = 1024;
 static const int windowHeight = 768;
@@ -228,7 +229,12 @@ int Render() {
             DrawGameText(tileLabels[i].text, "fonts/04B_03__.TTF", tileLabels[i].scale, (int)tileLabels[i].pos.x, (int)tileLabels[i].pos.y, 0.0f);
         }
         RenderBanners();
-        RenderChoices();
+        if (GetChoiceStatus() >= 0) {
+            RenderChoices();
+        }
+        if (GetTileChoiceStatus() >= 0) {
+            RenderTileChoice();
+        }
     glMatrixMode(GL_PROJECTION);
     glPopMatrix();
 

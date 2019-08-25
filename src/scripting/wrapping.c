@@ -2734,6 +2734,7 @@ SWIGINTERN struct sTileSet *new_sTileSet(void){
 
     #include "../ui/banner.h"
     #include "../ui/choice.h"
+    #include "../ui/tile_choice.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -3711,6 +3712,863 @@ static swig_lua_namespace swig_gbVec3_Sf_SwigStatic = {
 static swig_lua_class *swig_gbVec3_bases[] = {0};
 static const char *swig_gbVec3_base_names[] = {0};
 static swig_lua_class _wrap_class_gbVec3 = { "gbVec3", "gbVec3", &SWIGTYPE_p_gbVec3,_proxy__wrap_new_gbVec3, swig_delete_gbVec3, swig_gbVec3_methods, swig_gbVec3_attributes, &swig_gbVec3_Sf_SwigStatic, swig_gbVec3_meta, swig_gbVec3_bases, swig_gbVec3_base_names };
+
+static int _wrap_gbVec4_x_set(lua_State* L) {
+  int SWIG_arg = 0;
+  union gbVec4 *arg1 = (union gbVec4 *) 0 ;
+  float arg2 ;
+  
+  SWIG_check_num_args("gbVec4::x",2,2)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("gbVec4::x",1,"union gbVec4 *");
+  if(!lua_isnumber(L,2)) SWIG_fail_arg("gbVec4::x",2,"float");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_gbVec4,0))){
+    SWIG_fail_ptr("gbVec4_x_set",1,SWIGTYPE_p_gbVec4);
+  }
+  
+  arg2 = (float)lua_tonumber(L, 2);
+  if (arg1) (arg1)->x = arg2;
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_gbVec4_x_get(lua_State* L) {
+  int SWIG_arg = 0;
+  union gbVec4 *arg1 = (union gbVec4 *) 0 ;
+  float result;
+  
+  SWIG_check_num_args("gbVec4::x",1,1)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("gbVec4::x",1,"union gbVec4 *");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_gbVec4,0))){
+    SWIG_fail_ptr("gbVec4_x_get",1,SWIGTYPE_p_gbVec4);
+  }
+  
+  result = (float) ((arg1)->x);
+  lua_pushnumber(L, (lua_Number) result); SWIG_arg++;
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_gbVec4_y_set(lua_State* L) {
+  int SWIG_arg = 0;
+  union gbVec4 *arg1 = (union gbVec4 *) 0 ;
+  float arg2 ;
+  
+  SWIG_check_num_args("gbVec4::y",2,2)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("gbVec4::y",1,"union gbVec4 *");
+  if(!lua_isnumber(L,2)) SWIG_fail_arg("gbVec4::y",2,"float");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_gbVec4,0))){
+    SWIG_fail_ptr("gbVec4_y_set",1,SWIGTYPE_p_gbVec4);
+  }
+  
+  arg2 = (float)lua_tonumber(L, 2);
+  if (arg1) (arg1)->y = arg2;
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_gbVec4_y_get(lua_State* L) {
+  int SWIG_arg = 0;
+  union gbVec4 *arg1 = (union gbVec4 *) 0 ;
+  float result;
+  
+  SWIG_check_num_args("gbVec4::y",1,1)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("gbVec4::y",1,"union gbVec4 *");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_gbVec4,0))){
+    SWIG_fail_ptr("gbVec4_y_get",1,SWIGTYPE_p_gbVec4);
+  }
+  
+  result = (float) ((arg1)->y);
+  lua_pushnumber(L, (lua_Number) result); SWIG_arg++;
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_gbVec4_z_set(lua_State* L) {
+  int SWIG_arg = 0;
+  union gbVec4 *arg1 = (union gbVec4 *) 0 ;
+  float arg2 ;
+  
+  SWIG_check_num_args("gbVec4::z",2,2)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("gbVec4::z",1,"union gbVec4 *");
+  if(!lua_isnumber(L,2)) SWIG_fail_arg("gbVec4::z",2,"float");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_gbVec4,0))){
+    SWIG_fail_ptr("gbVec4_z_set",1,SWIGTYPE_p_gbVec4);
+  }
+  
+  arg2 = (float)lua_tonumber(L, 2);
+  if (arg1) (arg1)->z = arg2;
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_gbVec4_z_get(lua_State* L) {
+  int SWIG_arg = 0;
+  union gbVec4 *arg1 = (union gbVec4 *) 0 ;
+  float result;
+  
+  SWIG_check_num_args("gbVec4::z",1,1)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("gbVec4::z",1,"union gbVec4 *");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_gbVec4,0))){
+    SWIG_fail_ptr("gbVec4_z_get",1,SWIGTYPE_p_gbVec4);
+  }
+  
+  result = (float) ((arg1)->z);
+  lua_pushnumber(L, (lua_Number) result); SWIG_arg++;
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_gbVec4_w_set(lua_State* L) {
+  int SWIG_arg = 0;
+  union gbVec4 *arg1 = (union gbVec4 *) 0 ;
+  float arg2 ;
+  
+  SWIG_check_num_args("gbVec4::w",2,2)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("gbVec4::w",1,"union gbVec4 *");
+  if(!lua_isnumber(L,2)) SWIG_fail_arg("gbVec4::w",2,"float");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_gbVec4,0))){
+    SWIG_fail_ptr("gbVec4_w_set",1,SWIGTYPE_p_gbVec4);
+  }
+  
+  arg2 = (float)lua_tonumber(L, 2);
+  if (arg1) (arg1)->w = arg2;
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_gbVec4_w_get(lua_State* L) {
+  int SWIG_arg = 0;
+  union gbVec4 *arg1 = (union gbVec4 *) 0 ;
+  float result;
+  
+  SWIG_check_num_args("gbVec4::w",1,1)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("gbVec4::w",1,"union gbVec4 *");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_gbVec4,0))){
+    SWIG_fail_ptr("gbVec4_w_get",1,SWIGTYPE_p_gbVec4);
+  }
+  
+  result = (float) ((arg1)->w);
+  lua_pushnumber(L, (lua_Number) result); SWIG_arg++;
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_gbVec4_r_set(lua_State* L) {
+  int SWIG_arg = 0;
+  union gbVec4 *arg1 = (union gbVec4 *) 0 ;
+  float arg2 ;
+  
+  SWIG_check_num_args("gbVec4::r",2,2)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("gbVec4::r",1,"union gbVec4 *");
+  if(!lua_isnumber(L,2)) SWIG_fail_arg("gbVec4::r",2,"float");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_gbVec4,0))){
+    SWIG_fail_ptr("gbVec4_r_set",1,SWIGTYPE_p_gbVec4);
+  }
+  
+  arg2 = (float)lua_tonumber(L, 2);
+  if (arg1) (arg1)->r = arg2;
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_gbVec4_r_get(lua_State* L) {
+  int SWIG_arg = 0;
+  union gbVec4 *arg1 = (union gbVec4 *) 0 ;
+  float result;
+  
+  SWIG_check_num_args("gbVec4::r",1,1)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("gbVec4::r",1,"union gbVec4 *");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_gbVec4,0))){
+    SWIG_fail_ptr("gbVec4_r_get",1,SWIGTYPE_p_gbVec4);
+  }
+  
+  result = (float) ((arg1)->r);
+  lua_pushnumber(L, (lua_Number) result); SWIG_arg++;
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_gbVec4_g_set(lua_State* L) {
+  int SWIG_arg = 0;
+  union gbVec4 *arg1 = (union gbVec4 *) 0 ;
+  float arg2 ;
+  
+  SWIG_check_num_args("gbVec4::g",2,2)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("gbVec4::g",1,"union gbVec4 *");
+  if(!lua_isnumber(L,2)) SWIG_fail_arg("gbVec4::g",2,"float");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_gbVec4,0))){
+    SWIG_fail_ptr("gbVec4_g_set",1,SWIGTYPE_p_gbVec4);
+  }
+  
+  arg2 = (float)lua_tonumber(L, 2);
+  if (arg1) (arg1)->g = arg2;
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_gbVec4_g_get(lua_State* L) {
+  int SWIG_arg = 0;
+  union gbVec4 *arg1 = (union gbVec4 *) 0 ;
+  float result;
+  
+  SWIG_check_num_args("gbVec4::g",1,1)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("gbVec4::g",1,"union gbVec4 *");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_gbVec4,0))){
+    SWIG_fail_ptr("gbVec4_g_get",1,SWIGTYPE_p_gbVec4);
+  }
+  
+  result = (float) ((arg1)->g);
+  lua_pushnumber(L, (lua_Number) result); SWIG_arg++;
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_gbVec4_b_set(lua_State* L) {
+  int SWIG_arg = 0;
+  union gbVec4 *arg1 = (union gbVec4 *) 0 ;
+  float arg2 ;
+  
+  SWIG_check_num_args("gbVec4::b",2,2)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("gbVec4::b",1,"union gbVec4 *");
+  if(!lua_isnumber(L,2)) SWIG_fail_arg("gbVec4::b",2,"float");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_gbVec4,0))){
+    SWIG_fail_ptr("gbVec4_b_set",1,SWIGTYPE_p_gbVec4);
+  }
+  
+  arg2 = (float)lua_tonumber(L, 2);
+  if (arg1) (arg1)->b = arg2;
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_gbVec4_b_get(lua_State* L) {
+  int SWIG_arg = 0;
+  union gbVec4 *arg1 = (union gbVec4 *) 0 ;
+  float result;
+  
+  SWIG_check_num_args("gbVec4::b",1,1)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("gbVec4::b",1,"union gbVec4 *");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_gbVec4,0))){
+    SWIG_fail_ptr("gbVec4_b_get",1,SWIGTYPE_p_gbVec4);
+  }
+  
+  result = (float) ((arg1)->b);
+  lua_pushnumber(L, (lua_Number) result); SWIG_arg++;
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_gbVec4_a_set(lua_State* L) {
+  int SWIG_arg = 0;
+  union gbVec4 *arg1 = (union gbVec4 *) 0 ;
+  float arg2 ;
+  
+  SWIG_check_num_args("gbVec4::a",2,2)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("gbVec4::a",1,"union gbVec4 *");
+  if(!lua_isnumber(L,2)) SWIG_fail_arg("gbVec4::a",2,"float");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_gbVec4,0))){
+    SWIG_fail_ptr("gbVec4_a_set",1,SWIGTYPE_p_gbVec4);
+  }
+  
+  arg2 = (float)lua_tonumber(L, 2);
+  if (arg1) (arg1)->a = arg2;
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_gbVec4_a_get(lua_State* L) {
+  int SWIG_arg = 0;
+  union gbVec4 *arg1 = (union gbVec4 *) 0 ;
+  float result;
+  
+  SWIG_check_num_args("gbVec4::a",1,1)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("gbVec4::a",1,"union gbVec4 *");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_gbVec4,0))){
+    SWIG_fail_ptr("gbVec4_a_get",1,SWIGTYPE_p_gbVec4);
+  }
+  
+  result = (float) ((arg1)->a);
+  lua_pushnumber(L, (lua_Number) result); SWIG_arg++;
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_gbVec4_xy_set(lua_State* L) {
+  int SWIG_arg = 0;
+  union gbVec4 *arg1 = (union gbVec4 *) 0 ;
+  gbVec2 *arg2 = (gbVec2 *) 0 ;
+  
+  SWIG_check_num_args("gbVec4::xy",2,2)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("gbVec4::xy",1,"union gbVec4 *");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_gbVec4,0))){
+    SWIG_fail_ptr("gbVec4_xy_set",1,SWIGTYPE_p_gbVec4);
+  }
+  
+  {
+    // gbVec2 pointer conversion
+    gbVec2 *vecPtr;
+    gbVec2 vec;
+    if (SWIG_IsOK(SWIG_ConvertPtr(L,2,(void**)&vecPtr,SWIGTYPE_p_gbVec2,0))) {
+      arg2 = vecPtr;
+    }
+    else {
+      // convert table parameters to floats
+      lua_pushinteger(L, 1);
+      lua_gettable(L, 2);
+      float x = lua_tonumber(L, -1);
+      lua_pop(L, 1);
+      
+      lua_pushinteger(L, 2);
+      lua_gettable(L, 2);
+      float y = lua_tonumber(L, -1);
+      lua_pop(L, 1);
+      
+      // build the vector
+      vec.x = x;
+      vec.y = y;
+      arg2 = &vec;
+    }
+  }
+  {
+    // gbVec2 member conversion
+    (&arg1->xy)->x = arg2->x;
+    (&arg1->xy)->y = arg2->y;
+  }
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_gbVec4_xy_get(lua_State* L) {
+  int SWIG_arg = 0;
+  union gbVec4 *arg1 = (union gbVec4 *) 0 ;
+  gbVec2 *result = 0 ;
+  
+  SWIG_check_num_args("gbVec4::xy",1,1)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("gbVec4::xy",1,"union gbVec4 *");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_gbVec4,0))){
+    SWIG_fail_ptr("gbVec4_xy_get",1,SWIGTYPE_p_gbVec4);
+  }
+  
+  result = (gbVec2 *)& ((arg1)->xy);
+  SWIG_NewPointerObj(L,result,SWIGTYPE_p_gbVec2,0); SWIG_arg++; 
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_gbVec4_zw_set(lua_State* L) {
+  int SWIG_arg = 0;
+  union gbVec4 *arg1 = (union gbVec4 *) 0 ;
+  gbVec2 *arg2 = (gbVec2 *) 0 ;
+  
+  SWIG_check_num_args("gbVec4::zw",2,2)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("gbVec4::zw",1,"union gbVec4 *");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_gbVec4,0))){
+    SWIG_fail_ptr("gbVec4_zw_set",1,SWIGTYPE_p_gbVec4);
+  }
+  
+  {
+    // gbVec2 pointer conversion
+    gbVec2 *vecPtr;
+    gbVec2 vec;
+    if (SWIG_IsOK(SWIG_ConvertPtr(L,2,(void**)&vecPtr,SWIGTYPE_p_gbVec2,0))) {
+      arg2 = vecPtr;
+    }
+    else {
+      // convert table parameters to floats
+      lua_pushinteger(L, 1);
+      lua_gettable(L, 2);
+      float x = lua_tonumber(L, -1);
+      lua_pop(L, 1);
+      
+      lua_pushinteger(L, 2);
+      lua_gettable(L, 2);
+      float y = lua_tonumber(L, -1);
+      lua_pop(L, 1);
+      
+      // build the vector
+      vec.x = x;
+      vec.y = y;
+      arg2 = &vec;
+    }
+  }
+  {
+    // gbVec2 member conversion
+    (&arg1->zw)->x = arg2->x;
+    (&arg1->zw)->y = arg2->y;
+  }
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_gbVec4_zw_get(lua_State* L) {
+  int SWIG_arg = 0;
+  union gbVec4 *arg1 = (union gbVec4 *) 0 ;
+  gbVec2 *result = 0 ;
+  
+  SWIG_check_num_args("gbVec4::zw",1,1)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("gbVec4::zw",1,"union gbVec4 *");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_gbVec4,0))){
+    SWIG_fail_ptr("gbVec4_zw_get",1,SWIGTYPE_p_gbVec4);
+  }
+  
+  result = (gbVec2 *)& ((arg1)->zw);
+  SWIG_NewPointerObj(L,result,SWIGTYPE_p_gbVec2,0); SWIG_arg++; 
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_gbVec4_xyz_set(lua_State* L) {
+  int SWIG_arg = 0;
+  union gbVec4 *arg1 = (union gbVec4 *) 0 ;
+  gbVec3 *arg2 = (gbVec3 *) 0 ;
+  
+  SWIG_check_num_args("gbVec4::xyz",2,2)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("gbVec4::xyz",1,"union gbVec4 *");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_gbVec4,0))){
+    SWIG_fail_ptr("gbVec4_xyz_set",1,SWIGTYPE_p_gbVec4);
+  }
+  
+  {
+    // gbVec3 pointer conversion
+    gbVec3 *vecPtr;
+    gbVec3 vec;
+    if (SWIG_IsOK(SWIG_ConvertPtr(L,2,(void**)&vecPtr,SWIGTYPE_p_gbVec3,0))) {
+      arg2 = vecPtr;
+    }
+    else {
+      // convert table parameters to floats
+      lua_pushinteger(L, 1);
+      lua_gettable(L, 2);
+      float x = lua_tonumber(L, -1);
+      lua_pop(L, 1);
+      
+      lua_pushinteger(L, 2);
+      lua_gettable(L, 2);
+      float y = lua_tonumber(L, -1);
+      lua_pop(L, 1);
+      
+      lua_pushinteger(L, 3);
+      lua_gettable(L, 2);
+      float z = lua_tonumber(L, -1);
+      lua_pop(L, 1);
+      
+      // build the vector
+      vec.x = x;
+      vec.y = y;
+      vec.z = z;
+      arg2 = &vec;
+    }
+  }
+  {
+    // gbVec3 member conversion
+    (&arg1->xyz)->x = arg2->x;
+    (&arg1->xyz)->y = arg2->y;
+    (&arg1->xyz)->z = arg2->z;
+  }
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_gbVec4_xyz_get(lua_State* L) {
+  int SWIG_arg = 0;
+  union gbVec4 *arg1 = (union gbVec4 *) 0 ;
+  gbVec3 *result = 0 ;
+  
+  SWIG_check_num_args("gbVec4::xyz",1,1)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("gbVec4::xyz",1,"union gbVec4 *");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_gbVec4,0))){
+    SWIG_fail_ptr("gbVec4_xyz_get",1,SWIGTYPE_p_gbVec4);
+  }
+  
+  result = (gbVec3 *)& ((arg1)->xyz);
+  SWIG_NewPointerObj(L,result,SWIGTYPE_p_gbVec3,0); SWIG_arg++; 
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_gbVec4_rgb_set(lua_State* L) {
+  int SWIG_arg = 0;
+  union gbVec4 *arg1 = (union gbVec4 *) 0 ;
+  gbVec3 *arg2 = (gbVec3 *) 0 ;
+  
+  SWIG_check_num_args("gbVec4::rgb",2,2)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("gbVec4::rgb",1,"union gbVec4 *");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_gbVec4,0))){
+    SWIG_fail_ptr("gbVec4_rgb_set",1,SWIGTYPE_p_gbVec4);
+  }
+  
+  {
+    // gbVec3 pointer conversion
+    gbVec3 *vecPtr;
+    gbVec3 vec;
+    if (SWIG_IsOK(SWIG_ConvertPtr(L,2,(void**)&vecPtr,SWIGTYPE_p_gbVec3,0))) {
+      arg2 = vecPtr;
+    }
+    else {
+      // convert table parameters to floats
+      lua_pushinteger(L, 1);
+      lua_gettable(L, 2);
+      float x = lua_tonumber(L, -1);
+      lua_pop(L, 1);
+      
+      lua_pushinteger(L, 2);
+      lua_gettable(L, 2);
+      float y = lua_tonumber(L, -1);
+      lua_pop(L, 1);
+      
+      lua_pushinteger(L, 3);
+      lua_gettable(L, 2);
+      float z = lua_tonumber(L, -1);
+      lua_pop(L, 1);
+      
+      // build the vector
+      vec.x = x;
+      vec.y = y;
+      vec.z = z;
+      arg2 = &vec;
+    }
+  }
+  {
+    // gbVec3 member conversion
+    (&arg1->rgb)->x = arg2->x;
+    (&arg1->rgb)->y = arg2->y;
+    (&arg1->rgb)->z = arg2->z;
+  }
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_gbVec4_rgb_get(lua_State* L) {
+  int SWIG_arg = 0;
+  union gbVec4 *arg1 = (union gbVec4 *) 0 ;
+  gbVec3 *result = 0 ;
+  
+  SWIG_check_num_args("gbVec4::rgb",1,1)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("gbVec4::rgb",1,"union gbVec4 *");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_gbVec4,0))){
+    SWIG_fail_ptr("gbVec4_rgb_get",1,SWIGTYPE_p_gbVec4);
+  }
+  
+  result = (gbVec3 *)& ((arg1)->rgb);
+  SWIG_NewPointerObj(L,result,SWIGTYPE_p_gbVec3,0); SWIG_arg++; 
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_gbVec4_e_set(lua_State* L) {
+  int SWIG_arg = 0;
+  union gbVec4 *arg1 = (union gbVec4 *) 0 ;
+  float *arg2 ;
+  
+  SWIG_check_num_args("gbVec4::e",2,2)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("gbVec4::e",1,"union gbVec4 *");
+  if(!SWIG_isptrtype(L,2)) SWIG_fail_arg("gbVec4::e",2,"float [4]");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_gbVec4,0))){
+    SWIG_fail_ptr("gbVec4_e_set",1,SWIGTYPE_p_gbVec4);
+  }
+  
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,2,(void**)&arg2,SWIGTYPE_p_float,0))){
+    SWIG_fail_ptr("gbVec4_e_set",2,SWIGTYPE_p_float);
+  }
+  
+  {
+    size_t ii;
+    float *b = (float *) arg1->e;
+    for (ii = 0; ii < (size_t)4; ii++) b[ii] = *((float *) arg2 + ii);
+  }
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_gbVec4_e_get(lua_State* L) {
+  int SWIG_arg = 0;
+  union gbVec4 *arg1 = (union gbVec4 *) 0 ;
+  float *result = 0 ;
+  
+  SWIG_check_num_args("gbVec4::e",1,1)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("gbVec4::e",1,"union gbVec4 *");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_gbVec4,0))){
+    SWIG_fail_ptr("gbVec4_e_get",1,SWIGTYPE_p_gbVec4);
+  }
+  
+  result = (float *)(float *) ((arg1)->e);
+  SWIG_NewPointerObj(L,result,SWIGTYPE_p_float,0); SWIG_arg++; 
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_new_gbVec4(lua_State* L) {
+  int SWIG_arg = 0;
+  union gbVec4 *result = 0 ;
+  
+  SWIG_check_num_args("gbVec4::gbVec4",0,0)
+  result = (union gbVec4 *)calloc(1, sizeof(union gbVec4));
+  SWIG_NewPointerObj(L,result,SWIGTYPE_p_gbVec4,1); SWIG_arg++; 
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static void swig_delete_gbVec4(void *obj) {
+union gbVec4 *arg1 = (union gbVec4 *) obj;
+free((char *) arg1);
+}
+static int _proxy__wrap_new_gbVec4(lua_State *L) {
+    assert(lua_istable(L,1));
+    lua_pushcfunction(L,_wrap_new_gbVec4);
+    assert(!lua_isnil(L,-1));
+    lua_replace(L,1); /* replace our table with real constructor */
+    lua_call(L,lua_gettop(L)-1,1);
+    return 1;
+}
+static swig_lua_attribute swig_gbVec4_attributes[] = {
+    { "x", _wrap_gbVec4_x_get, _wrap_gbVec4_x_set },
+    { "y", _wrap_gbVec4_y_get, _wrap_gbVec4_y_set },
+    { "z", _wrap_gbVec4_z_get, _wrap_gbVec4_z_set },
+    { "w", _wrap_gbVec4_w_get, _wrap_gbVec4_w_set },
+    { "r", _wrap_gbVec4_r_get, _wrap_gbVec4_r_set },
+    { "g", _wrap_gbVec4_g_get, _wrap_gbVec4_g_set },
+    { "b", _wrap_gbVec4_b_get, _wrap_gbVec4_b_set },
+    { "a", _wrap_gbVec4_a_get, _wrap_gbVec4_a_set },
+    { "xy", _wrap_gbVec4_xy_get, _wrap_gbVec4_xy_set },
+    { "zw", _wrap_gbVec4_zw_get, _wrap_gbVec4_zw_set },
+    { "xyz", _wrap_gbVec4_xyz_get, _wrap_gbVec4_xyz_set },
+    { "rgb", _wrap_gbVec4_rgb_get, _wrap_gbVec4_rgb_set },
+    { "e", _wrap_gbVec4_e_get, _wrap_gbVec4_e_set },
+    {0,0,0}
+};
+static swig_lua_method swig_gbVec4_methods[]= {
+    {0,0}
+};
+static swig_lua_method swig_gbVec4_meta[] = {
+    {0,0}
+};
+
+static swig_lua_attribute swig_gbVec4_Sf_SwigStatic_attributes[] = {
+    {0,0,0}
+};
+static swig_lua_const_info swig_gbVec4_Sf_SwigStatic_constants[]= {
+    {0,0,0,0,0,0}
+};
+static swig_lua_method swig_gbVec4_Sf_SwigStatic_methods[]= {
+    {0,0}
+};
+static swig_lua_class* swig_gbVec4_Sf_SwigStatic_classes[]= {
+    0
+};
+
+static swig_lua_namespace swig_gbVec4_Sf_SwigStatic = {
+    "gbVec4",
+    swig_gbVec4_Sf_SwigStatic_methods,
+    swig_gbVec4_Sf_SwigStatic_attributes,
+    swig_gbVec4_Sf_SwigStatic_constants,
+    swig_gbVec4_Sf_SwigStatic_classes,
+    0
+};
+static swig_lua_class *swig_gbVec4_bases[] = {0};
+static const char *swig_gbVec4_base_names[] = {0};
+static swig_lua_class _wrap_class_gbVec4 = { "gbVec4", "gbVec4", &SWIGTYPE_p_gbVec4,_proxy__wrap_new_gbVec4, swig_delete_gbVec4, swig_gbVec4_methods, swig_gbVec4_attributes, &swig_gbVec4_Sf_SwigStatic, swig_gbVec4_meta, swig_gbVec4_bases, swig_gbVec4_base_names };
 
 static int _wrap_LoadColorTable(lua_State* L) {
   int SWIG_arg = 0;
@@ -5262,6 +6120,29 @@ fail:
 }
 
 
+static int _wrap_DestroyTileSet(lua_State* L) {
+  int SWIG_arg = 0;
+  TileSet *arg1 = (TileSet *) 0 ;
+  
+  SWIG_check_num_args("DestroyTileSet",1,1)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("DestroyTileSet",1,"TileSet *");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_sTileSet,0))){
+    SWIG_fail_ptr("DestroyTileSet",1,SWIGTYPE_p_sTileSet);
+  }
+  
+  DestroyTileSet(arg1);
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
 static int _wrap_AddTileToSet(lua_State* L) {
   int SWIG_arg = 0;
   TileSet *arg1 = (TileSet *) 0 ;
@@ -6409,6 +7290,22 @@ fail:
 }
 
 
+static int _wrap_PresentTileChoice(lua_State* L) {
+  int SWIG_arg = 0;
+  
+  SWIG_check_num_args("PresentTileChoice",0,0)
+  PresentTileChoice();
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
 static swig_lua_attribute swig_SwigModule_attributes[] = {
     {0,0,0}
 };
@@ -6449,6 +7346,7 @@ static swig_lua_method swig_SwigModule_methods[]= {
     { "GetAllTiles", _wrap_GetAllTiles},
     { "GetTileAtPosition", _wrap_GetTileAtPosition},
     { "GetTileAtIndex", _wrap_GetTileAtIndex},
+    { "DestroyTileSet", _wrap_DestroyTileSet},
     { "AddTileToSet", _wrap_AddTileToSet},
     { "RemoveTileFromSet", _wrap_RemoveTileFromSet},
     { "IsTileInSet", _wrap_IsTileInSet},
@@ -6485,12 +7383,14 @@ static swig_lua_method swig_SwigModule_methods[]= {
     { "AddChoice", _wrap_AddChoice},
     { "PresentChoiceSelection", _wrap_PresentChoiceSelection},
     { "ClearChoices", _wrap_ClearChoices},
+    { "PresentTileChoice", _wrap_PresentTileChoice},
     {0,0}
 };
 static swig_lua_class* swig_SwigModule_classes[]= {
 &_wrap_class_Vec2i,
 &_wrap_class_gbVec2,
 &_wrap_class_gbVec3,
+&_wrap_class_gbVec4,
 &_wrap_class_TileData,
 &_wrap_class_TileSet,
     0
@@ -6519,7 +7419,7 @@ static swig_type_info _swigt__p_Vec2i = {"_p_Vec2i", "Vec2i *", 0, 0, (void*)&_w
 static swig_type_info _swigt__p_float = {"_p_float", "float *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_gbVec2 = {"_p_gbVec2", "union gbVec2 *|gbVec2 *", 0, 0, (void*)&_wrap_class_gbVec2, 0};
 static swig_type_info _swigt__p_gbVec3 = {"_p_gbVec3", "union gbVec3 *|gbVec3 *", 0, 0, (void*)&_wrap_class_gbVec3, 0};
-static swig_type_info _swigt__p_gbVec4 = {"_p_gbVec4", "gbVec4 *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_gbVec4 = {"_p_gbVec4", "union gbVec4 *|gbVec4 *", 0, 0, (void*)&_wrap_class_gbVec4, 0};
 static swig_type_info _swigt__p_p_sTileSet = {"_p_p_sTileSet", "struct sTileSet **|TileSet **", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_sTileSet = {"_p_sTileSet", "struct sTileSet *|TileSet *|sTileSet *", 0, 0, (void*)&_wrap_class_TileSet, 0};
 

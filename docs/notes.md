@@ -1,12 +1,9 @@
 ## TODO
-1. UI
-    1. tile choice with label
-    2. checkboxes? 
-2. random tiles and die rolls in Lua with optional player overrides
-3. Relaxable constraint sets
-4. Primordial Age
+1. random tiles and die rolls in Lua with optional player overrides
+2. Relaxable constraint sets
+3. Primordial Age
     - image output / movie (can be manual for now)
-5. Chamber/region/room model design
+4. Chamber/region/room model design
     - (see brainstorm notes)
     - somewhat more than tilesets
         - entering a tile needs to be equivalent to entering the chamber it belongs to
@@ -15,7 +12,7 @@
     - need to have triggers/encounters somehow
         - "Dwarves tunnel into chamber containing plague."
         - "Adventurers come into territory owned by demons."
-6. Design and implement agents/entities
+5. Design and implement agents/entities
     - individuals
         - attributes
         - ascribe agency to actions

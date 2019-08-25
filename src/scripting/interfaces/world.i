@@ -41,6 +41,7 @@ TileData** GetAllTiles();
 TileData* GetTileAtPosition(int x, int y);
 TileData* GetTileAtIndex(long long i);
 
+void DestroyTileSet(TileSet* ts);
 int AddTileToSet(TileSet* ts, TileData* t);
 int RemoveTileFromSet(TileSet* ts, TileData* t);
 bool IsTileInSet(TileSet* ts, TileData* t);

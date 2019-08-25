@@ -10,6 +10,7 @@ typedef struct {
     Vec2i hexPos;
     gbVec2 worldPos;
     gbVec3 color;
+    gbVec4 overlayColor; // not exposed to Lua
 
     // clockwise neighbors
     int neighborW;

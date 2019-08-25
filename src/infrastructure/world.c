@@ -96,6 +96,10 @@ void InitializeWorld(int width, int height, float scale) {
             td->color.r = RandomRangeFloat(0.0f, 1.0f); // 0.0f;
             td->color.g = RandomRangeFloat(0.0f, 1.0f); // 0.0f;
             td->color.b = RandomRangeFloat(0.0f, 1.0f); // 0.0f;
+            td->overlayColor.r = 0.0f;
+            td->overlayColor.g = 0.0f;
+            td->overlayColor.b = 0.0f;
+            td->overlayColor.a = 0.0f;
 
             modVector.x = tileDimensions.x * i;
             modVector.y = -((tileDimensions.y - (tileSize * 0.5f)) * j);
@@ -300,19 +304,21 @@ TileData** GetTileNeighbors(TileData* center, int *numNeighbors) {
 void RenderTiles(void) {
     glVertexPointer(2, GL_FLOAT, 0, hexVertices);
 
-    for (int j = 0; j < tileSetSize.y; j++) {
-        for (int i = 0; i < tileSetSize.x; i++) {
-            glPushMatrix();
-                glTranslatef(
-                             WorldArray[j*tileSetSize.x + i].worldPos.x,
-                             WorldArray[j*tileSetSize.x + i].worldPos.y,
-                             0.0f
-                );
-                glScalef(tileDimensions.y, tileDimensions.y, 1.0f);
-                glColor3fv(WorldArray[j*tileSetSize.x + i].color.e);
-                glDrawArrays(GL_TRIANGLE_FAN, 0, 8);
-            glPopMatrix();
+    for (long long i = 0; i < arrlen(WorldArray); i++) {
+        glPushMatrix();
+        glTranslatef(
+            WorldArray[i].worldPos.x,
+            WorldArray[i].worldPos.y,
+            0.0f
+        );
+        glScalef(tileDimensions.y, tileDimensions.y, 1.0f);
+        glColor3fv(WorldArray[i].color.e);
+        glDrawArrays(GL_TRIANGLE_FAN, 0, 8);
+        if (WorldArray[i].overlayColor.a > 0.0f) {
+            glColor4fv(WorldArray[i].overlayColor.e);
+            glDrawArrays(GL_TRIANGLE_FAN, 0, 8);
         }
+        glPopMatrix();
     }
 }
 

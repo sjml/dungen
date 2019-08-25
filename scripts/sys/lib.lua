@@ -171,6 +171,10 @@ tsft.GetTags = function(ts)
   return GetTileSetTags(ts)
 end
 
+tsft.Destroy = function(ts)
+  return DestroyTileSet(ts)
+end
+
 tsft.AddTile = function(ts, t)
   return AddTileToSet(ts, t)
 end

@@ -1,4 +1,4 @@
-AddBanner("Choice Coming Up...", 72, {1.0, 1.0, 1.0, 1.0}, {0.2, 0.2, 0.2, 0.5}, 5)
+AddBanner("Choice Coming Up...", 72, {1.0, 1.0, 1.0, 1.0}, {0.2, 0.2, 0.2, 0.5}, 2)
 sir("WaitForUI", 1)
 push()
 
@@ -18,3 +18,22 @@ PresentChoiceSelection()
 sir("WaitForUI", 1)
 push()
 ClearChoices()
+
+valids = TileSet()
+dims = GetWorldDimensions()
+for x = dims.x // 2, dims.x - 1 do
+  for y = dims.y // 2, dims.y - 1 do
+    valids:AddTile(GetTileAtPosition(x, y))
+  end
+end
+
+stsr("TileChoiceValidSet", valids)
+AddBanner("Tile Choice Coming Up...", 72, {1.0, 1.0, 1.0, 1.0}, {0.2, 0.2, 0.2, 0.5}, 2)
+sir("WaitForUI", 1)
+push()
+
+PresentTileChoice()
+sir("WaitForUI", 1)
+push()
+
+valids:Destroy()

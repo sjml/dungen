@@ -9,6 +9,7 @@
 #include "../hlvm/hlvm.h"
 #include "../ui/banner.h"
 #include "../ui/choice.h"
+#include "../ui/tile_choice.h"
 
 #define MAX_TIMESTEP      1.0
 #define TICKS_PER_CYCLE   1
@@ -53,10 +54,22 @@ int GameTick(void) {
         }
     }
 
-    if (!UpdateBanners((float)dt) && waiting && GetChoiceStatus() <= 0) {
-        SetIntRegister("WaitForUI", 0);
+    if (waiting) {
+        bool done = true;
+        if (UpdateBanners((float)dt)) {
+            done = false;
+        }
+        if (GetChoiceStatus() > 0) {
+            done = false;
+        }
+        if (GetTileChoiceStatus() > 0) {
+            done = false;
+        }
+        if (done) {
+            SetIntRegister("WaitForUI", 0);
+        }
     }
-
+    
     return 0;
 }
 
@@ -65,14 +78,21 @@ double GetTime() {
 }
 
 void MouseMoveCallback(GLFWwindow* window, double xpos, double ypos) {
-    if (GetChoiceStatus() >= 0) {
+    if (GetChoiceStatus() > 0) {
         gbVec2 pos = {(float)xpos, (float)ypos};
-        ProcessMouseMovement(pos);
+        ChoiceProcessMouseMovement(pos);
+    }
+    if (GetTileChoiceStatus() > 0) {
+        gbVec2 pos = {(float)xpos, (float)ypos};
+        TileChoiceProcessMouseMovement(pos);
     }
 }
 
 void MouseClickCallback(GLFWwindow* window, int button, int action, int mods) {
     if (GetChoiceStatus() >= 0 && button == GLFW_MOUSE_BUTTON_LEFT) {
-        ProcessMouseClick(action == GLFW_PRESS);
+        ChoiceProcessMouseClick(action == GLFW_PRESS);
+    }
+    if (GetTileChoiceStatus() >= 0 && button == GLFW_MOUSE_BUTTON_LEFT) {
+        TileChoiceProcessMouseClick(action == GLFW_PRESS);
     }
 }

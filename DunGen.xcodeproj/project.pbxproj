@@ -128,6 +128,7 @@
 		34DB950422EC38950066EC6A /* psnames.c in Sources */ = {isa = PBXBuildFile; fileRef = 34DB94FA22EC38950066EC6A /* psnames.c */; };
 		34DB950722EC3A350066EC6A /* libfreetype.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 34DB94B222EC370B0066EC6A /* libfreetype.a */; };
 		34DB950922EC3DBB0066EC6A /* ftdebug.c in Sources */ = {isa = PBXBuildFile; fileRef = 34DB950822EC3DBB0066EC6A /* ftdebug.c */; };
+		34F3478323129A93008B19FB /* tile_choice.c in Sources */ = {isa = PBXBuildFile; fileRef = 34F3478223129A93008B19FB /* tile_choice.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -329,6 +330,8 @@
 		34DB94FA22EC38950066EC6A /* psnames.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = psnames.c; path = "lib/freetype-2.10.1/src/psnames/psnames.c"; sourceTree = "<group>"; };
 		34DB950822EC3DBB0066EC6A /* ftdebug.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = ftdebug.c; path = "lib/freetype-2.10.1/src/base/ftdebug.c"; sourceTree = "<group>"; };
 		34DB950A22EC9B990066EC6A /* text.i */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c.preprocessed; path = text.i; sourceTree = "<group>"; };
+		34F3478123129A93008B19FB /* tile_choice.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = tile_choice.h; sourceTree = "<group>"; };
+		34F3478223129A93008B19FB /* tile_choice.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = tile_choice.c; sourceTree = "<group>"; };
 		34FE0B6522E30AEC007A1271 /* game.i */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c.preprocessed; path = game.i; sourceTree = "<group>"; };
 		34FEFE6422ECF6AF00266420 /* util.i */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c.preprocessed; path = util.i; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -466,6 +469,8 @@
 				3421A23A2311792300459647 /* banner.c */,
 				3421A23D2311AFF100459647 /* choice.h */,
 				3421A23E2311AFF100459647 /* choice.c */,
+				34F3478123129A93008B19FB /* tile_choice.h */,
+				34F3478223129A93008B19FB /* tile_choice.c */,
 			);
 			path = ui;
 			sourceTree = "<group>";
@@ -1126,6 +1131,7 @@
 				3482A56222D63C4F00AAD098 /* hlvm.c in Sources */,
 				347A941822D1B85F002BF97F /* main.c in Sources */,
 				3421A23B2311792300459647 /* banner.c in Sources */,
+				34F3478323129A93008B19FB /* tile_choice.c in Sources */,
 				3466A4B622D4D71B00ED6CAA /* images.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

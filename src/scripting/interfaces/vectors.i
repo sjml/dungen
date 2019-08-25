@@ -31,10 +31,13 @@
         float z = lua_tonumber(L, -1);
         lua_pop(L, 1);
 
-        lua_pushinteger(L, 4);
-        lua_gettable(L, $input);
-        float w = lua_tonumber(L, -1);
-        lua_pop(L, 1);
+        float w = 1.0f;
+        if (lua_rawlen(L, $input) >= 4) {
+            lua_pushinteger(L, 4);
+            lua_gettable(L, $input);
+            w = lua_tonumber(L, -1);
+            lua_pop(L, 1);
+        }
 
         // build the vector
         vec.x = x;
@@ -304,4 +307,13 @@ typedef union gbVec3 {
     gbVec2 xy;
     float e[3];
 } gbVec3;
+
+typedef union gbVec4 {
+	struct { float x, y, z, w; };
+	struct { float r, g, b, a; };
+	struct { gbVec2 xy, zw; };
+	gbVec3 xyz;
+	gbVec3 rgb;
+	float e[4];
+} gbVec4;
 

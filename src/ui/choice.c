@@ -20,8 +20,8 @@ static gbVec4 btnColorHover = {0.4f, 0.4f, 0.4f, 1.0f};
 static gbVec4 btnColorPress = {0.6f, 0.6f, 0.6f, 1.0f};
 
 static int choiceStatus = -1; // -1 --> no choice is being presented right now
-                       //  1 --> a choice is currently being presented, no option has been chosen
-                       //  0 --> a choice is currently being presented, and an option has been chosen
+                              //  1 --> a choice is currently being presented, no option has been chosen
+                              //  0 --> a choice is currently being presented, and an option has been chosen
 int GetChoiceStatus(void) {
     return choiceStatus;
 }
@@ -32,7 +32,7 @@ void AddChoice(const char* description) {
         return;
     }
 
-    // don't add duplicate choices; moved this to Lua
+    // don't add duplicate choices
     // if (arrlen(choices) > 0) {
     //     char* last = choices[arrlen(choices)-1];
     //     if (strcmp(last, description) == 0) {
@@ -131,12 +131,6 @@ void PresentChoiceSelection() {
             current.x += 1;
         }
     }
-
-
-    // if number of choices <= 4, single column, large text (calc size)
-    // else if number of choices <= 8, two columns, odd-numbered choices center last, large text (same size)
-    // else if number of choices <= 12, two columns, odd-numbered choices center last, medium text (calc size)
-    // else throw error
 }
 
 void RenderChoices() {
@@ -174,7 +168,7 @@ void RenderChoices() {
     }
 }
 
-void ProcessMouseMovement(gbVec2 position) {
+void ChoiceProcessMouseMovement(gbVec2 position) {
     position.y = 768.0f - position.y;
     for (long i=0; i < arrlen(buttons); i++) {
         if (gb_rect2_contains_vec2(buttons[i].bb, position)) {
@@ -185,7 +179,7 @@ void ProcessMouseMovement(gbVec2 position) {
     hoveredChoice = -1;
 }
 
-void ProcessMouseClick(bool down) {
+void ChoiceProcessMouseClick(bool down) {
     if (down) {
         if (hoveredChoice != -1) {
             pressedChoice = hoveredChoice;
@@ -202,6 +196,6 @@ void ProcessMouseClick(bool down) {
         double x, y;
         glfwGetCursorPos(GetWindowHandle(), &x, &y);
         gbVec2 pos = {x, y};
-        ProcessMouseMovement(pos);
+        ChoiceProcessMouseMovement(pos);
     }
 }

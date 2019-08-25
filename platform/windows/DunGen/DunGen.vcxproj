@@ -34,6 +34,7 @@
     <ClInclude Include="..\..\..\src\stdafx.h" />
     <ClInclude Include="..\..\..\src\ui\banner.h" />
     <ClInclude Include="..\..\..\src\ui\choice.h" />
+    <ClInclude Include="..\..\..\src\ui\tile_choice.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\src\constraints\pathfind.c" />
@@ -55,6 +56,7 @@
     </ClCompile>
     <ClCompile Include="..\..\..\src\ui\banner.c" />
     <ClCompile Include="..\..\..\src\ui\choice.c" />
+    <ClCompile Include="..\..\..\src\ui\tile_choice.c" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\src\scripting\interfaces\attributes.i" />

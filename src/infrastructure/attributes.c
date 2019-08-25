@@ -128,7 +128,7 @@ long long SetupTileSetAttributeData(TileSet* ts) {
 
 void ClearTileSetAttributeData(TileSet* ts) {
     sqlite3_stmt *stmt;
-    if (sqlite3_prepare(db, "DELETE FROM tilesets WHERE id = ?;", -1, &stmt, 0) != SQLITE_OK) {
+    if (sqlite3_prepare(db, "DELETE FROM tilesets WHERE tileset_id = ?;", -1, &stmt, 0) != SQLITE_OK) {
         fprintf(stderr, "SQL ERROR: could not prepare deletion statement: %s\n", sqlite3_errmsg(db));
         return;
     }
