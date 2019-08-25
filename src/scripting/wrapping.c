@@ -6379,12 +6379,9 @@ fail:
 
 static int _wrap_PresentChoiceSelection(lua_State* L) {
   int SWIG_arg = 0;
-  char *arg1 = (char *) 0 ;
   
-  SWIG_check_num_args("PresentChoiceSelection",1,1)
-  if(!SWIG_lua_isnilstring(L,1)) SWIG_fail_arg("PresentChoiceSelection",1,"char const *");
-  arg1 = (char *)lua_tostring(L, 1);
-  PresentChoiceSelection((char const *)arg1);
+  SWIG_check_num_args("PresentChoiceSelection",0,0)
+  PresentChoiceSelection();
   
   return SWIG_arg;
   

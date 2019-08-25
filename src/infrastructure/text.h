@@ -16,3 +16,4 @@ float DrawGameText(const char* text, const char* fontPath, float size, int pixel
 
 gbVec2 MeasureTextExtents(const char* text, const char* fontPath, float size);
 float GetTextAscenderHeight(const char* fontPath, float size);
+float GetTextDescenderHeight(const char* fontPath, float size);

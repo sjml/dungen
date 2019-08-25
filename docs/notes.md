@@ -1,9 +1,7 @@
 ## TODO
 1. UI
-    1. layout of up to 12 buttons from list of strings
-        - description text at top (or have banner integrated?)
-    2. tile choice with label
-    3. checkboxes? 
+    1. tile choice with label
+    2. checkboxes? 
 2. random tiles and die rolls in Lua with optional player overrides
 3. Relaxable constraint sets
 4. Primordial Age
@@ -30,7 +28,9 @@
 ## Tech Debt
 * Update CMakeLists.txt; get Linux building
 * set precompiled headers up in Visual Studio
-* handle newlines in next rendering?
+* handle newlines in text rendering?
+* figure out text extents ascender/descender issue
+* overusing the stretchy buffer right now; look for more chances to just use a static array
 * ResolveStyles() is super slow; see if there are some optimizations to be had
 * pull dimensions from central spot instead of `1024.0f`-ing all over the place
 * figure out why ScreenToWorld needs that multiplier at the end :-/ 

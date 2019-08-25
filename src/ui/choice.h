@@ -1,7 +1,7 @@
 #pragma once
 
 void AddChoice(const char* description);
-void PresentChoiceSelection(const char* description);
+void PresentChoiceSelection(void);
 void ClearChoices(void);
 
 void RenderChoices(void);

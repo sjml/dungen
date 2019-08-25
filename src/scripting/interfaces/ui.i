@@ -7,5 +7,5 @@
 void AddBanner(const char* text, float scale, gbVec4 textColor, gbVec4 bgColor, float duration);
 
 void AddChoice(const char* description);
-void PresentChoiceSelection(const char* description);
+void PresentChoiceSelection();
 void ClearChoices(void);

@@ -477,3 +477,13 @@ float GetTextAscenderHeight(const char* fontPath, float size) {
     FT_Set_Char_Size(*fce->ftFace, 0L, (FT_F26Dot6)(size * 64.0f), 72, 72);
     return (*fce->ftFace)->size->metrics.ascender / 64.0f;
 }
+
+float GetTextDescenderHeight(const char* fontPath, float size) {
+    FontCacheEntry* fce = _GetFontInfo(fontPath);
+    if (!fce->isValid) {
+        return 0.0f;
+    }
+    
+    FT_Set_Char_Size(*fce->ftFace, 0L, (FT_F26Dot6)(size * 64.0f), 72, 72);
+    return (*fce->ftFace)->size->metrics.descender / 64.0f;
+}
