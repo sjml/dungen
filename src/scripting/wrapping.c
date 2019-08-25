@@ -6077,6 +6077,76 @@ fail:
 }
 
 
+static int _wrap_SetTileAsDirty(lua_State* L) {
+  int SWIG_arg = 0;
+  TileData *arg1 = (TileData *) 0 ;
+  
+  SWIG_check_num_args("SetTileAsDirty",1,1)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("SetTileAsDirty",1,"TileData *");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_TileData,0))){
+    SWIG_fail_ptr("SetTileAsDirty",1,SWIGTYPE_p_TileData);
+  }
+  
+  SetTileAsDirty(arg1);
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_GetDirtyTiles(lua_State* L) {
+  int SWIG_arg = 0;
+  TileData **result = 0 ;
+  
+  SWIG_check_num_args("GetDirtyTiles",0,0)
+  result = (TileData **)GetDirtyTiles();
+  
+  {
+    lua_newtable(L);
+    if (arrlen(result) > 0) {
+      for (unsigned int i=1; i <= arrlen(result); i++) {
+        lua_pushnumber(L, i);
+        SWIG_NewPointerObj(L, result[i-1], SWIGTYPE_p_TileData, 1);
+        lua_settable(L, -3);
+      }
+    }
+    arrfree(result);
+    
+    SWIG_arg += 1;
+  }
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_CleanAllTiles(lua_State* L) {
+  int SWIG_arg = 0;
+  
+  SWIG_check_num_args("CleanAllTiles",0,0)
+  CleanAllTiles();
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
 static int _wrap_GetTileAtPosition(lua_State* L) {
   int SWIG_arg = 0;
   int arg1 ;
@@ -6750,6 +6820,39 @@ fail:
 }
 
 
+static int _wrap_CheckTileAttribute(lua_State* L) {
+  int SWIG_arg = 0;
+  TileData *arg1 = (TileData *) 0 ;
+  char *arg2 = (char *) 0 ;
+  AttrComparison arg3 ;
+  char *arg4 = (char *) 0 ;
+  bool result;
+  
+  SWIG_check_num_args("CheckTileAttribute",4,4)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("CheckTileAttribute",1,"TileData *");
+  if(!SWIG_lua_isnilstring(L,2)) SWIG_fail_arg("CheckTileAttribute",2,"char const *");
+  if(!lua_isnumber(L,3)) SWIG_fail_arg("CheckTileAttribute",3,"AttrComparison");
+  if(!SWIG_lua_isnilstring(L,4)) SWIG_fail_arg("CheckTileAttribute",4,"char const *");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_TileData,0))){
+    SWIG_fail_ptr("CheckTileAttribute",1,SWIGTYPE_p_TileData);
+  }
+  
+  arg2 = (char *)lua_tostring(L, 2);
+  arg3 = (AttrComparison)(int)lua_tonumber(L, 3);
+  arg4 = (char *)lua_tostring(L, 4);
+  result = (bool)CheckTileAttribute(arg1,(char const *)arg2,arg3,(char const *)arg4);
+  lua_pushboolean(L,(int)(result!=0)); SWIG_arg++;
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
 static int _wrap_SetTileSetAttributeInt(lua_State* L) {
   int SWIG_arg = 0;
   TileSet *arg1 = (TileSet *) 0 ;
@@ -7344,6 +7447,9 @@ static swig_lua_method swig_SwigModule_methods[]= {
     { "GetWorldDimensions", _wrap_GetWorldDimensions},
     { "GetWorldScale", _wrap_GetWorldScale},
     { "GetAllTiles", _wrap_GetAllTiles},
+    { "SetTileAsDirty", _wrap_SetTileAsDirty},
+    { "GetDirtyTiles", _wrap_GetDirtyTiles},
+    { "CleanAllTiles", _wrap_CleanAllTiles},
     { "GetTileAtPosition", _wrap_GetTileAtPosition},
     { "GetTileAtIndex", _wrap_GetTileAtIndex},
     { "DestroyTileSet", _wrap_DestroyTileSet},
@@ -7366,6 +7472,7 @@ static swig_lua_method swig_SwigModule_methods[]= {
     { "TileHasTags", _wrap_TileHasTags},
     { "GetTileTags", _wrap_GetTileTags},
     { "GetTilesByAttribute", _wrap_GetTilesByAttribute},
+    { "CheckTileAttribute", _wrap_CheckTileAttribute},
     { "SetTileSetAttributeInt", _wrap_SetTileSetAttributeInt},
     { "SetTileSetAttributeFloat", _wrap_SetTileSetAttributeFloat},
     { "SetTileSetAttributeString", _wrap_SetTileSetAttributeString},

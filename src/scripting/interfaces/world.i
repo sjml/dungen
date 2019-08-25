@@ -38,6 +38,9 @@ Vec2i GetWorldDimensions(void);
 float GetWorldScale(void);
 
 TileData** GetAllTiles();
+void SetTileAsDirty(TileData* td);
+TileData** GetDirtyTiles(void);
+void CleanAllTiles(void);
 TileData* GetTileAtPosition(int x, int y);
 TileData* GetTileAtIndex(long long i);
 

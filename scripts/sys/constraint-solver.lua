@@ -32,7 +32,7 @@ function CheckConstraint:initialize()
   Constraint:initialize(self)
 end
 
-function CheckConstraint:CheckTile(t)
+function CheckConstraint:CheckTile(ti)
   return false
 end
 
@@ -65,9 +65,35 @@ function HasNoneOfTags:initialize(tagStr)
   self.tags = Set:new(self.tags)
 end
 
-function HasNoneOfTags:CheckTile(t)
-  for _, tag in ipairs(t:GetTags()) do
+function HasNoneOfTags:CheckTile(ti)
+  local td = GetTileAtIndex(ti)
+  for _, tag in ipairs(td:GetTags()) do
     if self.tags[tag] ~= nil then return false end
+  end
+  return true
+end
+
+
+
+--------------- Min Distance From Attribute
+MinDistanceFromAttribute = class("MinDistanceFromAttribute", CheckConstraint)
+function MinDistanceFromAttribute:initialize(tileDistance, attrName, comp, value)
+  CheckConstraint:initialize(self)
+  local ts = GetTilesByAttribute(attrName, comp, tostring(value))
+  self.keepAway = TileDataSet:new(ts)
+  self.tileDistance = tileDistance
+end
+
+function MinDistanceFromAttribute:CheckTile(ti)
+  local td = GetTileAtIndex(ti)
+  local circle = td:GetCircle(self.tileDistance)
+  for _, c in ipairs(circle) do
+    if c.i ~= ti then
+      if self.keepAway[c.i] ~= nil then
+        return false
+      end
+    else
+    end
   end
   return true
 end
@@ -120,20 +146,24 @@ function ConstraintSolver:initialize(constraints)
   self.pickedTile = nil
 end
 
-function ConstraintSolver:Solve()
+function ConstraintSolver:Solve(debug)
   local tiles = TileDataSet:new(GetAllTiles())
   for i, c in ipairs(self.constraints) do
-    -- print("before iteration " .. tostring(i) .. " | " .. tostring(#tiles:toList()) .. " tiles.")
+    if (debug) then
+      print("before iteration " .. tostring(i) .. "(" .. tostring(c) .. ") | " .. tostring(#tiles:toList()) .. " tiles.")
+    end
     if c:isInstanceOf(SetConstraint) then
       tiles = c:FilterTiles(tiles)
     elseif c:isInstanceOf(CheckConstraint) then
-      for t, _ in pairs(tiles) do
-        if not c:CheckTile(t) then
-          tiles[t] = nil
+      for ti, _ in pairs(tiles) do
+        if not c:CheckTile(ti) then
+          tiles[ti] = nil
+        end
         end
       end
+    if (debug) then
+      print("\tafter: " .. tostring(#tiles:toList()) .. " tiles.")
     end
-    -- print("after iteration " .. tostring(i) .. " | " .. tostring(#tiles:toList()) .. " tiles.")
   end
 
   local tList = tiles:toList()

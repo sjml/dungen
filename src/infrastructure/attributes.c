@@ -242,6 +242,7 @@ void _SetAttributeInt(void* data, AttrType dType, const char* name, int value) {
 
 void SetTileAttributeInt(TileData* data, const char* name, int value) {
     _SetAttributeInt((void*)data, TILE, name, value);
+    SetTileAsDirty(data);
 }
 
 void SetTileSetAttributeInt(TileSet* data, const char* name, int value) {
@@ -316,6 +317,7 @@ void _SetAttributeFloat(void* data, AttrType dType, const char* name, float valu
 
 void SetTileAttributeFloat(TileData* data, const char* name, float value) {
     _SetAttributeFloat((void*)data, TILE, name, value);
+    SetTileAsDirty(data);
 }
 
 void SetTileSetAttributeFloat(TileSet* data, const char* name, float value) {
@@ -390,6 +392,7 @@ void _SetAttributeString(void* data, AttrType dType, const char* name, const cha
 
 void SetTileAttributeString(TileData* data, const char* name, const char* value) {
     _SetAttributeString((void*)data, TILE, name, value);
+    SetTileAsDirty(data);
 }
 
 void SetTileSetAttributeString(TileSet* data, const char* name, const char* value) {
@@ -615,6 +618,7 @@ bool AddTileTag(TileData* data, char* tag) {
     arrpush(tagList, id);
     hmput(tileIdxToTags, data->i, tagList);
 
+    SetTileAsDirty(data);
     return true;
 }
 
@@ -665,6 +669,7 @@ bool RemoveTileTag(TileData* data, const char* tag) {
             }
             arrdel(tileList, i);
             hmput(tagIdxToTiles, id, tileList);
+            SetTileAsDirty(data);
             return true;
         }
     }
@@ -893,7 +898,7 @@ char** GetTileSetTags(TileSet* data) {
 
 TileData** GetTilesByAttribute(const char* attrName, AttrComparison comp, const char* value) {
     TileData** ret = NULL;
-    
+
     sds query = sdsnew("SELECT tile_id FROM tiles WHERE ");
     query = sdscat(query, attrName);
     switch (comp) {
@@ -939,4 +944,53 @@ TileData** GetTilesByAttribute(const char* attrName, AttrComparison comp, const 
 
     sqlite3_finalize(stmt);
     return ret;
+}
+
+bool CheckTileAttribute(TileData* td, const char* attrName, AttrComparison comp, const char* value) {
+    sds query = sdsnew("SELECT COUNT(*) FROM tiles WHERE tile_id=? AND ");
+    query = sdscat(query, attrName);
+    switch (comp) {
+        case LessThan:
+            query = sdscat(query, " < \"");
+            break;
+        case LessThanOrEqual:
+            query = sdscat(query, " <= \"");
+            break;
+        case GreaterThan:
+            query = sdscat(query, " > \"");
+            break;
+        case GreaterThanOrEqual:
+            query = sdscat(query, " >= \"");
+            break;
+        case Equal:
+            query = sdscat(query, " = \"");
+            break;
+        case NotEqual:
+            query = sdscat(query, " != \"");
+            break;
+    }
+    query = sdscat(query, value);
+    query = sdscat(query, "\";");
+
+    sqlite3_stmt* stmt;
+    if (sqlite3_prepare(db, query, -1, &stmt, NULL) != SQLITE_OK) {
+        fprintf(stderr, "SQL WARNING: could not prepare attribute check statement: %s\n", sqlite3_errmsg(db));
+        sqlite3_finalize(stmt);
+        return false;
+    }
+    if (sqlite3_bind_int64(stmt, 1, td->i) != SQLITE_OK) {
+        fprintf(stderr, "SQL ERROR: could not bind index value to attribute check statement: %s\n", sqlite3_errmsg(db));
+        sqlite3_finalize(stmt);
+        return false;
+    }
+
+    if (sqlite3_step(stmt) != SQLITE_ROW) {
+        fprintf(stderr, "SQL ERROR: couldn't execute attribute check statement: %s\n", sqlite3_errmsg(db));
+        sqlite3_finalize(stmt);
+        return false;
+    }
+
+    int val = sqlite3_column_int(stmt, 0);
+    sqlite3_finalize(stmt);
+    return val > 0;
 }

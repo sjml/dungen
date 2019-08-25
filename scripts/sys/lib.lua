@@ -1,3 +1,4 @@
+local TileDataSet = require("sys.tiledataset")
 
 function lazyBasicAssert(item1, item2, desc)
   if (desc == nil) then
@@ -89,6 +90,27 @@ tdft.GetNeighbors = function(td)
   return ret
 end
 
+tdft.GetCircle = function(td, radius)
+  local allWithDupes = {td}
+
+  local count = 0
+  while (count < radius) do
+    count = count + 1
+    local expansion = {}
+    for _, t in ipairs(allWithDupes) do
+      for _, n in ipairs(t:GetNeighbors()) do
+        table.insert(expansion, n)
+      end
+    end
+    for _, e in ipairs(expansion) do
+      table.insert(allWithDupes, e)
+    end
+  end
+
+  local ts = TileDataSet:new(allWithDupes)
+  return ts:toList()
+end
+
 tdft.SetAttributeInt = function(td, name, value)
   SetTileAttributeInt(td, name, value)
 end
@@ -111,6 +133,10 @@ end
 
 tdft.GetAttributeString = function(td, name)
   return GetTileAttributeString(td, name)
+end
+
+tdft.CheckAttribute = function(td, name, comp, value)
+  return CheckTileAttribute(td, name, comp, value)
 end
 
 tdft.AddTag = function(td, tag)
@@ -153,6 +179,10 @@ end
 
 tsft.GetAttributeString = function(ts, name)
   return GetTileSetAttributeString(ts, name)
+end
+
+tsft.CheckAttribute = function(td, name, comp, value)
+  return false -- TODO: CheckTileSetAttribute(td, name, comp, value)
 end
 
 tsft.AddTag = function(ts, tag)

@@ -130,6 +130,18 @@ hc = HasAllTags("sky")
 hc_tagged = hc:GetTiles()
 lazyBasicAssert(#hc_tagged:toList(), #openTileList, "Attributes matching lengths")
 
+td = GetTileAtIndex(0)
+circle1 = td:GetCircle(0)
+lazyBasicAssert(#circle1, 1, "Circle radius of 0")
+circle2 = td:GetCircle(1)
+lazyBasicAssert(#circle2, 3, "Corner circle radius of 1")
+circle3 = td:GetCircle(2)
+lazyBasicAssert(#circle3, 7, "Corner circle radius of 2")
+circle4 = td2:GetCircle(1)
+lazyBasicAssert(#circle4, 7, "Circle radius of 1")
+circle5 = td2:GetCircle(2)
+lazyBasicAssert(#circle5, 19, "Circle radius of 2")
+
 td = nil
 td2 = nil
 td3 = nil

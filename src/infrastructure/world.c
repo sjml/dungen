@@ -31,6 +31,7 @@ static const float hexVertices[] = {
 
 
 static TileData* WorldArray = NULL;
+static TileSet* dirtyTiles = NULL;
 static gbVec2** PointList = NULL;
 
 static float tileSize;
@@ -39,6 +40,7 @@ static gbVec2 worldSize;
 static Vec2i tileSetSize;
 
 void InitializeWorld(int width, int height, float scale) {
+    dirtyTiles = CreateTileSet();
     tileSetSize.x = width;
     tileSetSize.y = height;
 
@@ -180,10 +182,24 @@ gbVec2** GetWorldPointList() {
 
 TileData** GetAllTiles() {
     TileData** ret = NULL;
-    for (int i=0; i < arrlen(WorldArray); i++) {
+    // arrsetlen(ret, arrlen(WorldArray));
+    for (long long i=0; i < arrlen(WorldArray); i++) {
         arrpush(ret, &WorldArray[i]);
     }
     return ret;
+}
+
+void SetTileAsDirty(TileData* td) {
+    AddTileToSet(dirtyTiles, td);
+}
+
+TileData** GetDirtyTiles(void) {
+    return GetTiles(dirtyTiles);
+}
+
+void CleanAllTiles(void) {
+    DestroyTileSet(dirtyTiles);
+    dirtyTiles = CreateTileSet();
 }
 
 TileData* GetTileAtPosition(int x, int y) {

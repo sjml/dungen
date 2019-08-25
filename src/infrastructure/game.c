@@ -40,6 +40,7 @@ double hlvmAccum = 0.0;
 int GameTick(void) {
     previousTime = currentTime;
     currentTime = glfwGetTime();
+//    printf("dt: %.4f\n", currentTime - previousTime);
     double dt = gb_clamp(currentTime - previousTime, 0.0, MAX_TIMESTEP);
 
     bool waiting = GetIntRegister("WaitForUI") != 0;

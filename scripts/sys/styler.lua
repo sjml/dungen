@@ -13,7 +13,13 @@ end
 
 function ReloadStyles()
   local preload = {
-    colorTable = colorTable
+    colorTable = colorTable,
+    LessThan = LessThan,
+    LessThanOrEqual = LessThanOrEqual,
+    GreaterThan = GreaterThan,
+    GreaterThanOrEqual = GreaterThanOrEqual,
+    Equal = Equal,
+    NotEqual = NotEqual,
   }
   styles = ordered_table()
   for k,v in pairs(preload) do styles[k] = v end
@@ -23,10 +29,8 @@ function ReloadStyles()
     return
   end
   styleLoad()
-  for k,v in pairs(styles) do
-    if type(v) == "function" then
-      styles[k] = nil
-    end
+  for k,v in pairs(preload) do
+    styles[k] = nil
   end
 
   ResolveStyles()
@@ -64,6 +68,18 @@ local function checkStyle(styleTable, target)
     end
     if (target:HasTags(reqs.tags) == true) then
       match[1] = match[1] + tcount
+    end
+  end
+
+  if (match[1] > 0 or match[2] > 0) then
+    if (reqs.attributes ~= nil) then
+      for _, attrCheck in pairs(reqs.attributes) do
+        if (target:CheckAttribute(attrCheck[1], attrCheck[2], attrCheck[3])) then
+          match[1] = match[1] + 1
+        else
+          match[1] = 0
+        end
+      end
     end
   end
 
@@ -133,11 +149,7 @@ function ResolveStyles()
     return
   end
 
-  local dims = GetWorldDimensions()
-  local max = dims.x * dims.y
-  for i=0, max - 1, 1 do
-    local t = GetTileAtIndex(i)
-
+  for _, t in pairs(GetDirtyTiles()) do
     local match = {0, 0}
 
     for label, style in pairs(styles) do
@@ -149,6 +161,7 @@ function ResolveStyles()
       end
     end
   end
+  CleanAllTiles()
 
   local tilesSet = GetRenderingTileSets()
   for i=1, #tilesSet, 1 do

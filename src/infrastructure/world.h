@@ -43,6 +43,9 @@ gbVec2** GetWorldPointList(void);
 void RenderTiles(void);
 
 TileData** GetAllTiles(void);
+void SetTileAsDirty(TileData* td);
+TileData** GetDirtyTiles(void);
+void CleanAllTiles(void);
 TileData* GetTileAtPosition(int x, int y);
 TileData* GetTileAtIndex(long long i);
 TileData* ScreenToTile(gbVec2* screenCoordinates);

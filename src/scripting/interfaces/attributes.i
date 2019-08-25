@@ -27,6 +27,7 @@ typedef enum {
 } AttrComparison;
 
 TileData** GetTilesByAttribute(const char* attrName, AttrComparison comp, const char* value);
+bool CheckTileAttribute(TileData* td, const char* attrName, AttrComparison comp, const char* value);
 
 void SetTileSetAttributeInt(TileSet* data, const char* name, int value);
 void SetTileSetAttributeFloat(TileSet* data, const char* name, float value);
