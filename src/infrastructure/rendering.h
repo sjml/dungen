@@ -18,6 +18,8 @@ typedef struct {
 void InitializeRendering(void);
 void FinalizeRendering(void);
 
+GLFWwindow* GetWindowHandle(void);
+
 void AddTileSetToRendering(TileSet* ts);
 void RemoveTileSetFromRendering(TileSet* ts);
 TileSet** GetRenderingTileSets(void);

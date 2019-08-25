@@ -29,12 +29,6 @@ void InitializeGame(void) {
     if (RunFile("scripts/simulation/WorldSetup.lua") == 0) {
         RunString("push(\"_Root\")");
     }
-    
-    AddChoice("Option A");
-    AddChoice("Option A");
-    AddChoice("Option B");
-    
-    PresentChoiceSelection("Here is a choice.");
 }
 
 void FinalizeGame(void) {
@@ -56,7 +50,6 @@ int GameTick(void) {
             while (hlvmTickCount++ < TICKS_PER_CYCLE) {
                 RunString("HLVMProcess()");
             }
-            RunString("ResolveStyles()");
         }
     }
 
@@ -79,7 +72,7 @@ void MouseMoveCallback(GLFWwindow* window, double xpos, double ypos) {
 }
 
 void MouseClickCallback(GLFWwindow* window, int button, int action, int mods) {
-    if (GetChoiceStatus() >= 0 && button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_RELEASE) {
-        ProcessMouseClick();
+    if (GetChoiceStatus() >= 0 && button == GLFW_MOUSE_BUTTON_LEFT) {
+        ProcessMouseClick(action == GLFW_PRESS);
     }
 }

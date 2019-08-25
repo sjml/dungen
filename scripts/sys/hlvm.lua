@@ -84,7 +84,8 @@ function push(simName)
 end
 
 function HLVMProcess()
-  if #simStack == 0 then return end
+  local intitialDepth = #simStack
+  if intitialDepth == 0 then return end
 
   local success, error = coroutine.resume(simStack[#simStack])
   if not success then
@@ -95,5 +96,9 @@ function HLVMProcess()
 
   if coroutine.status(simStack[#simStack]) == "dead" then
     table.remove(simStack)
+  end
+
+  if #simStack ~= intitialDepth then
+    ResolveStyles()
   end
 end

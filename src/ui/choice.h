@@ -7,5 +7,5 @@ void ClearChoices(void);
 void RenderChoices(void);
 int GetChoiceStatus(void);
 void ProcessMouseMovement(gbVec2 position);
-void ProcessMouseClick(void);
+void ProcessMouseClick(bool down);
 

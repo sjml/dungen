@@ -109,6 +109,10 @@ void FinalizeRendering() {
     glfwTerminate();
 }
 
+GLFWwindow* GetWindowHandle(void) {
+    return window;
+}
+
 void AddTileSetToRendering(TileSet* ts) {
     arrpush(tileSets, ts);
 }

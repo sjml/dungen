@@ -34,6 +34,7 @@
 * Update CMakeLists.txt; get Linux building
 * set precompiled headers up in Visual Studio
 * handle newlines in next rendering?
+* ResolveStyles() is super slow; see if there are some optimizations to be had
 * pull dimensions from central spot instead of `1024.0f`-ing all over the place
 * figure out why ScreenToWorld needs that multiplier at the end :-/ 
 * https://github.com/nothings/stb/blob/master/stb_leakcheck.h

@@ -2733,6 +2733,7 @@ SWIGINTERN struct sTileSet *new_sTileSet(void){
 
 
     #include "../ui/banner.h"
+    #include "../ui/choice.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -6357,6 +6358,60 @@ fail:
 }
 
 
+static int _wrap_AddChoice(lua_State* L) {
+  int SWIG_arg = 0;
+  char *arg1 = (char *) 0 ;
+  
+  SWIG_check_num_args("AddChoice",1,1)
+  if(!SWIG_lua_isnilstring(L,1)) SWIG_fail_arg("AddChoice",1,"char const *");
+  arg1 = (char *)lua_tostring(L, 1);
+  AddChoice((char const *)arg1);
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_PresentChoiceSelection(lua_State* L) {
+  int SWIG_arg = 0;
+  char *arg1 = (char *) 0 ;
+  
+  SWIG_check_num_args("PresentChoiceSelection",1,1)
+  if(!SWIG_lua_isnilstring(L,1)) SWIG_fail_arg("PresentChoiceSelection",1,"char const *");
+  arg1 = (char *)lua_tostring(L, 1);
+  PresentChoiceSelection((char const *)arg1);
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_ClearChoices(lua_State* L) {
+  int SWIG_arg = 0;
+  
+  SWIG_check_num_args("ClearChoices",0,0)
+  ClearChoices();
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
 static swig_lua_attribute swig_SwigModule_attributes[] = {
     {0,0,0}
 };
@@ -6430,6 +6485,9 @@ static swig_lua_method swig_SwigModule_methods[]= {
     { "GetTime", _wrap_GetTime},
     { "FindSimplePath", _wrap_FindSimplePath},
     { "AddBanner", _wrap_AddBanner},
+    { "AddChoice", _wrap_AddChoice},
+    { "PresentChoiceSelection", _wrap_PresentChoiceSelection},
+    { "ClearChoices", _wrap_ClearChoices},
     {0,0}
 };
 static swig_lua_class* swig_SwigModule_classes[]= {
