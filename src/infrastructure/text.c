@@ -25,8 +25,8 @@
 #define MAX_VERTS (4*128)
 #define TEXTURE_SIZE 512
 
-FT_Library ftLib;
-GLubyte* emptyTextureData = NULL;
+static FT_Library ftLib;
+static GLubyte* emptyTextureData = NULL;
 
 typedef struct {
     short x, y, h;
@@ -64,7 +64,7 @@ typedef struct {
     struct { unsigned int key; sizeMap* value; }* glyphMap;
 } FontCacheEntry;
 
-struct { const char* key; FontCacheEntry* value; }* fontCache;
+static struct { const char* key; FontCacheEntry* value; }* fontCache;
 
 FontCacheEntry* _GetFontInfo(const char* fontPath) {
     if (shgeti(fontCache, fontPath) < 0) {

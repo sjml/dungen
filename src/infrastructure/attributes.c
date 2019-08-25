@@ -3,13 +3,13 @@
 
 #include "rendering.h"
 
-long long __tagIdx = 0;
-struct { char* key; long long value; } *tags_StringToIdx = NULL;
-struct { long long key; char* value; } *tags_IdxToString = NULL;
-struct { long long key; long long* value; } *tagIdxToTiles = NULL;
-struct { long long key; long long* value; } *tagIdxToTileSets = NULL;
-struct { long long key; long long* value; } *tileIdxToTags = NULL;
-struct { long long key; long long* value; } *tileSetIdxToTags = NULL;
+static long long __tagIdx = 0;
+static struct { char* key; long long value; } *tags_StringToIdx = NULL;
+static struct { long long key; char* value; } *tags_IdxToString = NULL;
+static struct { long long key; long long* value; } *tagIdxToTiles = NULL;
+static struct { long long key; long long* value; } *tagIdxToTileSets = NULL;
+static struct { long long key; long long* value; } *tileIdxToTags = NULL;
+static struct { long long key; long long* value; } *tileSetIdxToTags = NULL;
 
 
 // Doing all this with SQLite may be... overkill?
@@ -17,7 +17,7 @@ struct { long long key; long long* value; } *tileSetIdxToTags = NULL;
 //     Whatever. It's done. Here it is.
 #include <sqlite3.h>
 
-sqlite3* db;
+static sqlite3* db;
 
 typedef enum eAttrType {
     TILE,

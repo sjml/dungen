@@ -5,7 +5,7 @@
 #include <stb_image.h>
 
 
-struct { char* key; gbVec3* value; } *colorTables = NULL;
+static struct { char* key; gbVec3* value; } *colorTables = NULL;
 
 unsigned char* GetRawImageData(const char* filename, unsigned int *dataLength, int *texWidth, int *texHeight) {
     int n;

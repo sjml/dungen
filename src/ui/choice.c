@@ -5,21 +5,21 @@
 #include "../infrastructure/text.h"
 #include "../infrastructure/rendering.h"
 
-int hoveredChoice = -1;
-int pressedChoice = -1;
-char** choices = NULL;
+static int hoveredChoice = -1;
+static int pressedChoice = -1;
+static char** choices = NULL;
 
 typedef struct {
     gbRect2 bb;
     gbRect2 textBB;
 } Button;
-Button* buttons = NULL;
+static Button* buttons = NULL;
 
-gbVec4 btnColorBase  = {0.3f, 0.3f, 0.3f, 1.0f};
-gbVec4 btnColorHover = {0.4f, 0.4f, 0.4f, 1.0f};
-gbVec4 btnColorPress = {0.6f, 0.6f, 0.6f, 1.0f};
+static gbVec4 btnColorBase  = {0.3f, 0.3f, 0.3f, 1.0f};
+static gbVec4 btnColorHover = {0.4f, 0.4f, 0.4f, 1.0f};
+static gbVec4 btnColorPress = {0.6f, 0.6f, 0.6f, 1.0f};
 
-int choiceStatus = -1; // -1 --> no choice is being presented right now
+static int choiceStatus = -1; // -1 --> no choice is being presented right now
                        //  1 --> a choice is currently being presented, no option has been chosen
                        //  0 --> a choice is currently being presented, and an option has been chosen
 int GetChoiceStatus(void) {

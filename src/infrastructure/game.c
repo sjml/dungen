@@ -14,9 +14,9 @@
 #define TICKS_PER_CYCLE   1
 #define SECONDS_PER_CYCLE 0.0
 
-double previousTime, currentTime;
+static double previousTime, currentTime;
 
-unsigned int randomSeed;
+static unsigned int randomSeed;
 
 void InitializeGame(void) {
     randomSeed = (unsigned int)time(NULL);

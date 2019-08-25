@@ -11,8 +11,8 @@ typedef struct {
     float duration;
 } BannerInfo;
 
-BannerInfo* banners = NULL;
-const float padding = 60.0f;
+static BannerInfo* banners = NULL;
+static const float padding = 60.0f;
 
 void _repositionBanners() {
     float height = 0.0f;

@@ -8,7 +8,7 @@ int luaopen_dungen(lua_State* L);
 //  get initialized
 int luaopen_lfs(lua_State* L);
 
-lua_State* L = NULL;
+static lua_State* L = NULL;
 
 void InitializeLua() {
     L = luaL_newstate();

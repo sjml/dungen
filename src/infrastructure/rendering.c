@@ -9,20 +9,20 @@
 #include  "../ui/banner.h"
 #include  "../ui/choice.h"
 
-const int windowWidth  = 1024;
-const int windowHeight = 768;
+static const int windowWidth  = 1024;
+static const int windowHeight = 768;
 
-GLFWwindow* window = NULL;
+static GLFWwindow* window = NULL;
 
-CameraData MainCamera;
-gbMat4 projectionMatrix;
-gbMat4 modelViewMatrix;
-gbMat4 perspectiveMatrix;
-gbMat4 orthoMatrix;
+static CameraData MainCamera;
+static gbMat4 projectionMatrix;
+static gbMat4 modelViewMatrix;
+static gbMat4 perspectiveMatrix;
+static gbMat4 orthoMatrix;
 
-TileSet** tileSets = NULL;
+static TileSet** tileSets = NULL;
 
-TextInfo* tileLabels = NULL;
+static TextInfo* tileLabels = NULL;
 
 
 void InitializeRendering() {

@@ -6,7 +6,7 @@
 #include "rendering.h"
 #include "util.h"
 
-const float hexVertices[] = {
+static const float hexVertices[] = {
     0.0f,               0.0f,
     0.5f * -0.8660254f, 0.5f *  0.5f,
     0.5f * -0.8660254f, 0.5f * -0.5f,
@@ -30,13 +30,13 @@ const float hexVertices[] = {
 
 
 
-TileData* WorldArray = NULL;
-gbVec2** PointList = NULL;
+static TileData* WorldArray = NULL;
+static gbVec2** PointList = NULL;
 
-float tileSize;
-gbVec2 tileDimensions;
-gbVec2 worldSize;
-Vec2i tileSetSize;
+static float tileSize;
+static gbVec2 tileDimensions;
+static gbVec2 worldSize;
+static Vec2i tileSetSize;
 
 void InitializeWorld(int width, int height, float scale) {
     tileSetSize.x = width;
