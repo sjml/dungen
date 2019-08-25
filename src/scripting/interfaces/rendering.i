@@ -3,7 +3,7 @@
     #include "../infrastructure/rendering.h"
 %}
 
-TileSet** GetRenderingTileSets(void);
+Region** GetRenderingRegions(void);
 
 gbVec2 WorldToScreen(gbVec2 worldCoordinates);
 void ClearTileLabels(void);

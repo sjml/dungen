@@ -1,14 +1,13 @@
 ## TODO
-1. random tiles and die rolls in Lua with optional player overrides
-2. Relaxable constraint sets
+1. Relaxable constraint sets
+    - first optimize constraint solver -- currently the cavern finder takes nearly a full second
+2. random tiles and die rolls in Lua with optional player overrides
 3. Primordial Age
     - image output / movie (can be manual for now)
 4. Chamber/region/room model design
     - (see brainstorm notes)
     - somewhat more than tilesets
         - entering a tile needs to be equivalent to entering the chamber it belongs to
-        - currently some linguistic grey areas around tilesets/lists/etc. 
-        - rework + clarify as this develops
     - need to have triggers/encounters somehow
         - "Dwarves tunnel into chamber containing plague."
         - "Adventurers come into territory owned by demons."
@@ -28,6 +27,8 @@
 * handle newlines in text rendering?
 * figure out text extents ascender/descender issue
 * overusing the stretchy buffer right now; look for more chances to just use a static array
+    - also not a huge deal, but I think the *free functions also NULL the pointer, so might have some redundant calls
+    - also the type of the *len calls is ptrdiff_t, not necessarily long
 * ResolveStyles() is super slow; see if there are some optimizations to be had
 * pull dimensions from central spot instead of `1024.0f`-ing all over the place
 * figure out why ScreenToWorld needs that multiplier at the end :-/ 

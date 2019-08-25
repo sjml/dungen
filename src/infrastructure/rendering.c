@@ -21,7 +21,7 @@ static gbMat4 modelViewMatrix;
 static gbMat4 perspectiveMatrix;
 static gbMat4 orthoMatrix;
 
-static TileSet** tileSets = NULL;
+static Region** regions = NULL;
 
 static TextInfo* tileLabels = NULL;
 
@@ -114,22 +114,22 @@ GLFWwindow* GetWindowHandle(void) {
     return window;
 }
 
-void AddTileSetToRendering(TileSet* ts) {
-    arrpush(tileSets, ts);
+void AddRegionToRendering(Region* r) {
+    arrpush(regions, r);
 }
 
-void RemoveTileSetFromRendering(TileSet* ts) {
-    for (int i = 0; i < arrlen(tileSets); i++) {
-        if (tileSets[i] == ts) {
-            arrdel(tileSets, i);
+void RemoveRegionFromRendering(Region* r) {
+    for (int i = 0; i < arrlen(regions); i++) {
+        if (regions[i] == r) {
+            arrdel(regions, i);
             return;
         }
     }
-    fprintf(stderr, "ERROR: removing TileSet that was not part of the world.\n");
+    fprintf(stderr, "ERROR: removing Region that was not part of the world.\n");
 }
 
-TileSet** GetRenderingTileSets() {
-    return tileSets;
+Region** GetRenderingRegions() {
+    return regions;
 }
 
 gbVec2 WorldToScreen(gbVec2 worldCoordinates) {
@@ -213,9 +213,9 @@ int Render() {
     glMatrixMode(GL_MODELVIEW);
     glPushMatrix();
         RenderTiles();
-        for (int i = 0; i < arrlen(tileSets); i++) {
-            if (tileSets[i]->outline != NULL) {
-                RenderOutline(tileSets[i]->outline);
+        for (int i = 0; i < arrlen(regions); i++) {
+            if (regions[i]->outline != NULL) {
+                RenderOutline(regions[i]->outline);
             }
         }
     glPopMatrix();

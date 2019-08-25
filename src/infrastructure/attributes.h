@@ -6,8 +6,8 @@ void InitializeAttributes(void);
 void FinalizeAttributes(void);
 
 void SetupTileAttributeData(TileData* data);
-long long SetupTileSetAttributeData(TileSet* ts);
-void ClearTileSetAttributeData(TileSet* ts);
+long long SetupRegionAttributeData(Region* r);
+void ClearRegionAttributeData(Region* r);
 
 void SetTileAttributeInt(TileData* data, const char* name, int value);
 void SetTileAttributeFloat(TileData* data, const char* name, float value);
@@ -35,16 +35,16 @@ typedef enum {
 TileData** GetTilesByAttribute(const char* attrName, AttrComparison comp, const char* value);
 bool CheckTileAttribute(TileData* td, const char* attrName, AttrComparison comp, const char* value);
 
-void SetTileSetAttributeInt(TileSet* data, const char* name, int value);
-void SetTileSetAttributeFloat(TileSet* data, const char* name, float value);
-void SetTileSetAttributeString(TileSet* data, const char* name, const char* value);
+void SetRegionAttributeInt(Region* data, const char* name, int value);
+void SetRegionAttributeFloat(Region* data, const char* name, float value);
+void SetRegionAttributeString(Region* data, const char* name, const char* value);
 
-int GetTileSetAttributeInt(TileSet* data, const char* name);
-float GetTileSetAttributeFloat(TileSet* data, const char* name);
-char* GetTileSetAttributeString(TileSet* data, const char* name);
+int GetRegionAttributeInt(Region* data, const char* name);
+float GetRegionAttributeFloat(Region* data, const char* name);
+char* GetRegionAttributeString(Region* data, const char* name);
 
-bool AddTileSetTag(TileSet* td, char* tag);
-bool RemoveTileSetTag(TileSet* td, const char* tag);
-TileSet** GetTileSetsTagged(const char* tagString);
-bool TileSetHasTags(TileSet* td, const char* tagString);
-char** GetTileSetTags(TileSet* td);
+bool AddRegionTag(Region* td, char* tag);
+bool RemoveRegionTag(Region* td, const char* tag);
+Region** GetRegionsTagged(const char* tagString);
+bool RegionHasTags(Region* td, const char* tagString);
+char** GetRegionTags(Region* td);

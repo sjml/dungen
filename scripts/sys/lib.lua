@@ -156,81 +156,69 @@ tdft.GetTags = function(td)
 end
 
 
-local tsft = getfntable("TileSet")
-tsft.SetAttributeInt = function(ts, name, value)
-  SetTileSetAttributeInt(ts, name, value)
+local rft = getfntable("Region")
+rft.SetAttributeInt = function(r, name, value)
+  SetRegionAttributeInt(r, name, value)
 end
 
-tsft.SetAttributeFloat = function(ts, name, value)
-  SetTileSetAttributeFloat(ts, name, value)
+rft.SetAttributeFloat = function(r, name, value)
+  SetRegionAttributeFloat(r, name, value)
 end
 
-tsft.SetAttributeString = function(ts, name, value)
-  SetTileSetAttributeString(ts, name, value)
+rft.SetAttributeString = function(r, name, value)
+  SetRegionAttributeString(r, name, value)
 end
 
-tsft.GetAttributeInt = function(ts, name)
-  return GetTileSetAttributeInt(ts, name)
+rft.GetAttributeInt = function(r, name)
+  return GetRegionAttributeInt(r, name)
 end
 
-tsft.GetAttributeFloat = function(ts, name)
-  return GetTileSetAttributeFloat(ts, name)
+rft.GetAttributeFloat = function(r, name)
+  return GetRegionAttributeFloat(r, name)
 end
 
-tsft.GetAttributeString = function(ts, name)
-  return GetTileSetAttributeString(ts, name)
+rft.GetAttributeString = function(r, name)
+  return GetRegionAttributeString(ts, name)
 end
 
-tsft.CheckAttribute = function(td, name, comp, value)
-  return false -- TODO: CheckTileSetAttribute(td, name, comp, value)
+rft.CheckAttribute = function(r, name, comp, value)
+  return false -- TODO: CheckRegionAttribute(td, name, comp, value)
 end
 
-tsft.AddTag = function(ts, tag)
-  AddTileSetTag(ts, tag)
+rft.AddTag = function(r, tag)
+  AddRegionTag(r, tag)
 end
 
-tsft.RemoveTag = function(ts, tag)
-  RemoveTileSetTag(ts, tag)
+rft.RemoveTag = function(r, tag)
+  RemoveRegionTag(r, tag)
 end
 
-tsft.HasTags = function(ts, tagStr)
-  return TileSetHasTags(ts, tagStr)
+rft.HasTags = function(r, tagStr)
+  return RegionHasTags(r, tagStr)
 end
 
-tsft.GetTags = function(ts)
-  return GetTileSetTags(ts)
+rft.GetTags = function(r)
+  return GetRegionTags(r)
 end
 
-tsft.Destroy = function(ts)
-  return DestroyTileSet(ts)
+rft.Destroy = function(r)
+  return DestroyRegion(r)
 end
 
-tsft.AddTile = function(ts, t)
-  return AddTileToSet(ts, t)
+rft.AddTile = function(r, t)
+  return AddTileToRegion(r, t)
 end
 
-tsft.RemoveTile = function(ts, t)
-  return RemoveTileFromSet(ts, t)
+rft.RemoveTile = function(r, t)
+  return RemoveTileFromRegion(r, t)
 end
 
-tsft.HasTile = function(ts, t)
-  return IsTileInSetFromSet(ts, t)
+rft.SetOutline = function(r, c, t)
+  return SetRegionOutline(r, c, t)
 end
 
-tsft.GetTileCount = function(ts)
-  return GetTileCountFromSet(ts)
-end
-
-tsft.GetTiles = function(ts)
-  return GetTiles(ts)
-end
-
-tsft.SetOutline = function(ts, c, t)
-  return SetTileSetOutline(ts, c, t)
-end
-
-tsft.ClearOutline = function(ts)
-  return ClearTileSetOutline(ts)
+rft.ClearOutline = function(r)
+  return ClearRegionOutline(r)
 end
 
 

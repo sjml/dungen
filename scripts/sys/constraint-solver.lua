@@ -13,14 +13,14 @@ function SetConstraint:initialize()
   Constraint:initialize(self)
 end
 
-function SetConstraint:GetTiles()
+function SetConstraint:GetPassingTiles()
   return TileDataSet:new()
 end
 
 -- A naive approach that kicks in when a derived class
 --   doesn't have a means of filtering on its own.
 function SetConstraint:FilterTiles(tiles)
-  local ts = self:GetTiles()
+  local ts = self:GetPassingTiles()
   return ts:intersection(tiles)
 end
 
@@ -45,7 +45,7 @@ function HasAllTags:initialize(tagStr)
   self.tagStr = tagStr
 end
 
-function HasAllTags:GetTiles()
+function HasAllTags:GetPassingTiles()
   local tagged = GetTilesTagged(self.tagStr)
   return TileDataSet:new(tagged)
 end
@@ -107,7 +107,7 @@ function InTileRange:initialize(topLeft, bottomRight)
   self.bottomRight = bottomRight
 end
 
-function InTileRange:GetTiles()
+function InTileRange:GetPassingTiles()
   local ret = {}
   for i = self.topLeft[1], self.bottomRight[1] do
     for j = self.topLeft[2], self.bottomRight[2] do
@@ -127,7 +127,7 @@ function HasAttributes:initialize(attrName, comp, value)
   self.value = value
 end
 
-function HasAttributes:GetTiles()
+function HasAttributes:GetPassingTiles()
   local ts = GetTilesByAttribute(self.attrName, self.comp, tostring(self.value))
   return TileDataSet:new(ts)
 end
@@ -167,9 +167,9 @@ function ConstraintSolver:Solve(debug)
   end
 
   local tList = tiles:toList()
-  self.pickedTileSet = TileSet()
+  self.pickedTileSet = TileNEWSet()
   for _, t in ipairs(tList) do
-    self.pickedTileSet:AddTile(t)
+    self.pickedTileSet = AddTileToSet(self.pickedTileSet, t)
   end
   if #tList > 0 then
     self.pickedTile = tList[RandomRangeInt(1, #tList)]

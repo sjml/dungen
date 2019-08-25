@@ -99,7 +99,7 @@ bool DoEdgesShareVertex(Edge *e1, Edge *e2, Vec2i *shared, gbVec2 *crossVec) {
 }
 
 
-Outline* CreateOutline(TileSet* ts, float thickness) {
+Outline* CreateOutline(TileNEWSet* ts, float thickness) {
     Outline* o = malloc(sizeof(Outline));
     o->color.r = 1.0f;
     o->color.g = 0.0f;
@@ -108,13 +108,12 @@ Outline* CreateOutline(TileSet* ts, float thickness) {
     o->thickness = thickness;
     o->pointLists = NULL;
 
-    TileData** tiles = GetTiles(ts);
     gbVec2** PL = GetWorldPointList();
 
     struct { Vec2i key; int value; } *outlineEdges = NULL;
 
-    for (int t = 0; t < arrlen(tiles); t++) {
-        TileData* tile = tiles[t];
+    for (int t = 0; t < hmlen(ts); t++) {
+        TileData* tile = ts[t].key;
         Vec2i edgeIndices[6];
 
         // nw
@@ -222,8 +221,6 @@ Outline* CreateOutline(TileSet* ts, float thickness) {
 
         arrpush(o->pointLists, points);
     }
-
-    arrfree(tiles);
 
     return o;
 }

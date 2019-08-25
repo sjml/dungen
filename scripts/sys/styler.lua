@@ -149,7 +149,8 @@ function ResolveStyles()
     return
   end
 
-  for _, t in pairs(GetDirtyTiles()) do
+  local dirtyTiles = GetDirtyTiles()
+  for _, t in pairs(dirtyTiles) do
     local match = {0, 0}
 
     for label, style in pairs(styles) do
@@ -163,9 +164,9 @@ function ResolveStyles()
   end
   CleanAllTiles()
 
-  local tilesSet = GetRenderingTileSets()
-  for i=1, #tilesSet, 1 do
-    local ts = tilesSet[i]
+  local regions = GetRenderingRegions()
+  for i=1, #regions, 1 do
+    local ts = regions[i]
 
     local match = {0, 0}
 

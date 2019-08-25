@@ -16,7 +16,7 @@
             free($1[i]);
         }
         arrfree($1);
-        
+
         SWIG_arg += 1;
     }
 %}
@@ -33,24 +33,24 @@
             }
         }
         arrfree($1);
-        
+
         SWIG_arg += 1;
     }
 %}
 
-%typemap(out) TileSet**
+%typemap(out) Region**
 %{
     {
         lua_newtable(L);
         if (arrlen($1) > 0) {
             for (unsigned int i=1; i <= arrlen($1); i++) {
                 lua_pushnumber(L, i);
-                SWIG_NewPointerObj(L, $1[i-1], SWIGTYPE_p_sTileSet, 0);
+                SWIG_NewPointerObj(L, $1[i-1], SWIGTYPE_p_sRegion, 0);
                 lua_settable(L, -3);
             }
         }
-        // arrfree($1); // don't free if we don't own this memory
-        
+        // arrfree($1); // TODO: don't free if we don't own this memory
+
         SWIG_arg += 1;
     }
 %}

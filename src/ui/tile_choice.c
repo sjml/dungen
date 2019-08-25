@@ -5,11 +5,11 @@
 #include "../infrastructure/rendering.h"
 #include "../hlvm/hlvm.h"
 
-static TileSet* hoveredSingle = NULL;
+static Region* hoveredSingle = NULL;
 static TileData* hoveredTile = NULL;
 static TileData* pressedTile = NULL;
 
-static TileSet* valid;
+static TileNEWSet* valid;
 
 static int choiceStatus = -1; // -1 --> no choice is being presented right now
                               //  1 --> a choice is currently being presented, no option has been chosen
@@ -20,17 +20,17 @@ int GetTileChoiceStatus(void) {
 
 void PresentTileChoice(void) {
     valid = GetTileSetRegister("TileChoiceValidSet");
-    if (GetTileCount(valid) == 0) {
+    if (GetTileSetCount(valid) == 0) {
         valid = NULL;
         fprintf(stderr, "WARNING: Cannot present empty tile choice selection.\n");
         return;
     }
-    
+
     choiceStatus = 1;
     Vec2i dims = GetWorldDimensions();
-    
-    hoveredSingle = CreateTileSet();
-    
+
+    hoveredSingle = CreateRegion();
+
     for (long i = 0; i < dims.x * dims.y; i++) {
         TileData* t = GetTileAtIndex(i);
         if (!IsTileInSet(valid, t)) {
@@ -43,7 +43,7 @@ void PresentTileChoice(void) {
 }
 
 void RenderTileChoice(void) {
-    
+
 }
 
 void TileChoiceProcessMouseMovement(gbVec2 position) {
@@ -51,7 +51,7 @@ void TileChoiceProcessMouseMovement(gbVec2 position) {
     if (current == hoveredTile) {
         return;
     }
-    
+
     if (hoveredTile != NULL && hoveredTile == pressedTile) {
         pressedTile->overlayColor.r = 0.0f;
         pressedTile->overlayColor.g = 0.0f;
@@ -64,17 +64,17 @@ void TileChoiceProcessMouseMovement(gbVec2 position) {
         pressedTile->overlayColor.b = 0.0f;
         pressedTile->overlayColor.a = 1.0f;
     }
-    
+
     if (hoveredTile != NULL) {
-        RemoveTileFromSet(hoveredSingle, hoveredTile);
+        RemoveTileFromRegion(hoveredSingle, hoveredTile);
     }
     if (current != NULL && IsTileInSet(valid, current)) {
-        AddTileToSet(hoveredSingle, current);
+        AddTileToRegion(hoveredSingle, current);
     }
-    ClearTileSetOutline(hoveredSingle);
+    ClearRegionOutline(hoveredSingle);
     gbVec4 hoverColor = {1.0f, 0.0f, 0.0f, 1.0f};
-    SetTileSetOutline(hoveredSingle, hoverColor, 0.25);
-    
+    SetRegionOutline(hoveredSingle, hoverColor, 0.25f);
+
     hoveredTile = current;
 }
 
@@ -93,10 +93,10 @@ void TileChoiceProcessMouseClick(bool down) {
             // make the choice
             choiceStatus = 0;
             SetTileRegister("TileChoiceSelection", pressedTile);
-            DestroyTileSet(hoveredSingle);
+            DestroyRegion(hoveredSingle);
             hoveredSingle = NULL;
             hoveredTile = NULL;
-            
+
             Vec2i dims = GetWorldDimensions();
             for (long i = 0; i < dims.x * dims.y; i++) {
                 TileData* t = GetTileAtIndex(i);
@@ -111,7 +111,7 @@ void TileChoiceProcessMouseClick(bool down) {
         pressedTile->overlayColor.b = 0.0f;
         pressedTile->overlayColor.a = 0.0f;
         pressedTile = NULL;
-        
+
         if (choiceStatus > 0) {
             double x, y;
             glfwGetCursorPos(GetWindowHandle(), &x, &y);
