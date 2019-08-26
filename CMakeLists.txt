@@ -121,15 +121,23 @@ if(SWIG_EXE)
                       )
 endif()
 
+if (${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+    set(ResourceDir "/../Resources")
+elseif (${CMAKE_SYSTEM_NAME} MATCHES "Windows")
+    # ???
+elseif (${CMAKE_SYSTEM_NAME} MATCHES "Linux")
+    set(ResourceDir "/Resources")
+endif()
+
 add_custom_command(TARGET DunGen POST_BUILD
                    COMMAND ${CMAKE_COMMAND} -E copy_directory
-                   ${CMAKE_SOURCE_DIR}/images $<TARGET_FILE_DIR:DunGen>/../Resources/images
+                   ${CMAKE_SOURCE_DIR}/images $<TARGET_FILE_DIR:DunGen>/${ResourceDir}/images
                   )
 add_custom_command(TARGET DunGen POST_BUILD
                    COMMAND ${CMAKE_COMMAND} -E copy_directory
-                   ${CMAKE_SOURCE_DIR}/scripts $<TARGET_FILE_DIR:DunGen>/../Resources/scripts
+                   ${CMAKE_SOURCE_DIR}/scripts $<TARGET_FILE_DIR:DunGen>/${ResourceDir}/scripts
                   )
 add_custom_command(TARGET DunGen POST_BUILD
                   COMMAND ${CMAKE_COMMAND} -E copy_directory
-                  ${CMAKE_SOURCE_DIR}/fonts $<TARGET_FILE_DIR:DunGen>/../Resources/fonts
+                  ${CMAKE_SOURCE_DIR}/fonts $<TARGET_FILE_DIR:DunGen>/${ResourceDir}/fonts
                   )

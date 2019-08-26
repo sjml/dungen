@@ -67,3 +67,42 @@ jobs:
       PathToPublish: '$(Build.ArtifactStagingDirectory)'
       ArtifactName: 'Windows Build'
       publishLocation: 'Container'
+  
+  - job: Linux
+    pool: 
+      vmImage: 'ubuntu-latest'
+    steps:
+    - task: CmdLine@2
+      displayName: 'Install dependencies'
+      inputs:
+        script: |
+          sudo apt -y update
+          sudo apt-get install cmake xorg-dev libx11-dev libglu1-mesa-dev libglew1.5 libglew1.5-dev libglu1-mesa libglu1-mesa-dev libgl1-mesa-glx libgl1-mesa-dev
+    - task: CmdLine@2
+      displayName: 'Generate Makefiles'
+      inputs:
+        script: 'cd build; cmake -G "Unix Makefiles" ..'
+    - task: CmdLine@2
+      displayName: 'Build with make'
+      inputs:
+        script: 'cd build; make'
+  - task: CmdLine@2
+    displayName: 'Copy Resources to staging'
+    inputs:
+      script: 'cp -R build/Resources $(Build.ArtifactStagingDirectory)'
+  - task: CopyFiles@2
+    displayName: 'Copy executable and documents to staging'
+    inputs:
+      SourceFolder: ''
+      Contents: |
+        build/DunGen
+        README.md
+        docs/acknowledgements.md
+      TargetFolder: '$(Build.ArtifactStagingDirectory)'
+      flattenFolders: true
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish build into pipeline'
+    inputs:
+      PathToPublish: '$(Build.ArtifactStagingDirectory)'
+      ArtifactName: 'Linux Build'
+      publishLocation: 'Container'
