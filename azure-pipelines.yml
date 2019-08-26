@@ -68,24 +68,24 @@ jobs:
       ArtifactName: 'Windows Build'
       publishLocation: 'Container'
   
-  - job: Linux
-    pool: 
-      vmImage: 'ubuntu-latest'
-    steps:
-    - task: CmdLine@2
-      displayName: 'Install dependencies'
-      inputs:
-        script: |
-          sudo apt -y update
-          sudo apt-get install cmake xorg-dev libx11-dev libglu1-mesa-dev libglew1.5 libglew1.5-dev libglu1-mesa libglu1-mesa-dev libgl1-mesa-glx libgl1-mesa-dev
-    - task: CmdLine@2
-      displayName: 'Generate Makefiles'
-      inputs:
-        script: 'cd build; cmake -G "Unix Makefiles" ..'
-    - task: CmdLine@2
-      displayName: 'Build with make'
-      inputs:
-        script: 'cd build; make'
+- job: Linux
+  pool: 
+    vmImage: 'ubuntu-latest'
+  steps:
+  - task: CmdLine@2
+    displayName: 'Install dependencies'
+    inputs:
+      script: |
+        sudo apt -y update
+        sudo apt-get install cmake xorg-dev libx11-dev libglu1-mesa-dev libglew1.5 libglew1.5-dev libglu1-mesa libglu1-mesa-dev libgl1-mesa-glx libgl1-mesa-dev
+  - task: CmdLine@2
+    displayName: 'Generate Makefiles'
+    inputs:
+      script: 'cd build; cmake -G "Unix Makefiles" ..'
+  - task: CmdLine@2
+    displayName: 'Build with make'
+    inputs:
+      script: 'cd build; make'
   - task: CmdLine@2
     displayName: 'Copy Resources to staging'
     inputs:
