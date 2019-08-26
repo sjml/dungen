@@ -161,8 +161,8 @@ void RenderChoices() {
             choices[i],
             "fonts/04B_03__.TTF",
             72.0f,
-            buttons[i].textBB.pos.x,
-            buttons[i].textBB.pos.y,
+            (int)buttons[i].textBB.pos.x,
+            (int)buttons[i].textBB.pos.y,
             0.0f
         );
     }
@@ -195,7 +195,7 @@ void ChoiceProcessMouseClick(bool down) {
 
         double x, y;
         glfwGetCursorPos(GetWindowHandle(), &x, &y);
-        gbVec2 pos = {x, y};
+        gbVec2 pos = {(float)x, (float)y};
         ChoiceProcessMouseMovement(pos);
     }
 }

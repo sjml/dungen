@@ -115,7 +115,7 @@ void TileChoiceProcessMouseClick(bool down) {
         if (choiceStatus > 0) {
             double x, y;
             glfwGetCursorPos(GetWindowHandle(), &x, &y);
-            gbVec2 pos = {x, y};
+            gbVec2 pos = {(float)x, (float)y};
             TileChoiceProcessMouseMovement(pos);
         }
     }

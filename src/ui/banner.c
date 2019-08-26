@@ -92,6 +92,6 @@ void RenderBanners() {
         glPopMatrix();
 
         glColor4fv(banners[i].ti.color.e);
-        DrawGameText(banners[i].ti.text, "fonts/04B_03__.TTF", banners[i].ti.scale, banners[i].ti.pos.x, banners[i].ti.pos.y, 0.0f);
+        DrawGameText(banners[i].ti.text, "fonts/04B_03__.TTF", banners[i].ti.scale, (int)banners[i].ti.pos.x, (int)banners[i].ti.pos.y, 0.0f);
     }
 }
