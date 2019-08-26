@@ -38,6 +38,20 @@ end
 
 
 
+--------------- All Tiles
+-- basically a dummy constraint that just provides all
+-- the tiles as a set
+AllTiles = class("AllTiles", SetConstraint)
+function AllTiles:initialize()
+end
+
+function AllTiles:GetPassingTiles()
+  local all = GetAllTiles()
+  return TileDataSet:new(all)
+end
+
+
+
 --------------- Has All Tags
 HasAllTags = class("HasAllTags", SetConstraint)
 function HasAllTags:initialize(tagStr)
@@ -80,24 +94,27 @@ MinDistanceFromAttribute = class("MinDistanceFromAttribute", CheckConstraint)
 function MinDistanceFromAttribute:initialize(tileDistance, attrName, comp, value)
   CheckConstraint:initialize(self)
   local ts = GetTilesByAttribute(attrName, comp, tostring(value))
+  local buffer = {}
+  for _, t in pairs(ts) do
+    local circle = t:GetCircle(tileDistance)
+    for _, ct in pairs(circle) do
+      table.insert(buffer, ct)
+    end
+  end
+  for _, bt in pairs(buffer) do
+    table.insert(ts, bt)
+  end
+
   self.keepAway = TileDataSet:new(ts)
   self.tileDistance = tileDistance
 end
 
 function MinDistanceFromAttribute:CheckTile(ti)
-  local td = GetTileAtIndex(ti)
-  local circle = td:GetCircle(self.tileDistance)
-  for _, c in ipairs(circle) do
-    if c.i ~= ti then
-      if self.keepAway[c.i] ~= nil then
-        return false
-      end
-    else
-    end
+  if self.keepAway[ti] ~= nil then
+    return false
   end
   return true
 end
-
 
 
 --------------- In Tile Range
@@ -147,22 +164,34 @@ function ConstraintSolver:initialize(constraints)
 end
 
 function ConstraintSolver:Solve(debug)
-  local tiles = TileDataSet:new(GetAllTiles())
+  local tiles = nil
   for i, c in ipairs(self.constraints) do
-    if (debug) then
-      print("before iteration " .. tostring(i) .. "(" .. tostring(c) .. ") | " .. tostring(#tiles:toList()) .. " tiles.")
-    end
-    if c:isInstanceOf(SetConstraint) then
-      tiles = c:FilterTiles(tiles)
-    elseif c:isInstanceOf(CheckConstraint) then
-      for ti, _ in pairs(tiles) do
-        if not c:CheckTile(ti) then
-          tiles[ti] = nil
-        end
-        end
+    if (i == 1) then
+      if c:isInstanceOf(SetConstraint) == false then
+        io.stderr:write("LUA ERROR: First constraint is not a SetConstraint. Aborting solve.\n")
+        return false
       end
-    if (debug) then
-      print("\tafter: " .. tostring(#tiles:toList()) .. " tiles.")
+
+      tiles = c:GetPassingTiles()
+      if (debug) then
+        print("initial tiles (" .. tostring(c) ..  ") | " .. tostring(#tiles:toList()) .. " tiles.")
+      end
+    else
+      if (debug) then
+        print("before iteration " .. tostring(i) .. "(" .. tostring(c) .. ") | " .. tostring(#tiles:toList()) .. " tiles.")
+      end
+      if c:isInstanceOf(SetConstraint) then
+        tiles = c:FilterTiles(tiles)
+      elseif c:isInstanceOf(CheckConstraint) then
+        for ti, _ in pairs(tiles) do
+          if not c:CheckTile(ti) then
+            tiles[ti] = nil
+          end
+          end
+        end
+      if (debug) then
+        print("\tafter: " .. tostring(#tiles:toList()) .. " tiles.")
+      end
     end
   end
 

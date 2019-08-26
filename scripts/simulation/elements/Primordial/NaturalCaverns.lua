@@ -3,19 +3,18 @@ cavernCount = 0
 breakRoll = 6
 padding = 3
 
-cavernConstraints = {
-  InTileRange(
-    {padding, gir("GroundLine") + padding},
-    {gir("TileWidth") - padding, gir("TileHeight") - padding}
-  ),
-  HasAllTags("ground"),
-  HasAttributes("open", Equal, 0),
-  MinDistanceFromAttribute(2, "open", Equal, 1)
-}
-cavernSolver = ConstraintSolver(cavernConstraints)
 
 while (cavernCount < maxCaverns) do
   -- pick our spot
+  cavernConstraints = {
+    InTileRange(
+      {padding, gir("GroundLine") + padding},
+      {gir("TileWidth") - padding, gir("TileHeight") - padding}
+    ),
+    HasAttributes("open", Equal, 0),
+    MinDistanceFromAttribute(2, "open", Equal, 1)
+  }
+  cavernSolver = ConstraintSolver(cavernConstraints)
   cavernSolver:Solve()
 
   local base = cavernSolver.pickedTile

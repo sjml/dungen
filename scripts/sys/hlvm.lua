@@ -90,6 +90,7 @@ function HLVMProcess()
   local success, error = coroutine.resume(simStack[#simStack])
   if not success then
     io.stderr:write("LUA ERROR: " .. error .. "; HLVM popping.\n")
+    io.stderr:write("\t" .. debug.traceback(simStack[#simStack]) .. "\n")
     table.remove(simStack)
     return
   end
