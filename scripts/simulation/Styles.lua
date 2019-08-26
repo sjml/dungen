@@ -52,3 +52,45 @@ mithral = {
   tileFill = colors.mithral,
   -- labelText = "Mithral"
 }
+
+water = {
+  reqs = {
+    tags = "ground, water"
+  },
+  tileFill = colors.water,
+}
+
+magma = {
+  reqs = {
+    tags = "ground, magma"
+  },
+  tileFill = colors.magma,
+}
+
+plague = {
+  reqs = {
+    tags = "ground, plague"
+  },
+  tileFill = colors.plague,
+}
+
+gems = {
+  reqs = {
+    tags = "ground, gems"
+  },
+  tileFill = colors.gems,
+}
+
+monster = {
+  reqs = {
+    tags = "ground, monster"
+  },
+  tileFill = colors.monster,
+}
+
+FATE = {
+  reqs = {
+    tags = "ground, FATE"
+  },
+  tileFill = colors.FATE,
+}

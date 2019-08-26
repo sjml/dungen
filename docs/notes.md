@@ -1,4 +1,5 @@
 ## TODO
+0. Labels for regions
 1. Relaxable constraint sets
 2. random tiles and die rolls in Lua with optional player overrides
 3. Primordial Age
@@ -11,6 +12,7 @@
         - "Dwarves tunnel into chamber containing plague."
         - "Adventurers come into territory owned by demons."
 5. Design and implement agents/entities
+    - (update primordial wandering monster to be agent)
     - individuals
         - attributes
         - ascribe agency to actions
@@ -25,6 +27,7 @@
 * set precompiled headers up in Visual Studio
 * handle newlines in text rendering?
 * figure out text extents ascender/descender issue
+* add way to modify attributes instead of having to get/set round-trip through SQLite
 * overusing the stretchy buffer right now; look for more chances to just use a static array
     - also not a huge deal, but I think the *free functions also NULL the pointer, so might have some redundant calls
     - also the type of the *len calls is ptrdiff_t, not necessarily long
@@ -37,7 +40,6 @@
 * in-game console
 * HLVM exceptions (C + Lua invoking)
 * pull sim settings and other stuff out into config file that Lua pulls in
-* let regions label themselves too (position in center of set based on farthest X and Y)
 * specify (and store) random seed
 * let outlines specify inner/outer/center
 * Linux build

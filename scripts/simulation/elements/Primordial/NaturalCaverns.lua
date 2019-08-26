@@ -23,30 +23,60 @@ while (cavernCount < maxCaverns) do
   end
 
   local cavern = base:GetCircle(1)
+  local chamber = CreateRegion()
   for _, tile in ipairs(cavern) do
     tile:SetAttributeInt("open", 1)
+    tile:SetAttributeInt("empty", 1)
+    chamber:AddTile(tile)
   end
 
   sir("DieSides", 8)
   push("System.DieRoll")
   local result = gir("DieRollResult")
 
+  result = 8
+
   if (result == 1) then
-    print("tunnel")
+    -- tunnel
+    local tunnel = base:BuildPath({WEST, WEST, EAST, EAST, EAST, EAST})
+    for _, tunnelTile in pairs(tunnel) do
+      tunnelTile:SetAttributeInt("open", 1)
+    end
   elseif (result == 2) then
-    print("plague")
+    -- plague
+    sir("DieSides", 4)
+    push("System.DieRoll")
+    chamber:SetAttributeInt("plagueStrength", gir("DieRollResult"))
+    chamber:AddTag("plague")
   elseif (result == 3) then
-    print("gems")
+    -- gems
+    sir("DieSides", 4)
+    push("System.DieRoll")
+    chamber:SetAttributeInt("treasure", gir("DieRollResult") + chamber:GetAttributeInt("treasure"))
+    chamber:AddTag("gems")
   elseif (result == 4) then
-    print("empty")
+    -- empty
   elseif (result == 5) then
-    print("monster")
+    -- wandering monster
+    sir("MonsterCount", gir("MonsterCount") + 1)
+    base:AddTag("monster")
   elseif (result == 6) then
-    print("FATE")
+    -- FATE
+    chamber:AddTag("FATE")
   elseif (result == 7) then
-    print("water")
+    -- water
+    chamber:AddTag("water")
+    local stillSpace = true
+    while (stillSpace) do
+      stillSpace = storeInChamber(chamber, "water", true)
+    end
   elseif (result == 8) then
-    print("magma")
+    -- magma
+    chamber:AddTag("magma")
+    local stillSpace = true
+    while (stillSpace) do
+      stillSpace = storeInChamber(chamber, "magma", true)
+    end
   end
 
   if (result == breakRoll) then

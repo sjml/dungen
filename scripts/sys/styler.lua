@@ -1,5 +1,6 @@
 -- Allows for a more declarative approach the visual appearance of the hex world.
 --
+local Set = require("sys.set")
 
 local styles = nil
 
@@ -36,13 +37,17 @@ function ReloadStyles()
   ResolveStyles()
 end
 
+-- returns true if m1 should have priority over m2
+--   (equality loses because of ordered application)
 local function higherMatch(m1, m2)
-  if  ((m1[1] > m2[1])  -- more specific tile match
+  if  (
+          (m1[1] + m1[2] >= m2[1] + m2[2])  -- sum of matches is equal
+    or (m1[1] > m2[1])                      -- more specific tile match
     or (m1[1] == m2[1] and m1[2] <= m2[2])  -- equal tile match and equal or lesser region
-                                            -- match (equality loses because of ordered
-                                            -- application)
+                                            -- match
     or (m2[1] <= m1[1] and m1[2] >= m2[2])  -- tile less/equal but region equal or more
-  ) then
+  )
+  then
     return true
   else
     return false
@@ -58,27 +63,49 @@ local function checkStyle(styleTable, target)
   local match = {0, 0}
 
   if (reqs.tags ~= nil) then
-    local tcount = countInString(reqs.tags, ",") + 1
-    if (target.memberSets ~= nil) then
-      for _, set in pairs(target.memberSets) do
-        if (set:HasTags(reqs.tags) == true) then
-          match[2] = match[2] + tcount
+    local tags = Set:new(reqs.tags:split(", "))
+    if target.memberRegions ~= nil then
+      for _, reg in pairs(target.memberRegions) do
+        local rTags = reg:GetTags()
+        for _, rt in pairs(rTags) do
+          if tags[rt] ~= nil then
+            tags[rt] = nil
+            match[2] = match[2] + 1
+          end
         end
       end
     end
-    if (target:HasTags(reqs.tags) == true) then
-      match[1] = match[1] + tcount
+    for _, tt in pairs(target:GetTags()) do
+      if tags[tt] ~= nil then
+        tags[tt] = nil
+        match[1] = match[1] + 1
+      end
+    end
+
+    if #tags:toList() > 0 then
+      return {-1, -1}
     end
   end
 
-  if (match[1] > 0 or match[2] > 0) then
-    if (reqs.attributes ~= nil) then
-      for _, attrCheck in pairs(reqs.attributes) do
-        if (target:CheckAttribute(attrCheck[1], attrCheck[2], attrCheck[3])) then
-          match[1] = match[1] + 1
-        else
-          match[1] = 0
-        end
+  --   local tcount = countInString(reqs.tags, ",") + 1
+  --   if (target.memberRegions ~= nil) then
+  --     for _, reg in pairs(target.memberRegions) do
+  --       if (reg:HasTags(reqs.tags) == true) then
+  --         match[2] = match[2] + tcount
+  --       end
+  --     end
+  --   end
+  --   if (target:HasTags(reqs.tags) == true) then
+  --     match[1] = match[1] + tcount
+  --   end
+  -- end
+
+  if (reqs.attributes ~= nil) then
+    for _, attrCheck in pairs(reqs.attributes) do
+      if (target:CheckAttribute(attrCheck[1], attrCheck[2], attrCheck[3])) then
+        match[1] = match[1] + 1
+      else
+        match[1] = 0
       end
     end
   end
