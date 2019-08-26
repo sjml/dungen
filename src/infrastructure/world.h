@@ -2,14 +2,16 @@
 
 #include "util.h"
 
-typedef struct sOutline Outline;
-typedef struct sTileSet TileSet;
+typedef struct sOutline     Outline;
+typedef struct sRegion      Region;
+typedef struct sTileNEWSet  TileNEWSet;
 
 typedef struct {
     long long i;
     Vec2i hexPos;
     gbVec2 worldPos;
     gbVec3 color;
+    gbVec4 overlayColor; // not exposed to Lua
 
     // clockwise neighbors
     int neighborW;
@@ -19,19 +21,19 @@ typedef struct {
     int neighborSE;
     int neighborSW;
 
-    TileSet** memberSets;
+    Region** memberRegions;
 } TileData;
 
-typedef struct {
+typedef struct sRegion {
+    long long i;
+    TileNEWSet* tiles;
+    Outline* outline;
+} Region;
+
+typedef struct sTileNEWSet {
     TileData* key;
     int value;
-} TileHash;
-
-typedef struct sTileSet {
-    long long i;
-    TileHash* tiles;
-    Outline* outline;
-} TileSet;
+} TileNEWSet;
 
 void InitializeWorld(int width, int height, float scale);
 void FinalizeWorld(void);
@@ -42,6 +44,9 @@ gbVec2** GetWorldPointList(void);
 void RenderTiles(void);
 
 TileData** GetAllTiles(void);
+void SetTileAsDirty(TileData* td);
+TileData** GetDirtyTiles(void);
+void CleanAllTiles(void);
 TileData* GetTileAtPosition(int x, int y);
 TileData* GetTileAtIndex(long long i);
 TileData* ScreenToTile(gbVec2* screenCoordinates);
@@ -55,12 +60,18 @@ long GetTileDistance(TileData* t1, TileData* t2);
 //       since they could be sitting in registers or in the Lua runtime.
 //       Smart pointers would help, but too heavyweight.
 //       For now, I don't care about the leaks.
-TileSet* CreateTileSet(void);
-void DestroyTileSet(TileSet* ts);
-int AddTileToSet(TileSet* ts, TileData* t);
-int RemoveTileFromSet(TileSet* ts, TileData* t);
-bool IsTileInSet(TileSet* ts, TileData* t);
-int GetTileCount(TileSet* ts);
-TileData** GetTiles(TileSet* ts);
-void SetTileSetOutline(TileSet* ts, gbVec4* color, float thickness);
-void ClearTileSetOutline(TileSet* ts);
+Region* CreateRegion(void);
+void DestroyRegion(Region* r);
+void SetRegionOutline(Region* r, gbVec4 color, float thickness);
+void ClearRegionOutline(Region* r);
+void AddTileToRegion(Region* r, TileData* t);
+void RemoveTileFromRegion(Region* r, TileData* t);
+
+void DestroyTileSet(TileNEWSet* ts);
+TileNEWSet* AddTileToSet(TileNEWSet* ts, TileData* t);
+TileNEWSet* RemoveTileFromSet(TileNEWSet* ts, TileData* t);
+bool IsTileInSet(TileNEWSet* ts, TileData* t);
+long GetTileSetCount(TileNEWSet* ts);
+TileData** GetTilesFromSet(TileNEWSet* ts);
+TileNEWSet* IntersectTileSets(TileNEWSet* set1, TileNEWSet* set2);
+

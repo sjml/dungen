@@ -1,5 +1,6 @@
 -- Allows for a more declarative approach the visual appearance of the hex world.
 --
+local Set = require("sys.set")
 
 local styles = nil
 
@@ -13,7 +14,13 @@ end
 
 function ReloadStyles()
   local preload = {
-    colorTable = colorTable
+    colorTable = colorTable,
+    LessThan = LessThan,
+    LessThanOrEqual = LessThanOrEqual,
+    GreaterThan = GreaterThan,
+    GreaterThanOrEqual = GreaterThanOrEqual,
+    Equal = Equal,
+    NotEqual = NotEqual,
   }
   styles = ordered_table()
   for k,v in pairs(preload) do styles[k] = v end
@@ -23,22 +30,24 @@ function ReloadStyles()
     return
   end
   styleLoad()
-  for k,v in pairs(styles) do
-    if type(v) == "function" then
-      styles[k] = nil
-    end
+  for k,v in pairs(preload) do
+    styles[k] = nil
   end
 
   ResolveStyles()
 end
 
+-- returns true if m1 should have priority over m2
+--   (equality loses because of ordered application)
 local function higherMatch(m1, m2)
-  if  ((m1[1] > m2[1])  -- more specific tile match
+  if  (
+          (m1[1] + m1[2] >= m2[1] + m2[2])  -- sum of matches is equal
+    or (m1[1] > m2[1])                      -- more specific tile match
     or (m1[1] == m2[1] and m1[2] <= m2[2])  -- equal tile match and equal or lesser region
-                                            -- match (equality loses because of ordered
-                                            -- application)
+                                            -- match
     or (m2[1] <= m1[1] and m1[2] >= m2[2])  -- tile less/equal but region equal or more
-  ) then
+  )
+  then
     return true
   else
     return false
@@ -54,16 +63,50 @@ local function checkStyle(styleTable, target)
   local match = {0, 0}
 
   if (reqs.tags ~= nil) then
-    local tcount = countInString(reqs.tags, ",") + 1
-    if (target.memberSets ~= nil) then
-      for _, set in pairs(target.memberSets) do
-        if (set:HasTags(reqs.tags) == true) then
-          match[2] = match[2] + tcount
+    local tags = Set:new(reqs.tags:split(", "))
+    if target.memberRegions ~= nil then
+      for _, reg in pairs(target.memberRegions) do
+        local rTags = reg:GetTags()
+        for _, rt in pairs(rTags) do
+          if tags[rt] ~= nil then
+            tags[rt] = nil
+            match[2] = match[2] + 1
+          end
         end
       end
     end
-    if (target:HasTags(reqs.tags) == true) then
-      match[1] = match[1] + tcount
+    for _, tt in pairs(target:GetTags()) do
+      if tags[tt] ~= nil then
+        tags[tt] = nil
+        match[1] = match[1] + 1
+      end
+    end
+
+    if #tags:toList() > 0 then
+      return {-1, -1}
+    end
+  end
+
+  --   local tcount = countInString(reqs.tags, ",") + 1
+  --   if (target.memberRegions ~= nil) then
+  --     for _, reg in pairs(target.memberRegions) do
+  --       if (reg:HasTags(reqs.tags) == true) then
+  --         match[2] = match[2] + tcount
+  --       end
+  --     end
+  --   end
+  --   if (target:HasTags(reqs.tags) == true) then
+  --     match[1] = match[1] + tcount
+  --   end
+  -- end
+
+  if (reqs.attributes ~= nil) then
+    for _, attrCheck in pairs(reqs.attributes) do
+      if (target:CheckAttribute(attrCheck[1], attrCheck[2], attrCheck[3])) then
+        match[1] = match[1] + 1
+      else
+        match[1] = 0
+      end
     end
   end
 
@@ -122,22 +165,19 @@ local function applyLabelStyle(styleTable, target)
   sPos.x = sPos.x - (extents.x / 2)
   sPos.y = sPos.y + (extents.y / 2)
 
-  AddTextString(text, {sPos.x, sPos.y}, scale, color)
+  AddTileLabel(text, {sPos.x, sPos.y}, scale, color)
 end
 
 
 function ResolveStyles()
-  ClearTextStrings()
+  ClearTileLabels()
 
   if (styles == nil) then
     return
   end
 
-  local dims = GetWorldDimensions()
-  local max = dims.x * dims.y
-  for i=0, max - 1, 1 do
-    local t = GetTileAtIndex(i)
-
+  local dirtyTiles = GetDirtyTiles()
+  for _, t in pairs(dirtyTiles) do
     local match = {0, 0}
 
     for label, style in pairs(styles) do
@@ -149,10 +189,11 @@ function ResolveStyles()
       end
     end
   end
+  CleanAllTiles()
 
-  local tilesSet = GetRenderingTileSets()
-  for i=1, #tilesSet, 1 do
-    local ts = tilesSet[i]
+  local regions = GetRenderingRegions()
+  for i=1, #regions, 1 do
+    local ts = regions[i]
 
     local match = {0, 0}
 

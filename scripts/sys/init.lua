@@ -7,10 +7,27 @@ end
 dungen = nil
 
 package.path = './scripts/?.lua;' .. package.path
+local debug = false
+if (debug) then
+  -- using ZeroBrane on the Mac to debug Lua occasionally
+  package.path = package.path .. ";/Applications/ZeroBraneStudio.app/Contents/ZeroBraneStudio/lualibs/?/?.lua"
+  package.path = package.path .. ";/Applications/ZeroBraneStudio.app/Contents/ZeroBraneStudio/lualibs/?.lua"
+  package.cpath = package.cpath .. ";/Applications/ZeroBraneStudio.app/Contents/ZeroBraneStudio/bin/clibs53/?/?.dylib"
+  package.cpath = package.cpath .. ";/Applications/ZeroBraneStudio.app/Contents/ZeroBraneStudio/bin/clibs53/?.dylib"
+
+  require('mobdebug').start()
+end
+
 require("sys.lib")
 require("sys.styler")
 require("sys.constraint-solver")
 require("sys.hlvm")
+
+require("sys.sugar.hlvm")
+require("sys.sugar.tiledata")
+require("sys.sugar.region")
+
+require("sys.gamelib.chamber")
 
 ProFi = require("lib.ProFi")
 ordered_table = require("lib.ordered_table")

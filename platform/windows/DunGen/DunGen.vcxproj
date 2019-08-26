@@ -32,6 +32,9 @@
     <ClInclude Include="..\..\..\src\platform\platform.h" />
     <ClInclude Include="..\..\..\src\scripting\scripting.h" />
     <ClInclude Include="..\..\..\src\stdafx.h" />
+    <ClInclude Include="..\..\..\src\ui\banner.h" />
+    <ClInclude Include="..\..\..\src\ui\choice.h" />
+    <ClInclude Include="..\..\..\src\ui\tile_choice.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\src\constraints\pathfind.c" />
@@ -51,6 +54,9 @@
       <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">TurnOffAllWarnings</WarningLevel>
       <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">TurnOffAllWarnings</WarningLevel>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\ui\banner.c" />
+    <ClCompile Include="..\..\..\src\ui\choice.c" />
+    <ClCompile Include="..\..\..\src\ui\tile_choice.c" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\src\scripting\interfaces\attributes.i" />
@@ -62,6 +68,7 @@
     <None Include="..\..\..\src\scripting\interfaces\rendering.i" />
     <None Include="..\..\..\src\scripting\interfaces\text.i" />
     <None Include="..\..\..\src\scripting\interfaces\typemaps.i" />
+    <None Include="..\..\..\src\scripting\interfaces\ui.i" />
     <None Include="..\..\..\src\scripting\interfaces\util.i" />
     <None Include="..\..\..\src\scripting\interfaces\vectors.i" />
     <None Include="..\..\..\src\scripting\interfaces\world.i" />

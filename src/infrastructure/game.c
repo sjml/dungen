@@ -7,14 +7,17 @@
 #include "world.h"
 #include "../scripting/scripting.h"
 #include "../hlvm/hlvm.h"
+#include "../ui/banner.h"
+#include "../ui/choice.h"
+#include "../ui/tile_choice.h"
 
 #define MAX_TIMESTEP      1.0
 #define TICKS_PER_CYCLE   1
 #define SECONDS_PER_CYCLE 0.0
 
-double previousTime, currentTime;
+static double previousTime, currentTime;
 
-unsigned int randomSeed;
+static unsigned int randomSeed;
 
 void InitializeGame(void) {
     randomSeed = (unsigned int)time(NULL);
@@ -37,18 +40,37 @@ double hlvmAccum = 0.0;
 int GameTick(void) {
     previousTime = currentTime;
     currentTime = glfwGetTime();
+//    printf("dt: %.4f\n", currentTime - previousTime);
     double dt = gb_clamp(currentTime - previousTime, 0.0, MAX_TIMESTEP);
 
-    hlvmAccum += dt;
-    if (hlvmAccum >= SECONDS_PER_CYCLE) {
-        hlvmAccum = 0.0;
-        int hlvmTickCount = 0;
-        while (hlvmTickCount++ < TICKS_PER_CYCLE) {
-            RunString("HLVMProcess()");
+    bool waiting = GetIntRegister("WaitForUI") != 0;
+    if (!waiting) {
+        hlvmAccum += dt;
+        if (hlvmAccum >= SECONDS_PER_CYCLE) {
+            hlvmAccum = 0.0;
+            int hlvmTickCount = 0;
+            while (hlvmTickCount++ < TICKS_PER_CYCLE) {
+                RunString("HLVMProcess()");
+            }
         }
-        RunString("ResolveStyles()");
     }
 
+    if (waiting) {
+        bool done = true;
+        if (UpdateBanners((float)dt)) {
+            done = false;
+        }
+        if (GetChoiceStatus() > 0) {
+            done = false;
+        }
+        if (GetTileChoiceStatus() > 0) {
+            done = false;
+        }
+        if (done) {
+            SetIntRegister("WaitForUI", 0);
+        }
+    }
+    
     return 0;
 }
 
@@ -57,4 +79,21 @@ double GetTime() {
 }
 
 void MouseMoveCallback(GLFWwindow* window, double xpos, double ypos) {
+    if (GetChoiceStatus() > 0) {
+        gbVec2 pos = {(float)xpos, (float)ypos};
+        ChoiceProcessMouseMovement(pos);
+    }
+    if (GetTileChoiceStatus() > 0) {
+        gbVec2 pos = {(float)xpos, (float)ypos};
+        TileChoiceProcessMouseMovement(pos);
+    }
+}
+
+void MouseClickCallback(GLFWwindow* window, int button, int action, int mods) {
+    if (GetChoiceStatus() >= 0 && button == GLFW_MOUSE_BUTTON_LEFT) {
+        ChoiceProcessMouseClick(action == GLFW_PRESS);
+    }
+    if (GetTileChoiceStatus() >= 0 && button == GLFW_MOUSE_BUTTON_LEFT) {
+        TileChoiceProcessMouseClick(action == GLFW_PRESS);
+    }
 }

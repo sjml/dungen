@@ -6,27 +6,24 @@
 #include "text.h"
 #include "outline.h"
 #include "game.h"
+#include  "../ui/banner.h"
+#include  "../ui/choice.h"
+#include  "../ui/tile_choice.h"
 
-const int windowWidth  = 1024;
-const int windowHeight = 768;
+static const int windowWidth  = 1024;
+static const int windowHeight = 768;
 
-GLFWwindow* window = NULL;
+static GLFWwindow* window = NULL;
 
-CameraData MainCamera;
-gbMat4 projectionMatrix;
-gbMat4 modelViewMatrix;
-gbMat4 perspectiveMatrix;
-gbMat4 orthoMatrix;
+static CameraData MainCamera;
+static gbMat4 projectionMatrix;
+static gbMat4 modelViewMatrix;
+static gbMat4 perspectiveMatrix;
+static gbMat4 orthoMatrix;
 
-TileSet** tileSets = NULL;
+static Region** regions = NULL;
 
-typedef struct {
-    char* text;
-    gbVec2 pos;
-    float scale;
-    gbVec4 color;
-} textInfo;
-textInfo* textInfos = NULL;
+static TextInfo* tileLabels = NULL;
 
 
 void InitializeRendering() {
@@ -50,6 +47,7 @@ void InitializeRendering() {
     glfwSwapInterval(1);
 
     glfwSetCursorPosCallback(window, MouseMoveCallback);
+    glfwSetMouseButtonCallback(window, MouseClickCallback);
 
 //    glfwSetWindowSizeCallback(Camera::ResizeCallback);
 //    glfwSetKeyCallback(keyboardInput);
@@ -112,26 +110,30 @@ void FinalizeRendering() {
     glfwTerminate();
 }
 
-void AddTileSetToRendering(TileSet* ts) {
-    arrpush(tileSets, ts);
+GLFWwindow* GetWindowHandle(void) {
+    return window;
 }
 
-void RemoveTileSetFromRendering(TileSet* ts) {
-    for (int i = 0; i < arrlen(tileSets); i++) {
-        if (tileSets[i] == ts) {
-            arrdel(tileSets, i);
+void AddRegionToRendering(Region* r) {
+    arrpush(regions, r);
+}
+
+void RemoveRegionFromRendering(Region* r) {
+    for (int i = 0; i < arrlen(regions); i++) {
+        if (regions[i] == r) {
+            arrdel(regions, i);
             return;
         }
     }
-    fprintf(stderr, "ERROR: removing TileSet that was not part of the world.\n");
+    fprintf(stderr, "ERROR: removing Region that was not part of the world.\n");
 }
 
-TileSet** GetRenderingTileSets() {
-    return tileSets;
+Region** GetRenderingRegions() {
+    return regions;
 }
 
-gbVec2 WorldToScreen(gbVec2* worldCoordinates) {
-    gbVec4 wc = {worldCoordinates->x, worldCoordinates->y, 0.0f, 1.0f};
+gbVec2 WorldToScreen(gbVec2 worldCoordinates) {
+    gbVec4 wc = {worldCoordinates.x, worldCoordinates.y, 0.0f, 1.0f};
     gbVec4 clip;
     gb_mat4_mul_vec4(&clip, &projectionMatrix, wc);
     gb_mat4_mul_vec4(&clip, &perspectiveMatrix, wc);
@@ -154,12 +156,12 @@ gbVec2 WorldToScreen(gbVec2* worldCoordinates) {
     return spos;
 }
 
-gbVec2 ScreenToWorld(gbVec2* screenCoordinates) {
+gbVec2 ScreenToWorld(gbVec2 screenCoordinates) {
     gbMat4 persp, final;
     gb_mat4_mul(&persp, &projectionMatrix, &modelViewMatrix);
     gb_mat4_inverse(&final, &persp);
     gbVec4 in = {
-        screenCoordinates->x, screenCoordinates->y, 0.0f, 1.0f
+        screenCoordinates.x, screenCoordinates.y, 0.0f, 1.0f
     };
 
     // these would properly come from the viewport function if we had one
@@ -184,25 +186,25 @@ gbVec2 ScreenToWorld(gbVec2* screenCoordinates) {
     return ret;
 }
 
-void ClearTextStrings(void) {
-    while (arrlen(textInfos) > 0) {
-        textInfo ti = arrpop(textInfos);
+void ClearTileLabels(void) {
+    while (arrlen(tileLabels) > 0) {
+        TextInfo ti = arrpop(tileLabels);
         free(ti.text);
     }
 }
 
-void AddTextString(const char* text, gbVec2* pos, float scale, gbVec4* color) {
-    textInfo ti;
+void AddTileLabel(const char* text, gbVec2 pos, float scale, gbVec4 color) {
+    TextInfo ti;
     ti.text = malloc(sizeof(char) * (strlen(text) + 1));
     strcpy(ti.text, text);
-    ti.pos.x = pos->x;
-    ti.pos.y = pos->y;
+    ti.pos.x = pos.x;
+    ti.pos.y = pos.y;
     ti.scale = scale;
-    ti.color.r = color->r;
-    ti.color.g = color->g;
-    ti.color.b = color->b;
-    ti.color.a = color->a;
-    arrpush(textInfos, ti);
+    ti.color.r = color.r;
+    ti.color.g = color.g;
+    ti.color.b = color.b;
+    ti.color.a = color.a;
+    arrpush(tileLabels, ti);
 }
 
 int Render() {
@@ -211,9 +213,9 @@ int Render() {
     glMatrixMode(GL_MODELVIEW);
     glPushMatrix();
         RenderTiles();
-        for (int i = 0; i < arrlen(tileSets); i++) {
-            if (tileSets[i]->outline != NULL) {
-                RenderOutline(tileSets[i]->outline);
+        for (int i = 0; i < arrlen(regions); i++) {
+            if (regions[i]->outline != NULL) {
+                RenderOutline(regions[i]->outline);
             }
         }
     glPopMatrix();
@@ -222,9 +224,16 @@ int Render() {
     glLoadIdentity();
     glPushMatrix();
         glMultMatrixf(orthoMatrix.e);
-        for (int i=0; i < arrlen(textInfos); i++) {
-            glColor4fv(textInfos[i].color.e);
-            DrawGameText(textInfos[i].text, "fonts/04B_03__.TTF", textInfos[i].scale, (int)textInfos[i].pos.x, (int)textInfos[i].pos.y, 0.0f);
+        for (int i=0; i < arrlen(tileLabels); i++) {
+            glColor4fv(tileLabels[i].color.e);
+            DrawGameText(tileLabels[i].text, "fonts/04B_03__.TTF", tileLabels[i].scale, (int)tileLabels[i].pos.x, (int)tileLabels[i].pos.y, 0.0f);
+        }
+        RenderBanners();
+        if (GetChoiceStatus() >= 0) {
+            RenderChoices();
+        }
+        if (GetTileChoiceStatus() >= 0) {
+            RenderTileChoice();
         }
     glMatrixMode(GL_PROJECTION);
     glPopMatrix();

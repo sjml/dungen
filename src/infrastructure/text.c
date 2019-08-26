@@ -25,8 +25,8 @@
 #define MAX_VERTS (4*128)
 #define TEXTURE_SIZE 512
 
-FT_Library ftLib;
-GLubyte* emptyTextureData = NULL;
+static FT_Library ftLib;
+static GLubyte* emptyTextureData = NULL;
 
 typedef struct {
     short x, y, h;
@@ -48,6 +48,11 @@ typedef struct {
 } Glyph;
 
 typedef struct {
+    float key;
+    Glyph value;
+} sizeMap;
+
+typedef struct {
     bool isValid;
     FT_Face* ftFace;
     // bool hasKerning;
@@ -56,10 +61,10 @@ typedef struct {
     Vec2i textureDimensions;
     gbVec2 inverseTextureDimensions;
     FontTexture** fTextures;
-    struct { unsigned int key; Glyph value; }* glyphMap;
+    struct { unsigned int key; sizeMap* value; }* glyphMap;
 } FontCacheEntry;
 
-struct { const char* key; FontCacheEntry* value; }* fontCache;
+static struct { const char* key; FontCacheEntry* value; }* fontCache;
 
 FontCacheEntry* _GetFontInfo(const char* fontPath) {
     if (shgeti(fontCache, fontPath) < 0) {
@@ -132,6 +137,14 @@ void _EndDrawing(FontCacheEntry* fce) {
 }
 
 Glyph _GetGlyph(FontCacheEntry* fce, float fontSize, unsigned int codepoint) {
+    if (hmgeti(fce->glyphMap, codepoint) >= 0) {
+        sizeMap* sm = hmget(fce->glyphMap, codepoint);
+        if (hmgeti(sm, fontSize) >= 0) {
+            return hmget(sm, fontSize);
+        }
+    }
+
+    // create and add glyph
     Glyph ret;
     ret.fontTexture = NULL;
     ret.topLeft.x = 0;
@@ -142,104 +155,104 @@ Glyph _GetGlyph(FontCacheEntry* fce, float fontSize, unsigned int codepoint) {
     ret.offset.x = 0.0f;
     ret.offset.y = 0.0f;
 
-    if (hmgeti(fce->glyphMap, codepoint) < 0) {
-        // create and add glyph
-        int error = 0;
-        error = FT_Set_Char_Size(*fce->ftFace, 0L, (FT_F26Dot6)(fontSize * 64.0f), 72, 72);
-        error = FT_Load_Glyph(*fce->ftFace, codepoint, FT_LOAD_NO_HINTING);
-        error = FT_Render_Glyph((*fce->ftFace)->glyph, FT_RENDER_MODE_NORMAL);
+    int error = 0;
+    error = FT_Set_Char_Size(*fce->ftFace, 0L, (FT_F26Dot6)(fontSize * 64.0f), 72, 72);
+    error = FT_Load_Glyph(*fce->ftFace, codepoint, FT_LOAD_NO_HINTING);
+    error = FT_Render_Glyph((*fce->ftFace)->glyph, FT_RENDER_MODE_NORMAL);
 
-        int glyphWidth  = (*fce->ftFace)->glyph->bitmap.width;
-        int glyphHeight = (*fce->ftFace)->glyph->bitmap.rows;
-        if (glyphWidth >= fce->textureDimensions.x || glyphHeight >= fce->textureDimensions.y) {
-            fprintf(stderr, "ERROR: Glyph too large for max texture size.\n");
-            return ret;
-        }
+    int glyphWidth  = (*fce->ftFace)->glyph->bitmap.width;
+    int glyphHeight = (*fce->ftFace)->glyph->bitmap.rows;
+    if (glyphWidth >= fce->textureDimensions.x || glyphHeight >= fce->textureDimensions.y) {
+        fprintf(stderr, "ERROR: Glyph too large for max texture size.\n");
+        return ret;
+    }
 
-        FontTexture* fontTex = NULL;
-        FontTextureRow* row = NULL;
-        int rowHeight = (glyphHeight+7) & ~7;
+    FontTexture* fontTex = NULL;
+    FontTextureRow* row = NULL;
+    int rowHeight = (glyphHeight+7) & ~7;
 
-        for (int texIndex = 0; texIndex < arrlen(fce->fTextures); texIndex++) {
-            fontTex = fce->fTextures[texIndex];
-            for (int rowIndex = 0; rowIndex < arrlen(fontTex->rows); rowIndex++) {
-                // can we fit in this row?
-                if (   rowHeight <= fontTex->rows[rowIndex].h
-                    && fontTex->rows[rowIndex].x + glyphWidth + 1 < fce->textureDimensions.x) {
-                    row = &fontTex->rows[rowIndex];
-                    break;
-                }
+    for (int texIndex = 0; texIndex < arrlen(fce->fTextures); texIndex++) {
+        fontTex = fce->fTextures[texIndex];
+        for (int rowIndex = 0; rowIndex < arrlen(fontTex->rows); rowIndex++) {
+            // can we fit in this row?
+            if (   rowHeight <= fontTex->rows[rowIndex].h
+                && fontTex->rows[rowIndex].x + glyphWidth + 1 < fce->textureDimensions.x) {
+                row = &fontTex->rows[rowIndex];
+                break;
             }
-
-            if (row == NULL) {
-                // haven't found a good row in this texture; do we have room for a new one?
-                int filledY = fontTex->rows[arrlen(fontTex->rows)-1].y + fontTex->rows[arrlen(fontTex->rows)-1].h;
-                if (filledY + rowHeight < fce->textureDimensions.y) {
-                    // put a row in
-                    FontTextureRow newRow;
-                    newRow.x = 0;
-                    newRow.y = filledY;
-                    newRow.h = rowHeight;
-                    arrpush(fontTex->rows, newRow);
-                    row = &fontTex->rows[arrlen(fontTex->rows)-1];
-                }
-            }
-            // still no row; maybe in the next texture
         }
 
         if (row == NULL) {
-            FontTexture* tex = calloc(1, sizeof(FontTexture));
-            glGenTextures(1, &tex->id);
-            glBindTexture(GL_TEXTURE_2D, tex->id);
-            glTexImage2D(GL_TEXTURE_2D, 0, GL_ALPHA, fce->textureDimensions.x, fce->textureDimensions.y, 0, GL_ALPHA, GL_UNSIGNED_BYTE, emptyTextureData);
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-            arrpush(fce->fTextures, tex);
-
-            fontTex = fce->fTextures[arrlen(fce->fTextures)-1];
-
-            // put a row in
-            FontTextureRow newRow;
-            newRow.x = 0;
-            newRow.y = 0;
-            newRow.h = rowHeight;
-            arrpush(fontTex->rows, newRow);
-            row = &fontTex->rows[arrlen(fontTex->rows)-1];
+            // haven't found a good row in this texture; do we have room for a new one?
+            int filledY = fontTex->rows[arrlen(fontTex->rows)-1].y + fontTex->rows[arrlen(fontTex->rows)-1].h;
+            if (filledY + rowHeight < fce->textureDimensions.y) {
+                // put a row in
+                FontTextureRow newRow;
+                newRow.x = 0;
+                newRow.y = filledY;
+                newRow.h = rowHeight;
+                arrpush(fontTex->rows, newRow);
+                row = &fontTex->rows[arrlen(fontTex->rows)-1];
+            }
         }
-
-        ret.fontTexture = fontTex;
-        ret.topLeft.x = row->x;
-        ret.topLeft.y = row->y;
-        ret.bottomRight.x = row->x + glyphWidth;
-        ret.bottomRight.y = row->y + glyphHeight;
-        ret.advance = (float)(*fce->ftFace)->glyph->advance.x / 64.0f;
-        ret.offset.x = (float)(*fce->ftFace)->glyph->bitmap_left;
-        ret.offset.y = (float)(*fce->ftFace)->glyph->bitmap_top;
-
-        row->x += glyphWidth + 1;
-
-        if (glyphWidth && glyphHeight) {
-            glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-            glBindTexture(GL_TEXTURE_2D, fontTex->id);
-            glTexSubImage2D(
-                GL_TEXTURE_2D,
-                0,
-                ret.topLeft.x,
-                ret.topLeft.y,
-                glyphWidth,
-                glyphHeight,
-                GL_ALPHA,
-                GL_UNSIGNED_BYTE,
-                (*fce->ftFace)->glyph->bitmap.buffer
-            );
-        }
-
-        hmput(fce->glyphMap, codepoint, ret);
-        return ret;
+        // still no row; maybe in the next texture
     }
-    else {
-        return hmget(fce->glyphMap, codepoint);
+
+    if (row == NULL) {
+        FontTexture* tex = calloc(1, sizeof(FontTexture));
+        glGenTextures(1, &tex->id);
+        glBindTexture(GL_TEXTURE_2D, tex->id);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_ALPHA, fce->textureDimensions.x, fce->textureDimensions.y, 0, GL_ALPHA, GL_UNSIGNED_BYTE, emptyTextureData);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        arrpush(fce->fTextures, tex);
+
+        fontTex = fce->fTextures[arrlen(fce->fTextures)-1];
+
+        // put a row in
+        FontTextureRow newRow;
+        newRow.x = 0;
+        newRow.y = 0;
+        newRow.h = rowHeight;
+        arrpush(fontTex->rows, newRow);
+        row = &fontTex->rows[arrlen(fontTex->rows)-1];
     }
+
+    ret.fontTexture = fontTex;
+    ret.topLeft.x = row->x;
+    ret.topLeft.y = row->y;
+    ret.bottomRight.x = row->x + glyphWidth;
+    ret.bottomRight.y = row->y + glyphHeight;
+    ret.advance = (float)(*fce->ftFace)->glyph->advance.x / 64.0f;
+    ret.offset.x = (float)(*fce->ftFace)->glyph->bitmap_left;
+    ret.offset.y = (float)(*fce->ftFace)->glyph->bitmap_top;
+
+    row->x += glyphWidth + 1;
+
+    if (glyphWidth && glyphHeight) {
+        glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+        glBindTexture(GL_TEXTURE_2D, fontTex->id);
+        glTexSubImage2D(
+            GL_TEXTURE_2D,
+            0,
+            ret.topLeft.x,
+            ret.topLeft.y,
+            glyphWidth,
+            glyphHeight,
+            GL_ALPHA,
+            GL_UNSIGNED_BYTE,
+            (*fce->ftFace)->glyph->bitmap.buffer
+        );
+    }
+
+    if (hmgeti(fce->glyphMap, codepoint) < 0) {
+        hmput(fce->glyphMap, codepoint, NULL);
+    }
+    sizeMap* sm = hmget(fce->glyphMap, codepoint);
+    hmput(sm, fontSize, ret);
+    hmput(fce->glyphMap, codepoint, sm);
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -412,7 +425,7 @@ float DrawGameText(const char* text, const char* fontPath, float size, int pixel
     glMatrixMode(GL_MODELVIEW);
     glPushMatrix();
     glLoadIdentity();
-    glTranslatef((GLfloat)pixelX, 768 - (GLfloat)pixelY, 0.0f);
+    glTranslatef((GLfloat)pixelX, 768.0f - (GLfloat)pixelY, 0.0f);
     glRotatef(angle, 0.0f, 0.0f, 1.0f);
     glEnable(GL_TEXTURE_2D);
 
@@ -463,4 +476,14 @@ float GetTextAscenderHeight(const char* fontPath, float size) {
 
     FT_Set_Char_Size(*fce->ftFace, 0L, (FT_F26Dot6)(size * 64.0f), 72, 72);
     return (*fce->ftFace)->size->metrics.ascender / 64.0f;
+}
+
+float GetTextDescenderHeight(const char* fontPath, float size) {
+    FontCacheEntry* fce = _GetFontInfo(fontPath);
+    if (!fce->isValid) {
+        return 0.0f;
+    }
+    
+    FT_Set_Char_Size(*fce->ftFace, 0L, (FT_F26Dot6)(size * 64.0f), 72, 72);
+    return (*fce->ftFace)->size->metrics.descender / 64.0f;
 }

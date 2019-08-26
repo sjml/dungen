@@ -84,16 +84,22 @@ function push(simName)
 end
 
 function HLVMProcess()
-  if #simStack == 0 then return end
+  local intitialDepth = #simStack
+  if intitialDepth == 0 then return end
 
   local success, error = coroutine.resume(simStack[#simStack])
   if not success then
     io.stderr:write("LUA ERROR: " .. error .. "; HLVM popping.\n")
+    io.stderr:write("\t" .. debug.traceback(simStack[#simStack]) .. "\n")
     table.remove(simStack)
     return
   end
 
   if coroutine.status(simStack[#simStack]) == "dead" then
     table.remove(simStack)
+  end
+
+  if #simStack ~= intitialDepth then
+    ResolveStyles()
   end
 end

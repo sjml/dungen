@@ -1,4 +1,11 @@
 local colors = { -- R      G      B
+  RED =          { 1.0 ,  0.0 ,  0.0  },
+  YELLOW =       { 1.0 ,  1.0 ,  0.0  },
+  MAGENTA =      { 1.0 ,  1.0 ,  0.0  },
+  CYAN =         { 0.0 ,  1.0 ,  1.0  },
+  BLACK =        { 0.0 ,  0.0 ,  0.0  },
+  WHITE =        { 1.0 ,  1.0 ,  1.0  },
+
   openCave =     { 0.7 ,  0.7 ,  0.7  },
   sky =          { 0.38,  0.82,  1.0  },
   monster =      { 0.0 ,  0.35,  0.2  },
@@ -28,9 +35,62 @@ groundBase = {
   tileFill = {colorTable, "GroundColors", "depth"}
 }
 
+openCave = {
+  reqs = {
+    tags = "ground",
+    attributes = {
+      {"open", Equal, 1}
+    }
+  },
+  tileFill = colors.openCave
+}
+
 mithral = {
   reqs = {
     tags = "mithral"
   },
-  tileFill = colors.mithral
+  tileFill = colors.mithral,
+  -- labelText = "Mithral"
+}
+
+water = {
+  reqs = {
+    tags = "ground, water"
+  },
+  tileFill = colors.water,
+}
+
+magma = {
+  reqs = {
+    tags = "ground, magma"
+  },
+  tileFill = colors.magma,
+}
+
+plague = {
+  reqs = {
+    tags = "ground, plague"
+  },
+  tileFill = colors.plague,
+}
+
+gems = {
+  reqs = {
+    tags = "ground, gems"
+  },
+  tileFill = colors.gems,
+}
+
+monster = {
+  reqs = {
+    tags = "ground, monster"
+  },
+  tileFill = colors.monster,
+}
+
+FATE = {
+  reqs = {
+    tags = "ground, FATE"
+  },
+  tileFill = colors.FATE,
 }

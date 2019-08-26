@@ -59,6 +59,8 @@
 		341F12F222D200BC009C844F /* posix_thread.c in Sources */ = {isa = PBXBuildFile; fileRef = 341F12F122D200BC009C844F /* posix_thread.c */; };
 		341F12F522D20196009C844F /* osmesa_context.c in Sources */ = {isa = PBXBuildFile; fileRef = 341F12F322D20196009C844F /* osmesa_context.c */; };
 		341F12F622D20196009C844F /* egl_context.c in Sources */ = {isa = PBXBuildFile; fileRef = 341F12F422D20196009C844F /* egl_context.c */; };
+		3421A23B2311792300459647 /* banner.c in Sources */ = {isa = PBXBuildFile; fileRef = 3421A23A2311792300459647 /* banner.c */; };
+		3421A23F2311AFF100459647 /* choice.c in Sources */ = {isa = PBXBuildFile; fileRef = 3421A23E2311AFF100459647 /* choice.c */; };
 		342E3B11231041A6008AD361 /* macOS.c in Sources */ = {isa = PBXBuildFile; fileRef = 342E3B0E231041A6008AD361 /* macOS.c */; };
 		344C39E51EC4E0B2007F9466 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 344C39E41EC4E0B2007F9466 /* Assets.xcassets */; };
 		3455A6B41EC4DB8F000057E4 /* libglfw.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3455A6961EC4DA71000057E4 /* libglfw.a */; };
@@ -126,6 +128,7 @@
 		34DB950422EC38950066EC6A /* psnames.c in Sources */ = {isa = PBXBuildFile; fileRef = 34DB94FA22EC38950066EC6A /* psnames.c */; };
 		34DB950722EC3A350066EC6A /* libfreetype.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 34DB94B222EC370B0066EC6A /* libfreetype.a */; };
 		34DB950922EC3DBB0066EC6A /* ftdebug.c in Sources */ = {isa = PBXBuildFile; fileRef = 34DB950822EC3DBB0066EC6A /* ftdebug.c */; };
+		34F3478323129A93008B19FB /* tile_choice.c in Sources */ = {isa = PBXBuildFile; fileRef = 34F3478223129A93008B19FB /* tile_choice.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -231,6 +234,11 @@
 		341F12F122D200BC009C844F /* posix_thread.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = posix_thread.c; path = "lib/glfw-3.3.0/src/posix_thread.c"; sourceTree = "<group>"; };
 		341F12F322D20196009C844F /* osmesa_context.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = osmesa_context.c; path = "lib/glfw-3.3.0/src/osmesa_context.c"; sourceTree = "<group>"; };
 		341F12F422D20196009C844F /* egl_context.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = egl_context.c; path = "lib/glfw-3.3.0/src/egl_context.c"; sourceTree = "<group>"; };
+		3421A2392311792300459647 /* banner.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = banner.h; sourceTree = "<group>"; };
+		3421A23A2311792300459647 /* banner.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = banner.c; sourceTree = "<group>"; };
+		3421A23C2311932300459647 /* ui.i */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c.preprocessed; path = ui.i; sourceTree = "<group>"; };
+		3421A23D2311AFF100459647 /* choice.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = choice.h; sourceTree = "<group>"; };
+		3421A23E2311AFF100459647 /* choice.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = choice.c; sourceTree = "<group>"; };
 		3424314522D7B51E00FC9FBE /* hlvm.i */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c.preprocessed; path = hlvm.i; sourceTree = "<group>"; };
 		342E3B0E231041A6008AD361 /* macOS.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = macOS.c; sourceTree = "<group>"; };
 		342E3B10231041A6008AD361 /* platform.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = platform.h; sourceTree = "<group>"; };
@@ -322,6 +330,8 @@
 		34DB94FA22EC38950066EC6A /* psnames.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = psnames.c; path = "lib/freetype-2.10.1/src/psnames/psnames.c"; sourceTree = "<group>"; };
 		34DB950822EC3DBB0066EC6A /* ftdebug.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = ftdebug.c; path = "lib/freetype-2.10.1/src/base/ftdebug.c"; sourceTree = "<group>"; };
 		34DB950A22EC9B990066EC6A /* text.i */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c.preprocessed; path = text.i; sourceTree = "<group>"; };
+		34F3478123129A93008B19FB /* tile_choice.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = tile_choice.h; sourceTree = "<group>"; };
+		34F3478223129A93008B19FB /* tile_choice.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = tile_choice.c; sourceTree = "<group>"; };
 		34FE0B6522E30AEC007A1271 /* game.i */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c.preprocessed; path = game.i; sourceTree = "<group>"; };
 		34FEFE6422ECF6AF00266420 /* util.i */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c.preprocessed; path = util.i; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -452,6 +462,19 @@
 			name = lua;
 			sourceTree = "<group>";
 		};
+		3421A238231178FB00459647 /* ui */ = {
+			isa = PBXGroup;
+			children = (
+				3421A2392311792300459647 /* banner.h */,
+				3421A23A2311792300459647 /* banner.c */,
+				3421A23D2311AFF100459647 /* choice.h */,
+				3421A23E2311AFF100459647 /* choice.c */,
+				34F3478123129A93008B19FB /* tile_choice.h */,
+				34F3478223129A93008B19FB /* tile_choice.c */,
+			);
+			path = ui;
+			sourceTree = "<group>";
+		};
 		342E3B0D231041A5008AD361 /* platform */ = {
 			isa = PBXGroup;
 			children = (
@@ -561,6 +584,7 @@
 				345E93B022EB2AC1006FD334 /* constraints */,
 				340B5D1022D221CB00E53DCA /* scripting */,
 				347A941922D1B868002BF97F /* infrastructure */,
+				3421A238231178FB00459647 /* ui */,
 				342E3B0D231041A5008AD361 /* platform */,
 			);
 			path = src;
@@ -604,6 +628,7 @@
 				344B44F922EB931400A27ADF /* pathfind.i */,
 				34DB950A22EC9B990066EC6A /* text.i */,
 				34FEFE6422ECF6AF00266420 /* util.i */,
+				3421A23C2311932300459647 /* ui.i */,
 			);
 			path = interfaces;
 			sourceTree = "<group>";
@@ -800,7 +825,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 349C53E41EC4D6B9008D42C6 /* Build configuration list for PBXNativeTarget "DunGen" */;
 			buildPhases = (
-				3424314622D7B56B00FC9FBE /* Generate SWIG Wrappings */,
+				3424314622D7B56B00FC9FBE /* Try to Generate SWIG Wrappings */,
 				349C53AE1EC4D6B9008D42C6 /* Sources */,
 				349C53AF1EC4D6B9008D42C6 /* Frameworks */,
 				349C53B01EC4D6B9008D42C6 /* Resources */,
@@ -973,7 +998,7 @@
 			shellPath = /bin/sh;
 			shellScript = "cp -R ${PROJECT_DIR}/scripts ${CONFIGURATION_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}\ncp -R ${PROJECT_DIR}/images ${CONFIGURATION_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}\ncp -R ${PROJECT_DIR}/fonts ${CONFIGURATION_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}\n";
 		};
-		3424314622D7B56B00FC9FBE /* Generate SWIG Wrappings */ = {
+		3424314622D7B56B00FC9FBE /* Try to Generate SWIG Wrappings */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -982,14 +1007,14 @@
 			);
 			inputPaths = (
 			);
-			name = "Generate SWIG Wrappings";
+			name = "Try to Generate SWIG Wrappings";
 			outputFileListPaths = (
 			);
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "swig -lua -Werror -o ${PROJECT_DIR}/src/scripting/wrapping.c ${PROJECT_DIR}/src/scripting/interfaces/dungen.i\n";
+			shellScript = "type swig >/dev/null 2>&1 || exit 0\n\nswig -lua -Werror -o ${PROJECT_DIR}/src/scripting/wrapping.c ${PROJECT_DIR}/src/scripting/interfaces/dungen.i\n";
 			showEnvVarsInLog = 0;
 		};
 		34279F6122DA28F100B825D0 /* Copy .app to build directory */ = {
@@ -1008,7 +1033,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if [ -n \"${BUILD_ARTIFACTSTAGINGDIRECTORY}\" ]; \nthen\n    # Building on an Azure pipeline\n    cp -R \"${BUILT_PRODUCTS_DIR}/${FULL_PRODUCT_NAME}\" \"${BUILD_ARTIFACTSTAGINGDIRECTORY}\"\nelif [ \"${BUILT_PRODUCTS_DIR}/${FULL_PRODUCT_NAME}\" != \"${PROJECT_DIR}/build/${CONFIGURATION}/${FULL_PRODUCT_NAME}\" ];\nthen\n    # Building on a Mac as part of normal Xcode build (non-CLI)\n    mkdir -p \"${PROJECT_DIR}/build/${CONFIGURATION}\"\n    rm -rf \"${PROJECT_DIR}/build/${CONFIGURATION}/${FULL_PRODUCT_NAME}\"\n    cp -r \"${BUILT_PRODUCTS_DIR}/${FULL_PRODUCT_NAME}\" \"${PROJECT_DIR}/build/${CONFIGURATION}\"\nfi\n";
+			shellScript = "buildProduct=\"${BUILT_PRODUCTS_DIR}/${FULL_PRODUCT_NAME}\"\noutputDir=\"${PROJECT_DIR}/build/${CONFIGURATION}\"\noutputProduct=\"$outputDir/${FULL_PRODUCT_NAME}\"\n\nif [ $buildProduct != $outputProduct ]; then\n    mkdir -p $outputDir\n    rm -rf $outputProduct\n    cp -r $buildProduct $outputDir\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -1096,6 +1121,7 @@
 				347A941F22D1BE74002BF97F /* util.c in Sources */,
 				345E93B322EB2AE4006FD334 /* pathfind.c in Sources */,
 				3482A55822D61C6700AAD098 /* wrapping.c in Sources */,
+				3421A23F2311AFF100459647 /* choice.c in Sources */,
 				342E3B11231041A6008AD361 /* macOS.c in Sources */,
 				347A941722D1B85F002BF97F /* rendering.c in Sources */,
 				34CD649A22D9DE3B00C33190 /* attributes.c in Sources */,
@@ -1104,6 +1130,8 @@
 				340A323422DFB74600685193 /* text.c in Sources */,
 				3482A56222D63C4F00AAD098 /* hlvm.c in Sources */,
 				347A941822D1B85F002BF97F /* main.c in Sources */,
+				3421A23B2311792300459647 /* banner.c in Sources */,
+				34F3478323129A93008B19FB /* tile_choice.c in Sources */,
 				3466A4B622D4D71B00ED6CAA /* images.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1223,6 +1251,11 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				EXECUTABLE_PREFIX = lib;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					LUA_USE_DLOPEN,
+					"$(inherited)",
+				);
 				GCC_WARN_INHIBIT_ALL_WARNINGS = YES;
 				HEADER_SEARCH_PATHS = "lib/lua-5.3.5/src";
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;

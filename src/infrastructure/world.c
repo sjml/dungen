@@ -6,7 +6,7 @@
 #include "rendering.h"
 #include "util.h"
 
-const float hexVertices[] = {
+static const float hexVertices[] = {
     0.0f,               0.0f,
     0.5f * -0.8660254f, 0.5f *  0.5f,
     0.5f * -0.8660254f, 0.5f * -0.5f,
@@ -30,17 +30,18 @@ const float hexVertices[] = {
 
 
 
-TileData* WorldArray = NULL;
-gbVec2** PointList = NULL;
+static TileData* WorldArray = NULL;
+static TileNEWSet* dirtyTiles = NULL;
+static gbVec2** PointList = NULL;
 
-float tileSize;
-gbVec2 tileDimensions;
-gbVec2 worldSize;
-Vec2i tileSetSize;
+static float tileSize;
+static gbVec2 tileDimensions;
+static gbVec2 worldSize;
+static Vec2i tileWorldSize;
 
 void InitializeWorld(int width, int height, float scale) {
-    tileSetSize.x = width;
-    tileSetSize.y = height;
+    tileWorldSize.x = width;
+    tileWorldSize.y = height;
 
     tileSize = scale;
     tileDimensions.y = 2.0f * scale;
@@ -90,12 +91,16 @@ void InitializeWorld(int width, int height, float scale) {
         for (int i = 0; i < width; i++) {
             TileData* td = &WorldArray[j*width + i];
             td->i = j*width + i;
-            td->memberSets = NULL;
+            td->memberRegions = NULL;
             td->hexPos.x = i;
             td->hexPos.y = j;
             td->color.r = RandomRangeFloat(0.0f, 1.0f); // 0.0f;
             td->color.g = RandomRangeFloat(0.0f, 1.0f); // 0.0f;
             td->color.b = RandomRangeFloat(0.0f, 1.0f); // 0.0f;
+            td->overlayColor.r = 0.0f;
+            td->overlayColor.g = 0.0f;
+            td->overlayColor.b = 0.0f;
+            td->overlayColor.a = 0.0f;
 
             modVector.x = tileDimensions.x * i;
             modVector.y = -((tileDimensions.y - (tileSize * 0.5f)) * j);
@@ -149,7 +154,7 @@ void InitializeWorld(int width, int height, float scale) {
 long GetTileDistance(TileData* t1, TileData* t2) {
     long dx = abs(t1->hexPos.x - t2->hexPos.x);
     long dy = abs(t1->hexPos.y - t2->hexPos.y);
-    
+
     return dx + dy;
 }
 
@@ -162,7 +167,7 @@ void FinalizeWorld() {
 }
 
 Vec2i GetWorldDimensions() {
-    Vec2i dim = {tileSetSize.x, tileSetSize.y};
+    Vec2i dim = {tileWorldSize.x, tileWorldSize.y};
     return dim;
 }
 
@@ -176,22 +181,48 @@ gbVec2** GetWorldPointList() {
 
 TileData** GetAllTiles() {
     TileData** ret = NULL;
-    for (int i=0; i < arrlen(WorldArray); i++) {
+    // arrsetlen(ret, arrlen(WorldArray));
+    for (long long i=0; i < arrlen(WorldArray); i++) {
         arrpush(ret, &WorldArray[i]);
     }
     return ret;
 }
 
+void SetTileAsDirty(TileData* td) {
+    dirtyTiles = AddTileToSet(dirtyTiles, td);
+}
+
+TileData** GetDirtyTiles(void) {
+    return GetTilesFromSet(dirtyTiles);
+}
+
+void CleanAllTiles(void) {
+    hmfree(dirtyTiles);
+    dirtyTiles = NULL;
+}
+
+TileNEWSet* IntersectTileSets(TileNEWSet* set1, TileNEWSet* set2) {
+    TileNEWSet* ret = NULL;
+
+    for (long i=0; i < hmlen(set1); i++) {
+        if (IsTileInSet(set2, set1[i].key)) {
+            ret = AddTileToSet(ret, set1[i].key);
+        }
+    }
+
+    return ret;
+}
+
 TileData* GetTileAtPosition(int x, int y) {
-    if (x < 0 || x >= tileSetSize.x) {
+    if (x < 0 || x >= tileWorldSize.x) {
         fprintf(stderr, "Invalid tile x index: %d\n", x);
         return NULL;
     }
-    if (y < 0 || y >= tileSetSize.x) {
+    if (y < 0 || y >= tileWorldSize.x) {
         fprintf(stderr, "Invalid tile y index: %d\n", y);
         return NULL;
     }
-    return &WorldArray[y*tileSetSize.x + x];
+    return &WorldArray[y*tileWorldSize.x + x];
 }
 
 TileData* GetTileAtIndex(long long i) {
@@ -266,7 +297,7 @@ TileData* ScreenToTile(gbVec2* screenCoordinates) {
         }
     }
 
-    if (hexCoord.x < 0 || hexCoord.x >= tileSetSize.x || hexCoord.y < 0 || hexCoord.y >= tileSetSize.y) {
+    if (hexCoord.x < 0 || hexCoord.x >= tileWorldSize.x || hexCoord.y < 0 || hexCoord.y >= tileWorldSize.y) {
         return NULL;
     }
 
@@ -300,95 +331,109 @@ TileData** GetTileNeighbors(TileData* center, int *numNeighbors) {
 void RenderTiles(void) {
     glVertexPointer(2, GL_FLOAT, 0, hexVertices);
 
-    for (int j = 0; j < tileSetSize.y; j++) {
-        for (int i = 0; i < tileSetSize.x; i++) {
-            glPushMatrix();
-                glTranslatef(
-                             WorldArray[j*tileSetSize.x + i].worldPos.x,
-                             WorldArray[j*tileSetSize.x + i].worldPos.y,
-                             0.0f
-                );
-                glScalef(tileDimensions.y, tileDimensions.y, 1.0f);
-                glColor3fv(WorldArray[j*tileSetSize.x + i].color.e);
-                glDrawArrays(GL_TRIANGLE_FAN, 0, 8);
-            glPopMatrix();
+    for (long long i = 0; i < arrlen(WorldArray); i++) {
+        glPushMatrix();
+        glTranslatef(
+            WorldArray[i].worldPos.x,
+            WorldArray[i].worldPos.y,
+            0.0f
+        );
+        glScalef(tileDimensions.y, tileDimensions.y, 1.0f);
+        glColor3fv(WorldArray[i].color.e);
+        glDrawArrays(GL_TRIANGLE_FAN, 0, 8);
+        if (WorldArray[i].overlayColor.a > 0.0f) {
+            glColor4fv(WorldArray[i].overlayColor.e);
+            glDrawArrays(GL_TRIANGLE_FAN, 0, 8);
         }
+        glPopMatrix();
     }
 }
 
-TileSet* CreateTileSet() {
-    TileSet* ts = malloc(sizeof(TileSet));
-    ts->tiles = NULL;
-    ts->outline = NULL;
-    AddTileSetToRendering(ts);
-    ts->i = SetupTileSetAttributeData(ts);
-    return ts;
+Region* CreateRegion() {
+    Region* r = malloc(sizeof(Region));
+    r->tiles = NULL;
+    r->outline = NULL;
+    AddRegionToRendering(r);
+    r->i = SetupRegionAttributeData(r);
+    return r;
 }
 
-void DestroyTileSet(TileSet* ts) {
-    ClearTileSetAttributeData(ts);
-    RemoveTileSetFromRendering(ts);
-    if (ts->outline != NULL) {
-        DestroyOutline(ts->outline);
+void DestroyRegion(Region* r) {
+    ClearRegionAttributeData(r);
+    RemoveRegionFromRendering(r);
+    if (r->outline != NULL) {
+        DestroyOutline(r->outline);
     }
-    for (int i = 0; i < hmlen(ts->tiles); i++) {
-        RemoveTileFromSet(ts, ts->tiles[i].key);
+    for (int i = 0; i < hmlen(r->tiles); i++) {
+        RemoveTileFromRegion(r, r->tiles[i].key);
     }
-    hmfree(ts->tiles);
-    free(ts);
+    hmfree(r->tiles);
+    free(r);
 }
 
-int AddTileToSet(TileSet* ts, TileData* t) {
-    long len = hmlen(ts->tiles);
-    hmput(ts->tiles, t, 1);
-    if (len != hmlen(ts->tiles)) {
-        arrpush(t->memberSets, ts);
+void AddTileToRegion(Region* r, TileData* t) {
+    long len = hmlen(r->tiles);
+    r->tiles = AddTileToSet(r->tiles, t);
+    if (len != hmlen(r->tiles)) {
+        arrpush(t->memberRegions, r);
     }
-    return (int)hmlen(ts);
 }
 
-int RemoveTileFromSet(TileSet* ts, TileData* t) {
-    hmdel(ts->tiles, t);
-    for (int i = 0; i < arrlen(t->memberSets); i++) {
-        if (t->memberSets[i] == ts) {
-            arrdel(t->memberSets, i);
+void RemoveTileFromRegion(Region* r, TileData* t) {
+    r->tiles = RemoveTileFromSet(r->tiles, t);
+    for (long i=0; i < arrlen(t->memberRegions); i++) {
+        if (t->memberRegions[i] == r) {
+            arrdel(t->memberRegions, i);
             break;
         }
     }
-    return (int)hmlen(ts);
 }
 
-bool IsTileInSet(TileSet* ts, TileData* t) {
-    return hmgeti(ts->tiles, t) >= 0;
+void DestroyTileSet(TileNEWSet* ts) {
+    hmfree(ts);
 }
 
-int GetTileCount(TileSet* ts) {
-    return (int)hmlen(ts->tiles);
+TileNEWSet* AddTileToSet(TileNEWSet* ts, TileData* t) {
+    hmput(ts, t, 1);
+    return ts;
 }
 
-TileData** GetTiles(TileSet* ts) {
+TileNEWSet* RemoveTileFromSet(TileNEWSet* ts, TileData* t) {
+    hmdel(ts, t);
+    return ts;
+}
+
+bool IsTileInSet(TileNEWSet* ts, TileData* t) {
+    return hmgeti(ts, t) >= 0;
+}
+
+long GetTileSetCount(TileNEWSet* ts) {
+    return hmlen(ts);
+}
+
+TileData** GetTilesFromSet(TileNEWSet* ts) {
     TileData** ret = NULL;
-    arrsetlen(ret, (unsigned int)hmlen(ts->tiles));
-    for (int i=0; i < hmlen(ts->tiles); i++) {
-        ret[i] = ts->tiles[i].key;
+    arrsetlen(ret, (unsigned int)hmlen(ts));
+    for (int i=0; i < hmlen(ts); i++) {
+        ret[i] = ts[i].key;
     }
 
     return ret;
 }
 
-void SetTileSetOutline(TileSet* ts, gbVec4* color, float thickness) {
-    if (ts->outline == NULL) {
-        ts->outline = CreateOutline(ts, thickness);
+void SetRegionOutline(Region* r, gbVec4 color, float thickness) {
+    if (r->outline == NULL) {
+        r->outline = CreateOutline(r->tiles, thickness);
     }
-    ts->outline->color.r = color->r;
-    ts->outline->color.g = color->g;
-    ts->outline->color.b = color->b;
-    ts->outline->color.a = color->a;
+    r->outline->color.r = color.r;
+    r->outline->color.g = color.g;
+    r->outline->color.b = color.b;
+    r->outline->color.a = color.a;
 }
 
-void ClearTileSetOutline(TileSet* ts) {
-    if (ts->outline != NULL) {
-        DestroyOutline(ts->outline);
-        ts->outline = NULL;
+void ClearRegionOutline(Region* r) {
+    if (r->outline != NULL) {
+        DestroyOutline(r->outline);
+        r->outline = NULL;
     }
 }

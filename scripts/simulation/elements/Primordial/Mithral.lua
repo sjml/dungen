@@ -1,6 +1,6 @@
-local padding = 2
+padding = 2
 
-local mithralConstraints = {
+mithralConstraints = {
   InTileRange(
     {padding, gir("GroundLine") + padding},
     {gir("TileWidth") - padding, gir("TileHeight") - padding}
@@ -8,10 +8,10 @@ local mithralConstraints = {
   HasAllTags("ground"),
   HasAttributes("open", Equal, 0),
 }
-local mithralSolver = ConstraintSolver(mithralConstraints)
+mithralSolver = ConstraintSolver(mithralConstraints)
 mithralSolver:Solve()
 
-local base = mithralSolver.pickedTile
+base = mithralSolver.pickedTile
 base:AddTag("mithral")
 
 if (base.hexPos.y > (gir("GroundHeight") / 2)) then
