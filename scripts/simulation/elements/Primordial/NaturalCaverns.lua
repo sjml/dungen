@@ -34,8 +34,6 @@ while (cavernCount < maxCaverns) do
   push("System.DieRoll")
   local result = gir("DieRollResult")
 
-  result = 8
-
   if (result == 1) then
     -- tunnel
     local tunnel = base:BuildPath({WEST, WEST, EAST, EAST, EAST, EAST})
