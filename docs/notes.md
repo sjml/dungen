@@ -1,6 +1,10 @@
 ## TODO
 1. Relaxable constraint sets
     - first optimize constraint solver -- currently the cavern finder takes nearly a full second
+        - fix gettagged, etc. so they return sets
+        - rewrite constraint solver to use TileNEWSets
+        - rename TileNEWSet to TileSet
+        - remove lua set lib files
 2. random tiles and die rolls in Lua with optional player overrides
 3. Primordial Age
     - image output / movie (can be manual for now)
