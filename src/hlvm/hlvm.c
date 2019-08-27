@@ -7,7 +7,7 @@ static struct { char* key; int value; } *intRegisters = NULL;
 static struct { char* key; float value; } *floatRegisters = NULL;
 static struct { char* key; char* value; } *stringRegisters = NULL;
 static struct { char* key; TileData* value; } *tileRegisters = NULL;
-static struct { char* key; TileNEWSet* value; } *tileSetRegisters = NULL;
+static struct { char* key; TileSet* value; } *tileSetRegisters = NULL;
 
 
 void InitializeHLVM() {
@@ -34,7 +34,7 @@ TileData* GetTileRegister(const char* key) {
     return shget(tileRegisters, key);
 }
 
-TileNEWSet* GetTileSetRegister(const char* key) {
+TileSet* GetTileSetRegister(const char* key) {
     return shget(tileSetRegisters, key);
 }
 
@@ -54,6 +54,6 @@ void SetTileRegister(const char* key, TileData* value) {
     shput(tileRegisters, key, value);
 }
 
-void SetTileSetRegister(const char* key, TileNEWSet* value)  {
+void SetTileSetRegister(const char* key, TileSet* value)  {
     shput(tileSetRegisters, key, value);
 }

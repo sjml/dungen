@@ -31,7 +31,7 @@ static const float hexVertices[] = {
 
 
 static TileData* WorldArray = NULL;
-static TileNEWSet* dirtyTiles = NULL;
+static TileSet* dirtyTiles = NULL;
 static gbVec2** PointList = NULL;
 
 static float tileSize;
@@ -201,8 +201,8 @@ void CleanAllTiles(void) {
     dirtyTiles = NULL;
 }
 
-TileNEWSet* IntersectTileSets(TileNEWSet* set1, TileNEWSet* set2) {
-    TileNEWSet* ret = NULL;
+TileSet* IntersectTileSets(TileSet* set1, TileSet* set2) {
+    TileSet* ret = NULL;
 
     for (long i=0; i < hmlen(set1); i++) {
         if (IsTileInSet(set2, set1[i].key)) {
@@ -389,29 +389,29 @@ void RemoveTileFromRegion(Region* r, TileData* t) {
     }
 }
 
-void DestroyTileSet(TileNEWSet* ts) {
+void DestroyTileSet(TileSet* ts) {
     hmfree(ts);
 }
 
-TileNEWSet* AddTileToSet(TileNEWSet* ts, TileData* t) {
+TileSet* AddTileToSet(TileSet* ts, TileData* t) {
     hmput(ts, t, 1);
     return ts;
 }
 
-TileNEWSet* RemoveTileFromSet(TileNEWSet* ts, TileData* t) {
+TileSet* RemoveTileFromSet(TileSet* ts, TileData* t) {
     hmdel(ts, t);
     return ts;
 }
 
-bool IsTileInSet(TileNEWSet* ts, TileData* t) {
+bool IsTileInSet(TileSet* ts, TileData* t) {
     return hmgeti(ts, t) >= 0;
 }
 
-long GetTileSetCount(TileNEWSet* ts) {
+long GetTileSetCount(TileSet* ts) {
     return hmlen(ts);
 }
 
-TileData** GetTilesFromSet(TileNEWSet* ts) {
+TileData** GetTilesFromSet(TileSet* ts) {
     TileData** ret = NULL;
     arrsetlen(ret, (unsigned int)hmlen(ts));
     for (int i=0; i < hmlen(ts); i++) {

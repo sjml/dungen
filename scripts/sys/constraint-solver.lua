@@ -196,7 +196,7 @@ function ConstraintSolver:Solve(debug)
   end
 
   local tList = tiles:toList()
-  self.pickedTileSet = TileNEWSet()
+  self.pickedTileSet = TileSet()
   for _, t in ipairs(tList) do
     self.pickedTileSet = AddTileToSet(self.pickedTileSet, t)
   end

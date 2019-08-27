@@ -25,7 +25,7 @@ typedef struct {
 %nodefaultdtor sRegion;
 typedef struct sRegion {
     long long i;
-    TileNEWSet* tiles;
+    TileSet* tiles;
 } Region;
 
 %extend sRegion {
@@ -34,11 +34,11 @@ typedef struct sRegion {
     }
 }
 
-%nodefaultctor sTileNewSet;
-%nodefaultctor sTileNewSet;
-typedef struct sTileNEWSet {} TileNEWSet;
-%extend sTileNEWSet {
-    sTileNEWSet() {
+%nodefaultctor sTileSet;
+%nodefaultctor sTileSet;
+typedef struct sTileSet {} TileSet;
+%extend sTileSet {
+    sTileSet() {
         return NULL;
     }
 }
@@ -61,10 +61,10 @@ void ClearRegionOutline(Region* r);
 void AddTileToRegion(Region* r, TileData* t);
 void RemoveTileFromRegion(Region* r, TileData* t);
 
-void DestroyTileSet(TileNEWSet* ts);
-TileNEWSet* AddTileToSet(TileNEWSet* ts, TileData* t);
-TileNEWSet* RemoveTileFromSet(TileNEWSet* ts, TileData* t);
-bool IsTileInSet(TileNEWSet* ts, TileData* t);
-long GetTileSetCount(TileNEWSet* ts);
-TileData** GetTilesFromSet(TileNEWSet* ts);
-TileNEWSet* IntersectTileSets(TileNEWSet* set1, TileNEWSet* set2);
+void DestroyTileSet(TileSet* ts);
+TileSet* AddTileToSet(TileSet* ts, TileData* t);
+TileSet* RemoveTileFromSet(TileSet* ts, TileData* t);
+bool IsTileInSet(TileSet* ts, TileData* t);
+long GetTileSetCount(TileSet* ts);
+TileData** GetTilesFromSet(TileSet* ts);
+TileSet* IntersectTileSets(TileSet* set1, TileSet* set2);

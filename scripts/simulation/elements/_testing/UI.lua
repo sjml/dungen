@@ -19,7 +19,7 @@ sir("WaitForUI", 1)
 push()
 ClearChoices()
 
-valids = TileNEWSet()
+valids = TileSet()
 dims = GetWorldDimensions()
 for x = dims.x // 2, dims.x - 1 do
   for y = dims.y // 2, dims.y - 1 do

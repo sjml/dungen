@@ -4,7 +4,7 @@ td = GetTileAtPosition(25, 25)
 td2 = GetTileAtPosition(25, 27)
 td3 = GetTileAtPosition(25, 29)
 
-ts = TileNEWSet()
+ts = TileSet()
 lazyBasicAssert(0, GetTileSetCount(ts), "TileSet count 1")
 ts = AddTileToSet(ts, td)
 lazyBasicAssert(1, GetTileSetCount(ts), "TileSet count 2")

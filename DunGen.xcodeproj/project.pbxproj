@@ -1252,9 +1252,8 @@
 				EXECUTABLE_PREFIX = lib;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					LUA_USE_DLOPEN,
 					"$(inherited)",
+					LUA_USE_DLOPEN,
 				);
 				GCC_WARN_INHIBIT_ALL_WARNINGS = YES;
 				HEADER_SEARCH_PATHS = "lib/lua-5.3.5/src";
