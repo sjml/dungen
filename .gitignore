@@ -21,6 +21,8 @@ xcuserdata/
 *.user
 *.userosscache
 *.sln.docstates
+*.aps
+*.ncb
 
 # All
 art/tmp/*

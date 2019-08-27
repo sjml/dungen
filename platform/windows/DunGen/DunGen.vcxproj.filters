@@ -47,6 +47,7 @@
     <ClInclude Include="..\..\..\src\ui\tile_choice.h">
       <Filter>ui</Filter>
     </ClInclude>
+    <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\src\main.c" />
@@ -162,5 +163,11 @@
     <None Include="..\..\..\src\scripting\interfaces\ui.i">
       <Filter>scripting\interfaces</Filter>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="DunGen.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="DunGen.ico" />
   </ItemGroup>
 </Project>
