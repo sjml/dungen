@@ -6,7 +6,7 @@
 
 It seems like every summer I fall down a rabbit hole making some procedural generator system. This one is from summer of 2019, when I was otherwise busy doing refugee aid work and studying macroeconomics in South Africa. It was a welcome respite from the stress of the days.
 
-DunGen is a narrative-driven procedural dungeon generator/simulator, inspired by the pen-and-paper game ["How to Host a Dungeon"][https://store.tonydowler.com/listing/591021523/how-to-host-a-dungeon-pdf] by Tony Dowler. I first started work on a version of this, with Tony's permission, about 7 years ago, but got caught up with life and some technical challenges and it withered. Recently, after a caving trip, I was inspired to start it up again. Before I used a somewhat heavy C++ prototyping framework; this time I rebuilt it from scratch using just plain C. 
+DunGen is a narrative-driven procedural dungeon generator/simulator, inspired by the pen-and-paper game ["How to Host a Dungeon"](https://store.tonydowler.com/listing/591021523/how-to-host-a-dungeon-pdf) by Tony Dowler. I first started work on a version of this, with Tony's permission, about 7 years ago, but got caught up with life and some technical challenges and it withered. Recently, after a caving trip, I was inspired to start it up again. Before I used a somewhat heavy C++ prototyping framework; this time I rebuilt it from scratch using just plain C. 
 
 Currently it simulates all of the Primordial Age and the Great Disaster. Implementing agents and civilizations is a bit trickier, and honestly, I might wander away as the semester gets going. But this was fun to make. 
 
