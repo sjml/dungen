@@ -47,7 +47,9 @@
     <ClInclude Include="..\..\..\src\ui\tile_choice.h">
       <Filter>ui</Filter>
     </ClInclude>
-    <ClInclude Include="resource.h" />
+    <ClInclude Include="resource.h">
+      <Filter>resources</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\src\main.c" />
@@ -122,6 +124,9 @@
     <Filter Include="ui">
       <UniqueIdentifier>{d55c1755-a61f-437b-868f-f573395e26e0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="resources">
+      <UniqueIdentifier>{cde0e544-9cdd-48d4-936a-775081e258d4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\src\scripting\interfaces\game.i">
@@ -165,9 +170,13 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="DunGen.rc" />
+    <ResourceCompile Include="DunGen.rc">
+      <Filter>resources</Filter>
+    </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="DunGen.ico" />
+    <Image Include="DunGen.ico">
+      <Filter>resources</Filter>
+    </Image>
   </ItemGroup>
 </Project>
