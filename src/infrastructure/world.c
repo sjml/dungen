@@ -182,7 +182,7 @@ gbVec2** GetWorldPointList() {
 
 TileData** GetAllTiles() {
     TileData** ret = NULL;
-    arrsetlen(ret, arrlen(WorldArray));
+    arrsetlen(ret, arrlenu(WorldArray));
     for (long long i=0; i < arrlen(WorldArray); i++) {
         ret[i] = &WorldArray[i];
     }
@@ -211,7 +211,7 @@ void SetRegionAsDirty(Region* r) {
 
 Region** GetDirtyRegions(void) {
     Region** ret = NULL;
-    arrsetlen(ret, hmlen(dirtyRegions));
+    arrsetlen(ret, hmlenu(dirtyRegions));
     for (long i=0; i < hmlen(dirtyRegions); i++) {
         ret[i] = dirtyRegions[i].key;
     }
