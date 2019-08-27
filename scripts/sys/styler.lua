@@ -187,6 +187,5 @@ function ResolveStyles()
       end
     end
   end
-  -- TODO: this is leaking... -- DestroyRegionList(dirtyRegions)
   CleanAllRegions()
 end

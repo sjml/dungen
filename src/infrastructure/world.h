@@ -31,6 +31,7 @@ typedef struct sRegion {
     Outline* outline;
     TextInfo label;
 } Region;
+typedef Region** DisposableRegionList; // for SWIG typemaps
 
 typedef struct sTileSet {
     TileData* key;
@@ -64,7 +65,7 @@ void ClearRegionLabel(Region* r);
 void AddTileToRegion(Region* r, TileData* t);
 void RemoveTileFromRegion(Region* r, TileData* t);
 void SetRegionAsDirty(Region* r);
-Region** GetDirtyRegions(void);
+DisposableRegionList GetDirtyRegions(void);
 void CleanAllRegions(void);
 
 // TODO: TileSets will leak once they have no members if they

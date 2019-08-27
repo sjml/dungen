@@ -63,7 +63,7 @@ void ClearRegionLabel(Region* r);
 void AddTileToRegion(Region* r, TileData* t);
 void RemoveTileFromRegion(Region* r, TileData* t);
 void SetRegionAsDirty(Region* r);
-Region** GetDirtyRegions(void);
+DisposableRegionList GetDirtyRegions(void);
 void CleanAllRegions(void);
 
 void DestroyTileSet(TileSet* ts);

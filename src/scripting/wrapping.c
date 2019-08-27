@@ -5657,7 +5657,7 @@ static int _wrap_TileData_memberRegions_get(lua_State* L) {
         lua_settable(L, -3);
       }
     }
-    // arrfree(result); // TODO: don't free if we don't own this memory
+    // arrfree(result); don't free if we don't own this memory
     
     SWIG_arg += 1;
   }
@@ -6509,10 +6509,10 @@ fail:
 
 static int _wrap_GetDirtyRegions(lua_State* L) {
   int SWIG_arg = 0;
-  Region **result = 0 ;
+  DisposableRegionList result;
   
   SWIG_check_num_args("GetDirtyRegions",0,0)
-  result = (Region **)GetDirtyRegions();
+  result = GetDirtyRegions();
   
   {
     lua_newtable(L);
@@ -6523,7 +6523,7 @@ static int _wrap_GetDirtyRegions(lua_State* L) {
         lua_settable(L, -3);
       }
     }
-    // arrfree(result); // TODO: don't free if we don't own this memory
+    arrfree(result);
     
     SWIG_arg += 1;
   }
@@ -7401,7 +7401,7 @@ static int _wrap_GetRegionsTagged(lua_State* L) {
         lua_settable(L, -3);
       }
     }
-    // arrfree(result); // TODO: don't free if we don't own this memory
+    // arrfree(result); don't free if we don't own this memory
     
     SWIG_arg += 1;
   }
