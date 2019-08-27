@@ -1,5 +1,3 @@
--------- sort above before calling primordial age finished; below can wait, but then use water (see below) as testing ground before moving on to more complicated dwarves
-
 New Data Type:
 	Agents/Entities
 		- Domain (Region)
