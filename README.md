@@ -1,4 +1,4 @@
-<p align="center"><img src="art/DunGenLogo.png"></p>
+<p align="center"><img src="https://github.com/sjml/dungen2/raw/master/art/DunGenLogo.png"></p>
 
 # DunGen
 
