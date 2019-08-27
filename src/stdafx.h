@@ -2,6 +2,7 @@
 
 #include <stdlib.h>
 #include <stdbool.h>
+#include <float.h>
 
 #include <lua.h>
 #include <lauxlib.h>

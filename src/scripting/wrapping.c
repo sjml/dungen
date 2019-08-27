@@ -4652,37 +4652,6 @@ fail:
 }
 
 
-static int _wrap_GetRenderingRegions(lua_State* L) {
-  int SWIG_arg = 0;
-  Region **result = 0 ;
-  
-  SWIG_check_num_args("GetRenderingRegions",0,0)
-  result = (Region **)GetRenderingRegions();
-  
-  {
-    lua_newtable(L);
-    if (arrlen(result) > 0) {
-      for (unsigned int i=1; i <= arrlen(result); i++) {
-        lua_pushnumber(L, i);
-        SWIG_NewPointerObj(L, result[i-1], SWIGTYPE_p_sRegion, 0);
-        lua_settable(L, -3);
-      }
-    }
-    // arrfree(result); // TODO: don't free if we don't own this memory
-    
-    SWIG_arg += 1;
-  }
-  
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
 static int _wrap_WorldToScreen(lua_State* L) {
   int SWIG_arg = 0;
   gbVec2 arg1 ;
@@ -4719,107 +4688,6 @@ static int _wrap_WorldToScreen(lua_State* L) {
     memmove(resultptr, &result, sizeof(gbVec2));
     SWIG_NewPointerObj(L,(void *) resultptr,SWIGTYPE_p_gbVec2,1); SWIG_arg++;
   }
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_ClearTileLabels(lua_State* L) {
-  int SWIG_arg = 0;
-  
-  SWIG_check_num_args("ClearTileLabels",0,0)
-  ClearTileLabels();
-  
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_AddTileLabel(lua_State* L) {
-  int SWIG_arg = 0;
-  char *arg1 = (char *) 0 ;
-  gbVec2 arg2 ;
-  float arg3 ;
-  gbVec4 arg4 ;
-  
-  SWIG_check_num_args("AddTileLabel",4,4)
-  if(!SWIG_lua_isnilstring(L,1)) SWIG_fail_arg("AddTileLabel",1,"char const *");
-  if(!lua_isnumber(L,3)) SWIG_fail_arg("AddTileLabel",3,"float");
-  arg1 = (char *)lua_tostring(L, 1);
-  {
-    // gbVec2 conversion
-    gbVec2 *vecPtr;
-    if (SWIG_IsOK(SWIG_ConvertPtr(L,2,(void**)&vecPtr,SWIGTYPE_p_gbVec2,0))) {
-      arg2 = *vecPtr;
-    }
-    else {
-      // convert table parameters to floats
-      lua_pushinteger(L, 1);
-      lua_gettable(L, 2);
-      float x = lua_tonumber(L, -1);
-      lua_pop(L, 1);
-      
-      lua_pushinteger(L, 2);
-      lua_gettable(L, 2);
-      float y = lua_tonumber(L, -1);
-      lua_pop(L, 1);
-      
-      // build the vector
-      (&arg2)->x = x;
-      (&arg2)->y = y;
-    }
-  }
-  arg3 = (float)lua_tonumber(L, 3);
-  {
-    // gbVec4 conversion
-    gbVec4 *vecPtr;
-    if (SWIG_IsOK(SWIG_ConvertPtr(L,4,(void**)&vecPtr,SWIGTYPE_p_gbVec4,0))) {
-      arg4 = *vecPtr;
-    }
-    else {
-      // convert table parameters to floats
-      lua_pushinteger(L, 1);
-      lua_gettable(L, 4);
-      float x = lua_tonumber(L, -1);
-      lua_pop(L, 1);
-      
-      lua_pushinteger(L, 2);
-      lua_gettable(L, 4);
-      float y = lua_tonumber(L, -1);
-      lua_pop(L, 1);
-      
-      lua_pushinteger(L, 3);
-      lua_gettable(L, 4);
-      float z = lua_tonumber(L, -1);
-      lua_pop(L, 1);
-      
-      float w = 1.0f;
-      if (lua_rawlen(L, 4) >= 4) {
-        lua_pushinteger(L, 4);
-        lua_gettable(L, 4);
-        w = lua_tonumber(L, -1);
-        lua_pop(L, 1);
-      }
-      
-      // build the vector
-      (&arg4)->x = x;
-      (&arg4)->y = y;
-      (&arg4)->z = z;
-      (&arg4)->w = w;
-    }
-  }
-  AddTileLabel((char const *)arg1,arg2,arg3,arg4);
-  
   return SWIG_arg;
   
   if(0) SWIG_fail;
@@ -6441,6 +6309,121 @@ fail:
 }
 
 
+static int _wrap_SetRegionLabel(lua_State* L) {
+  int SWIG_arg = 0;
+  Region *arg1 = (Region *) 0 ;
+  char *arg2 = (char *) 0 ;
+  float arg3 ;
+  gbVec4 arg4 ;
+  gbVec2 arg5 ;
+  
+  SWIG_check_num_args("SetRegionLabel",5,5)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("SetRegionLabel",1,"Region *");
+  if(!SWIG_lua_isnilstring(L,2)) SWIG_fail_arg("SetRegionLabel",2,"char const *");
+  if(!lua_isnumber(L,3)) SWIG_fail_arg("SetRegionLabel",3,"float");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_sRegion,0))){
+    SWIG_fail_ptr("SetRegionLabel",1,SWIGTYPE_p_sRegion);
+  }
+  
+  arg2 = (char *)lua_tostring(L, 2);
+  arg3 = (float)lua_tonumber(L, 3);
+  {
+    // gbVec4 conversion
+    gbVec4 *vecPtr;
+    if (SWIG_IsOK(SWIG_ConvertPtr(L,4,(void**)&vecPtr,SWIGTYPE_p_gbVec4,0))) {
+      arg4 = *vecPtr;
+    }
+    else {
+      // convert table parameters to floats
+      lua_pushinteger(L, 1);
+      lua_gettable(L, 4);
+      float x = lua_tonumber(L, -1);
+      lua_pop(L, 1);
+      
+      lua_pushinteger(L, 2);
+      lua_gettable(L, 4);
+      float y = lua_tonumber(L, -1);
+      lua_pop(L, 1);
+      
+      lua_pushinteger(L, 3);
+      lua_gettable(L, 4);
+      float z = lua_tonumber(L, -1);
+      lua_pop(L, 1);
+      
+      float w = 1.0f;
+      if (lua_rawlen(L, 4) >= 4) {
+        lua_pushinteger(L, 4);
+        lua_gettable(L, 4);
+        w = lua_tonumber(L, -1);
+        lua_pop(L, 1);
+      }
+      
+      // build the vector
+      (&arg4)->x = x;
+      (&arg4)->y = y;
+      (&arg4)->z = z;
+      (&arg4)->w = w;
+    }
+  }
+  {
+    // gbVec2 conversion
+    gbVec2 *vecPtr;
+    if (SWIG_IsOK(SWIG_ConvertPtr(L,5,(void**)&vecPtr,SWIGTYPE_p_gbVec2,0))) {
+      arg5 = *vecPtr;
+    }
+    else {
+      // convert table parameters to floats
+      lua_pushinteger(L, 1);
+      lua_gettable(L, 5);
+      float x = lua_tonumber(L, -1);
+      lua_pop(L, 1);
+      
+      lua_pushinteger(L, 2);
+      lua_gettable(L, 5);
+      float y = lua_tonumber(L, -1);
+      lua_pop(L, 1);
+      
+      // build the vector
+      (&arg5)->x = x;
+      (&arg5)->y = y;
+    }
+  }
+  SetRegionLabel(arg1,(char const *)arg2,arg3,arg4,arg5);
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_ClearRegionLabel(lua_State* L) {
+  int SWIG_arg = 0;
+  Region *arg1 = (Region *) 0 ;
+  
+  SWIG_check_num_args("ClearRegionLabel",1,1)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("ClearRegionLabel",1,"Region *");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_sRegion,0))){
+    SWIG_fail_ptr("ClearRegionLabel",1,SWIGTYPE_p_sRegion);
+  }
+  
+  ClearRegionLabel(arg1);
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
 static int _wrap_AddTileToRegion(lua_State* L) {
   int SWIG_arg = 0;
   Region *arg1 = (Region *) 0 ;
@@ -6490,6 +6473,76 @@ static int _wrap_RemoveTileFromRegion(lua_State* L) {
   }
   
   RemoveTileFromRegion(arg1,arg2);
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_SetRegionAsDirty(lua_State* L) {
+  int SWIG_arg = 0;
+  Region *arg1 = (Region *) 0 ;
+  
+  SWIG_check_num_args("SetRegionAsDirty",1,1)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("SetRegionAsDirty",1,"Region *");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_sRegion,0))){
+    SWIG_fail_ptr("SetRegionAsDirty",1,SWIGTYPE_p_sRegion);
+  }
+  
+  SetRegionAsDirty(arg1);
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_GetDirtyRegions(lua_State* L) {
+  int SWIG_arg = 0;
+  Region **result = 0 ;
+  
+  SWIG_check_num_args("GetDirtyRegions",0,0)
+  result = (Region **)GetDirtyRegions();
+  
+  {
+    lua_newtable(L);
+    if (arrlen(result) > 0) {
+      for (unsigned int i=1; i <= arrlen(result); i++) {
+        lua_pushnumber(L, i);
+        SWIG_NewPointerObj(L, result[i-1], SWIGTYPE_p_sRegion, 0);
+        lua_settable(L, -3);
+      }
+    }
+    // arrfree(result); // TODO: don't free if we don't own this memory
+    
+    SWIG_arg += 1;
+  }
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_CleanAllRegions(lua_State* L) {
+  int SWIG_arg = 0;
+  
+  SWIG_check_num_args("CleanAllRegions",0,0)
+  CleanAllRegions();
   
   return SWIG_arg;
   
@@ -7679,10 +7732,7 @@ static swig_lua_method swig_SwigModule_methods[]= {
     { "LoadColorTable", _wrap_LoadColorTable},
     { "GetColorByIndex", _wrap_GetColorByIndex},
     { "GetColorByPercent", _wrap_GetColorByPercent},
-    { "GetRenderingRegions", _wrap_GetRenderingRegions},
     { "WorldToScreen", _wrap_WorldToScreen},
-    { "ClearTileLabels", _wrap_ClearTileLabels},
-    { "AddTileLabel", _wrap_AddTileLabel},
     { "MeasureTextExtents", _wrap_MeasureTextExtents},
     { "GetTextAscenderHeight", _wrap_GetTextAscenderHeight},
     { "RandomRangeFloat", _wrap_RandomRangeFloat},
@@ -7710,8 +7760,13 @@ static swig_lua_method swig_SwigModule_methods[]= {
     { "DestroyRegion", _wrap_DestroyRegion},
     { "SetRegionOutline", _wrap_SetRegionOutline},
     { "ClearRegionOutline", _wrap_ClearRegionOutline},
+    { "SetRegionLabel", _wrap_SetRegionLabel},
+    { "ClearRegionLabel", _wrap_ClearRegionLabel},
     { "AddTileToRegion", _wrap_AddTileToRegion},
     { "RemoveTileFromRegion", _wrap_RemoveTileFromRegion},
+    { "SetRegionAsDirty", _wrap_SetRegionAsDirty},
+    { "GetDirtyRegions", _wrap_GetDirtyRegions},
+    { "CleanAllRegions", _wrap_CleanAllRegions},
     { "DestroyTileSet", _wrap_DestroyTileSet},
     { "AddTileToSet", _wrap_AddTileToSet},
     { "RemoveTileFromSet", _wrap_RemoveTileFromSet},

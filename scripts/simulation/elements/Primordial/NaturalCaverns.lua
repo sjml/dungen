@@ -24,6 +24,7 @@ while (cavernCount < maxCaverns) do
 
   local cavern = base:GetCircle(1)
   local chamber = CreateRegion()
+  chamber:AddTag("ground")
   for _, tile in ipairs(cavern) do
     tile:SetAttributeInt("open", 1)
     tile:SetAttributeInt("empty", 1)

@@ -14,12 +14,24 @@ mithralSolver:Solve()
 base = mithralSolver.pickedTile
 base:AddTag("mithral")
 
+reg = CreateRegion()
+reg:AddTile(base)
+
+local t1 = nil
+local t2 = nil
 if (base.hexPos.y > (gir("GroundHeight") / 2)) then
   -- bottom part of the field; face down
-  GetTileAtIndex(base.neighborNE):AddTag("mithral")
-  GetTileAtIndex(base.neighborNW):AddTag("mithral")
+  reg:AddTag("mithralDOWN")
+  t1 = GetTileAtIndex(base.neighborNE)
+  t2 = GetTileAtIndex(base.neighborNW)
 else
   -- top part of the field; face up
-  GetTileAtIndex(base.neighborSE):AddTag("mithral")
-  GetTileAtIndex(base.neighborSW):AddTag("mithral")
+  reg:AddTag("mithralUP")
+  t1 = GetTileAtIndex(base.neighborSE)
+  t2 = GetTileAtIndex(base.neighborSW)
 end
+
+t1:AddTag("mithral")
+t2:AddTag("mithral")
+reg:AddTile(t1)
+reg:AddTile(t2)

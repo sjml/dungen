@@ -32,6 +32,7 @@ static const float hexVertices[] = {
 
 static TileData* WorldArray = NULL;
 static TileSet* dirtyTiles = NULL;
+static struct { Region* key; int value; }* dirtyRegions = NULL;
 static gbVec2** PointList = NULL;
 
 static float tileSize;
@@ -181,9 +182,9 @@ gbVec2** GetWorldPointList() {
 
 TileData** GetAllTiles() {
     TileData** ret = NULL;
-    // arrsetlen(ret, arrlen(WorldArray));
+    arrsetlen(ret, arrlen(WorldArray));
     for (long long i=0; i < arrlen(WorldArray); i++) {
-        arrpush(ret, &WorldArray[i]);
+        ret[i] = &WorldArray[i];
     }
     return ret;
 }
@@ -199,6 +200,27 @@ TileData** GetDirtyTiles(void) {
 void CleanAllTiles(void) {
     hmfree(dirtyTiles);
     dirtyTiles = NULL;
+}
+
+void SetRegionAsDirty(Region* r) {
+    hmput(dirtyRegions, r, 1);
+    for (long i = 0; i < hmlen(r->tiles); i++) {
+        SetTileAsDirty(r->tiles[i].key);
+    }
+}
+
+Region** GetDirtyRegions(void) {
+    Region** ret = NULL;
+    arrsetlen(ret, hmlen(dirtyRegions));
+    for (long i=0; i < hmlen(dirtyRegions); i++) {
+        ret[i] = dirtyRegions[i].key;
+    }
+    return ret;
+}
+
+void CleanAllRegions(void) {
+    hmfree(dirtyRegions);
+    dirtyRegions = NULL;
 }
 
 TileSet* IntersectTileSets(TileSet* set1, TileSet* set2) {
@@ -353,6 +375,8 @@ Region* CreateRegion() {
     Region* r = malloc(sizeof(Region));
     r->tiles = NULL;
     r->outline = NULL;
+    r->label.text = NULL;
+    r->label.scale = -1.0f;
     AddRegionToRendering(r);
     r->i = SetupRegionAttributeData(r);
     return r;
@@ -363,6 +387,9 @@ void DestroyRegion(Region* r) {
     RemoveRegionFromRendering(r);
     if (r->outline != NULL) {
         DestroyOutline(r->outline);
+    }
+    if (r->label.scale >= 0.0f) {
+        ClearRegionLabel(r);
     }
     for (int i = 0; i < hmlen(r->tiles); i++) {
         RemoveTileFromRegion(r, r->tiles[i].key);
@@ -436,4 +463,42 @@ void ClearRegionOutline(Region* r) {
         DestroyOutline(r->outline);
         r->outline = NULL;
     }
+}
+
+void SetRegionLabel(Region* r, const char* text, float scale, gbVec4 color, gbVec2 tileOffset) {
+    r->label.text = malloc(sizeof(char) * (strlen(text) + 1));
+    strcpy(r->label.text, text);
+    r->label.scale = scale;
+    r->label.color.r = color.r;
+    r->label.color.g = color.g;
+    r->label.color.b = color.b;
+    r->label.color.a = color.a;
+    
+    gbVec2 min = {  FLT_MAX,  FLT_MAX };
+    gbVec2 max = { -FLT_MAX, -FLT_MAX };
+    for (long i=0; i < hmlen(r->tiles); i++) {
+        min.x = gb_min(min.x, r->tiles[i].key->worldPos.x);
+        min.y = gb_min(min.y, r->tiles[i].key->worldPos.y);
+        max.x = gb_max(max.x, r->tiles[i].key->worldPos.x);
+        max.y = gb_max(max.y, r->tiles[i].key->worldPos.y);
+    }
+
+    gbVec2 center = {
+        (max.x - min.x) * 0.5f,
+        (max.y - min.y) * 0.5f
+    };
+    gb_vec2_lerp(&center, min, max, 0.5f);
+    center.x += tileDimensions.x * (float)tileOffset.x;
+    center.y += tileDimensions.y * (float)tileOffset.y;
+    
+    gbVec2 screenPos = WorldToScreen(center);
+
+    gbVec2 extents = MeasureTextExtents(text, "fonts/04B_03__.TTF", scale);
+    r->label.pos.x = screenPos.x - (extents.x * 0.5f) + 1.0f;
+    r->label.pos.y = screenPos.y + (extents.y * 0.5f);
+}
+
+void ClearRegionLabel(Region* r) {
+    free(r->label.text);
+    r->label.scale = -1.0f;
 }

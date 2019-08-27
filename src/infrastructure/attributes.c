@@ -247,9 +247,7 @@ void SetTileAttributeInt(TileData* data, const char* name, int value) {
 
 void SetRegionAttributeInt(Region* data, const char* name, int value) {
     _SetAttributeInt((void*)data, REGION, name, value);
-    for (long i = 0; i < hmlen(data->tiles); i++) {
-        SetTileAsDirty(data->tiles[i].key);
-    }
+    SetRegionAsDirty(data);
 }
 
 
@@ -325,9 +323,7 @@ void SetTileAttributeFloat(TileData* data, const char* name, float value) {
 
 void SetRegionAttributeFloat(Region* data, const char* name, float value) {
     _SetAttributeFloat((void*)data, REGION, name, value);
-    for (long i = 0; i < hmlen(data->tiles); i++) {
-        SetTileAsDirty(data->tiles[i].key);
-    }
+    SetRegionAsDirty(data);
 }
 
 
@@ -403,9 +399,7 @@ void SetTileAttributeString(TileData* data, const char* name, const char* value)
 
 void SetRegionAttributeString(Region* data, const char* name, const char* value) {
     _SetAttributeString((void*)data, REGION, name, value);
-    for (long i = 0; i < hmlen(data->tiles); i++) {
-        SetTileAsDirty(data->tiles[i].key);
-    }
+    SetRegionAsDirty(data);
 }
 
 
@@ -657,10 +651,7 @@ bool AddRegionTag(Region* data, char* tag) {
     arrpush(tagList, id);
     hmput(regionIdxToTags, data->i, tagList);
 
-    for (long i = 0; i < hmlen(data->tiles); i++) {
-        SetTileAsDirty(data->tiles[i].key);
-    }
-
+    SetRegionAsDirty(data);
     return true;
 }
 
@@ -707,9 +698,7 @@ bool RemoveRegionTag(Region* data, const char* tag) {
             }
             arrdel(regionList, i);
             hmput(tagIdxToRegions, id, regionList);
-            for (long i = 0; i < hmlen(data->tiles); i++) {
-                SetTileAsDirty(data->tiles[i].key);
-            }
+            SetRegionAsDirty(data);
             return true;
         }
     }

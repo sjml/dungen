@@ -58,8 +58,13 @@ Region* CreateRegion(void);
 void DestroyRegion(Region* r);
 void SetRegionOutline(Region* r, gbVec4 color, float thickness);
 void ClearRegionOutline(Region* r);
+void SetRegionLabel(Region* r, const char* text, float scale, gbVec4 color, gbVec2 tileOffset);
+void ClearRegionLabel(Region* r);
 void AddTileToRegion(Region* r, TileData* t);
 void RemoveTileFromRegion(Region* r, TileData* t);
+void SetRegionAsDirty(Region* r);
+Region** GetDirtyRegions(void);
+void CleanAllRegions(void);
 
 void DestroyTileSet(TileSet* ts);
 TileSet* AddTileToSet(TileSet* ts, TileData* t);

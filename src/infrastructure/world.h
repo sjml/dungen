@@ -1,10 +1,11 @@
 #pragma once
 
 #include "util.h"
+#include "text.h"
 
 typedef struct sOutline     Outline;
 typedef struct sRegion      Region;
-typedef struct sTileSet  TileSet;
+typedef struct sTileSet     TileSet;
 
 typedef struct {
     long long i;
@@ -28,6 +29,7 @@ typedef struct sRegion {
     long long i;
     TileSet* tiles;
     Outline* outline;
+    TextInfo label;
 } Region;
 
 typedef struct sTileSet {
@@ -53,6 +55,18 @@ TileData* ScreenToTile(gbVec2* screenCoordinates);
 TileData** GetTileNeighbors(TileData* center, int *numNeighbors);
 long GetTileDistance(TileData* t1, TileData* t2);
 
+Region* CreateRegion(void);
+void DestroyRegion(Region* r);
+void SetRegionOutline(Region* r, gbVec4 color, float thickness);
+void ClearRegionOutline(Region* r);
+void SetRegionLabel(Region* r, const char* text, float scale, gbVec4 color, gbVec2 tileOffset);
+void ClearRegionLabel(Region* r);
+void AddTileToRegion(Region* r, TileData* t);
+void RemoveTileFromRegion(Region* r, TileData* t);
+void SetRegionAsDirty(Region* r);
+Region** GetDirtyRegions(void);
+void CleanAllRegions(void);
+
 // TODO: TileSets will leak once they have no members if they
 //       aren't tracked somehow.
 //       Don't want to automatically destroy when members are 0
@@ -60,13 +74,6 @@ long GetTileDistance(TileData* t1, TileData* t2);
 //       since they could be sitting in registers or in the Lua runtime.
 //       Smart pointers would help, but too heavyweight.
 //       For now, I don't care about the leaks.
-Region* CreateRegion(void);
-void DestroyRegion(Region* r);
-void SetRegionOutline(Region* r, gbVec4 color, float thickness);
-void ClearRegionOutline(Region* r);
-void AddTileToRegion(Region* r, TileData* t);
-void RemoveTileFromRegion(Region* r, TileData* t);
-
 void DestroyTileSet(TileSet* ts);
 TileSet* AddTileToSet(TileSet* ts, TileData* t);
 TileSet* RemoveTileFromSet(TileSet* ts, TileData* t);

@@ -1,5 +1,4 @@
 ## TODO
-0. Labels for regions
 1. Relaxable constraint sets
 2. random tiles and die rolls in Lua with optional player overrides
 3. Primordial Age
@@ -25,6 +24,8 @@
 ## Tech Debt
 * set precompiled headers up in Visual Studio
 * handle newlines in text rendering?
+* Rethink styler logic
+    - should regions and tiles have separate paths? regions just have labels and outlines?
 * figure out text extents ascender/descender issue
 * add way to modify attributes instead of having to get/set round-trip through SQLite
 * overusing the stretchy buffer right now; look for more chances to just use a static array

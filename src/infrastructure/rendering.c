@@ -23,9 +23,6 @@ static gbMat4 orthoMatrix;
 
 static Region** regions = NULL;
 
-static TextInfo* tileLabels = NULL;
-
-
 void InitializeRendering() {
     glfwInitHint(GLFW_COCOA_CHDIR_RESOURCES, GLFW_TRUE);
     glfwInitHint(GLFW_COCOA_MENUBAR, GLFW_TRUE);
@@ -48,14 +45,6 @@ void InitializeRendering() {
 
     glfwSetCursorPosCallback(window, MouseMoveCallback);
     glfwSetMouseButtonCallback(window, MouseClickCallback);
-
-//    glfwSetWindowSizeCallback(Camera::ResizeCallback);
-//    glfwSetKeyCallback(keyboardInput);
-//    glfwSetCharCallback(charInput);
-//    glfwDisable(GLFW_KEY_REPEAT);
-//    glfwSetMouseButtonCallback(MouseButton);
-//    glfwSetMouseWheelCallback(MouseWheel);
-//    glfwSetWindowCloseCallback(windowClosed);
 
     glClearDepth(1.0f);
     glPolygonMode(GL_FRONT, GL_FILL);
@@ -186,33 +175,14 @@ gbVec2 ScreenToWorld(gbVec2 screenCoordinates) {
     return ret;
 }
 
-void ClearTileLabels(void) {
-    while (arrlen(tileLabels) > 0) {
-        TextInfo ti = arrpop(tileLabels);
-        free(ti.text);
-    }
-}
-
-void AddTileLabel(const char* text, gbVec2 pos, float scale, gbVec4 color) {
-    TextInfo ti;
-    ti.text = malloc(sizeof(char) * (strlen(text) + 1));
-    strcpy(ti.text, text);
-    ti.pos.x = pos.x;
-    ti.pos.y = pos.y;
-    ti.scale = scale;
-    ti.color.r = color.r;
-    ti.color.g = color.g;
-    ti.color.b = color.b;
-    ti.color.a = color.a;
-    arrpush(tileLabels, ti);
-}
-
 int Render() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     glMatrixMode(GL_MODELVIEW);
     glPushMatrix();
+
         RenderTiles();
+
         for (int i = 0; i < arrlen(regions); i++) {
             if (regions[i]->outline != NULL) {
                 RenderOutline(regions[i]->outline);
@@ -224,9 +194,18 @@ int Render() {
     glLoadIdentity();
     glPushMatrix();
         glMultMatrixf(orthoMatrix.e);
-        for (int i=0; i < arrlen(tileLabels); i++) {
-            glColor4fv(tileLabels[i].color.e);
-            DrawGameText(tileLabels[i].text, "fonts/04B_03__.TTF", tileLabels[i].scale, (int)tileLabels[i].pos.x, (int)tileLabels[i].pos.y, 0.0f);
+        for (int i = 0; i < arrlen(regions); i++) {
+            if (regions[i]->label.scale >= 0.0f) {
+                glColor4fv(regions[i]->label.color.e);
+                DrawGameText(
+                    regions[i]->label.text,
+                    "fonts/04B_03__.TTF",
+                    regions[i]->label.scale,
+                    (int)regions[i]->label.pos.x,
+                    (int)regions[i]->label.pos.y,
+                    0.0f
+                );
+            }
         }
         RenderBanners();
         if (GetChoiceStatus() >= 0) {
