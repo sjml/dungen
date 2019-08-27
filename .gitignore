@@ -23,6 +23,7 @@ xcuserdata/
 *.sln.docstates
 
 # All
+art/tmp/*
 build/*
 tmp/*
 
