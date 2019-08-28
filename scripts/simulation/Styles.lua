@@ -131,7 +131,7 @@ greatWyrm = {
   labelOffset = {0, 1}
 }
 
-greatWyrm = {
+fallenStar = {
   reqs = {
     tags = "FallenStar"
   },
