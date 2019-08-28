@@ -53,6 +53,7 @@ TileData** GetDirtyTiles(void);
 void CleanAllTiles(void);
 TileData* GetTileAtPosition(int x, int y);
 TileData* GetTileAtIndex(long long i);
+TileData* ScreenToTile(gbVec2* screenCoordinates);
 
 Region* CreateRegion(void);
 void DestroyRegion(Region* r);

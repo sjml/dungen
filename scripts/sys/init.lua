@@ -28,6 +28,7 @@ require("sys.sugar.tiledata")
 require("sys.sugar.region")
 
 require("sys.gamelib.chamber")
+require("sys.gamelib.pathing")
 
 ProFi = require("lib.ProFi")
 ordered_table = require("lib.ordered_table")

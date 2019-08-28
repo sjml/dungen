@@ -23,6 +23,7 @@
 
 ## Tech Debt
 * set precompiled headers up in Visual Studio
+* typemaps should reject inputs that are not tables
 * handle newlines in text rendering?
 * Rethink styler logic
     - should regions and tiles have separate paths? regions just have labels and outlines?

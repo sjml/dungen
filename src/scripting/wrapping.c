@@ -6181,6 +6181,49 @@ fail:
 }
 
 
+static int _wrap_ScreenToTile(lua_State* L) {
+  int SWIG_arg = 0;
+  gbVec2 *arg1 = (gbVec2 *) 0 ;
+  TileData *result = 0 ;
+  
+  SWIG_check_num_args("ScreenToTile",1,1)
+  {
+    // gbVec2 pointer conversion
+    gbVec2 *vecPtr;
+    gbVec2 vec;
+    if (SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&vecPtr,SWIGTYPE_p_gbVec2,0))) {
+      arg1 = vecPtr;
+    }
+    else {
+      // convert table parameters to floats
+      lua_pushinteger(L, 1);
+      lua_gettable(L, 1);
+      float x = lua_tonumber(L, -1);
+      lua_pop(L, 1);
+      
+      lua_pushinteger(L, 2);
+      lua_gettable(L, 1);
+      float y = lua_tonumber(L, -1);
+      lua_pop(L, 1);
+      
+      // build the vector
+      vec.x = x;
+      vec.y = y;
+      arg1 = &vec;
+    }
+  }
+  result = (TileData *)ScreenToTile(arg1);
+  SWIG_NewPointerObj(L,result,SWIGTYPE_p_TileData,0); SWIG_arg++; 
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
 static int _wrap_CreateRegion(lua_State* L) {
   int SWIG_arg = 0;
   Region *result = 0 ;
@@ -7756,6 +7799,7 @@ static swig_lua_method swig_SwigModule_methods[]= {
     { "CleanAllTiles", _wrap_CleanAllTiles},
     { "GetTileAtPosition", _wrap_GetTileAtPosition},
     { "GetTileAtIndex", _wrap_GetTileAtIndex},
+    { "ScreenToTile", _wrap_ScreenToTile},
     { "CreateRegion", _wrap_CreateRegion},
     { "DestroyRegion", _wrap_DestroyRegion},
     { "SetRegionOutline", _wrap_SetRegionOutline},

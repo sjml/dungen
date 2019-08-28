@@ -70,6 +70,13 @@ mithral = {
   tileFill = colors.mithral,
 }
 
+gold = {
+  reqs = {
+    tags = "gold"
+  },
+  tileFill = colors.gold,
+}
+
 water = {
   reqs = {
     tags = "ground, water"
