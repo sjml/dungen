@@ -7,7 +7,7 @@ local TileSet = {
 
 InitializeWorld(TileSet.Width, TileSet.Height, TileSet.Scale)
 
-local GroundLine = 3;
+local GroundLine = 5;
 for j=0, TileSet.Height - 1 do
   local percent = (j - 1 - GroundLine) / (TileSet.Height - GroundLine)
 

@@ -18,6 +18,8 @@ if (debug) then
   require('mobdebug').start()
 end
 
+require("lib.strict")
+
 require("sys.lib")
 require("sys.styler")
 require("sys.constraint-solver")

@@ -24,7 +24,7 @@ function ReloadStyles()
   }
   styles = ordered_table()
   for k,v in pairs(preload) do styles[k] = v end
-  styleLoad, err = loadfile("scripts/simulation/Styles.lua", "bt", styles)
+  local styleLoad, err = loadfile("scripts/simulation/Styles.lua", "bt", styles)
   if (err) then
     io.stderr:write("ERROR: Could not load styles. " .. err .. "\n")
     return

@@ -7,4 +7,7 @@
 -- push("Primordial.GoldVein")
 -- push("Primordial.CaveComplex")
 -- push("Primordial.UndergroundRiver")
-push("Primordial.GreatWyrm")
+-- push("Primordial.GreatWyrm")
+
+-- push("Disaster.Earthquake")
+push("Disaster.VolcanicEruption")
