@@ -249,7 +249,7 @@ TileData* GetTileAtPosition(int x, int y) {
 
 TileData* GetTileAtIndex(long long i) {
     if (i < 0 || i >= arrlen(WorldArray)) {
-        fprintf(stderr, "Invalid tile index: %lld\n", i);
+//        fprintf(stderr, "Invalid tile index: %lld\n", i);
         return NULL;
     }
     return &WorldArray[i];

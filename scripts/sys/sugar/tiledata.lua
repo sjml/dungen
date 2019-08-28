@@ -12,25 +12,32 @@ EAST = 4
 SOUTHEAST = 5
 SOUTHWEST = 6
 
+tdft.GetNeighbor = function(td, direction)
+  local ret = nil
+  if     direction == WEST then
+    ret = GetTileAtIndex(td.neighborW)
+  elseif direction == NORTHWEST then
+    ret = GetTileAtIndex(td.neighborNW)
+  elseif direction == NORTHEAST then
+    ret = GetTileAtIndex(td.neighborNE)
+  elseif direction == EAST then
+    ret = GetTileAtIndex(td.neighborE)
+  elseif direction == SOUTHEAST then
+    ret = GetTileAtIndex(td.neighborSE)
+  elseif direction == SOUTHWEST then
+    ret = GetTileAtIndex(td.neighborSW)
+  end
+  return ret
+end
+
 tdft.BuildPath = function(td, dirList)
   local ret = {}
   local curr = td
   for _, d in pairs(dirList) do
-    local nt = nil
-    if     d == WEST then
-      nt = GetTileAtIndex(curr.neighborW)
-    elseif d == NORTHWEST then
-      nt = GetTileAtIndex(curr.neighborNW)
-    elseif d == NORTHEAST then
-      nt = GetTileAtIndex(curr.neighborNE)
-    elseif d == EAST then
-      nt = GetTileAtIndex(curr.neighborE)
-    elseif d == SOUTHEAST then
-      nt = GetTileAtIndex(curr.neighborSE)
-    elseif d == SOUTHWEST then
-      nt = GetTileAtIndex(curr.neighborSW)
+    local nt = curr:GetNeighbor(d)
+    if nt == nil then
+      break
     end
-    if nt == nil then break end
     table.insert(ret, nt)
     curr = nt
   end
