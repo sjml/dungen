@@ -122,7 +122,7 @@ jobs:
       ArtifactName: 'Linux Build'
       publishLocation: 'Container'
 
-- job: GitHub Prep
+- job: GitHubPrep
   condition: startsWith(variables['Build.SourceBranch'], 'refs/tags/v')
   pool:
     vmImage: 'ubuntu-latest'
