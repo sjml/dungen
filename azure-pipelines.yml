@@ -64,7 +64,7 @@ jobs:
   - task: PowerShell@2
     displayName: 'Zip up build artifact'
     inputs:
-      workingDirectory: 'build'
+      workingDirectory: 'build/Release'
       targetType: 'inline'
       script: 'Compress-Archive -Path .\DunGen.exe, .\README.md, .\acknowledgements.md -CompressionLevel Optimal -DestinationPath .\DunGen-Windows.zip'
   - task: CopyFiles@2
