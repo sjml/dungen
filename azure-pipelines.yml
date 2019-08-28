@@ -31,7 +31,7 @@ jobs:
   - task: CmdLine@2
     displayName: 'Zip up build artifact'
     inputs:
-      script: 'cd build/Release; zip -r "DunGen-Mac-$LABEL.zip" DunGen.app README.md acknowledgements.md'
+      script: 'env; cd build/Release; zip -r "DunGen-Mac-$LABEL.zip" DunGen.app README.md acknowledgements.md'
   - task: CopyFiles@2
     displayName: 'Copy artifact to staging'
     inputs:
