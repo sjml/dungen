@@ -32,12 +32,10 @@ jobs:
     displayName: 'Zip up build artifact'
     inputs:
       script: 'env; cd build/Release; zip -r "DunGen-Mac-$LABEL.zip" DunGen.app README.md acknowledgements.md'
-  - task: CopyFiles@2
+  - task: CmdLine@2
     displayName: 'Copy artifact to staging'
     inputs:
-      Contents: 'build/Release/"DunGen-Mac-$LABEL.zip"'
-      TargetFolder: '$(Build.ArtifactStagingDirectory)'
-      flattenFolders: true
+      script: 'cp build/Release/"DunGen-Mac-$LABEL.zip" $(Build.ArtifactStagingDirectory)'
   - task: PublishBuildArtifacts@1
     displayName: 'Publish build into pipeline'
     inputs:
@@ -45,84 +43,84 @@ jobs:
       ArtifactName: 'Mac Build'
       publishLocation: 'Container'
 
-- job: Windows
-  pool:
-    vmImage: 'vs2017-win2016'
-  steps:
-  - task: VSBuild@1
-    displayName: 'Build with MSBuild'
-    inputs:
-      solution: 'platform/windows/DunGen/DunGen.vcxproj'
-      vsVersion: '15.0'
-      configuration: 'Release'
-      maximumCpuCount: true
-      msbuildArchitecture: 'x64'
-  - task: CopyFiles@2
-    displayName: 'Copy documents to build directory'
-    inputs:
-      SourceFolder: ''
-      Contents: |
-        README.md
-        docs/acknowledgements.md
-      TargetFolder: 'build/Release'
-      flattenFolders: true
-  - task: PowerShell@2
-    displayName: 'Zip up build artifact'
-    inputs:
-      workingDirectory: 'build/Release'
-      targetType: 'inline'
-      script: 'Compress-Archive -Path .\DunGen.exe, .\README.md, .\acknowledgements.md -CompressionLevel Optimal -DestinationPath .\DunGen-Windows.zip'
-  - task: CopyFiles@2
-    displayName: 'Copy artifact to staging'
-    inputs:
-      Contents: 'build/Release/DunGen-Windows.zip'
-      TargetFolder: '$(Build.ArtifactStagingDirectory)'
-      flattenFolders: true
-  - task: PublishBuildArtifacts@1
-    displayName: 'Publish build into pipeline'
-    inputs:
-      PathToPublish: '$(Build.ArtifactStagingDirectory)'
-      ArtifactName: 'Windows Build'
-      publishLocation: 'Container'
+# - job: Windows
+#   pool:
+#     vmImage: 'vs2017-win2016'
+#   steps:
+#   - task: VSBuild@1
+#     displayName: 'Build with MSBuild'
+#     inputs:
+#       solution: 'platform/windows/DunGen/DunGen.vcxproj'
+#       vsVersion: '15.0'
+#       configuration: 'Release'
+#       maximumCpuCount: true
+#       msbuildArchitecture: 'x64'
+#   - task: CopyFiles@2
+#     displayName: 'Copy documents to build directory'
+#     inputs:
+#       SourceFolder: ''
+#       Contents: |
+#         README.md
+#         docs/acknowledgements.md
+#       TargetFolder: 'build/Release'
+#       flattenFolders: true
+#   - task: PowerShell@2
+#     displayName: 'Zip up build artifact'
+#     inputs:
+#       workingDirectory: 'build/Release'
+#       targetType: 'inline'
+#       script: 'Compress-Archive -Path .\DunGen.exe, .\README.md, .\acknowledgements.md -CompressionLevel Optimal -DestinationPath .\DunGen-Windows.zip'
+#   - task: CopyFiles@2
+#     displayName: 'Copy artifact to staging'
+#     inputs:
+#       Contents: 'build/Release/DunGen-Windows.zip'
+#       TargetFolder: '$(Build.ArtifactStagingDirectory)'
+#       flattenFolders: true
+#   - task: PublishBuildArtifacts@1
+#     displayName: 'Publish build into pipeline'
+#     inputs:
+#       PathToPublish: '$(Build.ArtifactStagingDirectory)'
+#       ArtifactName: 'Windows Build'
+#       publishLocation: 'Container'
 
-- job: Linux
-  pool:
-    vmImage: 'ubuntu-latest'
-  steps:
-  - task: CmdLine@2
-    displayName: 'Install dependencies'
-    inputs:
-      script: |
-        sudo apt -y update
-        sudo apt-get install cmake xorg-dev libx11-dev libglu1-mesa-dev libglew1.5 libglew1.5-dev libglu1-mesa libglu1-mesa-dev libgl1-mesa-glx libgl1-mesa-dev
-  - task: CmdLine@2
-    displayName: 'Generate Makefiles'
-    inputs:
-      script: 'cd build; cmake -G "Unix Makefiles" ..'
-  - task: CmdLine@2
-    displayName: 'Build with make'
-    inputs:
-      script: 'cd build; make'
-  - task: CmdLine@2
-    displayName: 'Copy documents to build directory'
-    inputs:
-      script: 'cp README.md build/; cp docs/acknowledgements.md build/'
-  - task: CmdLine@2
-    displayName: 'Zip up build artifact'
-    inputs:
-      script: 'cd build; zip -r DunGen-Linux.zip DunGen README.md acknowledgements.md'
-  - task: CopyFiles@2
-    displayName: 'Copy artifact to staging'
-    inputs:
-      Contents: 'build/DunGen-Linux.zip'
-      TargetFolder: '$(Build.ArtifactStagingDirectory)'
-      flattenFolders: true
-  - task: PublishBuildArtifacts@1
-    displayName: 'Publish build into pipeline'
-    inputs:
-      PathToPublish: '$(Build.ArtifactStagingDirectory)'
-      ArtifactName: 'Linux Build'
-      publishLocation: 'Container'
+# - job: Linux
+#   pool:
+#     vmImage: 'ubuntu-latest'
+#   steps:
+#   - task: CmdLine@2
+#     displayName: 'Install dependencies'
+#     inputs:
+#       script: |
+#         sudo apt -y update
+#         sudo apt-get install cmake xorg-dev libx11-dev libglu1-mesa-dev libglew1.5 libglew1.5-dev libglu1-mesa libglu1-mesa-dev libgl1-mesa-glx libgl1-mesa-dev
+#   - task: CmdLine@2
+#     displayName: 'Generate Makefiles'
+#     inputs:
+#       script: 'cd build; cmake -G "Unix Makefiles" ..'
+#   - task: CmdLine@2
+#     displayName: 'Build with make'
+#     inputs:
+#       script: 'cd build; make'
+#   - task: CmdLine@2
+#     displayName: 'Copy documents to build directory'
+#     inputs:
+#       script: 'cp README.md build/; cp docs/acknowledgements.md build/'
+#   - task: CmdLine@2
+#     displayName: 'Zip up build artifact'
+#     inputs:
+#       script: 'cd build; zip -r DunGen-Linux.zip DunGen README.md acknowledgements.md'
+#   - task: CopyFiles@2
+#     displayName: 'Copy artifact to staging'
+#     inputs:
+#       Contents: 'build/DunGen-Linux.zip'
+#       TargetFolder: '$(Build.ArtifactStagingDirectory)'
+#       flattenFolders: true
+#   - task: PublishBuildArtifacts@1
+#     displayName: 'Publish build into pipeline'
+#     inputs:
+#       PathToPublish: '$(Build.ArtifactStagingDirectory)'
+#       ArtifactName: 'Linux Build'
+#       publishLocation: 'Container'
 
 # - job: GitHubPrep
 #   condition: startsWith(variables['Build.SourceBranch'], 'refs/tags/v')
