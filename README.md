@@ -18,6 +18,6 @@ I've structured it something like a computer operating on the hex grid like a se
 Whatever latest version I've tagged is viewable in the [releases tab](https://github.com/sjml/dungen2/releases). Downloadable versions for Mac and Windows, along with source. 
 
 ## Building
-I mostly develop on a Mac, but spend a non-trivial amount of time in Windows, too, so it gets checked there. There's an Xcode and Visual Studio project, and I try to keep them in sync. 
+I mostly develop on a Mac, but spend a non-trivial amount of time in Windows, too, so it gets checked there. There's an Xcode project and a Visual Studio solution, and I try to keep them in sync. 
 
 There's also a CMake configuration that I really only use to build it on Linux on those occasions when I do so. It might be out of sync with the other build systems. (Yes, I could just use CMake for everything but it makes some UGLY projects, so I kind of treat it as just a more readable [to me] Makefile.)
