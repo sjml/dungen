@@ -70,7 +70,7 @@ jobs:
   - task: CopyFiles@2
     displayName: 'Copy artifact to staging'
     inputs:
-      Contents: 'build/DunGen-Windows.zip'
+      Contents: 'build/Release/DunGen-Windows.zip'
       TargetFolder: '$(Build.ArtifactStagingDirectory)'
   - task: PublishBuildArtifacts@1
     displayName: 'Publish build into pipeline'
