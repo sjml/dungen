@@ -1,6 +1,19 @@
 
+sir("DieRollInterceptable", 1)
+ssr("DieRollDescription", "Primordial Age Event")
+
+ssr("DieRollChoice1", "Mithral")
+ssr("DieRollChoice2", "Caverns")
+ssr("DieRollChoice3", "Caverns")
+ssr("DieRollChoice4", "Gold Vein")
+ssr("DieRollChoice5", "Cave Complex")
+ssr("DieRollChoice6", "River")
+ssr("DieRollChoice7", "Great Wyrm")
+ssr("DieRollChoice8", "Disaster")
+
 sir("DieSides", 8)
 push("System.DieRoll")
+sir("DieRollInterceptable", 0)
 
 result = gir("DieRollResult")
 if     (result == 1) then

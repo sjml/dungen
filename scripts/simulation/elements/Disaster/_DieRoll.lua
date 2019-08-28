@@ -1,6 +1,19 @@
 
+sir("DieRollInterceptable", 1)
+ssr("DieRollDescription", "Great Disaster")
+
+ssr("DieRollChoice1", "Earthquake")
+ssr("DieRollChoice2", "Earthquake")
+ssr("DieRollChoice3", "Earthquake")
+ssr("DieRollChoice4", "Eruption")
+ssr("DieRollChoice5", "Great River")
+ssr("DieRollChoice6", "Plague")
+ssr("DieRollChoice7", "Fallen Star")
+ssr("DieRollChoice8", "Primordial")
+
 sir("DieSides", 8)
 push("System.DieRoll")
+sir("DieRollInterceptable", 0)
 
 local result = gir("DieRollResult")
 if     (result >= 1 and result <= 3) then

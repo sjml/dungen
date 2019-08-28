@@ -78,6 +78,7 @@ void PresentChoiceSelection() {
     if (numChoices <= 4) {
         numCols = 1;
         numRows = (int)arrlen(choices);
+        btnW += 200.0f;
     }
     else if (numChoices <= 8) {
         numCols = 2;
@@ -186,7 +187,7 @@ void ChoiceProcessMouseClick(bool down) {
         }
     }
     else {
-        if (pressedChoice == hoveredChoice) {
+        if (pressedChoice != -1 && (pressedChoice == hoveredChoice)) {
             // make the choice
             SetIntRegister("ChoiceSelection", pressedChoice);
             choiceStatus = 0;
