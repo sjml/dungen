@@ -1,17 +1,16 @@
 ## TODO
-1. random tiles and die rolls in Lua with optional player overrides
-2. Primordial Age
+1. Primordial Age
     - image output / movie (can be manual for now)
     - figure out how to display a region that is both water and plague, for example
-3. Relaxable constraint sets
-4. Chamber/region/room model design
+2. Relaxable constraint sets
+3. Chamber/region/room model design
     - (see brainstorm notes)
     - somewhat more than tilesets
         - entering a tile needs to be equivalent to entering the chamber it belongs to
     - need to have triggers/encounters somehow
         - "Dwarves tunnel into chamber containing plague."
         - "Adventurers come into territory owned by demons."
-5. Design and implement agents/entities
+4. Design and implement agents/entities
     - (update primordial wandering monster to be agent)
     - individuals
         - attributes

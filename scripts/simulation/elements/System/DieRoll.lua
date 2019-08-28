@@ -13,7 +13,7 @@ if gir("InterceptDieRolls") == 1 and gir("DieRollInterceptable") == 1 then
     end
   end
 
-  PresentChoiceSelection()
+  PresentChoiceSelection(gsr("DieRollDescription"))
   sir("WaitForUI", 1)
   push()
   ClearChoices()

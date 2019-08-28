@@ -2678,8 +2678,9 @@ SWIG_Lua_dostring(lua_State *L, const char *str) {
 #define SWIGTYPE_p_p_sRegion swig_types[7]
 #define SWIGTYPE_p_sRegion swig_types[8]
 #define SWIGTYPE_p_sTileSet swig_types[9]
-static swig_type_info *swig_types[11];
-static swig_module_info swig_module = {swig_types, 10, 0, 0, 0, 0};
+#define SWIGTYPE_p_void swig_types[10]
+static swig_type_info *swig_types[12];
+static swig_module_info swig_module = {swig_types, 11, 0, 0, 0, 0};
 #define SWIG_TypeQuery(name) SWIG_TypeQueryModule(&swig_module, &swig_module, name)
 #define SWIG_MangledTypeQuery(name) SWIG_MangledTypeQueryModule(&swig_module, &swig_module, name)
 
@@ -7675,6 +7676,7 @@ static int _wrap_AddBanner(lua_State* L) {
   gbVec4 arg3 ;
   gbVec4 arg4 ;
   float arg5 ;
+  void *result = 0 ;
   
   SWIG_check_num_args("AddBanner",5,5)
   if(!SWIG_lua_isnilstring(L,1)) SWIG_fail_arg("AddBanner",1,"char const *");
@@ -7759,7 +7761,48 @@ static int _wrap_AddBanner(lua_State* L) {
     }
   }
   arg5 = (float)lua_tonumber(L, 5);
-  AddBanner((char const *)arg1,arg2,arg3,arg4,arg5);
+  result = (void *)AddBanner((char const *)arg1,arg2,arg3,arg4,arg5);
+  SWIG_NewPointerObj(L,result,SWIGTYPE_p_void,0); SWIG_arg++; 
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_PositionBanner(lua_State* L) {
+  int SWIG_arg = 0;
+  void *arg1 = (void *) 0 ;
+  float arg2 ;
+  
+  SWIG_check_num_args("PositionBanner",2,2)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("PositionBanner",1,"void *");
+  if(!lua_isnumber(L,2)) SWIG_fail_arg("PositionBanner",2,"float");
+  arg1=(void *)SWIG_MustGetPtr(L,1,0,0,1,"PositionBanner");
+  arg2 = (float)lua_tonumber(L, 2);
+  PositionBanner(arg1,arg2);
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_RemoveBanner(lua_State* L) {
+  int SWIG_arg = 0;
+  void *arg1 = (void *) 0 ;
+  
+  SWIG_check_num_args("RemoveBanner",1,1)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("RemoveBanner",1,"void *");
+  arg1=(void *)SWIG_MustGetPtr(L,1,0,0,1,"RemoveBanner");
+  RemoveBanner(arg1);
   
   return SWIG_arg;
   
@@ -7792,9 +7835,12 @@ fail:
 
 static int _wrap_PresentChoiceSelection(lua_State* L) {
   int SWIG_arg = 0;
+  char *arg1 = (char *) 0 ;
   
-  SWIG_check_num_args("PresentChoiceSelection",0,0)
-  PresentChoiceSelection();
+  SWIG_check_num_args("PresentChoiceSelection",1,1)
+  if(!SWIG_lua_isnilstring(L,1)) SWIG_fail_arg("PresentChoiceSelection",1,"char const *");
+  arg1 = (char *)lua_tostring(L, 1);
+  PresentChoiceSelection((char const *)arg1);
   
   return SWIG_arg;
   
@@ -7926,6 +7972,8 @@ static swig_lua_method swig_SwigModule_methods[]= {
     { "GetTime", _wrap_GetTime},
     { "FindSimplePath", _wrap_FindSimplePath},
     { "AddBanner", _wrap_AddBanner},
+    { "PositionBanner", _wrap_PositionBanner},
+    { "RemoveBanner", _wrap_RemoveBanner},
     { "AddChoice", _wrap_AddChoice},
     { "PresentChoiceSelection", _wrap_PresentChoiceSelection},
     { "ClearChoices", _wrap_ClearChoices},
@@ -7970,6 +8018,7 @@ static swig_type_info _swigt__p_gbVec4 = {"_p_gbVec4", "union gbVec4 *|gbVec4 *"
 static swig_type_info _swigt__p_p_sRegion = {"_p_p_sRegion", "struct sRegion **|Region **", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_sRegion = {"_p_sRegion", "struct sRegion *|Region *|sRegion *", 0, 0, (void*)&_wrap_class_Region, 0};
 static swig_type_info _swigt__p_sTileSet = {"_p_sTileSet", "struct sTileSet *|TileSet *|sTileSet *", 0, 0, (void*)&_wrap_class_TileSet, 0};
+static swig_type_info _swigt__p_void = {"_p_void", "void *", 0, 0, (void*)0, 0};
 
 static swig_type_info *swig_type_initial[] = {
   &_swigt__p_AttrComparison,
@@ -7982,6 +8031,7 @@ static swig_type_info *swig_type_initial[] = {
   &_swigt__p_p_sRegion,
   &_swigt__p_sRegion,
   &_swigt__p_sTileSet,
+  &_swigt__p_void,
 };
 
 static swig_cast_info _swigc__p_AttrComparison[] = {  {&_swigt__p_AttrComparison, 0, 0, 0},{0, 0, 0, 0}};
@@ -7994,6 +8044,7 @@ static swig_cast_info _swigc__p_gbVec4[] = {  {&_swigt__p_gbVec4, 0, 0, 0},{0, 0
 static swig_cast_info _swigc__p_p_sRegion[] = {  {&_swigt__p_p_sRegion, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_sRegion[] = {  {&_swigt__p_sRegion, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_sTileSet[] = {  {&_swigt__p_sTileSet, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_void[] = {  {&_swigt__p_void, 0, 0, 0},{0, 0, 0, 0}};
 
 static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_AttrComparison,
@@ -8006,6 +8057,7 @@ static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_p_sRegion,
   _swigc__p_sRegion,
   _swigc__p_sTileSet,
+  _swigc__p_void,
 };
 
 

@@ -125,7 +125,7 @@ lazyBasicAssert(false, hc4:CheckTile(td3.i), "Has none of tags constraint negati
 ac = HasAttributes("open", GreaterThan, 0)
 openTiles = ac:GetPassingTiles()
 openTileList = openTiles:toList()
-lazyBasicAssert(183, #openTileList, "Attribute queries")
+lazyBasicAssert(305, #openTileList, "Attribute queries")
 hc = HasAllTags("sky")
 hc_tagged = hc:GetPassingTiles()
 lazyBasicAssert(#hc_tagged:toList(), #openTileList, "Attributes matching lengths")

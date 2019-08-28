@@ -1,6 +1,7 @@
 #include "../stdafx.h"
 #include "choice.h"
 
+#include "banner.h"
 #include "../hlvm/hlvm.h"
 #include "../infrastructure/text.h"
 #include "../infrastructure/rendering.h"
@@ -14,6 +15,8 @@ typedef struct {
     gbRect2 textBB;
 } Button;
 static Button* buttons = NULL;
+
+static void* bannerHandle = NULL;
 
 static gbVec4 btnColorBase  = {0.3f, 0.3f, 0.3f, 1.0f};
 static gbVec4 btnColorHover = {0.4f, 0.4f, 0.4f, 1.0f};
@@ -55,7 +58,7 @@ void ClearChoices(void) {
     buttons = NULL;
 }
 
-void PresentChoiceSelection() {
+void PresentChoiceSelection(const char* description) {
     int numChoices = (int)arrlen(choices);
 
     if (numChoices == 0) {
@@ -107,6 +110,17 @@ void PresentChoiceSelection() {
     start.y = ( 768.0f * 0.5f) - (totalH * 0.5f) + (btnH * 0.5f);
     start.y = 768.0f - start.y;
     Vec2i current = {0, 0};
+    
+    bannerHandle = NULL;
+    if (strlen(description) > 0) {
+        if (numRows <= 5) {
+            gbVec4 textColor = {0.3f, 0.3f, 0.7f, 1.0f};
+            gbVec4 bgColor = {0.8, 0.8, 0.8, 0.8};
+            bannerHandle = AddBanner(description, 72.0f, textColor, bgColor, -1.0f);
+            PositionBanner(bannerHandle, 100.0f);
+            start.y -= 50.0f;
+        }
+    }
 
     for (long i=0; i < arrlen(choices); i++) {
         gbVec2 center;
@@ -198,5 +212,9 @@ void ChoiceProcessMouseClick(bool down) {
         glfwGetCursorPos(GetWindowHandle(), &x, &y);
         gbVec2 pos = {(float)x, (float)y};
         ChoiceProcessMouseMovement(pos);
+        if (bannerHandle != NULL) {
+            RemoveBanner(bannerHandle);
+            bannerHandle = NULL;
+        }
     }
 }
