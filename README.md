@@ -12,12 +12,14 @@ Currently it simulates all of the Primordial Age and the Great Disaster. Impleme
 
 It's more of a programmer's toy than a friendly simulation presentation, so the handles for playing with it can be a little archaic.
 
-I've structured it something like a computer operating on the hex grid like a set of working memory cells. A sort of high-level virtual machine (HLVM), if you will. Look into the [simulation folder](https://github.com/sjml/dungen2/tree/master/scripts/simulation) to see how the little programs (written in [Lua](https://www.lua.org/)) that manipulate that memory work. They get called and executed in a stack, exchanging data via registers that the base engine also uses. (Calling this a "VM" is definitely generous.)
+I've structured it something like a computer operating on the hex grid like a set of working memory cells. A sort of high-level virtual machine (HLVM), if you will. Look into the [simulation folder](https://github.com/sjml/dungen2/tree/master/scripts/simulation) to see how the little programs (written in [Lua](https://www.lua.org/)) that manipulate that memory work. They get called and executed in a stack, exchanging data via registers that the base engine also uses. (Calling this a "VM" is definitely generous.) 
+
+The simulation scripts are located in the `Resources/scripts/simulation` directory on Windows, and on the Mac they are in the .app directory's `Contents/Resources/scripts/simulation` (right-click --> "Show Package Contents").
 
 ## Downloading
-Whatever latest version I've tagged is viewable in the [releases tab](https://github.com/sjml/dungen2/releases). Downloadable versions for Mac and Windows, along with source. 
+Whatever latest version I've tagged is viewable in the [releases tab](https://github.com/sjml/dungen2/releases). Downloadable versions for Mac and Windows, along with source. It builds and makes GitHub releases via [Azure Pipelines](https://azure.microsoft.com/en-us/services/devops/pipelines/) which was [kind of a pain](https://github.com/sjml/dungen2/blob/master/azure-pipelines.yml) to get working, but I kinda like devops stuff and build pipelines, so ¯\\\_(ツ)\_/¯. 
 
 ## Building
-I mostly develop on a Mac, but spend a non-trivial amount of time in Windows, too, so it gets checked there. There's an Xcode project and a Visual Studio solution, and I try to keep them in sync. 
+I mostly develop on a Mac, but spend a non-trivial amount of time in Windows, too, so it gets checked there periodically. There's an Xcode project and a Visual Studio solution, and I try to keep them in sync. 
 
 There's also a CMake configuration that I really only use to build it on Linux on those occasions when I do so. It might be out of sync with the other build systems. (Yes, I could just use CMake for everything but it makes some UGLY projects, so I kind of treat it as just a more readable [to me] Makefile.)

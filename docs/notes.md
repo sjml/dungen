@@ -1,17 +1,14 @@
 ## TODO
-1. Primordial Age
-    - image output / movie (can be manual for now)
-    - figure out how to display a region that is both water and plague, for example
-2. Relaxable constraint sets
-3. Chamber/region/room model design
+1. Relaxable constraint sets
+2. Chamber/region/room model design
     - (see brainstorm notes)
     - somewhat more than tilesets
         - entering a tile needs to be equivalent to entering the chamber it belongs to
     - need to have triggers/encounters somehow
         - "Dwarves tunnel into chamber containing plague."
         - "Adventurers come into territory owned by demons."
-4. Design and implement agents/entities
-    - (update primordial wandering monster to be agent)
+3. Design and implement agents/entities
+    - (update primordial wandering monsters and great wyrm to be agent)
     - individuals
         - attributes
         - ascribe agency to actions
@@ -25,9 +22,10 @@
 * set precompiled headers up in Visual Studio
 * typemaps should reject inputs that are not tables
 * handle newlines in text rendering?
+* figure out text extents ascender/descender issue
 * Rethink styler logic
     - should regions and tiles have separate paths? regions just have labels and outlines?
-* figure out text extents ascender/descender issue
+    - figure out how to display a region that is both water and plague, for example
 * add way to modify attributes instead of having to get/set round-trip through SQLite
 * overusing the stretchy buffer right now; look for more chances to just use a static array
     - also not a huge deal, but I think the *free functions also NULL the pointer, so might have some redundant calls
@@ -41,7 +39,6 @@
 * pull sim settings and other stuff out into config file that Lua pulls in
 * specify (and store) random seed
 * let outlines specify inner/outer/center
-* Azure pipeline -> GitHub release (draft)
 * expose resources directory on mac?
 * history recording -- optional live captioning
     - banner: "The Primordial Age"
