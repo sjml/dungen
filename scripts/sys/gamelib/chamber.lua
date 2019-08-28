@@ -6,6 +6,7 @@ function makeChamber(baseTile, radius)
     tile:SetAttributeInt("empty", 1)
     chamber:AddTile(tile)
   end
+  chamber:AddTag("chamber")
   chamber:AddTag("ground")
   return chamber
 end
@@ -32,6 +33,7 @@ function storeInChamber(chamber, tag, allowFlood)
 
   local lowY = -1
   local xVals = {}
+  local lowTile = nil
   for _, tile in pairs(empties) do
     if tile.hexPos.y > lowY then
       xVals = {}

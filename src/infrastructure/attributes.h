@@ -45,6 +45,6 @@ char* GetRegionAttributeString(Region* data, const char* name);
 
 bool AddRegionTag(Region* td, char* tag);
 bool RemoveRegionTag(Region* td, const char* tag);
-Region** GetRegionsTagged(const char* tagString);
+DisposableRegionList GetRegionsTagged(const char* tagString);
 bool RegionHasTags(Region* td, const char* tagString);
 char** GetRegionTags(Region* td);

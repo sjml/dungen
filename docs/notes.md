@@ -1,8 +1,9 @@
 ## TODO
-1. Relaxable constraint sets
-2. random tiles and die rolls in Lua with optional player overrides
-3. Primordial Age
+1. random tiles and die rolls in Lua with optional player overrides
+2. Primordial Age
     - image output / movie (can be manual for now)
+    - figure out how to display a region that is both water and plague, for example
+3. Relaxable constraint sets
 4. Chamber/region/room model design
     - (see brainstorm notes)
     - somewhat more than tilesets

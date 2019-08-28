@@ -109,6 +109,13 @@ gems = {
   labelText = "Gems!",
 }
 
+meteorite = {
+  reqs = {
+    tags = "meteorite"
+  },
+  tileFill = colors.meteorite,
+}
+
 monster = {
   reqs = {
     tags = "ground, monster"
@@ -122,6 +129,14 @@ greatWyrm = {
   },
   labelText = "Great Wyrm",
   labelOffset = {0, 1}
+}
+
+greatWyrm = {
+  reqs = {
+    tags = "FallenStar"
+  },
+  labelText = "Fallen Star",
+  -- labelOffset = {0, 1}
 }
 
 FATE = {

@@ -762,7 +762,7 @@ TileData** GetTilesTagged(const char* tagString) {
     return ret;
 }
 
-Region** GetRegionsTagged(const char* tagString) {
+DisposableRegionList GetRegionsTagged(const char* tagString) {
     int tagCount;
     sds* tags = _TagSplit(tagString, &tagCount);
 

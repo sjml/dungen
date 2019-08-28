@@ -23,6 +23,7 @@ while (cavernCount < maxCaverns) do
   end
 
   chamber = makeChamber(base, 1)
+  chamber:AddTag("natural")
 
   sir("DieSides", 8)
   push("System.DieRoll")

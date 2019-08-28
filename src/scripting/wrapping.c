@@ -7507,12 +7507,12 @@ fail:
 static int _wrap_GetRegionsTagged(lua_State* L) {
   int SWIG_arg = 0;
   char *arg1 = (char *) 0 ;
-  Region **result = 0 ;
+  DisposableRegionList result;
   
   SWIG_check_num_args("GetRegionsTagged",1,1)
   if(!SWIG_lua_isnilstring(L,1)) SWIG_fail_arg("GetRegionsTagged",1,"char const *");
   arg1 = (char *)lua_tostring(L, 1);
-  result = (Region **)GetRegionsTagged((char const *)arg1);
+  result = GetRegionsTagged((char const *)arg1);
   
   {
     lua_newtable(L);
@@ -7523,7 +7523,7 @@ static int _wrap_GetRegionsTagged(lua_State* L) {
         lua_settable(L, -3);
       }
     }
-    // arrfree(result); don't free if we don't own this memory
+    arrfree(result);
     
     SWIG_arg += 1;
   }

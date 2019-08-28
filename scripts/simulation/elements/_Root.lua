@@ -10,4 +10,6 @@
 -- push("Primordial.GreatWyrm")
 
 -- push("Disaster.Earthquake")
-push("Disaster.VolcanicEruption")
+-- push("Disaster.VolcanicEruption")
+-- push("Disaster.Plague")
+push("Disaster.FallenStar")
