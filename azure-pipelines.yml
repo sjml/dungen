@@ -110,6 +110,7 @@ jobs:
     inputs:
       Contents: 'build/DunGen-Linux.zip'
       TargetFolder: '$(Build.ArtifactStagingDirectory)'
+      flattenFolders: true
   - task: PublishBuildArtifacts@1
     displayName: 'Publish build into pipeline'
     inputs:
