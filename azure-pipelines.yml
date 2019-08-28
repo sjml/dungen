@@ -5,6 +5,9 @@ trigger:
     - master
     - refs/tags/v*
 
+variables:
+  tag:
+
 jobs:
 - job: macOS
   pool:
@@ -118,3 +121,15 @@ jobs:
       PathToPublish: '$(Build.ArtifactStagingDirectory)'
       ArtifactName: 'Linux Build'
       publishLocation: 'Container'
+
+- job: GitHub Prep
+  condition: startsWith(variables['Build.SourceBranch'], 'refs/tags/v')
+  pool:
+    vmImage: 'ubuntu-latest'
+  steps:
+  - task: CmdLine@2
+    displayName: 'Cleanup build artifact names'
+    inputs:
+      script: |
+        'tagName=$(basename $(Build.SourceBranch))'
+        'for f in $(Build.ArtifactStagingDirectory)/**/*.zip; do mv -- "$f" "${f%.zip}-$(tagName).txt"; done'
