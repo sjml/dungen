@@ -36,3 +36,8 @@ elseif (result == 7) then
 elseif (result == 8) then
   push("Disaster._DieRoll")
 end
+
+if gir("InterceptDieRolls") == 1 then
+  sfr("WaitDuration", 2.0)
+  push("System.Wait")
+end
