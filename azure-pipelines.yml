@@ -65,6 +65,7 @@ jobs:
     displayName: 'Zip up build artifact'
     inputs:
       workingDirectory: 'build'
+      targetType: 'inline'
       script: 'Compress-Archive -Path .\DunGen.exe, .\README.md, .\acknowledgements.md -CompressionLevel Optimal -DestinationPath .\DunGen-Windows.zip'
   - task: CopyFiles@2
     displayName: 'Copy artifact to staging'
