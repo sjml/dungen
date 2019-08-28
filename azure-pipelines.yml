@@ -124,6 +124,10 @@ jobs:
 
 - job: GitHubPrep
   condition: startsWith(variables['Build.SourceBranch'], 'refs/tags/v')
+  dependsOn:
+  - macOS
+  - Windows
+  - Linux
   pool:
     vmImage: 'ubuntu-latest'
   steps:
