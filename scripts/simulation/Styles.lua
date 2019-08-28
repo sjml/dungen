@@ -116,6 +116,14 @@ monster = {
   tileFill = colors.monster,
 }
 
+greatWyrm = {
+  reqs = {
+    tags = "GreatWyrm"
+  },
+  labelText = "Great Wyrm",
+  labelOffset = {0, 1}
+}
+
 FATE = {
   reqs = {
     tags = "ground, FATE"

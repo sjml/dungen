@@ -6,4 +6,5 @@
 -- push("Primordial.NaturalCaverns")
 -- push("Primordial.GoldVein")
 -- push("Primordial.CaveComplex")
-push("Primordial.UndergroundRiver")
+-- push("Primordial.UndergroundRiver")
+push("Primordial.GreatWyrm")

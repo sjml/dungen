@@ -6,6 +6,7 @@ function makeChamber(baseTile, radius)
     tile:SetAttributeInt("empty", 1)
     chamber:AddTile(tile)
   end
+  chamber:AddTag("ground")
   return chamber
 end
 
@@ -47,6 +48,7 @@ function storeInChamber(chamber, tag, allowFlood)
 
   lowTile:SetAttributeInt("empty", 0)
   lowTile:AddTag(tag)
+  -- print("storing",tag,"in",lowTile.hexPos.x," ",lowTile.hexPos.y)
 
   return true
 end
