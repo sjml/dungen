@@ -59,7 +59,7 @@ jobs:
       Contents: |
         README.md
         docs/acknowledgements.md
-      TargetFolder: 'build'
+      TargetFolder: 'build/Release'
       flattenFolders: true
   - task: PowerShell@2
     displayName: 'Zip up build artifact'
