@@ -72,6 +72,7 @@ jobs:
     inputs:
       Contents: 'build/Release/DunGen-Windows.zip'
       TargetFolder: '$(Build.ArtifactStagingDirectory)'
+      flattenFolders: true
   - task: PublishBuildArtifacts@1
     displayName: 'Publish build into pipeline'
     inputs:
