@@ -75,11 +75,11 @@ jobs:
       workingDirectory: 'build/Release'
       targetType: 'inline'
       script: 'Compress-Archive -Path .\DunGen.exe, .\README.md, .\acknowledgements.md -CompressionLevel Optimal -DestinationPath .\DunGen-Windows-$env:LABEL.zip'
-  - task: Bash@3
+  - task: PowerShell@2
     displayName: 'Copy artifact to staging'
     inputs:
       targetType: 'inline'
-      script: 'cp "build/Release/DunGen-Windows-$LABEL.zip" $(Build.ArtifactStagingDirectory)'
+      script: 'Get-ChildItem Env:; Copy-Item .\build\Release\DunGen-Windows-$env:LABEL.zip -Destination $(Build.ArtifactStagingDirectory)'
   - task: PublishBuildArtifacts@1
     displayName: 'Publish build into pipeline'
     inputs:
@@ -101,7 +101,7 @@ jobs:
     inputs:
       script: |
         sudo apt -y update
-        sudo apt-get install cmake xorg-dev libx11-dev libglu1-mesa-dev libglew1.5 libglew1.5-dev libglu1-mesa libglu1-mesa-dev libgl1-mesa-glx libgl1-mesa-dev
+        sudo apt-get -y install cmake xorg-dev libx11-dev libglu1-mesa-dev libglew1.5 libglew1.5-dev libglu1-mesa libglu1-mesa-dev libgl1-mesa-glx libgl1-mesa-dev
   - task: CmdLine@2
     displayName: 'Generate Makefiles'
     inputs:
@@ -121,7 +121,7 @@ jobs:
   - task: CmdLine@2
     displayName: 'Copy artifact to staging'
     inputs:
-      script: 'cp "build/DunGen-Mac-$LABEL.zip" $(Build.ArtifactStagingDirectory)'
+      script: 'cp "build/DunGen-Linux-$LABEL.zip" $(Build.ArtifactStagingDirectory)'
   - task: PublishBuildArtifacts@1
     displayName: 'Publish build into pipeline'
     inputs:
