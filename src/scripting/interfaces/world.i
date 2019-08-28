@@ -54,6 +54,8 @@ void CleanAllTiles(void);
 TileData* GetTileAtPosition(int x, int y);
 TileData* GetTileAtIndex(long long i);
 TileData* ScreenToTile(gbVec2* screenCoordinates);
+TileData** GetTileNeighbors(TileData* center);
+TileData** GetTileCircle(TileData* center, int radius);
 
 Region* CreateRegion(void);
 void DestroyRegion(Region* r);

@@ -1,48 +1,8 @@
 local TileDataSet = require("sys.tiledataset")
 
 local tdft = GetFunctionTable("TileData")
-tdft.GetNeighbors = function(td)
-  local ret = {}
-  if (td.neighborW ~= -1) then
-    table.insert(ret, GetTileAtIndex(td.neighborW))
-  end
-  if (td.neighborNW ~= -1) then
-    table.insert(ret, GetTileAtIndex(td.neighborNW))
-  end
-  if (td.neighborNE ~= -1) then
-    table.insert(ret, GetTileAtIndex(td.neighborNE))
-  end
-  if (td.neighborE ~= -1) then
-    table.insert(ret, GetTileAtIndex(td.neighborE))
-  end
-  if (td.neighborSE ~= -1) then
-    table.insert(ret, GetTileAtIndex(td.neighborSE))
-  end
-  if (td.neighborSW ~= -1) then
-    table.insert(ret, GetTileAtIndex(td.neighborSW))
-  end
-  return ret
-end
-
 tdft.GetCircle = function(td, radius)
-  local allWithDupes = {td}
-
-  local count = 0
-  while (count < radius) do
-    count = count + 1
-    local expansion = {}
-    for _, t in ipairs(allWithDupes) do
-      for _, n in ipairs(t:GetNeighbors()) do
-        table.insert(expansion, n)
-      end
-    end
-    for _, e in ipairs(expansion) do
-      table.insert(allWithDupes, e)
-    end
-  end
-
-  local ts = TileDataSet:new(allWithDupes)
-  return ts:toList()
+  return GetTileCircle(td, radius)
 end
 
 WEST = 1

@@ -326,28 +326,53 @@ TileData* ScreenToTile(gbVec2* screenCoordinates) {
     return GetTileAtPosition(hexCoord.x, hexCoord.y);
 }
 
-TileData** GetTileNeighbors(TileData* center, int *numNeighbors) {
-    TileData** neighbors = malloc(sizeof(TileData*) * 6);
-    (*numNeighbors) = 0;
+TileData** GetTileNeighbors(TileData* center) {
+    TileData** neighbors = NULL;
     if (center->neighborW != -1) {
-        neighbors[(*numNeighbors)++] = GetTileAtIndex(center->neighborW);
+        arrpush(neighbors, &WorldArray[center->neighborW]);
     }
     if (center->neighborNW != -1) {
-        neighbors[(*numNeighbors)++] = GetTileAtIndex(center->neighborNW);
+        arrpush(neighbors, &WorldArray[center->neighborNW]);
     }
     if (center->neighborNE != -1) {
-        neighbors[(*numNeighbors)++] = GetTileAtIndex(center->neighborNE);
+        arrpush(neighbors, &WorldArray[center->neighborNE]);
     }
     if (center->neighborE != -1) {
-        neighbors[(*numNeighbors)++] = GetTileAtIndex(center->neighborE);
+        arrpush(neighbors, &WorldArray[center->neighborE]);
     }
     if (center->neighborSE != -1) {
-        neighbors[(*numNeighbors)++] = GetTileAtIndex(center->neighborSE);
+        arrpush(neighbors, &WorldArray[center->neighborSE]);
     }
     if (center->neighborSW != -1) {
-        neighbors[(*numNeighbors)++] = GetTileAtIndex(center->neighborSW);
+        arrpush(neighbors, &WorldArray[center->neighborSW]);
     }
+
     return neighbors;
+}
+
+TileData** GetTileCircle(TileData* center, int radius) {
+    TileSet* ts = NULL;
+    ts = AddTileToSet(ts, center);
+
+    int count = 0;
+    TileData** expansion = NULL;
+    while (count++ < radius) {
+        for (long i = 0; i < hmlen(ts); i++) {
+            TileData** neighbors = GetTileNeighbors(ts[i].key);
+            for (long n = 0; n < arrlen(neighbors); n++) {
+                arrpush(expansion, neighbors[n]);
+            }
+            arrfree(neighbors);
+        }
+        for (long e = 0; e < arrlen(expansion); e++) {
+            ts = AddTileToSet(ts, expansion[e]);
+        }
+        arrfree(expansion);
+    }
+    
+    TileData** ret = GetTilesFromSet(ts);
+    DestroyTileSet(ts);
+    return ret;
 }
 
 void RenderTiles(void) {
@@ -473,7 +498,7 @@ void SetRegionLabel(Region* r, const char* text, float scale, gbVec4 color, gbVe
     r->label.color.g = color.g;
     r->label.color.b = color.b;
     r->label.color.a = color.a;
-    
+
     gbVec2 min = {  FLT_MAX,  FLT_MAX };
     gbVec2 max = { -FLT_MAX, -FLT_MAX };
     for (long i=0; i < hmlen(r->tiles); i++) {
@@ -490,7 +515,7 @@ void SetRegionLabel(Region* r, const char* text, float scale, gbVec4 color, gbVe
     gb_vec2_lerp(&center, min, max, 0.5f);
     center.x += tileDimensions.x * (float)tileOffset.x;
     center.y += tileDimensions.y * (float)tileOffset.y;
-    
+
     gbVec2 screenPos = WorldToScreen(center);
 
     gbVec2 extents = MeasureTextExtents(text, "fonts/04B_03__.TTF", scale);

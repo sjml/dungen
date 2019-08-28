@@ -4,4 +4,5 @@
 -- push("Primordial.Root")
 -- push("Primordial.Mithral")
 -- push("Primordial.NaturalCaverns")
-push("Primordial.GoldVein")
+-- push("Primordial.GoldVein")
+push("Primordial.CaveComplex")

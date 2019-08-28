@@ -6224,6 +6224,85 @@ fail:
 }
 
 
+static int _wrap_GetTileNeighbors(lua_State* L) {
+  int SWIG_arg = 0;
+  TileData *arg1 = (TileData *) 0 ;
+  TileData **result = 0 ;
+  
+  SWIG_check_num_args("GetTileNeighbors",1,1)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("GetTileNeighbors",1,"TileData *");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_TileData,0))){
+    SWIG_fail_ptr("GetTileNeighbors",1,SWIGTYPE_p_TileData);
+  }
+  
+  result = (TileData **)GetTileNeighbors(arg1);
+  
+  {
+    lua_newtable(L);
+    if (arrlen(result) > 0) {
+      for (unsigned int i=1; i <= arrlen(result); i++) {
+        lua_pushnumber(L, i);
+        SWIG_NewPointerObj(L, result[i-1], SWIGTYPE_p_TileData, 1);
+        lua_settable(L, -3);
+      }
+    }
+    arrfree(result);
+    
+    SWIG_arg += 1;
+  }
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_GetTileCircle(lua_State* L) {
+  int SWIG_arg = 0;
+  TileData *arg1 = (TileData *) 0 ;
+  int arg2 ;
+  TileData **result = 0 ;
+  
+  SWIG_check_num_args("GetTileCircle",2,2)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("GetTileCircle",1,"TileData *");
+  if(!lua_isnumber(L,2)) SWIG_fail_arg("GetTileCircle",2,"int");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_TileData,0))){
+    SWIG_fail_ptr("GetTileCircle",1,SWIGTYPE_p_TileData);
+  }
+  
+  arg2 = (int)lua_tonumber(L, 2);
+  result = (TileData **)GetTileCircle(arg1,arg2);
+  
+  {
+    lua_newtable(L);
+    if (arrlen(result) > 0) {
+      for (unsigned int i=1; i <= arrlen(result); i++) {
+        lua_pushnumber(L, i);
+        SWIG_NewPointerObj(L, result[i-1], SWIGTYPE_p_TileData, 1);
+        lua_settable(L, -3);
+      }
+    }
+    arrfree(result);
+    
+    SWIG_arg += 1;
+  }
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
 static int _wrap_CreateRegion(lua_State* L) {
   int SWIG_arg = 0;
   Region *result = 0 ;
@@ -7800,6 +7879,8 @@ static swig_lua_method swig_SwigModule_methods[]= {
     { "GetTileAtPosition", _wrap_GetTileAtPosition},
     { "GetTileAtIndex", _wrap_GetTileAtIndex},
     { "ScreenToTile", _wrap_ScreenToTile},
+    { "GetTileNeighbors", _wrap_GetTileNeighbors},
+    { "GetTileCircle", _wrap_GetTileCircle},
     { "CreateRegion", _wrap_CreateRegion},
     { "DestroyRegion", _wrap_DestroyRegion},
     { "SetRegionOutline", _wrap_SetRegionOutline},

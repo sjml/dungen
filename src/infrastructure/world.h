@@ -53,7 +53,8 @@ void CleanAllTiles(void);
 TileData* GetTileAtPosition(int x, int y);
 TileData* GetTileAtIndex(long long i);
 TileData* ScreenToTile(gbVec2* screenCoordinates);
-TileData** GetTileNeighbors(TileData* center, int *numNeighbors);
+TileData** GetTileNeighbors(TileData* center);
+TileData** GetTileCircle(TileData* center, int radius);
 long GetTileDistance(TileData* t1, TileData* t2);
 
 Region* CreateRegion(void);

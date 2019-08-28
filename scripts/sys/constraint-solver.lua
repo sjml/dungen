@@ -38,6 +38,18 @@ end
 
 
 
+--------------- Preferential Constraint Type
+PreferentialConstraint = class("PreferentialConstraint", Constraint)
+function PreferentialConstraint:initialize()
+  Constraint:initialize(self)
+end
+
+function PreferentialConstraint:GetRanking(td)
+  return 0.0
+end
+
+
+
 --------------- All Tiles
 -- basically a dummy constraint that just provides all
 -- the tiles as a set
@@ -98,10 +110,10 @@ function MinDistanceFromAttribute:initialize(tileDistance, attrName, comp, value
   for _, t in pairs(ts) do
     local circle = t:GetCircle(tileDistance)
     for _, ct in pairs(circle) do
-      table.insert(buffer, ct)
+      buffer[ct] = true
     end
   end
-  for _, bt in pairs(buffer) do
+  for bt, _ in pairs(buffer) do
     table.insert(ts, bt)
   end
 
@@ -115,6 +127,63 @@ function MinDistanceFromAttribute:CheckTile(ti)
   end
   return true
 end
+
+
+
+--------------- Min Distance From Tag
+MinDistanceFromTag = class("MinDistanceFromTag", CheckConstraint)
+function MinDistanceFromTag:initialize(tileDistance, tag)
+  CheckConstraint:initialize(self)
+  local ts = GetTilesTagged(tag)
+  local buffer = {}
+  for _, t in pairs(ts) do
+    local circle = t:GetCircle(tileDistance)
+    for _, ct in pairs(circle) do
+      table.insert(buffer, ct)
+    end
+  end
+  for _, bt in pairs(buffer) do
+    table.insert(ts, bt)
+  end
+
+  self.keepAway = TileDataSet:new(ts)
+  self.tileDistance = tileDistance
+end
+
+function MinDistanceFromTag:CheckTile(ti)
+  if self.keepAway[ti] ~= nil then
+    return false
+  end
+  return true
+end
+
+
+
+--------------- Min Distance From Tile
+MinDistanceFromTile = class("MinDistanceFromTile", CheckConstraint)
+function MinDistanceFromTile:initialize(tileDistance, target)
+  CheckConstraint:initialize(self)
+  local ts = {target}
+  local buffer = {}
+  local circle = target:GetCircle(tileDistance)
+  for _, ct in pairs(circle) do
+    table.insert(buffer, ct)
+  end
+  for _, bt in pairs(buffer) do
+    table.insert(ts, bt)
+  end
+
+  self.keepAway = TileDataSet:new(ts)
+  self.tileDistance = tileDistance
+end
+
+function MinDistanceFromTile:CheckTile(ti)
+  if self.keepAway[ti] ~= nil then
+    return false
+  end
+  return true
+end
+
 
 
 --------------- In Tile Range
@@ -150,6 +219,26 @@ function HasAttributes:GetPassingTiles()
 end
 
 
+--------------- Close To Tile preference
+CloseToTile = class("CloseToTile", PreferentialConstraint)
+function CloseToTile:initialize(target)
+  Constraint:initialize(self)
+  self.target = target
+
+  local dims = GetWorldDimensions()
+  -- using full distance with sqrt because just distance squared acts
+  --   weird for this use case
+  self.maxDist = math.sqrt(dims.x * dims.x + dims.y * dims.y)
+end
+
+function CloseToTile:GetRanking(td)
+  local dx = self.target.hexPos.x - td.hexPos.x
+  local dy = self.target.hexPos.y - td.hexPos.y
+  local dist = math.sqrt(dx * dx + dy * dy)
+  return dist / self.maxDist
+end
+
+
 
 
 
@@ -161,10 +250,12 @@ function ConstraintSolver:initialize(constraints)
   self.solved = false
   self.pickedTileSet = nil
   self.pickedTile = nil
+  self.favoriteTile = nil
 end
 
 function ConstraintSolver:Solve(debug)
   local tiles = nil
+  local lastTime = GetTime()
   for i, c in ipairs(self.constraints) do
     if (i == 1) then
       if c:isInstanceOf(SetConstraint) == false then
@@ -174,7 +265,10 @@ function ConstraintSolver:Solve(debug)
 
       tiles = c:GetPassingTiles()
       if (debug) then
-        print("initial tiles (" .. tostring(c) ..  ") | " .. tostring(#tiles:toList()) .. " tiles.")
+        local ct = GetTime()
+        local dt = ct - lastTime
+        lastTime = ct
+        print("initial tiles (" .. tostring(c) ..  ") | " .. tostring(#tiles:toList()) .. " tiles. [" .. dt .. "s]")
       end
     else
       if (debug) then
@@ -187,21 +281,71 @@ function ConstraintSolver:Solve(debug)
           if not c:CheckTile(ti) then
             tiles[ti] = nil
           end
-          end
         end
+      elseif c:isInstanceOf(PreferentialConstraint) then
+        if i < #self.constraints then
+          io.stderr:write("LUA WARNING: Preferential constraint should be the last element in a set. Ignoring.\n")
+        end
+      end
       if (debug) then
-        print("\tafter: " .. tostring(#tiles:toList()) .. " tiles.")
+        local ct = GetTime()
+        local dt = ct - lastTime
+        lastTime = ct
+        print("\tafter: " .. tostring(#tiles:toList()) .. " tiles. [" .. dt .. "s]")
       end
     end
   end
 
-  local tList = tiles:toList()
   self.pickedTileSet = TileSet()
-  for _, t in ipairs(tList) do
-    self.pickedTileSet = AddTileToSet(self.pickedTileSet, t)
+  local tList = tiles:toList()
+
+  local lastConstraint = self.constraints[#self.constraints]
+  if lastConstraint:isInstanceOf(PreferentialConstraint) ~= true then
+    if #tList > 0 then
+      for _, t in ipairs(tList) do
+        AddTileToSet(self.pickedTileSet, t)
+      end
+      self.pickedTile = tList[RandomRangeInt(1, #tList)]
+      self.favoriteTile = self.pickedTile
+      return true
+    else
+      return false
+    end
   end
-  if #tList > 0 then
-    self.pickedTile = tList[RandomRangeInt(1, #tList)]
+
+  ---- everything after this is dealing with preferential constraint
+  local prefList = {}
+  local totalWeight = 0.0
+
+  for _, t in ipairs(tList) do
+    local weight = lastConstraint:GetRanking(t)
+    totalWeight = totalWeight + weight
+    table.insert(prefList, {t, weight})
+  end
+  -- reverse sort (highest weights first)
+  table.sort(prefList, function(t1, t2) return t1[2] < t2[2] end)
+  self.favoriteTile = prefList[1][1]
+
+  local randomWeightIndex = RandomRangeFloat(0.0, totalWeight)
+  local currentWalk = 0.0
+
+  for _, tw in ipairs(prefList) do
+    local tile = tw[1]
+    local weight = tw[2]
+    self.pickedTileSet = AddTileToSet(self.pickedTileSet, tile)
+
+    if self.pickedTile == nil then
+      currentWalk = currentWalk + weight
+      if currentWalk >= randomWeightIndex then
+        self.pickedTile = tile
+      end
+    end
+  end
+
+  -- dubious
+  if self.pickedTile == nil then
+    self.pickedTile = tList[1]
+    self.favoriteTile = self.pickedTile
   end
 
   return true

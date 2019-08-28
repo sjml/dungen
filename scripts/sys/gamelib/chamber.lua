@@ -1,3 +1,14 @@
+function makeChamber(baseTile, radius)
+  local cavern = baseTile:GetCircle(radius)
+  local chamber = CreateRegion()
+  for _, tile in pairs(cavern) do
+    tile:SetAttributeInt("open", 1)
+    tile:SetAttributeInt("empty", 1)
+    chamber:AddTile(tile)
+  end
+  return chamber
+end
+
 function storeInChamber(chamber, tag, allowFlood)
   local tiles = GetTilesFromSet(chamber.tiles)
   local empties = {}
