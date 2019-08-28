@@ -110,12 +110,12 @@ void PresentChoiceSelection(const char* description) {
     start.y = ( 768.0f * 0.5f) - (totalH * 0.5f) + (btnH * 0.5f);
     start.y = 768.0f - start.y;
     Vec2i current = {0, 0};
-    
+
     bannerHandle = NULL;
     if (strlen(description) > 0) {
         if (numRows <= 5) {
             gbVec4 textColor = {0.3f, 0.3f, 0.7f, 1.0f};
-            gbVec4 bgColor = {0.8, 0.8, 0.8, 0.8};
+            gbVec4 bgColor = {0.8f, 0.8f, 0.8f, 0.8f};
             bannerHandle = AddBanner(description, 72.0f, textColor, bgColor, -1.0f);
             PositionBanner(bannerHandle, 100.0f);
             start.y -= 50.0f;

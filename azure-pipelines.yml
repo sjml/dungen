@@ -1,6 +1,9 @@
 trigger:
-- master
-
+  batch: true
+  branches:
+    include:
+    - master
+    - refs/tags/v*
 
 jobs:
 - job: macOS
@@ -17,15 +20,17 @@ jobs:
       xcWorkspacePath: 'DunGen.xcodeproj'
       xcodeVersion: 10
   - task: CmdLine@2
-    displayName: 'Copy .app to staging'
+    displayName: 'Copy documents to build directory'
     inputs:
-      script: 'cp -R build/Release/Dungen.app $(Build.ArtifactStagingDirectory)'
+      script: 'cp README.md build/Release; cp docs/acknowledgements.md build/Release'
+  - task: CmdLine@2
+    displayName: 'Zip up build artifact'
+    inputs:
+      script: 'cd build/Release; zip -r DunGen-Mac.zip DunGen.app README.md acknowledgements.md'
   - task: CopyFiles@2
-    displayName: 'Copy documents to staging'
+    displayName: 'Copy artifact to staging'
     inputs:
-      Contents: |
-        README.md
-        docs/acknowledgements.md
+      Contents: 'build/Release/DunGen-Mac.zip'
       TargetFolder: '$(Build.ArtifactStagingDirectory)'
       flattenFolders: true
   - task: PublishBuildArtifacts@1
@@ -47,29 +52,34 @@ jobs:
       configuration: 'Release'
       maximumCpuCount: true
       msbuildArchitecture: 'x64'
-  - task: CmdLine@2
-    displayName: 'Copy Resources to staging'
-    inputs:
-      script: 'xcopy build\Release\Resources $(Build.ArtifactStagingDirectory)\Resources /E /I'
   - task: CopyFiles@2
-    displayName: 'Copy .exe and documents to staging'
+    displayName: 'Copy documents to build directory'
     inputs:
       SourceFolder: ''
       Contents: |
-        build/Release/DunGen.exe
         README.md
         docs/acknowledgements.md
-      TargetFolder: '$(Build.ArtifactStagingDirectory)'
+      TargetFolder: 'build'
       flattenFolders: true
+  - task: PowerShell@2
+    displayName: 'Zip up build artifact'
+    inputs:
+      workingDirectory: 'build'
+      script: 'Compress-Archive -Path .\DunGen.exe, .\README.md, .\acknowledgements.md -CompressionLevel Optimal -DestinationPath .\DunGen-Windows.zip'
+  - task: CopyFiles@2
+    displayName: 'Copy artifact to staging'
+    inputs:
+      Contents: 'build/DunGen-Windows.zip'
+      TargetFolder: '$(Build.ArtifactStagingDirectory)'
   - task: PublishBuildArtifacts@1
     displayName: 'Publish build into pipeline'
     inputs:
       PathToPublish: '$(Build.ArtifactStagingDirectory)'
       ArtifactName: 'Windows Build'
       publishLocation: 'Container'
-  
+
 - job: Linux
-  pool: 
+  pool:
     vmImage: 'ubuntu-latest'
   steps:
   - task: CmdLine@2
@@ -87,19 +97,18 @@ jobs:
     inputs:
       script: 'cd build; make'
   - task: CmdLine@2
-    displayName: 'Copy Resources to staging'
+    displayName: 'Copy documents to build directory'
     inputs:
-      script: 'cp -R build/Resources $(Build.ArtifactStagingDirectory)'
+      script: 'cp README.md build/; cp docs/acknowledgements.md build/'
+  - task: CmdLine@2
+    displayName: 'Zip up build artifact'
+    inputs:
+      script: 'cd build; zip -r DunGen-Linux.zip DunGen README.md acknowledgements.md'
   - task: CopyFiles@2
-    displayName: 'Copy executable and documents to staging'
+    displayName: 'Copy artifact to staging'
     inputs:
-      SourceFolder: ''
-      Contents: |
-        build/DunGen
-        README.md
-        docs/acknowledgements.md
+      Contents: 'build/DunGen-Linux.zip'
       TargetFolder: '$(Build.ArtifactStagingDirectory)'
-      flattenFolders: true
   - task: PublishBuildArtifacts@1
     displayName: 'Publish build into pipeline'
     inputs:
