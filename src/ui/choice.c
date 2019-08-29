@@ -205,6 +205,10 @@ void ChoiceProcessMouseClick(bool down) {
             // make the choice
             SetIntRegister("ChoiceSelection", pressedChoice);
             choiceStatus = 0;
+            if (bannerHandle != NULL) {
+                RemoveBanner(bannerHandle);
+                bannerHandle = NULL;
+            }
         }
         pressedChoice = -1;
 
@@ -212,9 +216,5 @@ void ChoiceProcessMouseClick(bool down) {
         glfwGetCursorPos(GetWindowHandle(), &x, &y);
         gbVec2 pos = {(float)x, (float)y};
         ChoiceProcessMouseMovement(pos);
-        if (bannerHandle != NULL) {
-            RemoveBanner(bannerHandle);
-            bannerHandle = NULL;
-        }
     }
 }
