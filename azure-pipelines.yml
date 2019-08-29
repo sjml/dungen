@@ -74,7 +74,7 @@ jobs:
     inputs:
       workingDirectory: 'build/Release'
       targetType: 'inline'
-      script: 'Compress-Archive -Path .\DunGen.exe, .\README.md, .\acknowledgements.md -CompressionLevel Optimal -DestinationPath .\DunGen-Windows-$env:LABEL.zip'
+      script: 'Compress-Archive -Path .\DunGen.exe, .\Resources, .\README.md, .\acknowledgements.md -CompressionLevel Optimal -DestinationPath .\DunGen-Windows-$env:LABEL.zip'
   - task: PowerShell@2
     displayName: 'Copy artifact to staging'
     inputs:
