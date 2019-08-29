@@ -1,6 +1,9 @@
 #include "../stdafx.h"
 #include "rendering.h"
 
+#define STB_IMAGE_WRITE_IMPLEMENTATION
+#include <stb_image_write.h>
+
 #include "util.h"
 #include "world.h"
 #include "text.h"
@@ -12,7 +15,9 @@
 
 static const int windowWidth  = 1024;
 static const int windowHeight = 768;
+static GLubyte* screenShotBuffer;
 
+static int frameW, frameH;
 static GLFWwindow* window = NULL;
 
 static CameraData MainCamera;
@@ -88,15 +93,26 @@ void InitializeRendering() {
     glLoadIdentity();
     glMultMatrixf(perspectiveMatrix.e);
     handleGLErrors(__FILE__, __LINE__);
-
+    
+    glfwGetFramebufferSize(window, &frameW, &frameH);
+    screenShotBuffer = malloc(sizeof(GLubyte) * frameW * frameH * 3);
+    stbi_flip_vertically_on_write(1);
+    
     InitializeText();
 }
 
 void FinalizeRendering() {
+    free(screenShotBuffer);
+    
     FinalizeText();
 
     glfwDestroyWindow(window);
     glfwTerminate();
+}
+
+void DumpScreenShot(const char* fileName) {
+    glReadPixels(0, 0, frameW, frameH, GL_RGB, GL_UNSIGNED_BYTE, screenShotBuffer);
+    stbi_write_png(fileName, frameW, frameH, 3, screenShotBuffer, frameW * 3);
 }
 
 GLFWwindow* GetWindowHandle(void) {

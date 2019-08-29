@@ -18,6 +18,8 @@ typedef struct {
 void InitializeRendering(void);
 void FinalizeRendering(void);
 
+void DumpScreenShot(const char* fileName);
+
 GLFWwindow* GetWindowHandle(void);
 
 void AddRegionToRendering(Region* r);

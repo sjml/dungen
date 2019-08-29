@@ -4653,6 +4653,25 @@ fail:
 }
 
 
+static int _wrap_DumpScreenShot(lua_State* L) {
+  int SWIG_arg = 0;
+  char *arg1 = (char *) 0 ;
+  
+  SWIG_check_num_args("DumpScreenShot",1,1)
+  if(!SWIG_lua_isnilstring(L,1)) SWIG_fail_arg("DumpScreenShot",1,"char const *");
+  arg1 = (char *)lua_tostring(L, 1);
+  DumpScreenShot((char const *)arg1);
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
 static int _wrap_WorldToScreen(lua_State* L) {
   int SWIG_arg = 0;
   gbVec2 arg1 ;
@@ -7900,6 +7919,7 @@ static swig_lua_method swig_SwigModule_methods[]= {
     { "LoadColorTable", _wrap_LoadColorTable},
     { "GetColorByIndex", _wrap_GetColorByIndex},
     { "GetColorByPercent", _wrap_GetColorByPercent},
+    { "DumpScreenShot", _wrap_DumpScreenShot},
     { "WorldToScreen", _wrap_WorldToScreen},
     { "MeasureTextExtents", _wrap_MeasureTextExtents},
     { "GetTextAscenderHeight", _wrap_GetTextAscenderHeight},
