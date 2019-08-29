@@ -24,7 +24,7 @@ function ReloadStyles()
   }
   styles = ordered_table()
   for k,v in pairs(preload) do styles[k] = v end
-  styleLoad, err = loadfile("scripts/simulation/Styles.lua", "bt", styles)
+  local styleLoad, err = loadfile("scripts/simulation/Styles.lua", "bt", styles)
   if (err) then
     io.stderr:write("ERROR: Could not load styles. " .. err .. "\n")
     return
@@ -87,19 +87,6 @@ local function checkStyle(styleTable, target)
     end
   end
 
-  --   local tcount = countInString(reqs.tags, ",") + 1
-  --   if (target.memberRegions ~= nil) then
-  --     for _, reg in pairs(target.memberRegions) do
-  --       if (reg:HasTags(reqs.tags) == true) then
-  --         match[2] = match[2] + tcount
-  --       end
-  --     end
-  --   end
-  --   if (target:HasTags(reqs.tags) == true) then
-  --     match[1] = match[1] + tcount
-  --   end
-  -- end
-
   if (reqs.attributes ~= nil) then
     for _, attrCheck in pairs(reqs.attributes) do
       if (target:CheckAttribute(attrCheck[1], attrCheck[2], attrCheck[3])) then
@@ -157,21 +144,15 @@ local function applyLabelStyle(styleTable, target)
     return
   end
   local text = styleTable.labelText or ""
-  local scale = styleTable.labelSize or 14.0
-  local color = styleTable.labelColor or {1.0, 1.0, 1.0}
+  local scale = styleTable.labelSize or 16.0
+  local color = styleTable.labelColor or {0.0, 0.0, 0.0}
+  local offset = styleTable.labelOffset or {0, 0}
 
-  local sPos = WorldToScreen(target.worldPos)
-  local extents = MeasureTextExtents(text, "fonts/04B_03__.TTF", scale)
-  sPos.x = sPos.x - (extents.x / 2)
-  sPos.y = sPos.y + (extents.y / 2)
-
-  AddTileLabel(text, {sPos.x, sPos.y}, scale, color)
+  SetRegionLabel(target, text, scale, color, offset)
 end
 
 
 function ResolveStyles()
-  ClearTileLabels()
-
   if (styles == nil) then
     return
   end
@@ -185,25 +166,26 @@ function ResolveStyles()
       if higherMatch(m, match) then
         match = m
         applyFillStyle(style, t)
-        applyLabelStyle(style, t)
       end
     end
   end
   CleanAllTiles()
 
-  local regions = GetRenderingRegions()
-  for i=1, #regions, 1 do
-    local ts = regions[i]
+  local dirtyRegions = GetDirtyRegions()
+  for _, reg in pairs(dirtyRegions) do
+    ClearRegionLabel(reg)
+    ClearRegionOutline(reg)
 
     local match = {0, 0}
 
     for label, style in pairs(styles) do
-      local m = checkStyle(style, ts)
+      local m = checkStyle(style, reg)
       if higherMatch(m, match) then
         match = m
-        applyOutlineStyle(style, ts)
-        -- applyLabelStyle(style, ts)
+        applyOutlineStyle(style, reg)
+        applyLabelStyle(style, reg)
       end
     end
   end
+  CleanAllRegions()
 end

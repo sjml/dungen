@@ -6,7 +6,7 @@ padding = 3
 
 while (cavernCount < maxCaverns) do
   -- pick our spot
-  cavernConstraints = {
+  local cavernConstraints = {
     InTileRange(
       {padding, gir("GroundLine") + padding},
       {gir("TileWidth") - padding, gir("TileHeight") - padding}
@@ -14,7 +14,7 @@ while (cavernCount < maxCaverns) do
     HasAttributes("open", Equal, 0),
     MinDistanceFromAttribute(2, "open", Equal, 1)
   }
-  cavernSolver = ConstraintSolver(cavernConstraints)
+  local cavernSolver = ConstraintSolver(cavernConstraints)
   cavernSolver:Solve()
 
   local base = cavernSolver.pickedTile
@@ -22,13 +22,8 @@ while (cavernCount < maxCaverns) do
     break
   end
 
-  local cavern = base:GetCircle(1)
-  local chamber = CreateRegion()
-  for _, tile in ipairs(cavern) do
-    tile:SetAttributeInt("open", 1)
-    tile:SetAttributeInt("empty", 1)
-    chamber:AddTile(tile)
-  end
+  chamber = makeChamber(base, 1)
+  chamber:AddTag("natural")
 
   sir("DieSides", 8)
   push("System.DieRoll")

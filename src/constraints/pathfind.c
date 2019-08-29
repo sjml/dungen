@@ -56,9 +56,8 @@ TileData** FindSimplePath(TileData* start, TileData* end) {
             break;
         }
         
-        int numNeighbors;
-        TileData** neighbors = GetTileNeighbors(current->tile, &numNeighbors);
-        for (int n=0; n < numNeighbors; n++) {
+        TileData** neighbors = GetTileNeighbors(current->tile);
+        for (int n=0; n < arrlen(neighbors); n++) {
             unsigned long cost = hmget(costs, current->tile);
             cost += 1; // TODO: have this be smarter about calculating from current to neighbors[n]
             if (hmgeti(costs, neighbors[n]) < 0 || cost < hmget(costs, neighbors[n])) {
@@ -71,7 +70,7 @@ TileData** FindSimplePath(TileData* start, TileData* end) {
             }
         }
         free(current);
-        free(neighbors);
+        arrfree(neighbors);
     }
     
     TileData** pathRev = NULL;

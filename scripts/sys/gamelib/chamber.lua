@@ -1,3 +1,16 @@
+function makeChamber(baseTile, radius)
+  local cavern = baseTile:GetCircle(radius)
+  local chamber = CreateRegion()
+  for _, tile in pairs(cavern) do
+    tile:SetAttributeInt("open", 1)
+    tile:SetAttributeInt("empty", 1)
+    chamber:AddTile(tile)
+  end
+  chamber:AddTag("chamber")
+  chamber:AddTag("ground")
+  return chamber
+end
+
 function storeInChamber(chamber, tag, allowFlood)
   local tiles = GetTilesFromSet(chamber.tiles)
   local empties = {}
@@ -20,6 +33,7 @@ function storeInChamber(chamber, tag, allowFlood)
 
   local lowY = -1
   local xVals = {}
+  local lowTile = nil
   for _, tile in pairs(empties) do
     if tile.hexPos.y > lowY then
       xVals = {}
@@ -36,6 +50,7 @@ function storeInChamber(chamber, tag, allowFlood)
 
   lowTile:SetAttributeInt("empty", 0)
   lowTile:AddTag(tag)
+  -- print("storing",tag,"in",lowTile.hexPos.x," ",lowTile.hexPos.y)
 
   return true
 end

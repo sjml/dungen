@@ -45,12 +45,36 @@ openCave = {
   tileFill = colors.openCave
 }
 
+mithralUP = {
+  reqs = {
+    tags = "mithralUP"
+  },
+  labelText = "Mithral",
+  labelSize = 12.0,
+  labelOffset = {0, -0.3},
+}
+
+mithralDOWN = {
+  reqs = {
+    tags = "mithralDOWN"
+  },
+  labelText = "Mithral",
+  labelSize = 12.0,
+  labelOffset = {0, 0.3},
+}
+
 mithral = {
   reqs = {
     tags = "mithral"
   },
   tileFill = colors.mithral,
-  -- labelText = "Mithral"
+}
+
+gold = {
+  reqs = {
+    tags = "gold"
+  },
+  tileFill = colors.gold,
 }
 
 water = {
@@ -58,6 +82,7 @@ water = {
     tags = "ground, water"
   },
   tileFill = colors.water,
+  labelText = "Water",
 }
 
 magma = {
@@ -65,6 +90,7 @@ magma = {
     tags = "ground, magma"
   },
   tileFill = colors.magma,
+  labelText = "Magma",
 }
 
 plague = {
@@ -72,6 +98,7 @@ plague = {
     tags = "ground, plague"
   },
   tileFill = colors.plague,
+  labelText = "Plague",
 }
 
 gems = {
@@ -79,6 +106,14 @@ gems = {
     tags = "ground, gems"
   },
   tileFill = colors.gems,
+  labelText = "Gems!",
+}
+
+meteorite = {
+  reqs = {
+    tags = "meteorite"
+  },
+  tileFill = colors.meteorite,
 }
 
 monster = {
@@ -88,9 +123,26 @@ monster = {
   tileFill = colors.monster,
 }
 
+greatWyrm = {
+  reqs = {
+    tags = "GreatWyrm"
+  },
+  labelText = "Great Wyrm",
+  labelOffset = {0, 1}
+}
+
+fallenStar = {
+  reqs = {
+    tags = "FallenStar"
+  },
+  labelText = "Fallen Star",
+  -- labelOffset = {0, 1}
+}
+
 FATE = {
   reqs = {
     tags = "ground, FATE"
   },
   tileFill = colors.FATE,
+  labelText = "FATE",
 }

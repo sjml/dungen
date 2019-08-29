@@ -21,10 +21,14 @@ xcuserdata/
 *.user
 *.userosscache
 *.sln.docstates
+*.aps
+*.ncb
 
 # All
+art/tmp/*
 build/*
 tmp/*
+.vscode/settings.json
 
 # Overrides
 !.gitkeep

@@ -1,12 +1,20 @@
 trigger:
-- master
-
+  batch: true
+  branches:
+    include:
+    - master
+    - refs/tags/v*
 
 jobs:
 - job: macOS
   pool:
     vmImage: 'macos-latest'
   steps:
+  - task: Bash@3
+    displayName: 'Set build label'
+    inputs:
+      targetType: 'inline'
+      script: 'label=$(buildscripts/getTag.sh);echo "##vso[task.setvariable variable=label]$label"'
   - task: Xcode@5
     displayName: 'Build with Xcode'
     inputs:
@@ -17,17 +25,17 @@ jobs:
       xcWorkspacePath: 'DunGen.xcodeproj'
       xcodeVersion: 10
   - task: CmdLine@2
-    displayName: 'Copy .app to staging'
+    displayName: 'Copy documents to build directory'
     inputs:
-      script: 'cp -R build/Release/Dungen.app $(Build.ArtifactStagingDirectory)'
-  - task: CopyFiles@2
-    displayName: 'Copy documents to staging'
+      script: 'cp README.md build/Release; cp docs/acknowledgements.md build/Release'
+  - task: CmdLine@2
+    displayName: 'Zip up build artifact'
     inputs:
-      Contents: |
-        README.md
-        docs/acknowledgements.md
-      TargetFolder: '$(Build.ArtifactStagingDirectory)'
-      flattenFolders: true
+      script: 'cd build/Release; zip -r "DunGen-Mac-$LABEL.zip" DunGen.app README.md acknowledgements.md'
+  - task: CmdLine@2
+    displayName: 'Copy artifact to staging'
+    inputs:
+      script: 'cp "build/Release/DunGen-Mac-$LABEL.zip" $(Build.ArtifactStagingDirectory)'
   - task: PublishBuildArtifacts@1
     displayName: 'Publish build into pipeline'
     inputs:
@@ -39,6 +47,11 @@ jobs:
   pool:
     vmImage: 'vs2017-win2016'
   steps:
+  - task: Bash@3
+    displayName: 'Set build label'
+    inputs:
+      targetType: 'inline'
+      script: 'label=$(buildscripts/getTag.sh);echo "##vso[task.setvariable variable=label]$label"'
   - task: VSBuild@1
     displayName: 'Build with MSBuild'
     inputs:
@@ -47,37 +60,48 @@ jobs:
       configuration: 'Release'
       maximumCpuCount: true
       msbuildArchitecture: 'x64'
-  - task: CmdLine@2
-    displayName: 'Copy Resources to staging'
-    inputs:
-      script: 'xcopy build\Release\Resources $(Build.ArtifactStagingDirectory)\Resources /E /I'
   - task: CopyFiles@2
-    displayName: 'Copy .exe and documents to staging'
+    displayName: 'Copy documents to build directory'
     inputs:
       SourceFolder: ''
       Contents: |
-        build/Release/DunGen.exe
         README.md
         docs/acknowledgements.md
-      TargetFolder: '$(Build.ArtifactStagingDirectory)'
+      TargetFolder: 'build/Release'
       flattenFolders: true
+  - task: PowerShell@2
+    displayName: 'Zip up build artifact'
+    inputs:
+      workingDirectory: 'build/Release'
+      targetType: 'inline'
+      script: 'Compress-Archive -Path .\DunGen.exe, .\README.md, .\acknowledgements.md -CompressionLevel Optimal -DestinationPath .\DunGen-Windows-$env:LABEL.zip'
+  - task: PowerShell@2
+    displayName: 'Copy artifact to staging'
+    inputs:
+      targetType: 'inline'
+      script: 'Get-ChildItem Env:; Copy-Item .\build\Release\DunGen-Windows-$env:LABEL.zip -Destination $(Build.ArtifactStagingDirectory)'
   - task: PublishBuildArtifacts@1
     displayName: 'Publish build into pipeline'
     inputs:
       PathToPublish: '$(Build.ArtifactStagingDirectory)'
       ArtifactName: 'Windows Build'
       publishLocation: 'Container'
-  
+
 - job: Linux
-  pool: 
+  pool:
     vmImage: 'ubuntu-latest'
   steps:
+  - task: Bash@3
+    displayName: 'Set build label'
+    inputs:
+      targetType: 'inline'
+      script: 'label=$(buildscripts/getTag.sh);echo "##vso[task.setvariable variable=label]$label"'
   - task: CmdLine@2
     displayName: 'Install dependencies'
     inputs:
       script: |
         sudo apt -y update
-        sudo apt-get install cmake xorg-dev libx11-dev libglu1-mesa-dev libglew1.5 libglew1.5-dev libglu1-mesa libglu1-mesa-dev libgl1-mesa-glx libgl1-mesa-dev
+        sudo apt-get -y install cmake xorg-dev libx11-dev libglu1-mesa-dev libglew1.5 libglew1.5-dev libglu1-mesa libglu1-mesa-dev libgl1-mesa-glx libgl1-mesa-dev
   - task: CmdLine@2
     displayName: 'Generate Makefiles'
     inputs:
@@ -87,19 +111,17 @@ jobs:
     inputs:
       script: 'cd build; make'
   - task: CmdLine@2
-    displayName: 'Copy Resources to staging'
+    displayName: 'Copy documents to build directory'
     inputs:
-      script: 'cp -R build/Resources $(Build.ArtifactStagingDirectory)'
-  - task: CopyFiles@2
-    displayName: 'Copy executable and documents to staging'
+      script: 'cp README.md build/; cp docs/acknowledgements.md build/'
+  - task: CmdLine@2
+    displayName: 'Zip up build artifact'
     inputs:
-      SourceFolder: ''
-      Contents: |
-        build/DunGen
-        README.md
-        docs/acknowledgements.md
-      TargetFolder: '$(Build.ArtifactStagingDirectory)'
-      flattenFolders: true
+      script: 'cd build; zip -r "DunGen-Linux-$LABEL.zip" DunGen README.md acknowledgements.md'
+  - task: CmdLine@2
+    displayName: 'Copy artifact to staging'
+    inputs:
+      script: 'cp "build/DunGen-Linux-$LABEL.zip" $(Build.ArtifactStagingDirectory)'
   - task: PublishBuildArtifacts@1
     displayName: 'Publish build into pipeline'
     inputs:

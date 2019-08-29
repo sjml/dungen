@@ -9,7 +9,7 @@ static Region* hoveredSingle = NULL;
 static TileData* hoveredTile = NULL;
 static TileData* pressedTile = NULL;
 
-static TileNEWSet* valid;
+static TileSet* valid;
 
 static int choiceStatus = -1; // -1 --> no choice is being presented right now
                               //  1 --> a choice is currently being presented, no option has been chosen

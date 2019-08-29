@@ -18,6 +18,8 @@ if (debug) then
   require('mobdebug').start()
 end
 
+require("lib.strict")
+
 require("sys.lib")
 require("sys.styler")
 require("sys.constraint-solver")
@@ -28,6 +30,7 @@ require("sys.sugar.tiledata")
 require("sys.sugar.region")
 
 require("sys.gamelib.chamber")
+require("sys.gamelib.pathing")
 
 ProFi = require("lib.ProFi")
 ordered_table = require("lib.ordered_table")

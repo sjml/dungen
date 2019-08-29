@@ -25,7 +25,7 @@ typedef struct {
 %nodefaultdtor sRegion;
 typedef struct sRegion {
     long long i;
-    TileNEWSet* tiles;
+    TileSet* tiles;
 } Region;
 
 %extend sRegion {
@@ -34,11 +34,11 @@ typedef struct sRegion {
     }
 }
 
-%nodefaultctor sTileNewSet;
-%nodefaultctor sTileNewSet;
-typedef struct sTileNEWSet {} TileNEWSet;
-%extend sTileNEWSet {
-    sTileNEWSet() {
+%nodefaultctor sTileSet;
+%nodefaultctor sTileSet;
+typedef struct sTileSet {} TileSet;
+%extend sTileSet {
+    sTileSet() {
         return NULL;
     }
 }
@@ -53,18 +53,26 @@ TileData** GetDirtyTiles(void);
 void CleanAllTiles(void);
 TileData* GetTileAtPosition(int x, int y);
 TileData* GetTileAtIndex(long long i);
+TileData* ScreenToTile(gbVec2* screenCoordinates);
+TileData** GetTileNeighbors(TileData* center);
+TileData** GetTileCircle(TileData* center, int radius);
 
 Region* CreateRegion(void);
 void DestroyRegion(Region* r);
 void SetRegionOutline(Region* r, gbVec4 color, float thickness);
 void ClearRegionOutline(Region* r);
+void SetRegionLabel(Region* r, const char* text, float scale, gbVec4 color, gbVec2 tileOffset);
+void ClearRegionLabel(Region* r);
 void AddTileToRegion(Region* r, TileData* t);
 void RemoveTileFromRegion(Region* r, TileData* t);
+void SetRegionAsDirty(Region* r);
+DisposableRegionList GetDirtyRegions(void);
+void CleanAllRegions(void);
 
-void DestroyTileSet(TileNEWSet* ts);
-TileNEWSet* AddTileToSet(TileNEWSet* ts, TileData* t);
-TileNEWSet* RemoveTileFromSet(TileNEWSet* ts, TileData* t);
-bool IsTileInSet(TileNEWSet* ts, TileData* t);
-long GetTileSetCount(TileNEWSet* ts);
-TileData** GetTilesFromSet(TileNEWSet* ts);
-TileNEWSet* IntersectTileSets(TileNEWSet* set1, TileNEWSet* set2);
+void DestroyTileSet(TileSet* ts);
+TileSet* AddTileToSet(TileSet* ts, TileData* t);
+TileSet* RemoveTileFromSet(TileSet* ts, TileData* t);
+bool IsTileInSet(TileSet* ts, TileData* t);
+long GetTileSetCount(TileSet* ts);
+TileData** GetTilesFromSet(TileSet* ts);
+TileSet* IntersectTileSets(TileSet* set1, TileSet* set2);

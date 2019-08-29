@@ -99,7 +99,7 @@ bool DoEdgesShareVertex(Edge *e1, Edge *e2, Vec2i *shared, gbVec2 *crossVec) {
 }
 
 
-Outline* CreateOutline(TileNEWSet* ts, float thickness) {
+Outline* CreateOutline(TileSet* ts, float thickness) {
     Outline* o = malloc(sizeof(Outline));
     o->color.r = 1.0f;
     o->color.g = 0.0f;

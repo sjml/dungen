@@ -18,6 +18,8 @@ typedef struct {
 void InitializeRendering(void);
 void FinalizeRendering(void);
 
+void DumpScreenShot(const char* fileName);
+
 GLFWwindow* GetWindowHandle(void);
 
 void AddRegionToRendering(Region* r);
@@ -27,7 +29,7 @@ Region** GetRenderingRegions(void);
 gbVec2 WorldToScreen(gbVec2 worldCoordinates);
 gbVec2 ScreenToWorld(gbVec2 screenCoordinates);
 
-void ClearTileLabels(void);
-void AddTileLabel(const char* text, gbVec2 pos, float scale, gbVec4 color);
+void ClearTextLabels(void);
+void AddTextLabel(const char* text, gbVec2 pos, float scale, gbVec4 color);
 
 int Render(void);

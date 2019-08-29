@@ -2677,9 +2677,10 @@ SWIG_Lua_dostring(lua_State *L, const char *str) {
 #define SWIGTYPE_p_gbVec4 swig_types[6]
 #define SWIGTYPE_p_p_sRegion swig_types[7]
 #define SWIGTYPE_p_sRegion swig_types[8]
-#define SWIGTYPE_p_sTileNEWSet swig_types[9]
-static swig_type_info *swig_types[11];
-static swig_module_info swig_module = {swig_types, 10, 0, 0, 0, 0};
+#define SWIGTYPE_p_sTileSet swig_types[9]
+#define SWIGTYPE_p_void swig_types[10]
+static swig_type_info *swig_types[12];
+static swig_module_info swig_module = {swig_types, 11, 0, 0, 0, 0};
 #define SWIG_TypeQuery(name) SWIG_TypeQueryModule(&swig_module, &swig_module, name)
 #define SWIG_MangledTypeQuery(name) SWIG_MangledTypeQueryModule(&swig_module, &swig_module, name)
 
@@ -2723,7 +2724,7 @@ SWIGINTERN int SWIG_lua_isnilstring(lua_State *L, int idx) {
 SWIGINTERN struct sRegion *new_sRegion(void){
         return CreateRegion();
     }
-SWIGINTERN struct sTileNEWSet *new_sTileNEWSet(void){
+SWIGINTERN struct sTileSet *new_sTileSet(void){
         return NULL;
     }
 
@@ -4652,26 +4653,14 @@ fail:
 }
 
 
-static int _wrap_GetRenderingRegions(lua_State* L) {
+static int _wrap_DumpScreenShot(lua_State* L) {
   int SWIG_arg = 0;
-  Region **result = 0 ;
+  char *arg1 = (char *) 0 ;
   
-  SWIG_check_num_args("GetRenderingRegions",0,0)
-  result = (Region **)GetRenderingRegions();
-  
-  {
-    lua_newtable(L);
-    if (arrlen(result) > 0) {
-      for (unsigned int i=1; i <= arrlen(result); i++) {
-        lua_pushnumber(L, i);
-        SWIG_NewPointerObj(L, result[i-1], SWIGTYPE_p_sRegion, 0);
-        lua_settable(L, -3);
-      }
-    }
-    // arrfree(result); // TODO: don't free if we don't own this memory
-    
-    SWIG_arg += 1;
-  }
+  SWIG_check_num_args("DumpScreenShot",1,1)
+  if(!SWIG_lua_isnilstring(L,1)) SWIG_fail_arg("DumpScreenShot",1,"char const *");
+  arg1 = (char *)lua_tostring(L, 1);
+  DumpScreenShot((char const *)arg1);
   
   return SWIG_arg;
   
@@ -4719,107 +4708,6 @@ static int _wrap_WorldToScreen(lua_State* L) {
     memmove(resultptr, &result, sizeof(gbVec2));
     SWIG_NewPointerObj(L,(void *) resultptr,SWIGTYPE_p_gbVec2,1); SWIG_arg++;
   }
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_ClearTileLabels(lua_State* L) {
-  int SWIG_arg = 0;
-  
-  SWIG_check_num_args("ClearTileLabels",0,0)
-  ClearTileLabels();
-  
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_AddTileLabel(lua_State* L) {
-  int SWIG_arg = 0;
-  char *arg1 = (char *) 0 ;
-  gbVec2 arg2 ;
-  float arg3 ;
-  gbVec4 arg4 ;
-  
-  SWIG_check_num_args("AddTileLabel",4,4)
-  if(!SWIG_lua_isnilstring(L,1)) SWIG_fail_arg("AddTileLabel",1,"char const *");
-  if(!lua_isnumber(L,3)) SWIG_fail_arg("AddTileLabel",3,"float");
-  arg1 = (char *)lua_tostring(L, 1);
-  {
-    // gbVec2 conversion
-    gbVec2 *vecPtr;
-    if (SWIG_IsOK(SWIG_ConvertPtr(L,2,(void**)&vecPtr,SWIGTYPE_p_gbVec2,0))) {
-      arg2 = *vecPtr;
-    }
-    else {
-      // convert table parameters to floats
-      lua_pushinteger(L, 1);
-      lua_gettable(L, 2);
-      float x = lua_tonumber(L, -1);
-      lua_pop(L, 1);
-      
-      lua_pushinteger(L, 2);
-      lua_gettable(L, 2);
-      float y = lua_tonumber(L, -1);
-      lua_pop(L, 1);
-      
-      // build the vector
-      (&arg2)->x = x;
-      (&arg2)->y = y;
-    }
-  }
-  arg3 = (float)lua_tonumber(L, 3);
-  {
-    // gbVec4 conversion
-    gbVec4 *vecPtr;
-    if (SWIG_IsOK(SWIG_ConvertPtr(L,4,(void**)&vecPtr,SWIGTYPE_p_gbVec4,0))) {
-      arg4 = *vecPtr;
-    }
-    else {
-      // convert table parameters to floats
-      lua_pushinteger(L, 1);
-      lua_gettable(L, 4);
-      float x = lua_tonumber(L, -1);
-      lua_pop(L, 1);
-      
-      lua_pushinteger(L, 2);
-      lua_gettable(L, 4);
-      float y = lua_tonumber(L, -1);
-      lua_pop(L, 1);
-      
-      lua_pushinteger(L, 3);
-      lua_gettable(L, 4);
-      float z = lua_tonumber(L, -1);
-      lua_pop(L, 1);
-      
-      float w = 1.0f;
-      if (lua_rawlen(L, 4) >= 4) {
-        lua_pushinteger(L, 4);
-        lua_gettable(L, 4);
-        w = lua_tonumber(L, -1);
-        lua_pop(L, 1);
-      }
-      
-      // build the vector
-      (&arg4)->x = x;
-      (&arg4)->y = y;
-      (&arg4)->z = z;
-      (&arg4)->w = w;
-    }
-  }
-  AddTileLabel((char const *)arg1,arg2,arg3,arg4);
-  
   return SWIG_arg;
   
   if(0) SWIG_fail;
@@ -5013,13 +4901,13 @@ fail:
 static int _wrap_GetTileSetRegister(lua_State* L) {
   int SWIG_arg = 0;
   char *arg1 = (char *) 0 ;
-  TileNEWSet *result = 0 ;
+  TileSet *result = 0 ;
   
   SWIG_check_num_args("GetTileSetRegister",1,1)
   if(!SWIG_lua_isnilstring(L,1)) SWIG_fail_arg("GetTileSetRegister",1,"char const *");
   arg1 = (char *)lua_tostring(L, 1);
-  result = (TileNEWSet *)GetTileSetRegister((char const *)arg1);
-  SWIG_NewPointerObj(L,result,SWIGTYPE_p_sTileNEWSet,0); SWIG_arg++; 
+  result = (TileSet *)GetTileSetRegister((char const *)arg1);
+  SWIG_NewPointerObj(L,result,SWIGTYPE_p_sTileSet,0); SWIG_arg++; 
   return SWIG_arg;
   
   if(0) SWIG_fail;
@@ -5125,15 +5013,15 @@ fail:
 static int _wrap_SetTileSetRegister(lua_State* L) {
   int SWIG_arg = 0;
   char *arg1 = (char *) 0 ;
-  TileNEWSet *arg2 = (TileNEWSet *) 0 ;
+  TileSet *arg2 = (TileSet *) 0 ;
   
   SWIG_check_num_args("SetTileSetRegister",2,2)
   if(!SWIG_lua_isnilstring(L,1)) SWIG_fail_arg("SetTileSetRegister",1,"char const *");
-  if(!SWIG_isptrtype(L,2)) SWIG_fail_arg("SetTileSetRegister",2,"TileNEWSet *");
+  if(!SWIG_isptrtype(L,2)) SWIG_fail_arg("SetTileSetRegister",2,"TileSet *");
   arg1 = (char *)lua_tostring(L, 1);
   
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,2,(void**)&arg2,SWIGTYPE_p_sTileNEWSet,0))){
-    SWIG_fail_ptr("SetTileSetRegister",2,SWIGTYPE_p_sTileNEWSet);
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,2,(void**)&arg2,SWIGTYPE_p_sTileSet,0))){
+    SWIG_fail_ptr("SetTileSetRegister",2,SWIGTYPE_p_sTileSet);
   }
   
   SetTileSetRegister((char const *)arg1,arg2);
@@ -5789,7 +5677,7 @@ static int _wrap_TileData_memberRegions_get(lua_State* L) {
         lua_settable(L, -3);
       }
     }
-    // arrfree(result); // TODO: don't free if we don't own this memory
+    // arrfree(result); don't free if we don't own this memory
     
     SWIG_arg += 1;
   }
@@ -5928,19 +5816,19 @@ fail:
 static int _wrap_Region_tiles_set(lua_State* L) {
   int SWIG_arg = 0;
   struct sRegion *arg1 = (struct sRegion *) 0 ;
-  TileNEWSet *arg2 = (TileNEWSet *) 0 ;
+  TileSet *arg2 = (TileSet *) 0 ;
   
   SWIG_check_num_args("sRegion::tiles",2,2)
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("sRegion::tiles",1,"struct sRegion *");
-  if(!SWIG_isptrtype(L,2)) SWIG_fail_arg("sRegion::tiles",2,"TileNEWSet *");
+  if(!SWIG_isptrtype(L,2)) SWIG_fail_arg("sRegion::tiles",2,"TileSet *");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_sRegion,0))){
     SWIG_fail_ptr("Region_tiles_set",1,SWIGTYPE_p_sRegion);
   }
   
   
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,2,(void**)&arg2,SWIGTYPE_p_sTileNEWSet,SWIG_POINTER_DISOWN))){
-    SWIG_fail_ptr("Region_tiles_set",2,SWIGTYPE_p_sTileNEWSet);
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,2,(void**)&arg2,SWIGTYPE_p_sTileSet,SWIG_POINTER_DISOWN))){
+    SWIG_fail_ptr("Region_tiles_set",2,SWIGTYPE_p_sTileSet);
   }
   
   if (arg1) (arg1)->tiles = arg2;
@@ -5958,7 +5846,7 @@ fail:
 static int _wrap_Region_tiles_get(lua_State* L) {
   int SWIG_arg = 0;
   struct sRegion *arg1 = (struct sRegion *) 0 ;
-  TileNEWSet *result = 0 ;
+  TileSet *result = 0 ;
   
   SWIG_check_num_args("sRegion::tiles",1,1)
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("sRegion::tiles",1,"struct sRegion *");
@@ -5967,8 +5855,8 @@ static int _wrap_Region_tiles_get(lua_State* L) {
     SWIG_fail_ptr("Region_tiles_get",1,SWIGTYPE_p_sRegion);
   }
   
-  result = (TileNEWSet *) ((arg1)->tiles);
-  SWIG_NewPointerObj(L,result,SWIGTYPE_p_sTileNEWSet,0); SWIG_arg++; 
+  result = (TileSet *) ((arg1)->tiles);
+  SWIG_NewPointerObj(L,result,SWIGTYPE_p_sTileSet,0); SWIG_arg++; 
   return SWIG_arg;
   
   if(0) SWIG_fail;
@@ -6041,13 +5929,13 @@ static swig_lua_class *swig_Region_bases[] = {0};
 static const char *swig_Region_base_names[] = {0};
 static swig_lua_class _wrap_class_Region = { "Region", "Region", &SWIGTYPE_p_sRegion,_proxy__wrap_new_Region,0, swig_Region_methods, swig_Region_attributes, &swig_Region_Sf_SwigStatic, swig_Region_meta, swig_Region_bases, swig_Region_base_names };
 
-static int _wrap_new_TileNEWSet(lua_State* L) {
+static int _wrap_new_TileSet(lua_State* L) {
   int SWIG_arg = 0;
-  struct sTileNEWSet *result = 0 ;
+  struct sTileSet *result = 0 ;
   
-  SWIG_check_num_args("sTileNEWSet::sTileNEWSet",0,0)
-  result = (struct sTileNEWSet *)new_sTileNEWSet();
-  SWIG_NewPointerObj(L,result,SWIGTYPE_p_sTileNEWSet,1); SWIG_arg++; 
+  SWIG_check_num_args("sTileSet::sTileSet",0,0)
+  result = (struct sTileSet *)new_sTileSet();
+  SWIG_NewPointerObj(L,result,SWIGTYPE_p_sTileSet,1); SWIG_arg++; 
   return SWIG_arg;
   
   if(0) SWIG_fail;
@@ -6058,52 +5946,52 @@ fail:
 }
 
 
-static void swig_delete_TileNEWSet(void *obj) {
-struct sTileNEWSet *arg1 = (struct sTileNEWSet *) obj;
+static void swig_delete_TileSet(void *obj) {
+struct sTileSet *arg1 = (struct sTileSet *) obj;
 free((char *) arg1);
 }
-static int _proxy__wrap_new_TileNEWSet(lua_State *L) {
+static int _proxy__wrap_new_TileSet(lua_State *L) {
     assert(lua_istable(L,1));
-    lua_pushcfunction(L,_wrap_new_TileNEWSet);
+    lua_pushcfunction(L,_wrap_new_TileSet);
     assert(!lua_isnil(L,-1));
     lua_replace(L,1); /* replace our table with real constructor */
     lua_call(L,lua_gettop(L)-1,1);
     return 1;
 }
-static swig_lua_attribute swig_TileNEWSet_attributes[] = {
+static swig_lua_attribute swig_TileSet_attributes[] = {
     {0,0,0}
 };
-static swig_lua_method swig_TileNEWSet_methods[]= {
+static swig_lua_method swig_TileSet_methods[]= {
     {0,0}
 };
-static swig_lua_method swig_TileNEWSet_meta[] = {
+static swig_lua_method swig_TileSet_meta[] = {
     {0,0}
 };
 
-static swig_lua_attribute swig_TileNEWSet_Sf_SwigStatic_attributes[] = {
+static swig_lua_attribute swig_TileSet_Sf_SwigStatic_attributes[] = {
     {0,0,0}
 };
-static swig_lua_const_info swig_TileNEWSet_Sf_SwigStatic_constants[]= {
+static swig_lua_const_info swig_TileSet_Sf_SwigStatic_constants[]= {
     {0,0,0,0,0,0}
 };
-static swig_lua_method swig_TileNEWSet_Sf_SwigStatic_methods[]= {
+static swig_lua_method swig_TileSet_Sf_SwigStatic_methods[]= {
     {0,0}
 };
-static swig_lua_class* swig_TileNEWSet_Sf_SwigStatic_classes[]= {
+static swig_lua_class* swig_TileSet_Sf_SwigStatic_classes[]= {
     0
 };
 
-static swig_lua_namespace swig_TileNEWSet_Sf_SwigStatic = {
-    "TileNEWSet",
-    swig_TileNEWSet_Sf_SwigStatic_methods,
-    swig_TileNEWSet_Sf_SwigStatic_attributes,
-    swig_TileNEWSet_Sf_SwigStatic_constants,
-    swig_TileNEWSet_Sf_SwigStatic_classes,
+static swig_lua_namespace swig_TileSet_Sf_SwigStatic = {
+    "TileSet",
+    swig_TileSet_Sf_SwigStatic_methods,
+    swig_TileSet_Sf_SwigStatic_attributes,
+    swig_TileSet_Sf_SwigStatic_constants,
+    swig_TileSet_Sf_SwigStatic_classes,
     0
 };
-static swig_lua_class *swig_TileNEWSet_bases[] = {0};
-static const char *swig_TileNEWSet_base_names[] = {0};
-static swig_lua_class _wrap_class_TileNEWSet = { "TileNEWSet", "TileNEWSet", &SWIGTYPE_p_sTileNEWSet,_proxy__wrap_new_TileNEWSet, swig_delete_TileNEWSet, swig_TileNEWSet_methods, swig_TileNEWSet_attributes, &swig_TileNEWSet_Sf_SwigStatic, swig_TileNEWSet_meta, swig_TileNEWSet_bases, swig_TileNEWSet_base_names };
+static swig_lua_class *swig_TileSet_bases[] = {0};
+static const char *swig_TileSet_base_names[] = {0};
+static swig_lua_class _wrap_class_TileSet = { "TileSet", "TileSet", &SWIGTYPE_p_sTileSet,_proxy__wrap_new_TileSet, swig_delete_TileSet, swig_TileSet_methods, swig_TileSet_attributes, &swig_TileSet_Sf_SwigStatic, swig_TileSet_meta, swig_TileSet_bases, swig_TileSet_base_names };
 
 static int _wrap_InitializeWorld(lua_State* L) {
   int SWIG_arg = 0;
@@ -6313,6 +6201,128 @@ fail:
 }
 
 
+static int _wrap_ScreenToTile(lua_State* L) {
+  int SWIG_arg = 0;
+  gbVec2 *arg1 = (gbVec2 *) 0 ;
+  TileData *result = 0 ;
+  
+  SWIG_check_num_args("ScreenToTile",1,1)
+  {
+    // gbVec2 pointer conversion
+    gbVec2 *vecPtr;
+    gbVec2 vec;
+    if (SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&vecPtr,SWIGTYPE_p_gbVec2,0))) {
+      arg1 = vecPtr;
+    }
+    else {
+      // convert table parameters to floats
+      lua_pushinteger(L, 1);
+      lua_gettable(L, 1);
+      float x = lua_tonumber(L, -1);
+      lua_pop(L, 1);
+      
+      lua_pushinteger(L, 2);
+      lua_gettable(L, 1);
+      float y = lua_tonumber(L, -1);
+      lua_pop(L, 1);
+      
+      // build the vector
+      vec.x = x;
+      vec.y = y;
+      arg1 = &vec;
+    }
+  }
+  result = (TileData *)ScreenToTile(arg1);
+  SWIG_NewPointerObj(L,result,SWIGTYPE_p_TileData,0); SWIG_arg++; 
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_GetTileNeighbors(lua_State* L) {
+  int SWIG_arg = 0;
+  TileData *arg1 = (TileData *) 0 ;
+  TileData **result = 0 ;
+  
+  SWIG_check_num_args("GetTileNeighbors",1,1)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("GetTileNeighbors",1,"TileData *");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_TileData,0))){
+    SWIG_fail_ptr("GetTileNeighbors",1,SWIGTYPE_p_TileData);
+  }
+  
+  result = (TileData **)GetTileNeighbors(arg1);
+  
+  {
+    lua_newtable(L);
+    if (arrlen(result) > 0) {
+      for (unsigned int i=1; i <= arrlen(result); i++) {
+        lua_pushnumber(L, i);
+        SWIG_NewPointerObj(L, result[i-1], SWIGTYPE_p_TileData, 1);
+        lua_settable(L, -3);
+      }
+    }
+    arrfree(result);
+    
+    SWIG_arg += 1;
+  }
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_GetTileCircle(lua_State* L) {
+  int SWIG_arg = 0;
+  TileData *arg1 = (TileData *) 0 ;
+  int arg2 ;
+  TileData **result = 0 ;
+  
+  SWIG_check_num_args("GetTileCircle",2,2)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("GetTileCircle",1,"TileData *");
+  if(!lua_isnumber(L,2)) SWIG_fail_arg("GetTileCircle",2,"int");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_TileData,0))){
+    SWIG_fail_ptr("GetTileCircle",1,SWIGTYPE_p_TileData);
+  }
+  
+  arg2 = (int)lua_tonumber(L, 2);
+  result = (TileData **)GetTileCircle(arg1,arg2);
+  
+  {
+    lua_newtable(L);
+    if (arrlen(result) > 0) {
+      for (unsigned int i=1; i <= arrlen(result); i++) {
+        lua_pushnumber(L, i);
+        SWIG_NewPointerObj(L, result[i-1], SWIGTYPE_p_TileData, 1);
+        lua_settable(L, -3);
+      }
+    }
+    arrfree(result);
+    
+    SWIG_arg += 1;
+  }
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
 static int _wrap_CreateRegion(lua_State* L) {
   int SWIG_arg = 0;
   Region *result = 0 ;
@@ -6441,6 +6451,121 @@ fail:
 }
 
 
+static int _wrap_SetRegionLabel(lua_State* L) {
+  int SWIG_arg = 0;
+  Region *arg1 = (Region *) 0 ;
+  char *arg2 = (char *) 0 ;
+  float arg3 ;
+  gbVec4 arg4 ;
+  gbVec2 arg5 ;
+  
+  SWIG_check_num_args("SetRegionLabel",5,5)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("SetRegionLabel",1,"Region *");
+  if(!SWIG_lua_isnilstring(L,2)) SWIG_fail_arg("SetRegionLabel",2,"char const *");
+  if(!lua_isnumber(L,3)) SWIG_fail_arg("SetRegionLabel",3,"float");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_sRegion,0))){
+    SWIG_fail_ptr("SetRegionLabel",1,SWIGTYPE_p_sRegion);
+  }
+  
+  arg2 = (char *)lua_tostring(L, 2);
+  arg3 = (float)lua_tonumber(L, 3);
+  {
+    // gbVec4 conversion
+    gbVec4 *vecPtr;
+    if (SWIG_IsOK(SWIG_ConvertPtr(L,4,(void**)&vecPtr,SWIGTYPE_p_gbVec4,0))) {
+      arg4 = *vecPtr;
+    }
+    else {
+      // convert table parameters to floats
+      lua_pushinteger(L, 1);
+      lua_gettable(L, 4);
+      float x = lua_tonumber(L, -1);
+      lua_pop(L, 1);
+      
+      lua_pushinteger(L, 2);
+      lua_gettable(L, 4);
+      float y = lua_tonumber(L, -1);
+      lua_pop(L, 1);
+      
+      lua_pushinteger(L, 3);
+      lua_gettable(L, 4);
+      float z = lua_tonumber(L, -1);
+      lua_pop(L, 1);
+      
+      float w = 1.0f;
+      if (lua_rawlen(L, 4) >= 4) {
+        lua_pushinteger(L, 4);
+        lua_gettable(L, 4);
+        w = lua_tonumber(L, -1);
+        lua_pop(L, 1);
+      }
+      
+      // build the vector
+      (&arg4)->x = x;
+      (&arg4)->y = y;
+      (&arg4)->z = z;
+      (&arg4)->w = w;
+    }
+  }
+  {
+    // gbVec2 conversion
+    gbVec2 *vecPtr;
+    if (SWIG_IsOK(SWIG_ConvertPtr(L,5,(void**)&vecPtr,SWIGTYPE_p_gbVec2,0))) {
+      arg5 = *vecPtr;
+    }
+    else {
+      // convert table parameters to floats
+      lua_pushinteger(L, 1);
+      lua_gettable(L, 5);
+      float x = lua_tonumber(L, -1);
+      lua_pop(L, 1);
+      
+      lua_pushinteger(L, 2);
+      lua_gettable(L, 5);
+      float y = lua_tonumber(L, -1);
+      lua_pop(L, 1);
+      
+      // build the vector
+      (&arg5)->x = x;
+      (&arg5)->y = y;
+    }
+  }
+  SetRegionLabel(arg1,(char const *)arg2,arg3,arg4,arg5);
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_ClearRegionLabel(lua_State* L) {
+  int SWIG_arg = 0;
+  Region *arg1 = (Region *) 0 ;
+  
+  SWIG_check_num_args("ClearRegionLabel",1,1)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("ClearRegionLabel",1,"Region *");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_sRegion,0))){
+    SWIG_fail_ptr("ClearRegionLabel",1,SWIGTYPE_p_sRegion);
+  }
+  
+  ClearRegionLabel(arg1);
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
 static int _wrap_AddTileToRegion(lua_State* L) {
   int SWIG_arg = 0;
   Region *arg1 = (Region *) 0 ;
@@ -6501,15 +6626,85 @@ fail:
 }
 
 
+static int _wrap_SetRegionAsDirty(lua_State* L) {
+  int SWIG_arg = 0;
+  Region *arg1 = (Region *) 0 ;
+  
+  SWIG_check_num_args("SetRegionAsDirty",1,1)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("SetRegionAsDirty",1,"Region *");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_sRegion,0))){
+    SWIG_fail_ptr("SetRegionAsDirty",1,SWIGTYPE_p_sRegion);
+  }
+  
+  SetRegionAsDirty(arg1);
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_GetDirtyRegions(lua_State* L) {
+  int SWIG_arg = 0;
+  DisposableRegionList result;
+  
+  SWIG_check_num_args("GetDirtyRegions",0,0)
+  result = GetDirtyRegions();
+  
+  {
+    lua_newtable(L);
+    if (arrlen(result) > 0) {
+      for (unsigned int i=1; i <= arrlen(result); i++) {
+        lua_pushnumber(L, i);
+        SWIG_NewPointerObj(L, result[i-1], SWIGTYPE_p_sRegion, 0);
+        lua_settable(L, -3);
+      }
+    }
+    arrfree(result);
+    
+    SWIG_arg += 1;
+  }
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_CleanAllRegions(lua_State* L) {
+  int SWIG_arg = 0;
+  
+  SWIG_check_num_args("CleanAllRegions",0,0)
+  CleanAllRegions();
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
 static int _wrap_DestroyTileSet(lua_State* L) {
   int SWIG_arg = 0;
-  TileNEWSet *arg1 = (TileNEWSet *) 0 ;
+  TileSet *arg1 = (TileSet *) 0 ;
   
   SWIG_check_num_args("DestroyTileSet",1,1)
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("DestroyTileSet",1,"TileNEWSet *");
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("DestroyTileSet",1,"TileSet *");
   
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_sTileNEWSet,0))){
-    SWIG_fail_ptr("DestroyTileSet",1,SWIGTYPE_p_sTileNEWSet);
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_sTileSet,0))){
+    SWIG_fail_ptr("DestroyTileSet",1,SWIGTYPE_p_sTileSet);
   }
   
   DestroyTileSet(arg1);
@@ -6526,16 +6721,16 @@ fail:
 
 static int _wrap_AddTileToSet(lua_State* L) {
   int SWIG_arg = 0;
-  TileNEWSet *arg1 = (TileNEWSet *) 0 ;
+  TileSet *arg1 = (TileSet *) 0 ;
   TileData *arg2 = (TileData *) 0 ;
-  TileNEWSet *result = 0 ;
+  TileSet *result = 0 ;
   
   SWIG_check_num_args("AddTileToSet",2,2)
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("AddTileToSet",1,"TileNEWSet *");
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("AddTileToSet",1,"TileSet *");
   if(!SWIG_isptrtype(L,2)) SWIG_fail_arg("AddTileToSet",2,"TileData *");
   
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_sTileNEWSet,0))){
-    SWIG_fail_ptr("AddTileToSet",1,SWIGTYPE_p_sTileNEWSet);
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_sTileSet,0))){
+    SWIG_fail_ptr("AddTileToSet",1,SWIGTYPE_p_sTileSet);
   }
   
   
@@ -6543,8 +6738,8 @@ static int _wrap_AddTileToSet(lua_State* L) {
     SWIG_fail_ptr("AddTileToSet",2,SWIGTYPE_p_TileData);
   }
   
-  result = (TileNEWSet *)AddTileToSet(arg1,arg2);
-  SWIG_NewPointerObj(L,result,SWIGTYPE_p_sTileNEWSet,0); SWIG_arg++; 
+  result = (TileSet *)AddTileToSet(arg1,arg2);
+  SWIG_NewPointerObj(L,result,SWIGTYPE_p_sTileSet,0); SWIG_arg++; 
   return SWIG_arg;
   
   if(0) SWIG_fail;
@@ -6557,16 +6752,16 @@ fail:
 
 static int _wrap_RemoveTileFromSet(lua_State* L) {
   int SWIG_arg = 0;
-  TileNEWSet *arg1 = (TileNEWSet *) 0 ;
+  TileSet *arg1 = (TileSet *) 0 ;
   TileData *arg2 = (TileData *) 0 ;
-  TileNEWSet *result = 0 ;
+  TileSet *result = 0 ;
   
   SWIG_check_num_args("RemoveTileFromSet",2,2)
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("RemoveTileFromSet",1,"TileNEWSet *");
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("RemoveTileFromSet",1,"TileSet *");
   if(!SWIG_isptrtype(L,2)) SWIG_fail_arg("RemoveTileFromSet",2,"TileData *");
   
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_sTileNEWSet,0))){
-    SWIG_fail_ptr("RemoveTileFromSet",1,SWIGTYPE_p_sTileNEWSet);
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_sTileSet,0))){
+    SWIG_fail_ptr("RemoveTileFromSet",1,SWIGTYPE_p_sTileSet);
   }
   
   
@@ -6574,8 +6769,8 @@ static int _wrap_RemoveTileFromSet(lua_State* L) {
     SWIG_fail_ptr("RemoveTileFromSet",2,SWIGTYPE_p_TileData);
   }
   
-  result = (TileNEWSet *)RemoveTileFromSet(arg1,arg2);
-  SWIG_NewPointerObj(L,result,SWIGTYPE_p_sTileNEWSet,0); SWIG_arg++; 
+  result = (TileSet *)RemoveTileFromSet(arg1,arg2);
+  SWIG_NewPointerObj(L,result,SWIGTYPE_p_sTileSet,0); SWIG_arg++; 
   return SWIG_arg;
   
   if(0) SWIG_fail;
@@ -6588,16 +6783,16 @@ fail:
 
 static int _wrap_IsTileInSet(lua_State* L) {
   int SWIG_arg = 0;
-  TileNEWSet *arg1 = (TileNEWSet *) 0 ;
+  TileSet *arg1 = (TileSet *) 0 ;
   TileData *arg2 = (TileData *) 0 ;
   bool result;
   
   SWIG_check_num_args("IsTileInSet",2,2)
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("IsTileInSet",1,"TileNEWSet *");
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("IsTileInSet",1,"TileSet *");
   if(!SWIG_isptrtype(L,2)) SWIG_fail_arg("IsTileInSet",2,"TileData *");
   
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_sTileNEWSet,0))){
-    SWIG_fail_ptr("IsTileInSet",1,SWIGTYPE_p_sTileNEWSet);
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_sTileSet,0))){
+    SWIG_fail_ptr("IsTileInSet",1,SWIGTYPE_p_sTileSet);
   }
   
   
@@ -6619,14 +6814,14 @@ fail:
 
 static int _wrap_GetTileSetCount(lua_State* L) {
   int SWIG_arg = 0;
-  TileNEWSet *arg1 = (TileNEWSet *) 0 ;
+  TileSet *arg1 = (TileSet *) 0 ;
   long result;
   
   SWIG_check_num_args("GetTileSetCount",1,1)
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("GetTileSetCount",1,"TileNEWSet *");
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("GetTileSetCount",1,"TileSet *");
   
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_sTileNEWSet,0))){
-    SWIG_fail_ptr("GetTileSetCount",1,SWIGTYPE_p_sTileNEWSet);
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_sTileSet,0))){
+    SWIG_fail_ptr("GetTileSetCount",1,SWIGTYPE_p_sTileSet);
   }
   
   result = (long)GetTileSetCount(arg1);
@@ -6643,14 +6838,14 @@ fail:
 
 static int _wrap_GetTilesFromSet(lua_State* L) {
   int SWIG_arg = 0;
-  TileNEWSet *arg1 = (TileNEWSet *) 0 ;
+  TileSet *arg1 = (TileSet *) 0 ;
   TileData **result = 0 ;
   
   SWIG_check_num_args("GetTilesFromSet",1,1)
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("GetTilesFromSet",1,"TileNEWSet *");
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("GetTilesFromSet",1,"TileSet *");
   
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_sTileNEWSet,0))){
-    SWIG_fail_ptr("GetTilesFromSet",1,SWIGTYPE_p_sTileNEWSet);
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_sTileSet,0))){
+    SWIG_fail_ptr("GetTilesFromSet",1,SWIGTYPE_p_sTileSet);
   }
   
   result = (TileData **)GetTilesFromSet(arg1);
@@ -6681,25 +6876,25 @@ fail:
 
 static int _wrap_IntersectTileSets(lua_State* L) {
   int SWIG_arg = 0;
-  TileNEWSet *arg1 = (TileNEWSet *) 0 ;
-  TileNEWSet *arg2 = (TileNEWSet *) 0 ;
-  TileNEWSet *result = 0 ;
+  TileSet *arg1 = (TileSet *) 0 ;
+  TileSet *arg2 = (TileSet *) 0 ;
+  TileSet *result = 0 ;
   
   SWIG_check_num_args("IntersectTileSets",2,2)
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("IntersectTileSets",1,"TileNEWSet *");
-  if(!SWIG_isptrtype(L,2)) SWIG_fail_arg("IntersectTileSets",2,"TileNEWSet *");
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("IntersectTileSets",1,"TileSet *");
+  if(!SWIG_isptrtype(L,2)) SWIG_fail_arg("IntersectTileSets",2,"TileSet *");
   
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_sTileNEWSet,0))){
-    SWIG_fail_ptr("IntersectTileSets",1,SWIGTYPE_p_sTileNEWSet);
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_sTileSet,0))){
+    SWIG_fail_ptr("IntersectTileSets",1,SWIGTYPE_p_sTileSet);
   }
   
   
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,2,(void**)&arg2,SWIGTYPE_p_sTileNEWSet,0))){
-    SWIG_fail_ptr("IntersectTileSets",2,SWIGTYPE_p_sTileNEWSet);
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,2,(void**)&arg2,SWIGTYPE_p_sTileSet,0))){
+    SWIG_fail_ptr("IntersectTileSets",2,SWIGTYPE_p_sTileSet);
   }
   
-  result = (TileNEWSet *)IntersectTileSets(arg1,arg2);
-  SWIG_NewPointerObj(L,result,SWIGTYPE_p_sTileNEWSet,0); SWIG_arg++; 
+  result = (TileSet *)IntersectTileSets(arg1,arg2);
+  SWIG_NewPointerObj(L,result,SWIGTYPE_p_sTileSet,0); SWIG_arg++; 
   return SWIG_arg;
   
   if(0) SWIG_fail;
@@ -7332,12 +7527,12 @@ fail:
 static int _wrap_GetRegionsTagged(lua_State* L) {
   int SWIG_arg = 0;
   char *arg1 = (char *) 0 ;
-  Region **result = 0 ;
+  DisposableRegionList result;
   
   SWIG_check_num_args("GetRegionsTagged",1,1)
   if(!SWIG_lua_isnilstring(L,1)) SWIG_fail_arg("GetRegionsTagged",1,"char const *");
   arg1 = (char *)lua_tostring(L, 1);
-  result = (Region **)GetRegionsTagged((char const *)arg1);
+  result = GetRegionsTagged((char const *)arg1);
   
   {
     lua_newtable(L);
@@ -7348,7 +7543,7 @@ static int _wrap_GetRegionsTagged(lua_State* L) {
         lua_settable(L, -3);
       }
     }
-    // arrfree(result); // TODO: don't free if we don't own this memory
+    arrfree(result);
     
     SWIG_arg += 1;
   }
@@ -7500,6 +7695,7 @@ static int _wrap_AddBanner(lua_State* L) {
   gbVec4 arg3 ;
   gbVec4 arg4 ;
   float arg5 ;
+  void *result = 0 ;
   
   SWIG_check_num_args("AddBanner",5,5)
   if(!SWIG_lua_isnilstring(L,1)) SWIG_fail_arg("AddBanner",1,"char const *");
@@ -7584,7 +7780,48 @@ static int _wrap_AddBanner(lua_State* L) {
     }
   }
   arg5 = (float)lua_tonumber(L, 5);
-  AddBanner((char const *)arg1,arg2,arg3,arg4,arg5);
+  result = (void *)AddBanner((char const *)arg1,arg2,arg3,arg4,arg5);
+  SWIG_NewPointerObj(L,result,SWIGTYPE_p_void,0); SWIG_arg++; 
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_PositionBanner(lua_State* L) {
+  int SWIG_arg = 0;
+  void *arg1 = (void *) 0 ;
+  float arg2 ;
+  
+  SWIG_check_num_args("PositionBanner",2,2)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("PositionBanner",1,"void *");
+  if(!lua_isnumber(L,2)) SWIG_fail_arg("PositionBanner",2,"float");
+  arg1=(void *)SWIG_MustGetPtr(L,1,0,0,1,"PositionBanner");
+  arg2 = (float)lua_tonumber(L, 2);
+  PositionBanner(arg1,arg2);
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_RemoveBanner(lua_State* L) {
+  int SWIG_arg = 0;
+  void *arg1 = (void *) 0 ;
+  
+  SWIG_check_num_args("RemoveBanner",1,1)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("RemoveBanner",1,"void *");
+  arg1=(void *)SWIG_MustGetPtr(L,1,0,0,1,"RemoveBanner");
+  RemoveBanner(arg1);
   
   return SWIG_arg;
   
@@ -7617,9 +7854,12 @@ fail:
 
 static int _wrap_PresentChoiceSelection(lua_State* L) {
   int SWIG_arg = 0;
+  char *arg1 = (char *) 0 ;
   
-  SWIG_check_num_args("PresentChoiceSelection",0,0)
-  PresentChoiceSelection();
+  SWIG_check_num_args("PresentChoiceSelection",1,1)
+  if(!SWIG_lua_isnilstring(L,1)) SWIG_fail_arg("PresentChoiceSelection",1,"char const *");
+  arg1 = (char *)lua_tostring(L, 1);
+  PresentChoiceSelection((char const *)arg1);
   
   return SWIG_arg;
   
@@ -7679,10 +7919,8 @@ static swig_lua_method swig_SwigModule_methods[]= {
     { "LoadColorTable", _wrap_LoadColorTable},
     { "GetColorByIndex", _wrap_GetColorByIndex},
     { "GetColorByPercent", _wrap_GetColorByPercent},
-    { "GetRenderingRegions", _wrap_GetRenderingRegions},
+    { "DumpScreenShot", _wrap_DumpScreenShot},
     { "WorldToScreen", _wrap_WorldToScreen},
-    { "ClearTileLabels", _wrap_ClearTileLabels},
-    { "AddTileLabel", _wrap_AddTileLabel},
     { "MeasureTextExtents", _wrap_MeasureTextExtents},
     { "GetTextAscenderHeight", _wrap_GetTextAscenderHeight},
     { "RandomRangeFloat", _wrap_RandomRangeFloat},
@@ -7706,12 +7944,20 @@ static swig_lua_method swig_SwigModule_methods[]= {
     { "CleanAllTiles", _wrap_CleanAllTiles},
     { "GetTileAtPosition", _wrap_GetTileAtPosition},
     { "GetTileAtIndex", _wrap_GetTileAtIndex},
+    { "ScreenToTile", _wrap_ScreenToTile},
+    { "GetTileNeighbors", _wrap_GetTileNeighbors},
+    { "GetTileCircle", _wrap_GetTileCircle},
     { "CreateRegion", _wrap_CreateRegion},
     { "DestroyRegion", _wrap_DestroyRegion},
     { "SetRegionOutline", _wrap_SetRegionOutline},
     { "ClearRegionOutline", _wrap_ClearRegionOutline},
+    { "SetRegionLabel", _wrap_SetRegionLabel},
+    { "ClearRegionLabel", _wrap_ClearRegionLabel},
     { "AddTileToRegion", _wrap_AddTileToRegion},
     { "RemoveTileFromRegion", _wrap_RemoveTileFromRegion},
+    { "SetRegionAsDirty", _wrap_SetRegionAsDirty},
+    { "GetDirtyRegions", _wrap_GetDirtyRegions},
+    { "CleanAllRegions", _wrap_CleanAllRegions},
     { "DestroyTileSet", _wrap_DestroyTileSet},
     { "AddTileToSet", _wrap_AddTileToSet},
     { "RemoveTileFromSet", _wrap_RemoveTileFromSet},
@@ -7746,6 +7992,8 @@ static swig_lua_method swig_SwigModule_methods[]= {
     { "GetTime", _wrap_GetTime},
     { "FindSimplePath", _wrap_FindSimplePath},
     { "AddBanner", _wrap_AddBanner},
+    { "PositionBanner", _wrap_PositionBanner},
+    { "RemoveBanner", _wrap_RemoveBanner},
     { "AddChoice", _wrap_AddChoice},
     { "PresentChoiceSelection", _wrap_PresentChoiceSelection},
     { "ClearChoices", _wrap_ClearChoices},
@@ -7759,7 +8007,7 @@ static swig_lua_class* swig_SwigModule_classes[]= {
 &_wrap_class_gbVec4,
 &_wrap_class_TileData,
 &_wrap_class_Region,
-&_wrap_class_TileNEWSet,
+&_wrap_class_TileSet,
     0
 };
 static swig_lua_namespace* swig_SwigModule_namespaces[] = {
@@ -7789,7 +8037,8 @@ static swig_type_info _swigt__p_gbVec3 = {"_p_gbVec3", "union gbVec3 *|gbVec3 *"
 static swig_type_info _swigt__p_gbVec4 = {"_p_gbVec4", "union gbVec4 *|gbVec4 *", 0, 0, (void*)&_wrap_class_gbVec4, 0};
 static swig_type_info _swigt__p_p_sRegion = {"_p_p_sRegion", "struct sRegion **|Region **", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_sRegion = {"_p_sRegion", "struct sRegion *|Region *|sRegion *", 0, 0, (void*)&_wrap_class_Region, 0};
-static swig_type_info _swigt__p_sTileNEWSet = {"_p_sTileNEWSet", "struct sTileNEWSet *|TileNEWSet *|sTileNEWSet *", 0, 0, (void*)&_wrap_class_TileNEWSet, 0};
+static swig_type_info _swigt__p_sTileSet = {"_p_sTileSet", "struct sTileSet *|TileSet *|sTileSet *", 0, 0, (void*)&_wrap_class_TileSet, 0};
+static swig_type_info _swigt__p_void = {"_p_void", "void *", 0, 0, (void*)0, 0};
 
 static swig_type_info *swig_type_initial[] = {
   &_swigt__p_AttrComparison,
@@ -7801,7 +8050,8 @@ static swig_type_info *swig_type_initial[] = {
   &_swigt__p_gbVec4,
   &_swigt__p_p_sRegion,
   &_swigt__p_sRegion,
-  &_swigt__p_sTileNEWSet,
+  &_swigt__p_sTileSet,
+  &_swigt__p_void,
 };
 
 static swig_cast_info _swigc__p_AttrComparison[] = {  {&_swigt__p_AttrComparison, 0, 0, 0},{0, 0, 0, 0}};
@@ -7813,7 +8063,8 @@ static swig_cast_info _swigc__p_gbVec3[] = {  {&_swigt__p_gbVec3, 0, 0, 0},{0, 0
 static swig_cast_info _swigc__p_gbVec4[] = {  {&_swigt__p_gbVec4, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_p_sRegion[] = {  {&_swigt__p_p_sRegion, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_sRegion[] = {  {&_swigt__p_sRegion, 0, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_sTileNEWSet[] = {  {&_swigt__p_sTileNEWSet, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_sTileSet[] = {  {&_swigt__p_sTileSet, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_void[] = {  {&_swigt__p_void, 0, 0, 0},{0, 0, 0, 0}};
 
 static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_AttrComparison,
@@ -7825,7 +8076,8 @@ static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_gbVec4,
   _swigc__p_p_sRegion,
   _swigc__p_sRegion,
-  _swigc__p_sTileNEWSet,
+  _swigc__p_sTileSet,
+  _swigc__p_void,
 };
 
 

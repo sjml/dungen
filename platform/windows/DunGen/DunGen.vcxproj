@@ -35,6 +35,7 @@
     <ClInclude Include="..\..\..\src\ui\banner.h" />
     <ClInclude Include="..\..\..\src\ui\choice.h" />
     <ClInclude Include="..\..\..\src\ui\tile_choice.h" />
+    <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\src\constraints\pathfind.c" />
@@ -92,6 +93,12 @@
     <ProjectReference Include="..\SQLite\SQLite.vcxproj">
       <Project>{5b94c021-85b0-4b0d-a6bb-b421e00b0fd9}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="DunGen.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="DunGen.ico" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
@@ -163,6 +170,7 @@
       <AdditionalIncludeDirectories>$(ProjectDir)..\..\..\lib\glfw-3.3.0\include;$(ProjectDir)..\..\..\lib\lua-5.3.5\src;$(ProjectDir)..\..\..\lib\sqlite-amalgamation-3290000;$(ProjectDir)..\..\..\lib\sds-0bb446e;$(ProjectDir)..\..\..\lib\libpqueue-f319ea0\src;$(ProjectDir)..\..\..\lib\freetype-2.10.1\include;$(ProjectDir)..\..\..\lib\single-file</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_MBCS;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
       <AdditionalOptions>/experimental:external /external:anglebrackets /external:W0 %(AdditionalOptions)</AdditionalOptions>
+      <TreatWarningAsError>true</TreatWarningAsError>
     </ClCompile>
     <Link>
       <AdditionalDependencies>opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -192,6 +200,7 @@
       <AdditionalIncludeDirectories>$(ProjectDir)..\..\..\lib\glfw-3.3.0\include;$(ProjectDir)..\..\..\lib\lua-5.3.5\src;$(ProjectDir)..\..\..\lib\sqlite-amalgamation-3290000;$(ProjectDir)..\..\..\lib\sds-0bb446e;$(ProjectDir)..\..\..\lib\libpqueue-f319ea0\src;$(ProjectDir)..\..\..\lib\freetype-2.10.1\include;$(ProjectDir)..\..\..\lib\single-file</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_MBCS;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
       <AdditionalOptions>/experimental:external /external:anglebrackets /external:W0 %(AdditionalOptions)</AdditionalOptions>
+      <TreatWarningAsError>true</TreatWarningAsError>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
