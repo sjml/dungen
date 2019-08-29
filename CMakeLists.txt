@@ -1,8 +1,11 @@
 ## This CMake file is a test. It's pretty thrown together and may not work well.
 ##   In fact, it just exits right now to make sure you don't think it'll do stuff.
-# message(FATAL_ERROR "This CMake file isn't in use at the moment, but could be a reference. Comment out this line to give it a try.")
 
-cmake_minimum_required (VERSION 3.0)
+cmake_minimum_required (VERSION 3.1)
+if(POLICY CMP0076)
+    cmake_policy(SET CMP0076 NEW)
+endif()
+
 project (DunGen)
 
 set(CMAKE_C_STANDARD 11)
@@ -10,6 +13,7 @@ set(CMAKE_C_STANDARD 11)
 set(GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE)
 set(GLFW_BUILD_TESTS OFF CACHE BOOL "" FORCE)
 set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
+set(OpenGL_GL_PREFERENCE GLVND)
 add_subdirectory(lib/glfw-3.3.0)
 find_package(OpenGL REQUIRED)
 
