@@ -1,0 +1,8 @@
+This is the start of a snapcraft package, but, well, it has issues.
+
+The relevant part of the Azure pipeline file should be changed to say:
+    sudo snap install snapcraft --classic
+    sudo snap install lxd
+    cat snapcraft/lxd-seed.yaml | sudo lxd init --preseed
+    cd snapcraft
+    snapcraft cleanbuild
