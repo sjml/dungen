@@ -204,7 +204,7 @@ int Render() {
 
         RenderTiles();
 
-        for (int i = 0; i < arrlen(regions); i++) {
+        for (long i = 0; i < arrlen(regions); i++) {
             if (regions[i]->outline != NULL) {
                 RenderOutline(regions[i]->outline);
             }

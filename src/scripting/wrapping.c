@@ -6323,6 +6323,94 @@ fail:
 }
 
 
+static int _wrap_SetTileOutline(lua_State* L) {
+  int SWIG_arg = 0;
+  TileData *arg1 = (TileData *) 0 ;
+  gbVec4 arg2 ;
+  float arg3 ;
+  
+  SWIG_check_num_args("SetTileOutline",3,3)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("SetTileOutline",1,"TileData *");
+  if(!lua_isnumber(L,3)) SWIG_fail_arg("SetTileOutline",3,"float");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_TileData,0))){
+    SWIG_fail_ptr("SetTileOutline",1,SWIGTYPE_p_TileData);
+  }
+  
+  {
+    // gbVec4 conversion
+    gbVec4 *vecPtr;
+    if (SWIG_IsOK(SWIG_ConvertPtr(L,2,(void**)&vecPtr,SWIGTYPE_p_gbVec4,0))) {
+      arg2 = *vecPtr;
+    }
+    else {
+      // convert table parameters to floats
+      lua_pushinteger(L, 1);
+      lua_gettable(L, 2);
+      float x = lua_tonumber(L, -1);
+      lua_pop(L, 1);
+      
+      lua_pushinteger(L, 2);
+      lua_gettable(L, 2);
+      float y = lua_tonumber(L, -1);
+      lua_pop(L, 1);
+      
+      lua_pushinteger(L, 3);
+      lua_gettable(L, 2);
+      float z = lua_tonumber(L, -1);
+      lua_pop(L, 1);
+      
+      float w = 1.0f;
+      if (lua_rawlen(L, 2) >= 4) {
+        lua_pushinteger(L, 4);
+        lua_gettable(L, 2);
+        w = lua_tonumber(L, -1);
+        lua_pop(L, 1);
+      }
+      
+      // build the vector
+      (&arg2)->x = x;
+      (&arg2)->y = y;
+      (&arg2)->z = z;
+      (&arg2)->w = w;
+    }
+  }
+  arg3 = (float)lua_tonumber(L, 3);
+  SetTileOutline(arg1,arg2,arg3);
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_ClearTileOutline(lua_State* L) {
+  int SWIG_arg = 0;
+  TileData *arg1 = (TileData *) 0 ;
+  
+  SWIG_check_num_args("ClearTileOutline",1,1)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("ClearTileOutline",1,"TileData *");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_TileData,0))){
+    SWIG_fail_ptr("ClearTileOutline",1,SWIGTYPE_p_TileData);
+  }
+  
+  ClearTileOutline(arg1);
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
 static int _wrap_CreateRegion(lua_State* L) {
   int SWIG_arg = 0;
   Region *result = 0 ;
@@ -7947,6 +8035,8 @@ static swig_lua_method swig_SwigModule_methods[]= {
     { "ScreenToTile", _wrap_ScreenToTile},
     { "GetTileNeighbors", _wrap_GetTileNeighbors},
     { "GetTileCircle", _wrap_GetTileCircle},
+    { "SetTileOutline", _wrap_SetTileOutline},
+    { "ClearTileOutline", _wrap_ClearTileOutline},
     { "CreateRegion", _wrap_CreateRegion},
     { "DestroyRegion", _wrap_DestroyRegion},
     { "SetRegionOutline", _wrap_SetRegionOutline},

@@ -87,3 +87,11 @@ end
 tdft.GetTags = function(td)
   return GetTileTags(td)
 end
+
+tdft.SetOutline = function(td, color, thickness)
+  return SetTileOutline(td, color, thickness)
+end
+
+tdft.ClearOutline = function(td)
+  return ClearTileOutline(td)
+end

@@ -118,24 +118,25 @@ local function applyFillStyle(styleTable, target)
 end
 
 local function applyOutlineStyle(styleTable, target)
-  if (styleTable.outlineColor ~= nil) then
-    local c = nil
-    if (
-          #styleTable.outlineColor > 2
-      and type(styleTable.outlineColor[1]) == "number"
-      and type(styleTable.outlineColor[2]) == "number"
-      and type(styleTable.outlineColor[3]) == "number"
-    ) then
-      c = styleTable.outlineColor
-    elseif (type(styleTable.outlineColor[1]) == "function") then
-      local args = table.slice(styleTable.outlineColor, 2)
-      table.insert(args, target)
-      c = styleTable.outlineColor[1](table.unpack(args))
-    end
-    if (c ~= nil) then
-      thickness = styleTable.outlineThickness or 0.15
-      target:SetOutline(c, thickness)
-    end
+  if (styleTable.outlineColor == nil) then
+    return
+  end
+  local c = nil
+  if (
+        #styleTable.outlineColor > 2
+    and type(styleTable.outlineColor[1]) == "number"
+    and type(styleTable.outlineColor[2]) == "number"
+    and type(styleTable.outlineColor[3]) == "number"
+  ) then
+    c = styleTable.outlineColor
+  elseif (type(styleTable.outlineColor[1]) == "function") then
+    local args = table.slice(styleTable.outlineColor, 2)
+    table.insert(args, target)
+    c = styleTable.outlineColor[1](table.unpack(args))
+  end
+  if (c ~= nil) then
+    local thickness = styleTable.outlineThickness or 0.15
+    target:SetOutline(c, thickness)
   end
 end
 
@@ -159,12 +160,15 @@ function ResolveStyles()
 
   local dirtyTiles = GetDirtyTiles()
   for _, t in pairs(dirtyTiles) do
+    ClearTileOutline(t)
+
     local match = {0, 0}
 
     for label, style in pairs(styles) do
       local m = checkStyle(style, t)
       if higherMatch(m, match) then
         match = m
+        applyOutlineStyle(style, t)
         applyFillStyle(style, t)
       end
     end

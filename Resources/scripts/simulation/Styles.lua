@@ -1,7 +1,9 @@
 local colors = { -- R      G      B
   RED =          { 1.0 ,  0.0 ,  0.0  },
   YELLOW =       { 1.0 ,  1.0 ,  0.0  },
-  MAGENTA =      { 1.0 ,  1.0 ,  0.0  },
+  GREEN =        { 0.0 ,  1.0 ,  0.0  },
+  BLUE =         { 0.0 ,  1.0 ,  1.0  },
+  MAGENTA =      { 1.0 ,  0.0 ,  1.0  },
   CYAN =         { 0.0 ,  1.0 ,  1.0  },
   BLACK =        { 0.0 ,  0.0 ,  0.0  },
   WHITE =        { 1.0 ,  1.0 ,  1.0  },
@@ -70,23 +72,6 @@ mithral = {
   tileFill = colors.mithral,
 }
 
-gold = {
-  reqs = {
-    tags = "gold"
-  },
-  tileFill = colors.gold,
-}
-
-goldOpen = {
-  reqs = {
-    tags = "gold"
-  },
-  attributes = {
-    {"open", Equal, 1}
-  },
-  tileFill = colors.RED,
-}
-
 water = {
   reqs = {
     tags = "ground, water"
@@ -101,6 +86,24 @@ magma = {
   },
   tileFill = colors.magma,
   labelText = "Magma",
+}
+
+gold = {
+  reqs = {
+    tags = "gold"
+  },
+  tileFill = colors.gold,
+}
+
+goldOpen = {
+  reqs = {
+    tags = "gold",
+    attributes = {
+      {"open", Equal, 1}
+    },
+  },
+  -- tileFill = colors.RED,
+  outlineColor = colors.gold
 }
 
 plague = {
@@ -146,7 +149,6 @@ fallenStar = {
     tags = "FallenStar"
   },
   labelText = "Fallen Star",
-  -- labelOffset = {0, 1}
 }
 
 FATE = {

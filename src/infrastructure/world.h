@@ -13,6 +13,7 @@ typedef struct {
     gbVec2 worldPos;
     gbVec3 color;
     gbVec4 overlayColor; // not exposed to Lua
+    Outline* outline; // not exposed to Lua
 
     // clockwise neighbors
     int neighborW;
@@ -56,6 +57,8 @@ TileData* ScreenToTile(gbVec2* screenCoordinates);
 TileData** GetTileNeighbors(TileData* center);
 TileData** GetTileCircle(TileData* center, int radius);
 long GetTileDistance(TileData* t1, TileData* t2);
+void SetTileOutline(TileData* t, gbVec4 color, float thickness);
+void ClearTileOutline(TileData* t);
 
 Region* CreateRegion(void);
 void DestroyRegion(Region* r);

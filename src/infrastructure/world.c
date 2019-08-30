@@ -102,6 +102,7 @@ void InitializeWorld(int width, int height, float scale) {
             td->overlayColor.g = 0.0f;
             td->overlayColor.b = 0.0f;
             td->overlayColor.a = 0.0f;
+            td->outline = NULL;
 
             modVector.x = tileDimensions.x * i;
             modVector.y = -((tileDimensions.y - (tileSize * 0.5f)) * j);
@@ -394,6 +395,11 @@ void RenderTiles(void) {
         }
         glPopMatrix();
     }
+    for (long i = 0; i < arrlen(WorldArray); i++) {
+        if (WorldArray[i].outline != NULL) {
+            RenderOutline(WorldArray[i].outline);
+        }
+    }
 }
 
 Region* CreateRegion() {
@@ -473,10 +479,32 @@ TileData** GetTilesFromSet(TileSet* ts) {
     return ret;
 }
 
-void SetRegionOutline(Region* r, gbVec4 color, float thickness) {
-    if (r->outline == NULL) {
-        r->outline = CreateOutline(r->tiles, thickness);
+void SetTileOutline(TileData* t, gbVec4 color, float thickness) {
+    if (t->outline != NULL) {
+        ClearTileOutline(t);
     }
+    TileSet* singleTile = NULL;
+    hmput(singleTile, t, 1);
+    t->outline = CreateOutline(singleTile, thickness);
+    t->outline->color.r = color.r;
+    t->outline->color.g = color.g;
+    t->outline->color.b = color.b;
+    t->outline->color.a = color.a;
+    DestroyTileSet(singleTile);
+}
+
+void ClearTileOutline(TileData* t) {
+    if (t->outline!= NULL) {
+        DestroyOutline(t->outline);
+        t->outline = NULL;
+    }
+}
+
+void SetRegionOutline(Region* r, gbVec4 color, float thickness) {
+    if (r->outline != NULL) {
+        ClearRegionOutline(r);
+    }
+    r->outline = CreateOutline(r->tiles, thickness);
     r->outline->color.r = color.r;
     r->outline->color.g = color.g;
     r->outline->color.b = color.b;

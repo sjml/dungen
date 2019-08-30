@@ -1,10 +1,5 @@
 ## TODO
 0. Styler rework
-    - firstly: why is all the gold showing up red right now?
-    - individual tiles should be able to get outlines
-        - neighboring tiles merge outlines? eeek!
-        - maybe that's just a feature of regions
-    - regions only apply outlines and labels
     - can it handle a region that is both water and plague?
 1. Chamber/region/room model design
     - (see brainstorm notes)
