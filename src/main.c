@@ -15,10 +15,11 @@ int main(int argc, const char * argv[]) {
 
     InitializeGame();
     
-    bool shouldStop = 0;
+    bool shouldStop = false;
     while (!shouldStop) {
-        shouldStop = GameTick();
-        shouldStop = Render();
+        bool updateStopping = GameTick();
+        bool renderStopping = Render();
+		shouldStop = updateStopping || renderStopping;
     }
     
     FinalizeGame();

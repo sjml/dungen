@@ -50,6 +50,7 @@ void InitializeRendering() {
 
     glfwSetCursorPosCallback(window, MouseMoveCallback);
     glfwSetMouseButtonCallback(window, MouseClickCallback);
+	glfwSetKeyCallback(window, KeyboardCallback);
 
     glClearDepth(1.0f);
     glPolygonMode(GL_FRONT, GL_FILL);

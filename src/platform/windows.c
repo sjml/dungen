@@ -5,7 +5,7 @@
 
 void InitializePlatform() {
 #ifdef _DEBUG
-    SetCurrentDirectoryA("..\\..\\..");
+    SetCurrentDirectoryA("..\\..\\..\\Resources");
 #else
     if (SetCurrentDirectoryA(".\\Resources") == 0) {
         fprintf(stderr, "ERROR: Could not find Resources directory. Exiting.\n");

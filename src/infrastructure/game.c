@@ -19,6 +19,8 @@ static double previousTime, currentTime;
 
 static unsigned int randomSeed;
 
+static bool shouldStopGame = false;
+
 void InitializeGame(void) {
     randomSeed = (unsigned int)time(NULL);
     srand(randomSeed);
@@ -71,7 +73,7 @@ int GameTick(void) {
         }
     }
     
-    return 0;
+    return shouldStopGame;
 }
 
 double GetTime() {
@@ -96,4 +98,10 @@ void MouseClickCallback(GLFWwindow* window, int button, int action, int mods) {
     if (GetTileChoiceStatus() >= 0 && button == GLFW_MOUSE_BUTTON_LEFT) {
         TileChoiceProcessMouseClick(action == GLFW_PRESS);
     }
+}
+
+void KeyboardCallback(GLFWwindow* window, int key, int scancode, int action, int mode) {
+	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
+		shouldStopGame = true;
+	}
 }
