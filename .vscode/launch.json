@@ -5,13 +5,35 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "(lldb) Launch",
-            "type": "cppdbg",
+            "name": "(Windows Debug) Launch",
+            "type": "cppvsdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/build/Debug/DunGen.app/Contents/MacOS/DunGen",
             "args": [],
             "stopAtEntry": false,
-            "cwd": "${workspaceFolder}/build/Debug/DunGen.app/Contents/Resources",
+            "program": "${workspaceFolder}/build/Debug/DunGen.exe",
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": false
+        },
+        {
+            "name": "(Windows Release) Launch",
+            "type": "cppvsdbg",
+            "request": "launch",
+            "args": [],
+            "stopAtEntry": false,
+            "program": "${workspaceFolder}/build/Release/DunGen.exe",
+            "cwd": "${workspaceFolder}/build/Release",
+            "environment": [],
+            "externalConsole": false
+        },
+        {
+            "name": "(Mac) Launch",
+            "type": "cppdbg",
+            "request": "launch",
+            "args": [],
+            "stopAtEntry": false,
+            "program": "${workspaceFolder}/build/Debug/DunGen.app/Contents/MacOS/DunGen",
+            "cwd": "${workspaceFolder}",
             "environment": [],
             "externalConsole": false,
             "MIMode": "lldb"

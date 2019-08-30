@@ -135,13 +135,6 @@ endif()
 
 add_custom_command(TARGET DunGen POST_BUILD
                    COMMAND ${CMAKE_COMMAND} -E copy_directory
-                   ${CMAKE_SOURCE_DIR}/images $<TARGET_FILE_DIR:DunGen>/${ResourceDir}/images
+                   ${CMAKE_SOURCE_DIR}/Resources $<TARGET_FILE_DIR:DunGen>/${ResourceDir}
                   )
-add_custom_command(TARGET DunGen POST_BUILD
-                   COMMAND ${CMAKE_COMMAND} -E copy_directory
-                   ${CMAKE_SOURCE_DIR}/scripts $<TARGET_FILE_DIR:DunGen>/${ResourceDir}/scripts
-                  )
-add_custom_command(TARGET DunGen POST_BUILD
-                  COMMAND ${CMAKE_COMMAND} -E copy_directory
-                  ${CMAKE_SOURCE_DIR}/fonts $<TARGET_FILE_DIR:DunGen>/${ResourceDir}/fonts
-                  )
+

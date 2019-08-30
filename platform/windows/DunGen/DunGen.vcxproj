@@ -210,7 +210,7 @@
       <EntryPointSymbol>mainCRTStartup</EntryPointSymbol>
     </Link>
     <PostBuildEvent>
-      <Command>for %%a in ("scripts" "images" "fonts") do (xcopy /y /q /e /i "$(ProjectDir)..\..\..\%%~a" "$(OutDir)Resources\%%~a")</Command>
+      <Command>xcopy /y /q /e /i "$(ProjectDir)..\..\..\Resources" "$(OutDir)Resources"</Command>
     </PostBuildEvent>
     <PostBuildEvent>
       <Message>Copy Resources</Message>
