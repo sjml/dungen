@@ -1,4 +1,11 @@
 ## TODO
+0. Styler rework
+    - firstly: why is all the gold showing up red right now?
+    - individual tiles should be able to get outlines
+        - neighboring tiles merge outlines? eeek!
+        - maybe that's just a feature of regions
+    - regions only apply outlines and labels
+    - can it handle a region that is both water and plague?
 1. Chamber/region/room model design
     - (see brainstorm notes)
     - somewhat more than tilesets
@@ -23,9 +30,6 @@
 * typemaps should reject inputs that are not tables
 * handle newlines in text rendering?
 * figure out text extents ascender/descender issue
-* Rethink styler logic
-    - should regions and tiles have separate paths? regions just have labels and outlines?
-    - figure out how to display a region that is both water and plague, for example
 * add way to modify attributes instead of having to get/set round-trip through SQLite
 * overusing the stretchy buffer right now; look for more chances to just use a static array
     - also not a huge deal, but I think the *free functions also NULL the pointer, so might have some redundant calls

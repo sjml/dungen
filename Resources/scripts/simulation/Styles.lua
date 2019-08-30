@@ -77,6 +77,16 @@ gold = {
   tileFill = colors.gold,
 }
 
+goldOpen = {
+  reqs = {
+    tags = "gold"
+  },
+  attributes = {
+    {"open", Equal, 1}
+  },
+  tileFill = colors.RED,
+}
+
 water = {
   reqs = {
     tags = "ground, water"
