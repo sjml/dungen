@@ -118,7 +118,7 @@ gems = {
   reqs = {
     tags = "ground, gems"
   },
-  tileFill = colors.gems,
+  outlineColor = colors.gems,
   labelText = "Gems!",
 }
 

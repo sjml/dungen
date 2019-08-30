@@ -8,5 +8,6 @@
 
 -- push("Meta.Outro")
 
+-- push("Primordial.NaturalCaverns")
 push("Primordial.GoldVein")
 push("Primordial.UndergroundRiver")

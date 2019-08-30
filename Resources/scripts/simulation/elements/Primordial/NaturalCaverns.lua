@@ -45,8 +45,11 @@ while (cavernCount < maxCaverns) do
     -- gems
     sir("DieSides", 4)
     push("System.DieRoll")
+    for i=1,gir("DieRollResult") do
+      storeInChamber(chamber, "gems", true)
+    end
     chamber:SetAttributeInt("treasure", gir("DieRollResult") + chamber:GetAttributeInt("treasure"))
-    chamber:AddTag("gems")
+    -- chamber:AddTag("gems")
   elseif (result == 4) then
     -- empty
   elseif (result == 5) then
