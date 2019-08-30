@@ -135,8 +135,19 @@ local function applyOutlineStyle(styleTable, target)
     c = styleTable.outlineColor[1](table.unpack(args))
   end
   if (c ~= nil) then
+    local outlineType = styleTable.outlineType or "center"
+    if outlineType == "center" then
+      outlineType = 0
+    elseif outlineType == "inner" then
+      outlineType = 1
+    elseif outlineType == "outer" then
+      outlineType = -1
+    else
+      io.stderr:write("STYLE ERROR: Unknown outlineType: " .. tostring(outlineType) .. "\n")
+      return
+    end
     local thickness = styleTable.outlineThickness or 0.15
-    target:SetOutline(c, thickness)
+    target:SetOutline(c, thickness, outlineType)
   end
 end
 

@@ -88,8 +88,8 @@ tdft.GetTags = function(td)
   return GetTileTags(td)
 end
 
-tdft.SetOutline = function(td, color, thickness)
-  return SetTileOutline(td, color, thickness)
+tdft.SetOutline = function(td, color, thickness, type)
+  return SetTileOutline(td, color, thickness, type)
 end
 
 tdft.ClearOutline = function(td)

@@ -102,8 +102,8 @@ goldOpen = {
       {"open", Equal, 1}
     },
   },
-  -- tileFill = colors.RED,
-  outlineColor = colors.gold
+  outlineColor = colors.gold,
+  outlineType = "inner"
 }
 
 plague = {
@@ -119,6 +119,7 @@ gems = {
     tags = "ground, gems"
   },
   outlineColor = colors.gems,
+  outlineType = "inner",
   labelText = "Gems!",
 }
 

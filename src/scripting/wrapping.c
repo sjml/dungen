@@ -6328,10 +6328,12 @@ static int _wrap_SetTileOutline(lua_State* L) {
   TileData *arg1 = (TileData *) 0 ;
   gbVec4 arg2 ;
   float arg3 ;
+  int arg4 ;
   
-  SWIG_check_num_args("SetTileOutline",3,3)
+  SWIG_check_num_args("SetTileOutline",4,4)
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("SetTileOutline",1,"TileData *");
   if(!lua_isnumber(L,3)) SWIG_fail_arg("SetTileOutline",3,"float");
+  if(!lua_isnumber(L,4)) SWIG_fail_arg("SetTileOutline",4,"int");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_TileData,0))){
     SWIG_fail_ptr("SetTileOutline",1,SWIGTYPE_p_TileData);
@@ -6376,7 +6378,8 @@ static int _wrap_SetTileOutline(lua_State* L) {
     }
   }
   arg3 = (float)lua_tonumber(L, 3);
-  SetTileOutline(arg1,arg2,arg3);
+  arg4 = (int)lua_tonumber(L, 4);
+  SetTileOutline(arg1,arg2,arg3,arg4);
   
   return SWIG_arg;
   
@@ -6456,10 +6459,12 @@ static int _wrap_SetRegionOutline(lua_State* L) {
   Region *arg1 = (Region *) 0 ;
   gbVec4 arg2 ;
   float arg3 ;
+  int arg4 ;
   
-  SWIG_check_num_args("SetRegionOutline",3,3)
+  SWIG_check_num_args("SetRegionOutline",4,4)
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("SetRegionOutline",1,"Region *");
   if(!lua_isnumber(L,3)) SWIG_fail_arg("SetRegionOutline",3,"float");
+  if(!lua_isnumber(L,4)) SWIG_fail_arg("SetRegionOutline",4,"int");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_sRegion,0))){
     SWIG_fail_ptr("SetRegionOutline",1,SWIGTYPE_p_sRegion);
@@ -6504,7 +6509,8 @@ static int _wrap_SetRegionOutline(lua_State* L) {
     }
   }
   arg3 = (float)lua_tonumber(L, 3);
-  SetRegionOutline(arg1,arg2,arg3);
+  arg4 = (int)lua_tonumber(L, 4);
+  SetRegionOutline(arg1,arg2,arg3,arg4);
   
   return SWIG_arg;
   

@@ -21,12 +21,12 @@ function storeInChamber(chamber, tag, allowFlood)
   end
 
   if (#empties == 0) then
-    return false
+    return nil
   end
 
   if ((#tiles - #empties) >= #tiles // 2) then
     if (allowFlood == nil or allowFlood == false) then
-      return false
+      return nil
     end
   end
 
@@ -50,7 +50,6 @@ function storeInChamber(chamber, tag, allowFlood)
 
   lowTile:SetAttributeInt("empty", 0)
   lowTile:AddTag(tag)
-  -- print("storing",tag,"in",lowTile.hexPos.x," ",lowTile.hexPos.y)
 
-  return true
+  return lowTile
 end

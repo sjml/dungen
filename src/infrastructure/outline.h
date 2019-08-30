@@ -8,7 +8,7 @@ typedef struct sOutline {
     float** pointLists;
 } Outline;
 
-Outline* CreateOutline(TileSet* ts, float thickness);
+Outline* CreateOutline(TileSet* ts, float thickness, int type);
 void DestroyOutline(Outline* o);
 
 void RenderOutline(Outline* o);

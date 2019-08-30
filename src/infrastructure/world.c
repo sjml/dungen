@@ -479,13 +479,13 @@ TileData** GetTilesFromSet(TileSet* ts) {
     return ret;
 }
 
-void SetTileOutline(TileData* t, gbVec4 color, float thickness) {
+void SetTileOutline(TileData* t, gbVec4 color, float thickness, int type) {
     if (t->outline != NULL) {
         ClearTileOutline(t);
     }
     TileSet* singleTile = NULL;
     hmput(singleTile, t, 1);
-    t->outline = CreateOutline(singleTile, thickness);
+    t->outline = CreateOutline(singleTile, thickness, type);
     t->outline->color.r = color.r;
     t->outline->color.g = color.g;
     t->outline->color.b = color.b;
@@ -500,11 +500,11 @@ void ClearTileOutline(TileData* t) {
     }
 }
 
-void SetRegionOutline(Region* r, gbVec4 color, float thickness) {
+void SetRegionOutline(Region* r, gbVec4 color, float thickness, int type) {
     if (r->outline != NULL) {
         ClearRegionOutline(r);
     }
-    r->outline = CreateOutline(r->tiles, thickness);
+    r->outline = CreateOutline(r->tiles, thickness, type);
     r->outline->color.r = color.r;
     r->outline->color.g = color.g;
     r->outline->color.b = color.b;

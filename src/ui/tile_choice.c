@@ -73,7 +73,7 @@ void TileChoiceProcessMouseMovement(gbVec2 position) {
     }
     ClearRegionOutline(hoveredSingle);
     gbVec4 hoverColor = {1.0f, 0.0f, 0.0f, 1.0f};
-    SetRegionOutline(hoveredSingle, hoverColor, 0.25f);
+    SetRegionOutline(hoveredSingle, hoverColor, 0.25f, -1);
 
     hoveredTile = current;
 }

@@ -37,7 +37,6 @@
 * HLVM exceptions (C + Lua invoking)
 * pull sim settings and other stuff out into config file that Lua pulls in
 * specify (and store) random seed
-* let outlines specify inner/outer/center
 * expose resources directory on mac?
 * history recording -- optional live captioning
     - banner: "The Primordial Age"

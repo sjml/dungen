@@ -99,7 +99,7 @@ bool DoEdgesShareVertex(Edge *e1, Edge *e2, Vec2i *shared, gbVec2 *crossVec) {
 }
 
 
-Outline* CreateOutline(TileSet* ts, float thickness) {
+Outline* CreateOutline(TileSet* ts, float thickness, int type) {
     Outline* o = malloc(sizeof(Outline));
     o->color.r = 1.0f;
     o->color.g = 0.0f;
@@ -187,10 +187,27 @@ Outline* CreateOutline(TileSet* ts, float thickness) {
                     gb_vec2_mul(&normal, normal, halfThickness);
 
                     gbVec2* cv = &PL[checkVert.y][checkVert.x];
-                    arrpush(points, cv->x + normal.x);
-                    arrpush(points, cv->y + normal.y);
-                    arrpush(points, cv->x - normal.x);
-                    arrpush(points, cv->y - normal.y);
+                    if (type == 0) {
+                        // center
+                        arrpush(points, cv->x + normal.x);
+                        arrpush(points, cv->y + normal.y);
+                        arrpush(points, cv->x - normal.x);
+                        arrpush(points, cv->y - normal.y);
+                    }
+                    else if (type == 1) {
+                        // inner
+                        arrpush(points, cv->x);
+                        arrpush(points, cv->y);
+                        arrpush(points, cv->x - (normal.x * 2.0f));
+                        arrpush(points, cv->y - (normal.y * 2.0f));
+                    }
+                    else if (type == -1) {
+                        // outer
+                        arrpush(points, cv->x + (normal.x * 2.0f));
+                        arrpush(points, cv->y + (normal.y * 2.0f));
+                        arrpush(points, cv->x);
+                        arrpush(points, cv->y);
+                    }
 
                     edgeCheck = e;
                     arrdel(edges, i);
@@ -209,15 +226,42 @@ Outline* CreateOutline(TileSet* ts, float thickness) {
         gb_vec2_mul(&normal, normal, halfThickness);
 
         gbVec2* cv = &PL[checkVert.y][checkVert.x];
-        arrpush(points, cv->x + normal.x);
-        arrpush(points, cv->y + normal.y);
-        arrpush(points, cv->x - normal.x);
-        arrpush(points, cv->y - normal.y);
+        if (type == 0) {
+            // center
+            arrpush(points, cv->x + normal.x);
+            arrpush(points, cv->y + normal.y);
+            arrpush(points, cv->x - normal.x);
+            arrpush(points, cv->y - normal.y);
 
-        points[0] = cv->x + normal.x;
-        points[1] = cv->y + normal.y;
-        points[2] = cv->x - normal.x;
-        points[3] = cv->y - normal.y;
+            points[0] = cv->x + normal.x;
+            points[1] = cv->y + normal.y;
+            points[2] = cv->x - normal.x;
+            points[3] = cv->y - normal.y;
+        }
+        else if (type == 1) {
+            // inner
+            arrpush(points, cv->x);
+            arrpush(points, cv->y);
+            arrpush(points, cv->x - (normal.x * 2.0f));
+            arrpush(points, cv->y - (normal.y * 2.0f));
+
+            points[0] = cv->x;
+            points[1] = cv->y;
+            points[2] = cv->x - (normal.x * 2.0f);
+            points[3] = cv->y - (normal.y * 2.0f);
+        }
+        else if (type == -1) {
+            // outer
+            arrpush(points, cv->x + (normal.x * 2.0f));
+            arrpush(points, cv->y + (normal.y * 2.0f));
+            arrpush(points, cv->x);
+            arrpush(points, cv->y);
+
+            points[0] = cv->x + (normal.x * 2.0f);
+            points[1] = cv->y + (normal.y * 2.0f);
+            points[2] = cv->x;
+            points[3] = cv->y;
+        }
 
         arrpush(o->pointLists, points);
     }

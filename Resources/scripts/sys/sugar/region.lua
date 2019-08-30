@@ -55,8 +55,12 @@ rft.RemoveTile = function(r, t)
   return RemoveTileFromRegion(r, t)
 end
 
-rft.SetOutline = function(r, color, thickness)
-  return SetRegionOutline(r, color, thickness)
+rft.GetTiles = function(r)
+  return GetTilesFromSet(r.tiles)
+end
+
+rft.SetOutline = function(r, color, thickness, type)
+  return SetRegionOutline(r, color, thickness, type)
 end
 
 rft.ClearOutline = function(r)

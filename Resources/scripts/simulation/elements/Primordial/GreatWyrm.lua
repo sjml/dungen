@@ -20,7 +20,10 @@ c:AddTag("GreatWyrm")
 
 for i=1,5 do
   if RandomRangeInt(0,4) == 0 then
-    storeInChamber(c, "gems")
+    local t = storeInChamber(c, "gems")
+    if t then
+      t:AddTag("gold")
+    end
   else
     storeInChamber(c, "gold")
   end

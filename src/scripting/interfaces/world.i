@@ -56,12 +56,12 @@ TileData* GetTileAtIndex(long long i);
 TileData* ScreenToTile(gbVec2* screenCoordinates);
 TileData** GetTileNeighbors(TileData* center);
 TileData** GetTileCircle(TileData* center, int radius);
-void SetTileOutline(TileData* t, gbVec4 color, float thickness);
+void SetTileOutline(TileData* t, gbVec4 color, float thickness, int type);
 void ClearTileOutline(TileData* t);
 
 Region* CreateRegion(void);
 void DestroyRegion(Region* r);
-void SetRegionOutline(Region* r, gbVec4 color, float thickness);
+void SetRegionOutline(Region* r, gbVec4 color, float thickness, int type);
 void ClearRegionOutline(Region* r);
 void SetRegionLabel(Region* r, const char* text, float scale, gbVec4 color, gbVec2 tileOffset);
 void ClearRegionLabel(Region* r);
