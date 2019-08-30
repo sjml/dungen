@@ -1,9 +1,12 @@
 -- push("_testing._Root")
 -- push("_testing.UnitTest")
 
-push("Meta.Splash")
-push("Meta.Intro")
+-- push("Meta.Splash")
+-- push("Meta.Intro")
 
-push("Primordial._Root")
+-- push("Primordial._Root")
 
-push("Meta.Outro")
+-- push("Meta.Outro")
+
+push("Primordial.GoldVein")
+push("Primordial.UndergroundRiver")

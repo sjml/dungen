@@ -7,9 +7,16 @@ New Data Type:
 		- Class: "Adventurer", "Dwarves", "Water"
 		- Alignment: "Lawful", "Chaotic", "Hungry"
 
+When carving space:
+	- check if new tile is already open / part of a region
+	- if it is not, open it and add it to the current agent's region
+	- if it is, resolve encounter
+Exploring:
+	- similar, but just check and resolve before moving in
 
 Agents "Encounter" tiles
 	- whether they're dwarves digging new open spaces, primordial processes carving stuff, or adventurers wandering
+	- Water, Magma, Gold, PlagueChamber?, FATE, Monster/Wyrm,
 
 Idea 1: EncounterTriggers
 	- list of strings on tiles and regions that point to simulation elements which get fired when an agent comes in

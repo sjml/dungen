@@ -36,6 +36,7 @@ push("System.RandomTile")
 startTile = gtr("RandomTile")
 DestroyTileSet(legalSet)
 
+startTile = GetTileAtPosition(0, 22)
 current = startTile
 waterIt(current)
 
@@ -48,6 +49,7 @@ while (true) do
   push("System.DieRoll")
 
   local result = gir("DieRollResult")
+  result = 1
 
   if (result >= 1 and result <= 3) then
     -- move horizontally

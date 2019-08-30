@@ -27,6 +27,8 @@ push("System.RandomTile")
 endTile = gtr("RandomTile")
 DestroyTileSet(legalSet)
 
+startTile = GetTileAtPosition(0, gir("GroundLine"))
+endTile = GetTileAtPosition(gir("TileWidth") - 1, gir("TileHeight") - 1)
 path = getStraightLinePath(startTile, endTile)
 
 for _, t in pairs(path) do

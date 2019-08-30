@@ -1,13 +1,12 @@
 ## TODO
-1. Relaxable constraint sets
-2. Chamber/region/room model design
+1. Chamber/region/room model design
     - (see brainstorm notes)
     - somewhat more than tilesets
         - entering a tile needs to be equivalent to entering the chamber it belongs to
     - need to have triggers/encounters somehow
         - "Dwarves tunnel into chamber containing plague."
         - "Adventurers come into territory owned by demons."
-3. Design and implement agents/entities
+2. Design and implement agents/entities
     - (update primordial wandering monsters and great wyrm to be agent)
     - individuals
         - attributes
@@ -17,6 +16,7 @@
         - special case? or just an individual with a zone?
     - HtHaD calls both "groups"...
     - "Tunneling came to a region owned by demons; resolve conflict with $CURRENT_AGENT."
+3. Relaxable constraint sets
 
 ## Tech Debt
 * set precompiled headers up in Visual Studio
