@@ -56,7 +56,7 @@ jobs:
     displayName: 'Build with MSBuild'
     inputs:
       solution: 'platform/windows/DunGen/DunGen.vcxproj'
-      vsVersion: '15.0'
+      vsVersion: '16.0'
       configuration: 'Release'
       maximumCpuCount: true
       msbuildArchitecture: 'x64'
