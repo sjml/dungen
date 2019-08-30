@@ -29,7 +29,11 @@ static gbMat4 orthoMatrix;
 static Region** regions = NULL;
 
 void InitializeRendering() {
-    glfwInitHint(GLFW_COCOA_CHDIR_RESOURCES, GLFW_TRUE);
+    // doing this manually in platform/macOS.c so VS Code can more
+    //  easily get to the non-copied Resources directory in the
+    //  base of the repo.
+    glfwInitHint(GLFW_COCOA_CHDIR_RESOURCES, GLFW_FALSE);
+    
     glfwInitHint(GLFW_COCOA_MENUBAR, GLFW_TRUE);
 
     if (!glfwInit()) {
@@ -94,17 +98,17 @@ void InitializeRendering() {
     glLoadIdentity();
     glMultMatrixf(perspectiveMatrix.e);
     handleGLErrors(__FILE__, __LINE__);
-    
+
     glfwGetFramebufferSize(window, &frameW, &frameH);
     screenShotBuffer = malloc(sizeof(GLubyte) * frameW * frameH * 3);
     stbi_flip_vertically_on_write(1);
-    
+
     InitializeText();
 }
 
 void FinalizeRendering() {
     free(screenShotBuffer);
-    
+
     FinalizeText();
 
     glfwDestroyWindow(window);

@@ -6,9 +6,9 @@
       {
         "label": "Run",
         "type": "shell",
-        "command": "${workspaceFolder}/build/Release/DunGen.app/Contents/MacOS/DunGen",
+        "command": "${workspaceFolder}/build/Debug/DunGen.app/Contents/MacOS/DunGen",
         "options": {
-          "cwd": "${workspaceFolder}"
+          "cwd": "${workspaceFolder}/build"
         },
         "presentation": {
           "echo": false,
