@@ -2668,19 +2668,20 @@ SWIG_Lua_dostring(lua_State *L, const char *str) {
 
 /* -------- TYPES TABLE (BEGIN) -------- */
 
-#define SWIGTYPE_p_AttrComparison swig_types[0]
-#define SWIGTYPE_p_TileData swig_types[1]
-#define SWIGTYPE_p_Vec2i swig_types[2]
-#define SWIGTYPE_p_float swig_types[3]
-#define SWIGTYPE_p_gbVec2 swig_types[4]
-#define SWIGTYPE_p_gbVec3 swig_types[5]
-#define SWIGTYPE_p_gbVec4 swig_types[6]
-#define SWIGTYPE_p_p_sRegion swig_types[7]
-#define SWIGTYPE_p_sRegion swig_types[8]
-#define SWIGTYPE_p_sTileSet swig_types[9]
-#define SWIGTYPE_p_void swig_types[10]
-static swig_type_info *swig_types[12];
-static swig_module_info swig_module = {swig_types, 11, 0, 0, 0, 0};
+#define SWIGTYPE_p_Agent swig_types[0]
+#define SWIGTYPE_p_AttrComparison swig_types[1]
+#define SWIGTYPE_p_TileData swig_types[2]
+#define SWIGTYPE_p_Vec2i swig_types[3]
+#define SWIGTYPE_p_float swig_types[4]
+#define SWIGTYPE_p_gbVec2 swig_types[5]
+#define SWIGTYPE_p_gbVec3 swig_types[6]
+#define SWIGTYPE_p_gbVec4 swig_types[7]
+#define SWIGTYPE_p_p_sRegion swig_types[8]
+#define SWIGTYPE_p_sRegion swig_types[9]
+#define SWIGTYPE_p_sTileSet swig_types[10]
+#define SWIGTYPE_p_void swig_types[11]
+static swig_type_info *swig_types[13];
+static swig_module_info swig_module = {swig_types, 12, 0, 0, 0, 0};
 #define SWIG_TypeQuery(name) SWIG_TypeQueryModule(&swig_module, &swig_module, name)
 #define SWIG_MangledTypeQuery(name) SWIG_MangledTypeQueryModule(&swig_module, &swig_module, name)
 
@@ -2723,6 +2724,9 @@ SWIGINTERN int SWIG_lua_isnilstring(lua_State *L, int idx) {
 
 SWIGINTERN struct sRegion *new_sRegion(void){
         return CreateRegion();
+    }
+SWIGINTERN Agent *new_Agent(void){
+        return CreateAgent();
     }
 SWIGINTERN struct sTileSet *new_sTileSet(void){
         return NULL;
@@ -5929,6 +5933,172 @@ static swig_lua_class *swig_Region_bases[] = {0};
 static const char *swig_Region_base_names[] = {0};
 static swig_lua_class _wrap_class_Region = { "Region", "Region", &SWIGTYPE_p_sRegion,_proxy__wrap_new_Region,0, swig_Region_methods, swig_Region_attributes, &swig_Region_Sf_SwigStatic, swig_Region_meta, swig_Region_bases, swig_Region_base_names };
 
+static int _wrap_Agent_i_set(lua_State* L) {
+  int SWIG_arg = 0;
+  Agent *arg1 = (Agent *) 0 ;
+  long long arg2 ;
+  
+  SWIG_check_num_args("Agent::i",2,2)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("Agent::i",1,"Agent *");
+  if(!lua_isnumber(L,2)) SWIG_fail_arg("Agent::i",2,"long long");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_Agent,0))){
+    SWIG_fail_ptr("Agent_i_set",1,SWIGTYPE_p_Agent);
+  }
+  
+  arg2 = (long long)lua_tonumber(L, 2);
+  if (arg1) (arg1)->i = arg2;
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_Agent_i_get(lua_State* L) {
+  int SWIG_arg = 0;
+  Agent *arg1 = (Agent *) 0 ;
+  long long result;
+  
+  SWIG_check_num_args("Agent::i",1,1)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("Agent::i",1,"Agent *");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_Agent,0))){
+    SWIG_fail_ptr("Agent_i_get",1,SWIGTYPE_p_Agent);
+  }
+  
+  result = (long long) ((arg1)->i);
+  lua_pushnumber(L, (lua_Number) result); SWIG_arg++;
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_Agent_domain_set(lua_State* L) {
+  int SWIG_arg = 0;
+  Agent *arg1 = (Agent *) 0 ;
+  Region *arg2 = (Region *) 0 ;
+  
+  SWIG_check_num_args("Agent::domain",2,2)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("Agent::domain",1,"Agent *");
+  if(!SWIG_isptrtype(L,2)) SWIG_fail_arg("Agent::domain",2,"Region *");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_Agent,0))){
+    SWIG_fail_ptr("Agent_domain_set",1,SWIGTYPE_p_Agent);
+  }
+  
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,2,(void**)&arg2,SWIGTYPE_p_sRegion,SWIG_POINTER_DISOWN))){
+    SWIG_fail_ptr("Agent_domain_set",2,SWIGTYPE_p_sRegion);
+  }
+  
+  if (arg1) (arg1)->domain = arg2;
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_Agent_domain_get(lua_State* L) {
+  int SWIG_arg = 0;
+  Agent *arg1 = (Agent *) 0 ;
+  Region *result = 0 ;
+  
+  SWIG_check_num_args("Agent::domain",1,1)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("Agent::domain",1,"Agent *");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_Agent,0))){
+    SWIG_fail_ptr("Agent_domain_get",1,SWIGTYPE_p_Agent);
+  }
+  
+  result = (Region *) ((arg1)->domain);
+  SWIG_NewPointerObj(L,result,SWIGTYPE_p_sRegion,0); SWIG_arg++; 
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_new_Agent(lua_State* L) {
+  int SWIG_arg = 0;
+  Agent *result = 0 ;
+  
+  SWIG_check_num_args("Agent::Agent",0,0)
+  result = (Agent *)new_Agent();
+  SWIG_NewPointerObj(L,result,SWIGTYPE_p_Agent,1); SWIG_arg++; 
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _proxy__wrap_new_Agent(lua_State *L) {
+    assert(lua_istable(L,1));
+    lua_pushcfunction(L,_wrap_new_Agent);
+    assert(!lua_isnil(L,-1));
+    lua_replace(L,1); /* replace our table with real constructor */
+    lua_call(L,lua_gettop(L)-1,1);
+    return 1;
+}
+static swig_lua_attribute swig_Agent_attributes[] = {
+    { "i", _wrap_Agent_i_get, _wrap_Agent_i_set },
+    { "domain", _wrap_Agent_domain_get, _wrap_Agent_domain_set },
+    {0,0,0}
+};
+static swig_lua_method swig_Agent_methods[]= {
+    {0,0}
+};
+static swig_lua_method swig_Agent_meta[] = {
+    {0,0}
+};
+
+static swig_lua_attribute swig_Agent_Sf_SwigStatic_attributes[] = {
+    {0,0,0}
+};
+static swig_lua_const_info swig_Agent_Sf_SwigStatic_constants[]= {
+    {0,0,0,0,0,0}
+};
+static swig_lua_method swig_Agent_Sf_SwigStatic_methods[]= {
+    {0,0}
+};
+static swig_lua_class* swig_Agent_Sf_SwigStatic_classes[]= {
+    0
+};
+
+static swig_lua_namespace swig_Agent_Sf_SwigStatic = {
+    "Agent",
+    swig_Agent_Sf_SwigStatic_methods,
+    swig_Agent_Sf_SwigStatic_attributes,
+    swig_Agent_Sf_SwigStatic_constants,
+    swig_Agent_Sf_SwigStatic_classes,
+    0
+};
+static swig_lua_class *swig_Agent_bases[] = {0};
+static const char *swig_Agent_base_names[] = {0};
+static swig_lua_class _wrap_class_Agent = { "Agent", "Agent", &SWIGTYPE_p_Agent,_proxy__wrap_new_Agent,0, swig_Agent_methods, swig_Agent_attributes, &swig_Agent_Sf_SwigStatic, swig_Agent_meta, swig_Agent_bases, swig_Agent_base_names };
+
 static int _wrap_new_TileSet(lua_State* L) {
   int SWIG_arg = 0;
   struct sTileSet *result = 0 ;
@@ -6414,6 +6584,215 @@ fail:
 }
 
 
+static int _wrap_DestroyTileSet(lua_State* L) {
+  int SWIG_arg = 0;
+  TileSet *arg1 = (TileSet *) 0 ;
+  
+  SWIG_check_num_args("DestroyTileSet",1,1)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("DestroyTileSet",1,"TileSet *");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_sTileSet,0))){
+    SWIG_fail_ptr("DestroyTileSet",1,SWIGTYPE_p_sTileSet);
+  }
+  
+  DestroyTileSet(arg1);
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_AddTileToSet(lua_State* L) {
+  int SWIG_arg = 0;
+  TileSet *arg1 = (TileSet *) 0 ;
+  TileData *arg2 = (TileData *) 0 ;
+  TileSet *result = 0 ;
+  
+  SWIG_check_num_args("AddTileToSet",2,2)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("AddTileToSet",1,"TileSet *");
+  if(!SWIG_isptrtype(L,2)) SWIG_fail_arg("AddTileToSet",2,"TileData *");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_sTileSet,0))){
+    SWIG_fail_ptr("AddTileToSet",1,SWIGTYPE_p_sTileSet);
+  }
+  
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,2,(void**)&arg2,SWIGTYPE_p_TileData,0))){
+    SWIG_fail_ptr("AddTileToSet",2,SWIGTYPE_p_TileData);
+  }
+  
+  result = (TileSet *)AddTileToSet(arg1,arg2);
+  SWIG_NewPointerObj(L,result,SWIGTYPE_p_sTileSet,0); SWIG_arg++; 
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_RemoveTileFromSet(lua_State* L) {
+  int SWIG_arg = 0;
+  TileSet *arg1 = (TileSet *) 0 ;
+  TileData *arg2 = (TileData *) 0 ;
+  TileSet *result = 0 ;
+  
+  SWIG_check_num_args("RemoveTileFromSet",2,2)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("RemoveTileFromSet",1,"TileSet *");
+  if(!SWIG_isptrtype(L,2)) SWIG_fail_arg("RemoveTileFromSet",2,"TileData *");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_sTileSet,0))){
+    SWIG_fail_ptr("RemoveTileFromSet",1,SWIGTYPE_p_sTileSet);
+  }
+  
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,2,(void**)&arg2,SWIGTYPE_p_TileData,0))){
+    SWIG_fail_ptr("RemoveTileFromSet",2,SWIGTYPE_p_TileData);
+  }
+  
+  result = (TileSet *)RemoveTileFromSet(arg1,arg2);
+  SWIG_NewPointerObj(L,result,SWIGTYPE_p_sTileSet,0); SWIG_arg++; 
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_IsTileInSet(lua_State* L) {
+  int SWIG_arg = 0;
+  TileSet *arg1 = (TileSet *) 0 ;
+  TileData *arg2 = (TileData *) 0 ;
+  bool result;
+  
+  SWIG_check_num_args("IsTileInSet",2,2)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("IsTileInSet",1,"TileSet *");
+  if(!SWIG_isptrtype(L,2)) SWIG_fail_arg("IsTileInSet",2,"TileData *");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_sTileSet,0))){
+    SWIG_fail_ptr("IsTileInSet",1,SWIGTYPE_p_sTileSet);
+  }
+  
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,2,(void**)&arg2,SWIGTYPE_p_TileData,0))){
+    SWIG_fail_ptr("IsTileInSet",2,SWIGTYPE_p_TileData);
+  }
+  
+  result = (bool)IsTileInSet(arg1,arg2);
+  lua_pushboolean(L,(int)(result!=0)); SWIG_arg++;
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_GetTileSetCount(lua_State* L) {
+  int SWIG_arg = 0;
+  TileSet *arg1 = (TileSet *) 0 ;
+  long result;
+  
+  SWIG_check_num_args("GetTileSetCount",1,1)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("GetTileSetCount",1,"TileSet *");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_sTileSet,0))){
+    SWIG_fail_ptr("GetTileSetCount",1,SWIGTYPE_p_sTileSet);
+  }
+  
+  result = (long)GetTileSetCount(arg1);
+  lua_pushnumber(L, (lua_Number) result); SWIG_arg++;
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_GetTilesFromSet(lua_State* L) {
+  int SWIG_arg = 0;
+  TileSet *arg1 = (TileSet *) 0 ;
+  TileData **result = 0 ;
+  
+  SWIG_check_num_args("GetTilesFromSet",1,1)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("GetTilesFromSet",1,"TileSet *");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_sTileSet,0))){
+    SWIG_fail_ptr("GetTilesFromSet",1,SWIGTYPE_p_sTileSet);
+  }
+  
+  result = (TileData **)GetTilesFromSet(arg1);
+  
+  {
+    lua_newtable(L);
+    if (arrlen(result) > 0) {
+      for (unsigned int i=1; i <= arrlen(result); i++) {
+        lua_pushnumber(L, i);
+        SWIG_NewPointerObj(L, result[i-1], SWIGTYPE_p_TileData, 1);
+        lua_settable(L, -3);
+      }
+    }
+    arrfree(result);
+    
+    SWIG_arg += 1;
+  }
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_IntersectTileSets(lua_State* L) {
+  int SWIG_arg = 0;
+  TileSet *arg1 = (TileSet *) 0 ;
+  TileSet *arg2 = (TileSet *) 0 ;
+  TileSet *result = 0 ;
+  
+  SWIG_check_num_args("IntersectTileSets",2,2)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("IntersectTileSets",1,"TileSet *");
+  if(!SWIG_isptrtype(L,2)) SWIG_fail_arg("IntersectTileSets",2,"TileSet *");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_sTileSet,0))){
+    SWIG_fail_ptr("IntersectTileSets",1,SWIGTYPE_p_sTileSet);
+  }
+  
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,2,(void**)&arg2,SWIGTYPE_p_sTileSet,0))){
+    SWIG_fail_ptr("IntersectTileSets",2,SWIGTYPE_p_sTileSet);
+  }
+  
+  result = (TileSet *)IntersectTileSets(arg1,arg2);
+  SWIG_NewPointerObj(L,result,SWIGTYPE_p_sTileSet,0); SWIG_arg++; 
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
 static int _wrap_CreateRegion(lua_State* L) {
   int SWIG_arg = 0;
   Region *result = 0 ;
@@ -6882,19 +7261,13 @@ fail:
 }
 
 
-static int _wrap_DestroyTileSet(lua_State* L) {
+static int _wrap_CreateAgent(lua_State* L) {
   int SWIG_arg = 0;
-  TileSet *arg1 = (TileSet *) 0 ;
+  Agent *result = 0 ;
   
-  SWIG_check_num_args("DestroyTileSet",1,1)
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("DestroyTileSet",1,"TileSet *");
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_sTileSet,0))){
-    SWIG_fail_ptr("DestroyTileSet",1,SWIGTYPE_p_sTileSet);
-  }
-  
-  DestroyTileSet(arg1);
-  
+  SWIG_check_num_args("CreateAgent",0,0)
+  result = (Agent *)CreateAgent();
+  SWIG_NewPointerObj(L,result,SWIGTYPE_p_Agent,0); SWIG_arg++; 
   return SWIG_arg;
   
   if(0) SWIG_fail;
@@ -6905,182 +7278,27 @@ fail:
 }
 
 
-static int _wrap_AddTileToSet(lua_State* L) {
+static int _wrap_GetAllAgents(lua_State* L) {
   int SWIG_arg = 0;
-  TileSet *arg1 = (TileSet *) 0 ;
-  TileData *arg2 = (TileData *) 0 ;
-  TileSet *result = 0 ;
+  Agent **result = 0 ;
   
-  SWIG_check_num_args("AddTileToSet",2,2)
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("AddTileToSet",1,"TileSet *");
-  if(!SWIG_isptrtype(L,2)) SWIG_fail_arg("AddTileToSet",2,"TileData *");
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_sTileSet,0))){
-    SWIG_fail_ptr("AddTileToSet",1,SWIGTYPE_p_sTileSet);
-  }
-  
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,2,(void**)&arg2,SWIGTYPE_p_TileData,0))){
-    SWIG_fail_ptr("AddTileToSet",2,SWIGTYPE_p_TileData);
-  }
-  
-  result = (TileSet *)AddTileToSet(arg1,arg2);
-  SWIG_NewPointerObj(L,result,SWIGTYPE_p_sTileSet,0); SWIG_arg++; 
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_RemoveTileFromSet(lua_State* L) {
-  int SWIG_arg = 0;
-  TileSet *arg1 = (TileSet *) 0 ;
-  TileData *arg2 = (TileData *) 0 ;
-  TileSet *result = 0 ;
-  
-  SWIG_check_num_args("RemoveTileFromSet",2,2)
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("RemoveTileFromSet",1,"TileSet *");
-  if(!SWIG_isptrtype(L,2)) SWIG_fail_arg("RemoveTileFromSet",2,"TileData *");
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_sTileSet,0))){
-    SWIG_fail_ptr("RemoveTileFromSet",1,SWIGTYPE_p_sTileSet);
-  }
-  
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,2,(void**)&arg2,SWIGTYPE_p_TileData,0))){
-    SWIG_fail_ptr("RemoveTileFromSet",2,SWIGTYPE_p_TileData);
-  }
-  
-  result = (TileSet *)RemoveTileFromSet(arg1,arg2);
-  SWIG_NewPointerObj(L,result,SWIGTYPE_p_sTileSet,0); SWIG_arg++; 
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_IsTileInSet(lua_State* L) {
-  int SWIG_arg = 0;
-  TileSet *arg1 = (TileSet *) 0 ;
-  TileData *arg2 = (TileData *) 0 ;
-  bool result;
-  
-  SWIG_check_num_args("IsTileInSet",2,2)
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("IsTileInSet",1,"TileSet *");
-  if(!SWIG_isptrtype(L,2)) SWIG_fail_arg("IsTileInSet",2,"TileData *");
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_sTileSet,0))){
-    SWIG_fail_ptr("IsTileInSet",1,SWIGTYPE_p_sTileSet);
-  }
-  
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,2,(void**)&arg2,SWIGTYPE_p_TileData,0))){
-    SWIG_fail_ptr("IsTileInSet",2,SWIGTYPE_p_TileData);
-  }
-  
-  result = (bool)IsTileInSet(arg1,arg2);
-  lua_pushboolean(L,(int)(result!=0)); SWIG_arg++;
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_GetTileSetCount(lua_State* L) {
-  int SWIG_arg = 0;
-  TileSet *arg1 = (TileSet *) 0 ;
-  long result;
-  
-  SWIG_check_num_args("GetTileSetCount",1,1)
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("GetTileSetCount",1,"TileSet *");
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_sTileSet,0))){
-    SWIG_fail_ptr("GetTileSetCount",1,SWIGTYPE_p_sTileSet);
-  }
-  
-  result = (long)GetTileSetCount(arg1);
-  lua_pushnumber(L, (lua_Number) result); SWIG_arg++;
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_GetTilesFromSet(lua_State* L) {
-  int SWIG_arg = 0;
-  TileSet *arg1 = (TileSet *) 0 ;
-  TileData **result = 0 ;
-  
-  SWIG_check_num_args("GetTilesFromSet",1,1)
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("GetTilesFromSet",1,"TileSet *");
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_sTileSet,0))){
-    SWIG_fail_ptr("GetTilesFromSet",1,SWIGTYPE_p_sTileSet);
-  }
-  
-  result = (TileData **)GetTilesFromSet(arg1);
+  SWIG_check_num_args("GetAllAgents",0,0)
+  result = (Agent **)GetAllAgents();
   
   {
     lua_newtable(L);
     if (arrlen(result) > 0) {
       for (unsigned int i=1; i <= arrlen(result); i++) {
         lua_pushnumber(L, i);
-        SWIG_NewPointerObj(L, result[i-1], SWIGTYPE_p_TileData, 1);
+        SWIG_NewPointerObj(L, result[i-1], SWIGTYPE_p_Agent, 0);
         lua_settable(L, -3);
       }
     }
-    arrfree(result);
+    // arrfree(result); don't free if we don't own this memory
     
     SWIG_arg += 1;
   }
   
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_IntersectTileSets(lua_State* L) {
-  int SWIG_arg = 0;
-  TileSet *arg1 = (TileSet *) 0 ;
-  TileSet *arg2 = (TileSet *) 0 ;
-  TileSet *result = 0 ;
-  
-  SWIG_check_num_args("IntersectTileSets",2,2)
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("IntersectTileSets",1,"TileSet *");
-  if(!SWIG_isptrtype(L,2)) SWIG_fail_arg("IntersectTileSets",2,"TileSet *");
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_sTileSet,0))){
-    SWIG_fail_ptr("IntersectTileSets",1,SWIGTYPE_p_sTileSet);
-  }
-  
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,2,(void**)&arg2,SWIGTYPE_p_sTileSet,0))){
-    SWIG_fail_ptr("IntersectTileSets",2,SWIGTYPE_p_sTileSet);
-  }
-  
-  result = (TileSet *)IntersectTileSets(arg1,arg2);
-  SWIG_NewPointerObj(L,result,SWIGTYPE_p_sTileSet,0); SWIG_arg++; 
   return SWIG_arg;
   
   if(0) SWIG_fail;
@@ -7885,6 +8103,427 @@ fail:
 }
 
 
+static int _wrap_SetupAgentAttributeData(lua_State* L) {
+  int SWIG_arg = 0;
+  Agent *arg1 = (Agent *) 0 ;
+  long long result;
+  
+  SWIG_check_num_args("SetupAgentAttributeData",1,1)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("SetupAgentAttributeData",1,"Agent *");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_Agent,0))){
+    SWIG_fail_ptr("SetupAgentAttributeData",1,SWIGTYPE_p_Agent);
+  }
+  
+  result = (long long)SetupAgentAttributeData(arg1);
+  lua_pushnumber(L, (lua_Number) result); SWIG_arg++;
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_SetAgentAttributeInt(lua_State* L) {
+  int SWIG_arg = 0;
+  Agent *arg1 = (Agent *) 0 ;
+  char *arg2 = (char *) 0 ;
+  int arg3 ;
+  
+  SWIG_check_num_args("SetAgentAttributeInt",3,3)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("SetAgentAttributeInt",1,"Agent *");
+  if(!SWIG_lua_isnilstring(L,2)) SWIG_fail_arg("SetAgentAttributeInt",2,"char const *");
+  if(!lua_isnumber(L,3)) SWIG_fail_arg("SetAgentAttributeInt",3,"int");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_Agent,0))){
+    SWIG_fail_ptr("SetAgentAttributeInt",1,SWIGTYPE_p_Agent);
+  }
+  
+  arg2 = (char *)lua_tostring(L, 2);
+  arg3 = (int)lua_tonumber(L, 3);
+  SetAgentAttributeInt(arg1,(char const *)arg2,arg3);
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_SetAgentAttributeFloat(lua_State* L) {
+  int SWIG_arg = 0;
+  Agent *arg1 = (Agent *) 0 ;
+  char *arg2 = (char *) 0 ;
+  float arg3 ;
+  
+  SWIG_check_num_args("SetAgentAttributeFloat",3,3)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("SetAgentAttributeFloat",1,"Agent *");
+  if(!SWIG_lua_isnilstring(L,2)) SWIG_fail_arg("SetAgentAttributeFloat",2,"char const *");
+  if(!lua_isnumber(L,3)) SWIG_fail_arg("SetAgentAttributeFloat",3,"float");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_Agent,0))){
+    SWIG_fail_ptr("SetAgentAttributeFloat",1,SWIGTYPE_p_Agent);
+  }
+  
+  arg2 = (char *)lua_tostring(L, 2);
+  arg3 = (float)lua_tonumber(L, 3);
+  SetAgentAttributeFloat(arg1,(char const *)arg2,arg3);
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_SetAgentAttributeString(lua_State* L) {
+  int SWIG_arg = 0;
+  Agent *arg1 = (Agent *) 0 ;
+  char *arg2 = (char *) 0 ;
+  char *arg3 = (char *) 0 ;
+  
+  SWIG_check_num_args("SetAgentAttributeString",3,3)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("SetAgentAttributeString",1,"Agent *");
+  if(!SWIG_lua_isnilstring(L,2)) SWIG_fail_arg("SetAgentAttributeString",2,"char const *");
+  if(!SWIG_lua_isnilstring(L,3)) SWIG_fail_arg("SetAgentAttributeString",3,"char const *");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_Agent,0))){
+    SWIG_fail_ptr("SetAgentAttributeString",1,SWIGTYPE_p_Agent);
+  }
+  
+  arg2 = (char *)lua_tostring(L, 2);
+  arg3 = (char *)lua_tostring(L, 3);
+  SetAgentAttributeString(arg1,(char const *)arg2,(char const *)arg3);
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_GetAgentAttributeInt(lua_State* L) {
+  int SWIG_arg = 0;
+  Agent *arg1 = (Agent *) 0 ;
+  char *arg2 = (char *) 0 ;
+  int result;
+  
+  SWIG_check_num_args("GetAgentAttributeInt",2,2)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("GetAgentAttributeInt",1,"Agent *");
+  if(!SWIG_lua_isnilstring(L,2)) SWIG_fail_arg("GetAgentAttributeInt",2,"char const *");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_Agent,0))){
+    SWIG_fail_ptr("GetAgentAttributeInt",1,SWIGTYPE_p_Agent);
+  }
+  
+  arg2 = (char *)lua_tostring(L, 2);
+  result = (int)GetAgentAttributeInt(arg1,(char const *)arg2);
+  lua_pushnumber(L, (lua_Number) result); SWIG_arg++;
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_GetAgentAttributeFloat(lua_State* L) {
+  int SWIG_arg = 0;
+  Agent *arg1 = (Agent *) 0 ;
+  char *arg2 = (char *) 0 ;
+  float result;
+  
+  SWIG_check_num_args("GetAgentAttributeFloat",2,2)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("GetAgentAttributeFloat",1,"Agent *");
+  if(!SWIG_lua_isnilstring(L,2)) SWIG_fail_arg("GetAgentAttributeFloat",2,"char const *");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_Agent,0))){
+    SWIG_fail_ptr("GetAgentAttributeFloat",1,SWIGTYPE_p_Agent);
+  }
+  
+  arg2 = (char *)lua_tostring(L, 2);
+  result = (float)GetAgentAttributeFloat(arg1,(char const *)arg2);
+  lua_pushnumber(L, (lua_Number) result); SWIG_arg++;
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_GetAgentAttributeString(lua_State* L) {
+  int SWIG_arg = 0;
+  Agent *arg1 = (Agent *) 0 ;
+  char *arg2 = (char *) 0 ;
+  char *result = 0 ;
+  
+  SWIG_check_num_args("GetAgentAttributeString",2,2)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("GetAgentAttributeString",1,"Agent *");
+  if(!SWIG_lua_isnilstring(L,2)) SWIG_fail_arg("GetAgentAttributeString",2,"char const *");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_Agent,0))){
+    SWIG_fail_ptr("GetAgentAttributeString",1,SWIGTYPE_p_Agent);
+  }
+  
+  arg2 = (char *)lua_tostring(L, 2);
+  result = (char *)GetAgentAttributeString(arg1,(char const *)arg2);
+  lua_pushstring(L,(const char *)result); SWIG_arg++;
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_AddAgentTag(lua_State* L) {
+  int SWIG_arg = 0;
+  Agent *arg1 = (Agent *) 0 ;
+  char *arg2 = (char *) 0 ;
+  bool result;
+  
+  SWIG_check_num_args("AddAgentTag",2,2)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("AddAgentTag",1,"Agent *");
+  if(!SWIG_lua_isnilstring(L,2)) SWIG_fail_arg("AddAgentTag",2,"char *");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_Agent,0))){
+    SWIG_fail_ptr("AddAgentTag",1,SWIGTYPE_p_Agent);
+  }
+  
+  arg2 = (char *)lua_tostring(L, 2);
+  result = (bool)AddAgentTag(arg1,arg2);
+  lua_pushboolean(L,(int)(result!=0)); SWIG_arg++;
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_RemoveAgentTag(lua_State* L) {
+  int SWIG_arg = 0;
+  Agent *arg1 = (Agent *) 0 ;
+  char *arg2 = (char *) 0 ;
+  bool result;
+  
+  SWIG_check_num_args("RemoveAgentTag",2,2)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("RemoveAgentTag",1,"Agent *");
+  if(!SWIG_lua_isnilstring(L,2)) SWIG_fail_arg("RemoveAgentTag",2,"char const *");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_Agent,0))){
+    SWIG_fail_ptr("RemoveAgentTag",1,SWIGTYPE_p_Agent);
+  }
+  
+  arg2 = (char *)lua_tostring(L, 2);
+  result = (bool)RemoveAgentTag(arg1,(char const *)arg2);
+  lua_pushboolean(L,(int)(result!=0)); SWIG_arg++;
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_GetAgentsTagged(lua_State* L) {
+  int SWIG_arg = 0;
+  char *arg1 = (char *) 0 ;
+  DisposableAgentList result;
+  
+  SWIG_check_num_args("GetAgentsTagged",1,1)
+  if(!SWIG_lua_isnilstring(L,1)) SWIG_fail_arg("GetAgentsTagged",1,"char const *");
+  arg1 = (char *)lua_tostring(L, 1);
+  result = GetAgentsTagged((char const *)arg1);
+  
+  {
+    lua_newtable(L);
+    if (arrlen(result) > 0) {
+      for (unsigned int i=1; i <= arrlen(result); i++) {
+        lua_pushnumber(L, i);
+        SWIG_NewPointerObj(L, result[i-1], SWIGTYPE_p_Agent, 0);
+        lua_settable(L, -3);
+      }
+    }
+    arrfree(result);
+    
+    SWIG_arg += 1;
+  }
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_AgentHasTags(lua_State* L) {
+  int SWIG_arg = 0;
+  Agent *arg1 = (Agent *) 0 ;
+  char *arg2 = (char *) 0 ;
+  bool result;
+  
+  SWIG_check_num_args("AgentHasTags",2,2)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("AgentHasTags",1,"Agent *");
+  if(!SWIG_lua_isnilstring(L,2)) SWIG_fail_arg("AgentHasTags",2,"char const *");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_Agent,0))){
+    SWIG_fail_ptr("AgentHasTags",1,SWIGTYPE_p_Agent);
+  }
+  
+  arg2 = (char *)lua_tostring(L, 2);
+  result = (bool)AgentHasTags(arg1,(char const *)arg2);
+  lua_pushboolean(L,(int)(result!=0)); SWIG_arg++;
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_GetAgentTags(lua_State* L) {
+  int SWIG_arg = 0;
+  Agent *arg1 = (Agent *) 0 ;
+  char **result = 0 ;
+  
+  SWIG_check_num_args("GetAgentTags",1,1)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("GetAgentTags",1,"Agent *");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_Agent,0))){
+    SWIG_fail_ptr("GetAgentTags",1,SWIGTYPE_p_Agent);
+  }
+  
+  result = (char **)GetAgentTags(arg1);
+  
+  {
+    lua_newtable(L);
+    if (arrlen(result) > 0) {
+      for (unsigned int i=1; i <= arrlen(result); i++) {
+        lua_pushnumber(L, i);
+        lua_pushstring(L, result[i-1]);
+        lua_settable(L, -3);
+      }
+    }
+    for (int i=0; i < arrlen(result); i++) {
+      free(result[i]);
+    }
+    arrfree(result);
+    
+    SWIG_arg += 1;
+  }
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_GetAgentsByAttribute(lua_State* L) {
+  int SWIG_arg = 0;
+  char *arg1 = (char *) 0 ;
+  AttrComparison arg2 ;
+  char *arg3 = (char *) 0 ;
+  DisposableAgentList result;
+  
+  SWIG_check_num_args("GetAgentsByAttribute",3,3)
+  if(!SWIG_lua_isnilstring(L,1)) SWIG_fail_arg("GetAgentsByAttribute",1,"char const *");
+  if(!lua_isnumber(L,2)) SWIG_fail_arg("GetAgentsByAttribute",2,"AttrComparison");
+  if(!SWIG_lua_isnilstring(L,3)) SWIG_fail_arg("GetAgentsByAttribute",3,"char const *");
+  arg1 = (char *)lua_tostring(L, 1);
+  arg2 = (AttrComparison)(int)lua_tonumber(L, 2);
+  arg3 = (char *)lua_tostring(L, 3);
+  result = GetAgentsByAttribute((char const *)arg1,arg2,(char const *)arg3);
+  
+  {
+    lua_newtable(L);
+    if (arrlen(result) > 0) {
+      for (unsigned int i=1; i <= arrlen(result); i++) {
+        lua_pushnumber(L, i);
+        SWIG_NewPointerObj(L, result[i-1], SWIGTYPE_p_Agent, 0);
+        lua_settable(L, -3);
+      }
+    }
+    arrfree(result);
+    
+    SWIG_arg += 1;
+  }
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_CheckAgentAttribute(lua_State* L) {
+  int SWIG_arg = 0;
+  Agent *arg1 = (Agent *) 0 ;
+  char *arg2 = (char *) 0 ;
+  AttrComparison arg3 ;
+  char *arg4 = (char *) 0 ;
+  bool result;
+  
+  SWIG_check_num_args("CheckAgentAttribute",4,4)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("CheckAgentAttribute",1,"Agent *");
+  if(!SWIG_lua_isnilstring(L,2)) SWIG_fail_arg("CheckAgentAttribute",2,"char const *");
+  if(!lua_isnumber(L,3)) SWIG_fail_arg("CheckAgentAttribute",3,"AttrComparison");
+  if(!SWIG_lua_isnilstring(L,4)) SWIG_fail_arg("CheckAgentAttribute",4,"char const *");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_Agent,0))){
+    SWIG_fail_ptr("CheckAgentAttribute",1,SWIGTYPE_p_Agent);
+  }
+  
+  arg2 = (char *)lua_tostring(L, 2);
+  arg3 = (AttrComparison)(int)lua_tonumber(L, 3);
+  arg4 = (char *)lua_tostring(L, 4);
+  result = (bool)CheckAgentAttribute(arg1,(char const *)arg2,arg3,(char const *)arg4);
+  lua_pushboolean(L,(int)(result!=0)); SWIG_arg++;
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
 static int _wrap_GetTime(lua_State* L) {
   int SWIG_arg = 0;
   double result;
@@ -8208,6 +8847,13 @@ static swig_lua_method swig_SwigModule_methods[]= {
     { "GetTileCircle", _wrap_GetTileCircle},
     { "SetTileOutline", _wrap_SetTileOutline},
     { "ClearTileOutline", _wrap_ClearTileOutline},
+    { "DestroyTileSet", _wrap_DestroyTileSet},
+    { "AddTileToSet", _wrap_AddTileToSet},
+    { "RemoveTileFromSet", _wrap_RemoveTileFromSet},
+    { "IsTileInSet", _wrap_IsTileInSet},
+    { "GetTileSetCount", _wrap_GetTileSetCount},
+    { "GetTilesFromSet", _wrap_GetTilesFromSet},
+    { "IntersectTileSets", _wrap_IntersectTileSets},
     { "CreateRegion", _wrap_CreateRegion},
     { "DestroyRegion", _wrap_DestroyRegion},
     { "SetRegionOutline", _wrap_SetRegionOutline},
@@ -8222,13 +8868,8 @@ static swig_lua_method swig_SwigModule_methods[]= {
     { "SetRegionParent", _wrap_SetRegionParent},
     { "GetRegionParent", _wrap_GetRegionParent},
     { "GetRegionChildren", _wrap_GetRegionChildren},
-    { "DestroyTileSet", _wrap_DestroyTileSet},
-    { "AddTileToSet", _wrap_AddTileToSet},
-    { "RemoveTileFromSet", _wrap_RemoveTileFromSet},
-    { "IsTileInSet", _wrap_IsTileInSet},
-    { "GetTileSetCount", _wrap_GetTileSetCount},
-    { "GetTilesFromSet", _wrap_GetTilesFromSet},
-    { "IntersectTileSets", _wrap_IntersectTileSets},
+    { "CreateAgent", _wrap_CreateAgent},
+    { "GetAllAgents", _wrap_GetAllAgents},
     { "SetTileAttributeInt", _wrap_SetTileAttributeInt},
     { "SetTileAttributeFloat", _wrap_SetTileAttributeFloat},
     { "SetTileAttributeString", _wrap_SetTileAttributeString},
@@ -8255,6 +8896,20 @@ static swig_lua_method swig_SwigModule_methods[]= {
     { "GetRegionTags", _wrap_GetRegionTags},
     { "GetRegionsByAttribute", _wrap_GetRegionsByAttribute},
     { "CheckRegionAttribute", _wrap_CheckRegionAttribute},
+    { "SetupAgentAttributeData", _wrap_SetupAgentAttributeData},
+    { "SetAgentAttributeInt", _wrap_SetAgentAttributeInt},
+    { "SetAgentAttributeFloat", _wrap_SetAgentAttributeFloat},
+    { "SetAgentAttributeString", _wrap_SetAgentAttributeString},
+    { "GetAgentAttributeInt", _wrap_GetAgentAttributeInt},
+    { "GetAgentAttributeFloat", _wrap_GetAgentAttributeFloat},
+    { "GetAgentAttributeString", _wrap_GetAgentAttributeString},
+    { "AddAgentTag", _wrap_AddAgentTag},
+    { "RemoveAgentTag", _wrap_RemoveAgentTag},
+    { "GetAgentsTagged", _wrap_GetAgentsTagged},
+    { "AgentHasTags", _wrap_AgentHasTags},
+    { "GetAgentTags", _wrap_GetAgentTags},
+    { "GetAgentsByAttribute", _wrap_GetAgentsByAttribute},
+    { "CheckAgentAttribute", _wrap_CheckAgentAttribute},
     { "GetTime", _wrap_GetTime},
     { "FindSimplePath", _wrap_FindSimplePath},
     { "AddBanner", _wrap_AddBanner},
@@ -8273,6 +8928,7 @@ static swig_lua_class* swig_SwigModule_classes[]= {
 &_wrap_class_gbVec4,
 &_wrap_class_TileData,
 &_wrap_class_Region,
+&_wrap_class_Agent,
 &_wrap_class_TileSet,
     0
 };
@@ -8294,6 +8950,7 @@ static swig_lua_namespace swig_SwigModule = {
 
 /* -------- TYPE CONVERSION AND EQUIVALENCE RULES (BEGIN) -------- */
 
+static swig_type_info _swigt__p_Agent = {"_p_Agent", "Agent *", 0, 0, (void*)&_wrap_class_Agent, 0};
 static swig_type_info _swigt__p_AttrComparison = {"_p_AttrComparison", "enum AttrComparison *|AttrComparison *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_TileData = {"_p_TileData", "TileData *", 0, 0, (void*)&_wrap_class_TileData, 0};
 static swig_type_info _swigt__p_Vec2i = {"_p_Vec2i", "Vec2i *", 0, 0, (void*)&_wrap_class_Vec2i, 0};
@@ -8307,6 +8964,7 @@ static swig_type_info _swigt__p_sTileSet = {"_p_sTileSet", "struct sTileSet *|Ti
 static swig_type_info _swigt__p_void = {"_p_void", "void *", 0, 0, (void*)0, 0};
 
 static swig_type_info *swig_type_initial[] = {
+  &_swigt__p_Agent,
   &_swigt__p_AttrComparison,
   &_swigt__p_TileData,
   &_swigt__p_Vec2i,
@@ -8320,6 +8978,7 @@ static swig_type_info *swig_type_initial[] = {
   &_swigt__p_void,
 };
 
+static swig_cast_info _swigc__p_Agent[] = {  {&_swigt__p_Agent, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_AttrComparison[] = {  {&_swigt__p_AttrComparison, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_TileData[] = {  {&_swigt__p_TileData, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_Vec2i[] = {  {&_swigt__p_Vec2i, 0, 0, 0},{0, 0, 0, 0}};
@@ -8333,6 +8992,7 @@ static swig_cast_info _swigc__p_sTileSet[] = {  {&_swigt__p_sTileSet, 0, 0, 0},{
 static swig_cast_info _swigc__p_void[] = {  {&_swigt__p_void, 0, 0, 0},{0, 0, 0, 0}};
 
 static swig_cast_info *swig_cast_initial[] = {
+  _swigc__p_Agent,
   _swigc__p_AttrComparison,
   _swigc__p_TileData,
   _swigc__p_Vec2i,

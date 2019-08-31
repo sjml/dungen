@@ -1477,6 +1477,7 @@
 					GL_SILENCE_DEPRECATION,
 					"$(inherited)",
 				);
+				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				HEADER_SEARCH_PATHS = (
 					"lib/glfw-3.3.0/include",
 					"lib/lua-5.3.5/src",
@@ -1501,6 +1502,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = src/stdafx.h;
 				GCC_PREPROCESSOR_DEFINITIONS = GL_SILENCE_DEPRECATION;
+				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				HEADER_SEARCH_PATHS = (
 					"lib/glfw-3.3.0/include",
 					"lib/lua-5.3.5/src",

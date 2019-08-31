@@ -40,6 +40,9 @@ static gbVec2 tileDimensions;
 static gbVec2 worldSize;
 static Vec2i tileWorldSize;
 
+static Agent** agents;
+
+
 void InitializeWorld(int width, int height, float scale) {
     tileWorldSize.x = width;
     tileWorldSize.y = height;
@@ -585,4 +588,21 @@ void SetRegionLabel(Region* r, const char* text, float scale, gbVec4 color, gbVe
 void ClearRegionLabel(Region* r) {
     free(r->label.text);
     r->label.scale = -1.0f;
+}
+
+
+Agent* CreateAgent(void) {
+    Agent* a = malloc(sizeof(Agent));
+
+    a->domain = CreateRegion();
+    arrpush(agents, a);
+    a->i = arrlen(agents);
+
+    SetupAgentAttributeData(a);
+
+    return a;
+}
+
+Agent** GetAllAgents(void) {
+    return agents;
 }

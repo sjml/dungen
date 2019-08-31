@@ -28,6 +28,7 @@ require("sys.hlvm")
 require("sys.sugar.hlvm")
 require("sys.sugar.tiledata")
 require("sys.sugar.region")
+require("sys.sugar.agent")
 
 require("sys.gamelib.chamber")
 require("sys.gamelib.pathing")

@@ -24,7 +24,7 @@ rft.GetAttributeString = function(r, name)
 end
 
 rft.CheckAttribute = function(r, name, comp, value)
-  return false -- TODO: CheckRegionAttribute(td, name, comp, value)
+  return false -- TODO: CheckRegionAttribute(r, name, comp, value)
 end
 
 rft.AddTag = function(r, tag)

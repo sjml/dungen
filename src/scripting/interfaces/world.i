@@ -34,6 +34,19 @@ typedef struct sRegion {
     }
 }
 
+%nodefaultctor Agent;
+%nodefaultdtor Agent;
+typedef struct {
+    long long i;
+    Region* domain;
+} Agent;
+
+%extend Agent {
+    Agent() {
+        return CreateAgent();
+    }
+}
+
 %nodefaultctor sTileSet;
 %nodefaultctor sTileSet;
 typedef struct sTileSet {} TileSet;
@@ -59,6 +72,16 @@ TileData** GetTileCircle(TileData* center, int radius);
 void SetTileOutline(TileData* t, gbVec4 color, float thickness, int type);
 void ClearTileOutline(TileData* t);
 
+
+void DestroyTileSet(TileSet* ts);
+TileSet* AddTileToSet(TileSet* ts, TileData* t);
+TileSet* RemoveTileFromSet(TileSet* ts, TileData* t);
+bool IsTileInSet(TileSet* ts, TileData* t);
+long GetTileSetCount(TileSet* ts);
+TileData** GetTilesFromSet(TileSet* ts);
+TileSet* IntersectTileSets(TileSet* set1, TileSet* set2);
+
+
 Region* CreateRegion(void);
 void DestroyRegion(Region* r);
 void SetRegionOutline(Region* r, gbVec4 color, float thickness, int type);
@@ -74,10 +97,7 @@ void SetRegionParent(Region* child, Region* parent);
 Region* GetRegionParent(Region* r);
 Region** GetRegionChildren(Region* r);
 
-void DestroyTileSet(TileSet* ts);
-TileSet* AddTileToSet(TileSet* ts, TileData* t);
-TileSet* RemoveTileFromSet(TileSet* ts, TileData* t);
-bool IsTileInSet(TileSet* ts, TileData* t);
-long GetTileSetCount(TileSet* ts);
-TileData** GetTilesFromSet(TileSet* ts);
-TileSet* IntersectTileSets(TileSet* set1, TileSet* set2);
+
+Agent* CreateAgent(void);
+Agent** GetAllAgents(void);
+

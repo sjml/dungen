@@ -3,7 +3,9 @@
 #include <unistd.h>
 
 void InitializePlatform() {
-    chdir("../Resources");
+    #if DEBUG
+        chdir("../Resources");
+    #endif
 }
 
 void FinalizePlatform() {

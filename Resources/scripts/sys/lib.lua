@@ -1,4 +1,4 @@
-function lazyBasicAssert(item1, item2, desc)
+function basicAssert(item1, item2, desc)
   if (desc == nil) then
     desc = ""
   else

@@ -29,10 +29,11 @@ static gbMat4 orthoMatrix;
 static Region** regions = NULL;
 
 void InitializeRendering() {
-    // doing this manually in platform/macOS.c so VS Code can more
-    //  easily get to the non-copied Resources directory in the
-    //  base of the repo.
-    glfwInitHint(GLFW_COCOA_CHDIR_RESOURCES, GLFW_FALSE);
+    #if DEBUG
+        glfwInitHint(GLFW_COCOA_CHDIR_RESOURCES, GLFW_FALSE);
+    #else
+        glfwInitHint(GLFW_COCOA_CHDIR_RESOURCES, GLFW_TRUE);
+    #endif
     
     glfwInitHint(GLFW_COCOA_MENUBAR, GLFW_TRUE);
 

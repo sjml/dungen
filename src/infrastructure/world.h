@@ -37,6 +37,12 @@ typedef struct sRegion {
 } Region;
 typedef Region** DisposableRegionList; // for SWIG typemaps
 
+typedef struct {
+    long long i;
+    Region* domain;
+} Agent;
+typedef Agent** DisposableAgentList; // for SWIG typemaps
+
 typedef struct sTileSet {
     TileData* key;
     int value;
@@ -94,3 +100,6 @@ void SetRegionParent(Region* child, Region* parent);
 Region* GetRegionParent(Region* r);
 Region** GetRegionChildren(Region* r);
 
+
+Agent* CreateAgent(void);
+Agent** GetAllAgents(void);

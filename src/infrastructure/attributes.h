@@ -55,3 +55,24 @@ char** GetRegionTags(Region* td);
 
 DisposableRegionList GetRegionsByAttribute(const char* attrName, AttrComparison comp, const char* value);
 bool CheckRegionAttribute(Region* r, const char* attrName, AttrComparison comp, const char* value);
+
+
+/////////// Agent
+long long SetupAgentAttributeData(Agent* a);
+
+void SetAgentAttributeInt(Agent* data, const char* name, int value);
+void SetAgentAttributeFloat(Agent* data, const char* name, float value);
+void SetAgentAttributeString(Agent* data, const char* name, const char* value);
+
+int GetAgentAttributeInt(Agent* data, const char* name);
+float GetAgentAttributeFloat(Agent* data, const char* name);
+char* GetAgentAttributeString(Agent* data, const char* name);
+
+bool AddAgentTag(Agent* td, char* tag);
+bool RemoveAgentTag(Agent* td, const char* tag);
+DisposableAgentList GetAgentsTagged(const char* tagString);
+bool AgentHasTags(Agent* td, const char* tagString);
+char** GetAgentTags(Agent* td);
+
+DisposableAgentList GetAgentsByAttribute(const char* attrName, AttrComparison comp, const char* value);
+bool CheckAgentAttribute(Agent* r, const char* attrName, AttrComparison comp, const char* value);

@@ -6,10 +6,15 @@
 static long long __tagIdx = 0;
 static struct { char* key; long long value; } *tags_StringToIdx = NULL;
 static struct { long long key; char* value; } *tags_IdxToString = NULL;
+
 static struct { long long key; long long* value; } *tagIdxToTiles = NULL;
-static struct { long long key; long long* value; } *tagIdxToRegions = NULL;
 static struct { long long key; long long* value; } *tileIdxToTags = NULL;
+
+static struct { long long key; long long* value; } *tagIdxToRegions = NULL;
 static struct { long long key; long long* value; } *regionIdxToTags = NULL;
+
+static struct { long long key; long long* value; } *tagIdxToAgents = NULL;
+static struct { long long key; long long* value; } *agentIdxToTags = NULL;
 
 
 // Doing all this with SQLite may be... overkill?
@@ -21,7 +26,8 @@ static sqlite3* db;
 
 typedef enum eAttrType {
     TILE,
-    REGION
+    REGION,
+    AGENT
 } AttrType;
 
 void InitializeAttributes() {
@@ -53,6 +59,7 @@ void InitializeAttributes() {
     char *creation =
         "CREATE TABLE tiles(tile_id INTEGER PRIMARY KEY, ptr INTEGER);"
         "CREATE TABLE regions(region_id INTEGER PRIMARY KEY, ptr INTEGER);"
+        "CREATE TABLE agents(agent_id INTEGER PRIMARY KEY, ptr INTEGER);"
     ;
     ret = sqlite3_exec(db, creation, 0, 0, &err);
     if (ret != SQLITE_OK) {
@@ -134,7 +141,7 @@ void ClearRegionAttributeData(Region* r) {
     }
 
     if (sqlite3_bind_int64(stmt, 1, r->i) != SQLITE_OK) {
-        fprintf(stderr, "SQL ERROR: could not bind index to deletion statement: %s\n", sqlite3_errmsg(db));
+        fprintf(stderr, "SQL ERROR: could not bind index value to deletion statement: %s\n", sqlite3_errmsg(db));
         sqlite3_finalize(stmt);
         return;
     }
@@ -147,6 +154,33 @@ void ClearRegionAttributeData(Region* r) {
     sqlite3_finalize(stmt);
 }
 
+long long SetupAgentAttributeData(Agent* a) {
+    sqlite3_stmt *stmt;
+    if (sqlite3_prepare(db, "INSERT INTO agents(agent_id, ptr) VALUES(?, ?);", -1, &stmt, 0) != SQLITE_OK) {
+        fprintf(stderr, "SQL ERROR: could not prepare insert statement: %s\n", sqlite3_errmsg(db));
+        return -1;
+    }
+
+    if (sqlite3_bind_int64(stmt, 1, a->i) != SQLITE_OK) {
+        fprintf(stderr, "SQL ERROR: could not bind index value to statement: %s\n", sqlite3_errmsg(db));
+        sqlite3_finalize(stmt);
+        return -1;
+    }
+    if (sqlite3_bind_pointer(stmt, 2, (void*)a, "pAgent", NULL) != SQLITE_OK) {
+        fprintf(stderr, "SQL ERROR: could not bind pointer value to statement: %s\n", sqlite3_errmsg(db));
+        sqlite3_finalize(stmt);
+        return -1;
+    }
+    if (sqlite3_step(stmt) != SQLITE_DONE) {
+        fprintf(stderr, "SQL ERROR: couldn't execute insert statement: %s\n", sqlite3_errmsg(db));
+        sqlite3_finalize(stmt);
+        return -1;
+    }
+
+    sqlite3_finalize(stmt);
+    return sqlite3_last_insert_rowid(db);
+}
+
 bool _DoesColumnExist(const char* name, AttrType dType) {
     char* query = "";
     if (dType == TILE) {
@@ -154,6 +188,9 @@ bool _DoesColumnExist(const char* name, AttrType dType) {
     }
     else if (dType == REGION) {
         query = "SELECT COUNT(*) AS CNTREC FROM pragma_table_info('regions') WHERE name=?;";
+    }
+    else if (dType == AGENT) {
+        query = "SELECT COUNT(*) AS CNTREC FROM pragma_table_info('agents') WHERE name=?;";
     }
     sqlite3_stmt* stmt;
     if (sqlite3_prepare(db, query, -1, &stmt, NULL) != SQLITE_OK) {
@@ -178,17 +215,21 @@ bool _DoesColumnExist(const char* name, AttrType dType) {
 void _SetAttributeInt(void* data, AttrType dType, const char* name, int value) {
     char* tableName = "";
     char* idName = "";
-    TileData* tileData = NULL;
-    Region* regionData = NULL;
+    long long idx = -1;
     if (dType == TILE) {
         tableName = "tiles";
         idName = "tile_id";
-        tileData = (TileData*)data;
+        idx = ((TileData*)data)->i;
     }
     else if (dType == REGION) {
         tableName = "regions";
         idName = "region_id";
-        regionData = (Region*)data;
+        idx = ((Region*)data)->i;
+    }
+    else if (dType == AGENT) {
+        tableName = "agents";
+        idName = "agent_id";
+        idx = ((Agent*)data)->i;
     }
 
     sqlite3_stmt* stmt;
@@ -220,14 +261,7 @@ void _SetAttributeInt(void* data, AttrType dType, const char* name, int value) {
         sqlite3_finalize(stmt);
         return;
     }
-    int bindRes = -1;
-    if (dType == TILE) {
-        bindRes = sqlite3_bind_int64(stmt, 2, tileData->i);
-    }
-    else if (dType == REGION) {
-        bindRes = sqlite3_bind_int64(stmt, 2, regionData->i);
-    }
-    if (bindRes != SQLITE_OK) {
+    if (sqlite3_bind_int64(stmt, 2, idx) != SQLITE_OK) {
         fprintf(stderr, "SQL ERROR: could not bind index value to update statement: %s\n", sqlite3_errmsg(db));
         sqlite3_finalize(stmt);
         return;
@@ -250,21 +284,29 @@ void SetRegionAttributeInt(Region* data, const char* name, int value) {
     SetRegionAsDirty(data);
 }
 
+void SetAgentAttributeInt(Agent* data, const char* name, int value) {
+    _SetAttributeInt((void*)data, AGENT, name, value);
+}
+
 
 void _SetAttributeFloat(void* data, AttrType dType, const char* name, float value) {
     char* tableName = "";
     char* idName = "";
-    TileData* tileData = NULL;
-    Region* regionData = NULL;
+    long long idx = -1;
     if (dType == TILE) {
         tableName = "tiles";
         idName = "tile_id";
-        tileData = (TileData*)data;
+        idx = ((TileData*)data)->i;
     }
     else if (dType == REGION) {
         tableName = "regions";
         idName = "region_id";
-        regionData = (Region*)data;
+        idx = ((Region*)data)->i;
+    }
+    else if (dType == AGENT) {
+        tableName = "agents";
+        idName = "agent_id";
+        idx = ((Agent*)data)->i;
     }
 
     sqlite3_stmt* stmt;
@@ -296,14 +338,8 @@ void _SetAttributeFloat(void* data, AttrType dType, const char* name, float valu
         sqlite3_finalize(stmt);
         return;
     }
-    int bindRes = -1;
-    if (dType == TILE) {
-        bindRes = sqlite3_bind_int64(stmt, 2, tileData->i);
-    }
-    else if (dType == REGION) {
-        bindRes = sqlite3_bind_int64(stmt, 2, regionData->i);
-    }
-    if (bindRes != SQLITE_OK) {
+
+    if (sqlite3_bind_int64(stmt, 2, idx) != SQLITE_OK) {
         fprintf(stderr, "SQL ERROR: could not bind index value to update statement: %s\n", sqlite3_errmsg(db));
         sqlite3_finalize(stmt);
         return;
@@ -326,21 +362,29 @@ void SetRegionAttributeFloat(Region* data, const char* name, float value) {
     SetRegionAsDirty(data);
 }
 
+void SetAgentAttributeFloat(Agent* data, const char* name, float value) {
+    _SetAttributeFloat((void*)data, AGENT, name, value);
+}
+
 
 void _SetAttributeString(void* data, AttrType dType, const char* name, const char* value) {
     char* tableName = "";
     char* idName = "";
-    TileData* tileData = NULL;
-    Region* regionData = NULL;
+    long long idx = -1;
     if (dType == TILE) {
         tableName = "tiles";
         idName = "tile_id";
-        tileData = (TileData*)data;
+        idx = ((TileData*)data)->i;
     }
     else if (dType == REGION) {
         tableName = "regions";
         idName = "region_id";
-        regionData = (Region*)data;
+        idx = ((Region*)data)->i;
+    }
+    else if (dType == AGENT) {
+        tableName = "agents";
+        idName = "agent_id";
+        idx = ((Agent*)data)->i;
     }
 
     sqlite3_stmt* stmt;
@@ -361,7 +405,7 @@ void _SetAttributeString(void* data, AttrType dType, const char* name, const cha
         sqlite3_finalize(stmt);
     }
 
-    sprintf(query, "UPDATE %s SET %s = ? WHERE tile_id = ?;", tableName, name);
+    sprintf(query, "UPDATE %s SET %s = ? WHERE %s = ?;", tableName, name, idName);
     if (sqlite3_prepare(db, query, -1, &stmt, NULL) != SQLITE_OK) {
         fprintf(stderr, "SQL ERROR: could not prepare update statement: %s\n", sqlite3_errmsg(db));
         sqlite3_finalize(stmt);
@@ -372,14 +416,8 @@ void _SetAttributeString(void* data, AttrType dType, const char* name, const cha
         sqlite3_finalize(stmt);
         return;
     }
-    int bindRes = -1;
-    if (dType == TILE) {
-        bindRes = sqlite3_bind_int64(stmt, 2, tileData->i);
-    }
-    else if (dType == REGION) {
-        bindRes = sqlite3_bind_int64(stmt, 2, regionData->i);
-    }
-    if (bindRes != SQLITE_OK) {
+
+    if (sqlite3_bind_int64(stmt, 2, idx) != SQLITE_OK) {
         fprintf(stderr, "SQL ERROR: could not bind index value to update statement: %s\n", sqlite3_errmsg(db));
         sqlite3_finalize(stmt);
         return;
@@ -402,6 +440,10 @@ void SetRegionAttributeString(Region* data, const char* name, const char* value)
     SetRegionAsDirty(data);
 }
 
+void SetAgentAttributeString(Agent* data, const char* name, const char* value) {
+    _SetAttributeString((void*)data, AGENT, name, value);
+}
+
 
 int _GetAttributeInt(void* data, AttrType dType, const char* name) {
     if (!_DoesColumnExist(name, dType)) {
@@ -410,17 +452,21 @@ int _GetAttributeInt(void* data, AttrType dType, const char* name) {
 
     char* tableName = "";
     char* idName = "";
-    TileData* tileData = NULL;
-    Region* regionData = NULL;
+    long long idx = -1;
     if (dType == TILE) {
         tableName = "tiles";
         idName = "tile_id";
-        tileData = (TileData*)data;
+        idx = ((TileData*)data)->i;
     }
     else if (dType == REGION) {
         tableName = "regions";
         idName = "region_id";
-        regionData = (Region*)data;
+        idx = ((Region*)data)->i;
+    }
+    else if (dType == AGENT) {
+        tableName = "agents";
+        idName = "agent_id";
+        idx = ((Agent*)data)->i;
     }
 
     sqlite3_stmt* stmt;
@@ -432,14 +478,8 @@ int _GetAttributeInt(void* data, AttrType dType, const char* name) {
         sqlite3_finalize(stmt);
         return 0;
     }
-    int bindRes = -1;
-    if (dType == TILE) {
-        bindRes = sqlite3_bind_int64(stmt, 1, tileData->i);
-    }
-    else if (dType == REGION) {
-        bindRes = sqlite3_bind_int64(stmt, 1, regionData->i);
-    }
-    if (bindRes != SQLITE_OK) {
+
+    if (sqlite3_bind_int64(stmt, 1, idx) != SQLITE_OK) {
         fprintf(stderr, "SQL ERROR: could not bind index value to insert statement: %s\n", sqlite3_errmsg(db));
         sqlite3_finalize(stmt);
         return 0;
@@ -464,6 +504,10 @@ int GetRegionAttributeInt(Region* data, const char* name) {
     return _GetAttributeInt((void*)data, REGION, name);
 }
 
+int GetAgentAttributeInt(Agent* data, const char* name) {
+    return _GetAttributeInt((void*)data, AGENT, name);
+}
+
 
 float _GetAttributeFloat(void* data, AttrType dType, const char* name) {
     if (!_DoesColumnExist(name, dType)) {
@@ -472,17 +516,21 @@ float _GetAttributeFloat(void* data, AttrType dType, const char* name) {
 
     char* tableName = "";
     char* idName = "";
-    TileData* tileData = NULL;
-    Region* regionData = NULL;
+    long long idx = -1;
     if (dType == TILE) {
         tableName = "tiles";
         idName = "tile_id";
-        tileData = (TileData*)data;
+        idx = ((TileData*)data)->i;
     }
     else if (dType == REGION) {
         tableName = "regions";
         idName = "region_id";
-        regionData = (Region*)data;
+        idx = ((Region*)data)->i;
+    }
+    else if (dType == AGENT) {
+        tableName = "agents";
+        idName = "agent_id";
+        idx = ((Agent*)data)->i;
     }
 
     sqlite3_stmt* stmt;
@@ -494,14 +542,8 @@ float _GetAttributeFloat(void* data, AttrType dType, const char* name) {
         sqlite3_finalize(stmt);
         return 0.0f;
     }
-    int bindRes = -1;
-    if (dType == TILE) {
-        bindRes = sqlite3_bind_int64(stmt, 1, tileData->i);
-    }
-    else if (dType == REGION) {
-        bindRes = sqlite3_bind_int64(stmt, 1, regionData->i);
-    }
-    if (bindRes != SQLITE_OK) {
+
+    if (sqlite3_bind_int64(stmt, 1, idx) != SQLITE_OK) {
         fprintf(stderr, "SQL ERROR: could not bind index value to insert statement: %s\n", sqlite3_errmsg(db));
         sqlite3_finalize(stmt);
         return 0.0f;
@@ -526,6 +568,10 @@ float GetRegionAttributeFloat(Region* data, const char* name) {
     return _GetAttributeFloat((void*)data, REGION, name);
 }
 
+float GetAgentAttributeFloat(Agent* data, const char* name) {
+    return _GetAttributeFloat((void*)data, AGENT, name);
+}
+
 
 char* _GetAttributeString(void* data, AttrType dType, const char* name) {
     if (!_DoesColumnExist(name, dType)) {
@@ -534,17 +580,21 @@ char* _GetAttributeString(void* data, AttrType dType, const char* name) {
 
     char* tableName = "";
     char* idName = "";
-    TileData* tileData = NULL;
-    Region* regionData = NULL;
+    long long idx = -1;
     if (dType == TILE) {
         tableName = "tiles";
         idName = "tile_id";
-        tileData = (TileData*)data;
+        idx = ((TileData*)data)->i;
     }
     else if (dType == REGION) {
         tableName = "regions";
         idName = "region_id";
-        regionData = (Region*)data;
+        idx = ((Region*)data)->i;
+    }
+    else if (dType == AGENT) {
+        tableName = "agents";
+        idName = "agent_id";
+        idx = ((Agent*)data)->i;
     }
 
     sqlite3_stmt* stmt;
@@ -556,14 +606,8 @@ char* _GetAttributeString(void* data, AttrType dType, const char* name) {
         sqlite3_finalize(stmt);
         return "";
     }
-    int bindRes = -1;
-    if (dType == TILE) {
-        bindRes = sqlite3_bind_int64(stmt, 1, tileData->i);
-    }
-    else if (dType == REGION) {
-        bindRes = sqlite3_bind_int64(stmt, 1, regionData->i);
-    }
-    if (bindRes != SQLITE_OK) {
+
+    if (sqlite3_bind_int64(stmt, 1, idx) != SQLITE_OK) {
         fprintf(stderr, "SQL ERROR: could not bind index value to insert statement: %s\n", sqlite3_errmsg(db));
         sqlite3_finalize(stmt);
         return "";
@@ -588,6 +632,10 @@ char* GetTileAttributeString(TileData* data, const char* name) {
 
 char* GetRegionAttributeString(Region* data, const char* name) {
     return _GetAttributeString((void*)data, REGION, name);
+}
+
+char* GetAgentAttributeString(Agent* data, const char* name) {
+    return _GetAttributeString((void*)data, AGENT, name);
 }
 
 
@@ -655,6 +703,35 @@ bool AddRegionTag(Region* data, char* tag) {
     return true;
 }
 
+bool AddAgentTag(Agent* data, char* tag) {
+    long long id = _GetTagID(tag);
+    if (id == -1) {
+        hmput(tags_IdxToString, __tagIdx, tag);
+        shput(tags_StringToIdx, tag, __tagIdx);
+        id = __tagIdx;
+        __tagIdx++;
+    }
+    long long* agentList = hmget(tagIdxToAgents, id);
+    bool already = false;
+    for (int i=0; i < arrlen(agentList); i++) {
+        if (agentList[i] == data->i) {
+            already = true;
+            break;
+        }
+    }
+    if (already) {
+        return false;
+    }
+    arrpush(agentList, data->i);
+    hmput(tagIdxToAgents, id, agentList);
+
+    long long* tagList = hmget(agentIdxToTags, data->i);
+    arrpush(tagList, id);
+    hmput(agentIdxToTags, data->i, tagList);
+
+    return true;
+}
+
 bool RemoveTileTag(TileData* data, const char* tag) {
     long long id = _GetTagID(tag);
     if (id == -1) {
@@ -699,6 +776,30 @@ bool RemoveRegionTag(Region* data, const char* tag) {
             arrdel(regionList, i);
             hmput(tagIdxToRegions, id, regionList);
             SetRegionAsDirty(data);
+            return true;
+        }
+    }
+    return false;
+}
+
+bool RemoveAgentTag(Agent* data, const char* tag) {
+    long long id = _GetTagID(tag);
+    if (id == -1) {
+        return false;
+    }
+    long long* agentList = hmget(tagIdxToAgents, id);
+    for (int i = 0; i < arrlen(agentList); i++) {
+        if (agentList[i] == data->i) {
+            long long* tagList = hmget(agentIdxToTags, data->i);
+            for (int j = 0; j < arrlen(tagList); j++) {
+                if (tagList[j] == id) {
+                    arrdel(tagList, j);
+                    hmput(agentIdxToTags, data->i, tagList);
+                    break;
+                }
+            }
+            arrdel(agentList, i);
+            hmput(tagIdxToAgents, id, agentList);
             return true;
         }
     }
@@ -817,6 +918,54 @@ DisposableRegionList GetRegionsTagged(const char* tagString) {
     return ret;
 }
 
+Agent** GetAgentsTagged(const char* tagString) {
+    int tagCount;
+    sds* tags = _TagSplit(tagString, &tagCount);
+
+    Agent** ret = NULL;
+    long long* indices = NULL;
+
+    for (int ti = 0; ti < tagCount; ti++) {
+        long long id = _GetTagID(tags[ti]);
+        if (id == -1) {
+            ret = NULL;
+            break;
+        }
+        long long* agents = hmget(tagIdxToAgents, id);
+        if (ti == 0) {
+            // first tag, add them all
+            for (int tf=0; tf < arrlen(agents); tf++) {
+                arrpush(indices, agents[tf]);
+            }
+        }
+        else {
+            // subsequent tags; remove from indices if they don't have id
+            for (int fi=0; fi < arrlen(indices); fi++) {
+                bool found = false;
+                for (int tf=0; tf < arrlen(agents); tf++) {
+                    if (indices[fi] == agents[tf]) {
+                        // agent is in both; we're good
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found) {
+                    arrdel(indices, fi);
+                }
+            }
+        }
+    }
+
+    Agent** allAgents = GetAllAgents();
+    for (int i=0; i < arrlen(indices); i++) {
+        arrpush(ret, allAgents[i]);
+    }
+
+    sdsfreesplitres(tags, tagCount);
+    arrfree(indices);
+    return ret;
+}
+
 bool TileHasTags(TileData* data, const char* tagString) {
     int tagCount;
     sds* tags = _TagSplit(tagString, &tagCount);
@@ -875,6 +1024,35 @@ bool RegionHasTags(Region* data, const char* tagString) {
     return ret;
 }
 
+bool AgentHasTags(Agent* data, const char* tagString) {
+    int tagCount;
+    sds* tags = _TagSplit(tagString, &tagCount);
+
+    bool ret = true;
+    for (int ti = 0; ti < tagCount; ti++) {
+        long long id = _GetTagID(tags[ti]);
+        if (id == -1) {
+            ret = false;
+            break;
+        }
+        long long* agents = hmget(tagIdxToAgents, id);
+        bool found = false;
+        for (int ts=0; ts < arrlen(agents); ts++) {
+            if (agents[ts] == data->i) {
+                found = true;
+                break;
+            }
+        }
+        if (!found) {
+            ret = false;
+            break;
+        }
+    }
+
+    sdsfreesplitres(tags, tagCount);
+    return ret;
+}
+
 char** GetTileTags(TileData* data) {
     char** ret = NULL;
     long long* tagIndices = hmget(tileIdxToTags, data->i);
@@ -901,6 +1079,19 @@ char** GetRegionTags(Region* data) {
     return ret;
 }
 
+char** GetAgentTags(Agent* data) {
+    char** ret = NULL;
+    long long* tagIndices = hmget(agentIdxToTags, data->i);
+
+    for (int i=0; i < arrlen(tagIndices); i++) {
+        char* t = hmget(tags_IdxToString, tagIndices[i]);
+        char* tc = malloc(sizeof(char) * (strlen(t)+1));
+        strcpy(tc, t);
+        arrpush(ret, tc);
+    }
+    return ret;
+}
+
 void** _GetByAttribute(AttrType dType, const char* attrName, AttrComparison comp, const char* value) {
     void** ret = NULL;
 
@@ -910,6 +1101,9 @@ void** _GetByAttribute(AttrType dType, const char* attrName, AttrComparison comp
     }
     else if (dType == REGION) {
         query = sdscat(query, "region_id FROM regions WHERE ");
+    }
+    else if (dType == AGENT) {
+        query = sdscat(query, "agent_id FROM agents WHERE ");
     }
 
     query = sdscat(query, attrName);
@@ -960,6 +1154,10 @@ void** _GetByAttribute(AttrType dType, const char* attrName, AttrComparison comp
                 }
             }
         }
+        else if (dType == AGENT) {
+            Agent** allAgents = GetAllAgents();
+            retData = (void*)allAgents[idx];
+        }
         if (retData != NULL) {
             arrpush(ret, retData);
         }
@@ -980,6 +1178,10 @@ DisposableRegionList GetRegionsByAttribute(const char* attrName, AttrComparison 
     Region** ret = (Region**)_GetByAttribute(REGION, attrName, comp, value);
     return ret;
 }
+Agent** GetAgentsByAttribute(const char* attrName, AttrComparison comp, const char* value) {
+    Agent** ret = (Agent**)_GetByAttribute(AGENT, attrName, comp, value);
+    return ret;
+}
 
 bool _CheckAttribute(void* data, AttrType dType, const char* attrName, AttrComparison comp, const char* value) {
     sds query = sdsnew("SELECT COUNT(*) FROM ");
@@ -991,6 +1193,10 @@ bool _CheckAttribute(void* data, AttrType dType, const char* attrName, AttrCompa
     else if (dType == REGION) {
         query = sdscat(query, "regions WHERE region_id = ? AND ");
         idx = ((Region*)data)->i;
+    }
+    else if (dType == AGENT) {
+        query = sdscat(query, "agents WHERE agent_id = ? AND ");
+        idx = ((Agent*)data)->i;
     }
     query = sdscat(query, attrName);
     switch (comp) {
@@ -1047,4 +1253,7 @@ bool CheckTileAttribute(TileData* td, const char* attrName, AttrComparison comp,
 }
 bool CheckRegionAttribute(Region* r, const char* attrName, AttrComparison comp, const char* value) {
     return _CheckAttribute((void*)r, REGION, attrName, comp, value);
+}
+bool CheckAgentAttribute(Agent* a, const char* attrName, AttrComparison comp, const char* value) {
+    return _CheckAttribute((void*)a, AGENT, attrName, comp, value);
 }
