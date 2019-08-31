@@ -1,6 +1,6 @@
 #pragma once
 
-void InitializeGame(void);
+void InitializeGame(const char* startupElement);
 void FinalizeGame(void);
 
 int GameTick(void);

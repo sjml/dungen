@@ -21,7 +21,7 @@ static unsigned int randomSeed;
 
 static bool shouldStopGame = false;
 
-void InitializeGame(void) {
+void InitializeGame(const char* startupElement) {
     randomSeed = (unsigned int)time(NULL);
     srand(randomSeed);
 
@@ -30,7 +30,11 @@ void InitializeGame(void) {
     InitializeHLVM();
 
     if (RunFile("scripts/simulation/WorldSetup.lua") == 0) {
-        RunString("push(\"_Root\")");
+        lua_getglobal(GetLuaState(), "push");
+        lua_pushstring(GetLuaState(), startupElement);
+        if (lua_pcall(GetLuaState(), 1, 0, 0) != 0) {
+            fprintf(stderr, "ERROR: No global 'push()' function defined in Lua!\n");
+        }
     }
 }
 
@@ -52,7 +56,10 @@ int GameTick(void) {
             hlvmAccum = 0.0;
             int hlvmTickCount = 0;
             while (hlvmTickCount++ < TICKS_PER_CYCLE) {
-                RunString("HLVMProcess()");
+                lua_getglobal(GetLuaState(), "HLVMProcess");
+                if (lua_pcall(GetLuaState(), 0, 0, 0) != 0) {
+                    fprintf(stderr, "ERROR: No global 'HLVMProcess()' function defined in Lua!\n");
+                }
             }
         }
     }

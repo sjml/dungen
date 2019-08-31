@@ -25,6 +25,28 @@
         }
       },
       {
+        "label": "Run Unit Tests",
+        "type": "shell",
+        "command": "${workspaceFolder}/build/Debug/DunGen.app/Contents/MacOS/DunGen",
+        "args": ["--startup", "_testing.UnitTest"],
+        "options": {
+          "cwd": "${workspaceFolder}/build"
+        },
+        "presentation": {
+          "echo": false,
+          "reveal": "always",
+          "focus": false,
+          "panel": "shared",
+          "showReuseMessage": false,
+          "clear": true
+        },
+        "problemMatcher": [],
+        "group": {
+          "kind": "test",
+          "isDefault": true
+        }
+      },
+      {
         "label": "Build Compiled Project",
         "type": "shell",
         "command": "xcodebuild",

@@ -283,6 +283,7 @@
 		3499472B22DB30D700C5BA7E /* attributes.i */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c.preprocessed; path = attributes.i; sourceTree = "<group>"; };
 		349C53B21EC4D6B9008D42C6 /* DunGen.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DunGen.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		349C53C21EC4D6B9008D42C6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = platform/macOS/Info.plist; sourceTree = SOURCE_ROOT; };
+		34B88943231A96EC00D790C9 /* kgflags.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = kgflags.h; path = "lib/single-file/kgflags.h"; sourceTree = "<group>"; };
 		34C5B3EE22DB2128007F0A79 /* sds.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = sds.c; path = "lib/sds-0bb446e/sds.c"; sourceTree = "<group>"; };
 		34C5B3F522DB2753007F0A79 /* libsds.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libsds.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		34C5D6EE22EE32BB004B8F80 /* ftcache.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = ftcache.c; path = "lib/freetype-2.10.1/src/cache/ftcache.c"; sourceTree = "<group>"; };
@@ -407,6 +408,7 @@
 				3412AF922317EC1000EB2D84 /* stb_image_write.h */,
 				340B5D0F22D21CB700E53DCA /* stb_ds.h */,
 				3466A4B722D4EDEB00ED6CAA /* gb_math.h */,
+				34B88943231A96EC00D790C9 /* kgflags.h */,
 			);
 			name = "single-file";
 			sourceTree = "<group>";

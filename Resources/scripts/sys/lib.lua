@@ -6,17 +6,26 @@ function lazyBasicAssert(item1, item2, desc)
   end
   if (item1 == item2) then
     print("✅ OK " .. desc)
-    return
+    return 0
   elseif (type(item1) ~= "table" and type(item2) == "table") then
     for _, v in pairs(item2) do
       if (item1 == v) then
         print("✅ OK " .. desc)
-        return
+        return 0
       end
     end
   end
   io.stderr:write("❌ FAIL! " .. desc .. "\n")
   io.stderr:write("\t" .. tostring(item1) .. " not equal to " .. tostring(item2) .. "\n")
+  return 1
+end
+
+function reportErrors(errCount)
+  if errCount == 0 then
+    print("\n🎉  No errors detected!")
+  else
+    io.stderr:write("\n🙈  " .. tostring(errCount) .. " ERROR(S)\n")
+  end
 end
 
 function string:split(sep)
