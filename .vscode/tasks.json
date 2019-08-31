@@ -10,6 +10,12 @@
         "options": {
           "cwd": "${workspaceFolder}/build"
         },
+        "windows": {
+          "command": "${workspaceFolder}/build/Release/DunGen.exe",
+          "options": {
+            "cwd": "${workspaceFolder}/build/Release"
+          },
+        },
         "presentation": {
           "echo": false,
           "reveal": "always",
