@@ -1,6 +1,5 @@
 %module dungen
 %{
-    #include <gb_math.h>
     #include "../infrastructure/util.h"
 %}
 

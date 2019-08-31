@@ -1,3 +1,5 @@
+#include "stdafx.h"
+
 // NB: This file provides an implementation of flexible, good-looking font-rendering.
 //     It enables the use of multiple fonts at multiple sizes without needing to prebake
 //     or manage them too specifically.
@@ -7,7 +9,6 @@
 //     instead of each glyph individually with two triangles. Et cetera.
 //     Only use this if you don't care too much about memory or performance.
 
-#include "../stdafx.h"
 #include "text.h"
 
 #include "util.h"

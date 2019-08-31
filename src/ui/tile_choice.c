@@ -1,4 +1,4 @@
-#include "../stdafx.h"
+#include "stdafx.h"
 #include "tile_choice.h"
 
 #include "../infrastructure/world.h"

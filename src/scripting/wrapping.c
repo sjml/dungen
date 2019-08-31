@@ -2693,7 +2693,9 @@ static swig_module_info swig_module = {swig_types, 12, 0, 0, 0, 0};
 
 #define SWIG_LUACODE   luaopen_dungen_luacode
 
-    #include <gb_math.h>
+    #include "stdafx.h"
+
+
     #include "../infrastructure/util.h"
 
 

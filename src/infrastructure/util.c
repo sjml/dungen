@@ -1,4 +1,4 @@
-#include "../stdafx.h"
+#include "stdafx.h"
 #include "util.h"
 
 #define STB_DS_IMPLEMENTATION

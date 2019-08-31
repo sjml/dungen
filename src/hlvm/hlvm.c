@@ -1,4 +1,4 @@
-#include "../stdafx.h"
+#include "stdafx.h"
 #include "hlvm.h"
 
 #include "../scripting/scripting.h"

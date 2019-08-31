@@ -1,4 +1,4 @@
-#include "../stdafx.h"
+#include "stdafx.h"
 #include "scripting.h"
 
 // implementation in generated wrapping.c file

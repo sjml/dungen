@@ -1486,6 +1486,7 @@
 					"lib/libpqueue-f319ea0/src",
 					"lib/freetype-2.10.1/include",
 					"lib/single-file",
+					src,
 				);
 				INFOPLIST_FILE = platform/macOS/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
@@ -1511,6 +1512,7 @@
 					"lib/libpqueue-f319ea0/src",
 					"lib/freetype-2.10.1/include",
 					"lib/single-file",
+					src,
 				);
 				INFOPLIST_FILE = platform/macOS/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
