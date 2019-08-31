@@ -36,6 +36,9 @@
 * figure out why ScreenToWorld needs that multiplier at the end :-/ 
 
 ## Horizon
+* would require overhaul, but:
+    - putting gold vein into spaces between tiles instead of tiles themselves
+    - more for visual appeal than anything else... might be a better way to accomplish that
 * in-game console
 * HLVM exceptions (C + Lua invoking)
 * pull sim settings and other stuff out into config file that Lua pulls in

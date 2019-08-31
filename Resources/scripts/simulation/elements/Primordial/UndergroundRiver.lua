@@ -1,3 +1,41 @@
+-- ENCOUNTERS
+  -- if it encounters sky, end traversal after making a sinkhole/lake
+
+  -- if it finds gold, gems, or plague, wash them downstream for a bit
+
+  -- if it finds magma:
+    -- make a chimney upwards and fill with steam
+
+  -- if it finds a chamber, flood it, continue on
+    -- if it's a monster's cavern:
+      -- if we're in the primordial era, transform the monster to an aquatic one
+      -- otherwise, it tries to escape via connected tunnels
+        -- if it can't, it dies
+    -- if it's a civilization's cavern:
+      -- they lose one of whatever population was there; the rest move out
+
+    -- what if it encounters FATE?
+      -- ideally: back off and route around it... but that might be hard to manage
+      -- more easily: just stop entirely
+
+-- "EXPLORING"
+  -- roll the path direction, and move along it
+    -- each new tile:
+      -- check for encounters
+      -- if no encounter:
+        -- if it's closed, open it and add water
+        -- if it's open, flow the water along open paths until it gets stuck
+
+-- FLOWING RIVER (will need slightly different rules for non-rivers flowing)
+  -- tries to flow down (soutwest/southeast; if both, pick one randomly)
+  -- if it can't flow down, tries to flow right, then left
+  -- if it can't flow:
+    -- if not in a chamber, carve chamber
+    -- fill the chamber and continue out to the east
+
+-- REFLOWING RIVER
+  -- probably mostly follows rules for exploring, but needs to try and follow its old path until it can't
+
 function waterIt(tile)
   tile:AddTag("water")
   tile:SetAttributeInt("open", 1)
@@ -25,6 +63,12 @@ function tryPath(current, path)
 end
 
 sir("RiverCount", gir("RiverCount") + 1)
+
+riverAgent = CreateAgent()
+riverAgent:SetAttributeString("name", "UndergroundRiver" .. tostring(gir("RiverCount")))
+riverAgent:SetAttributeString("Type", "Natural")
+riverAgent:SetAttributeString("class", "Water")
+riverAgent:SetAttributeString("alignment", "Indifferent")
 
 legalSet = TileSet()
 for i=gir("GroundLine"), gir("TileHeight") - 1 do
