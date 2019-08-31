@@ -24,6 +24,7 @@
 * attributes.c is a mess of copypasta; think about making a single attribute-haver object that other things can point to
     - counterpoint: probably won't add any more data types, and it currently works, so ¯\\\_(ツ)\_/¯ 
 * RenderingRegions is a holdover from when they were bare TileSets; think about just making a permalist like Agents and TileData have (though TileData's is more by rendering necessity...)
+* windows x64 doesn't build because I am a lazy programmer and my use of integers (esp. pointers) is not rigorously careful. macos is cool with it; windows less so. eventually this should get fixed, but for now, keeping Windows to 32-bit is fine
 * typemaps should reject inputs that are not tables
 * handle newlines in text rendering?
 * figure out text extents ascender/descender issue
