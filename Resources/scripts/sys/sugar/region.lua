@@ -66,3 +66,15 @@ end
 rft.ClearOutline = function(r)
   return ClearRegionOutline(r)
 end
+
+rft.SetParent = function(r, parent)
+  return SetRegionParent(r, parent)
+end
+
+rft.GetParent = function(r)
+  return GetRegionParent(r)
+end
+
+rft.GetChildren = function(r)
+  return GetRegionChildren(r)
+end

@@ -31,6 +31,9 @@ typedef struct sRegion {
     TileSet* tiles;
     Outline* outline;
     TextInfo label;
+
+    Region** children;
+    Region*  parent;
 } Region;
 typedef Region** DisposableRegionList; // for SWIG typemaps
 
@@ -86,4 +89,9 @@ bool IsTileInSet(TileSet* ts, TileData* t);
 long GetTileSetCount(TileSet* ts);
 TileData** GetTilesFromSet(TileSet* ts);
 TileSet* IntersectTileSets(TileSet* set1, TileSet* set2);
+
+
+void SetRegionParent(Region* child, Region* parent);
+Region* GetRegionParent(Region* r);
+Region** GetRegionChildren(Region* r);
 

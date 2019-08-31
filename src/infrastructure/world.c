@@ -370,7 +370,7 @@ TileData** GetTileCircle(TileData* center, int radius) {
         }
         arrfree(expansion);
     }
-    
+
     TileData** ret = GetTilesFromSet(ts);
     DestroyTileSet(ts);
     return ret;
@@ -408,12 +408,20 @@ Region* CreateRegion() {
     r->outline = NULL;
     r->label.text = NULL;
     r->label.scale = -1.0f;
+    r->children = NULL;
+    r->parent = NULL;
     AddRegionToRendering(r);
     r->i = SetupRegionAttributeData(r);
     return r;
 }
 
 void DestroyRegion(Region* r) {
+    SetRegionParent(r, NULL);
+    for (long i=0; i < arrlen(r->children); i++) {
+        r->children[i]->parent = NULL;
+    }
+    arrfree(r->children);
+
     ClearRegionAttributeData(r);
     RemoveRegionFromRendering(r);
     if (r->outline != NULL) {
@@ -445,6 +453,29 @@ void RemoveTileFromRegion(Region* r, TileData* t) {
             break;
         }
     }
+}
+
+void SetRegionParent(Region* child, Region* newParent) {
+    if (child->parent != NULL) {
+        for (long i=0; i < arrlen(child->parent->children); i++) {
+            if (child->parent->children[i] == child) {
+                arrdel(child->parent->children, i);
+                break;
+            }
+        }
+    }
+    child->parent = newParent;
+    if (newParent != NULL) {
+        arrpush(newParent->children, child);
+    }
+}
+
+Region* GetRegionParent(Region* r) {
+    return r->parent;
+}
+
+Region** GetRegionChildren(Region* r) {
+    return r->children;
 }
 
 void DestroyTileSet(TileSet* ts) {

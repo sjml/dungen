@@ -142,6 +142,20 @@ lazyBasicAssert(#circle4, 7, "Circle radius of 1")
 circle5 = td2:GetCircle(2)
 lazyBasicAssert(#circle5, 19, "Circle radius of 2")
 
+
+reg2 = Region()
+
+lazyBasicAssert(reg2:GetParent() == nil, true, "Region parent is initially null")
+lazyBasicAssert(#reg:GetChildren(), 0, "Regions initially have no children")
+reg2:SetParent(reg)
+lazyBasicAssert(reg2:GetParent() == nil, false, "Setting region parent")
+lazyBasicAssert(reg2:GetParent(), reg, "Setting *correct* region parent")
+lazyBasicAssert(#reg:GetChildren(), 1, "Getting region children")
+lazyBasicAssert(reg:GetChildren()[1], reg2, "Getting *correct* region children")
+DestroyRegion(reg2)
+lazyBasicAssert(#reg:GetChildren(), 0, "Destroying child region removes it from parent")
+
+
 td = nil
 td2 = nil
 td3 = nil
@@ -161,4 +175,9 @@ hc_tag_combine = nil
 hc3 = nil
 hc4 = nil
 ac = nil
+circle1 = nil
+circle2 = nil
+circle3 = nil
+circle4 = nil
+circle5 = nil
 collectgarbage() -- just to make sure this doesn't trigger segfaults

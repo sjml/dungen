@@ -70,6 +70,9 @@ void RemoveTileFromRegion(Region* r, TileData* t);
 void SetRegionAsDirty(Region* r);
 DisposableRegionList GetDirtyRegions(void);
 void CleanAllRegions(void);
+void SetRegionParent(Region* child, Region* parent);
+Region* GetRegionParent(Region* r);
+Region** GetRegionChildren(Region* r);
 
 void DestroyTileSet(TileSet* ts);
 TileSet* AddTileToSet(TileSet* ts, TileData* t);
