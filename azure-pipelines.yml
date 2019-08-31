@@ -59,7 +59,7 @@ jobs:
       vsVersion: '16.0'
       configuration: 'Release'
       maximumCpuCount: true
-      msbuildArchitecture: 'x64'
+      msbuildArchitecture: 'x86'
   - task: CopyFiles@2
     displayName: 'Copy documents to build directory'
     inputs:
