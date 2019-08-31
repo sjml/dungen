@@ -3,6 +3,17 @@
     #include "../infrastructure/attributes.h"
 %}
 
+typedef enum {
+    LessThan,
+    LessThanOrEqual,
+    GreaterThan,
+    GreaterThanOrEqual,
+    Equal,
+    NotEqual
+} AttrComparison;
+
+
+/////////// TileData
 void SetTileAttributeInt(TileData* data, const char* name, int value);
 void SetTileAttributeFloat(TileData* data, const char* name, float value);
 void SetTileAttributeString(TileData* data, const char* name, const char* value);
@@ -17,18 +28,11 @@ TileData** GetTilesTagged(const char* tagString);
 bool TileHasTags(TileData* td, const char* tagString);
 char** GetTileTags(TileData* td);
 
-typedef enum {
-    LessThan,
-    LessThanOrEqual,
-    GreaterThan,
-    GreaterThanOrEqual,
-    Equal,
-    NotEqual
-} AttrComparison;
-
 TileData** GetTilesByAttribute(const char* attrName, AttrComparison comp, const char* value);
 bool CheckTileAttribute(TileData* td, const char* attrName, AttrComparison comp, const char* value);
 
+
+/////////// Region
 void SetRegionAttributeInt(Region* data, const char* name, int value);
 void SetRegionAttributeFloat(Region* data, const char* name, float value);
 void SetRegionAttributeString(Region* data, const char* name, const char* value);
@@ -42,3 +46,6 @@ bool RemoveRegionTag(Region* td, const char* tag);
 DisposableRegionList GetRegionsTagged(const char* tagString);
 bool RegionHasTags(Region* td, const char* tagString);
 char** GetRegionTags(Region* td);
+
+DisposableRegionList GetRegionsByAttribute(const char* attrName, AttrComparison comp, const char* value);
+bool CheckRegionAttribute(Region* r, const char* attrName, AttrComparison comp, const char* value);

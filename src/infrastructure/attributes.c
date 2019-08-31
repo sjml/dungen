@@ -901,10 +901,17 @@ char** GetRegionTags(Region* data) {
     return ret;
 }
 
-TileData** GetTilesByAttribute(const char* attrName, AttrComparison comp, const char* value) {
-    TileData** ret = NULL;
+void** _GetByAttribute(AttrType dType, const char* attrName, AttrComparison comp, const char* value) {
+    void** ret = NULL;
 
-    sds query = sdsnew("SELECT tile_id FROM tiles WHERE ");
+    sds query = sdsnew("SELECT ");
+    if (dType == TILE) {
+        query = sdscat(query, "tile_id FROM tiles WHERE ");
+    }
+    else if (dType == REGION) {
+        query = sdscat(query, "region_id FROM regions WHERE ");
+    }
+
     query = sdscat(query, attrName);
     switch (comp) {
         case LessThan:
@@ -933,14 +940,28 @@ TileData** GetTilesByAttribute(const char* attrName, AttrComparison comp, const 
     if (sqlite3_prepare(db, query, -1, &stmt, NULL) != SQLITE_OK) {
         fprintf(stderr, "SQL WARNING: could not prepare attribute selection statement: %s\n", sqlite3_errmsg(db));
         sqlite3_finalize(stmt);
+        sdsfree(query);
         return ret;
     }
+    sdsfree(query);
 
     while(sqlite3_step(stmt) == SQLITE_ROW) {
         long long idx = sqlite3_column_int64(stmt, 0);
-        TileData* td = GetTileAtIndex(idx);
-        if (td != NULL) {
-            arrpush(ret, td);
+        void* retData = NULL;
+        if (dType == TILE) {
+            retData = (void*)GetTileAtIndex(idx);
+        }
+        else if (dType == REGION) {
+            Region** rs = GetRenderingRegions();
+            for (long i=0; i < arrlen(rs); i++) {
+                if (rs[i]->i == idx) {
+                    retData = (void*)rs[i];
+                    break;
+                }
+            }
+        }
+        if (retData != NULL) {
+            arrpush(ret, retData);
         }
         else {
             fprintf(stderr, "SQL ERROR: Returning ids of non-existent tiles?\n");
@@ -951,8 +972,26 @@ TileData** GetTilesByAttribute(const char* attrName, AttrComparison comp, const 
     return ret;
 }
 
-bool CheckTileAttribute(TileData* td, const char* attrName, AttrComparison comp, const char* value) {
-    sds query = sdsnew("SELECT COUNT(*) FROM tiles WHERE tile_id=? AND ");
+TileData** GetTilesByAttribute(const char* attrName, AttrComparison comp, const char* value) {
+    TileData** ret = (TileData**)_GetByAttribute(TILE, attrName, comp, value);
+    return ret;
+}
+DisposableRegionList GetRegionsByAttribute(const char* attrName, AttrComparison comp, const char* value) {
+    Region** ret = (Region**)_GetByAttribute(REGION, attrName, comp, value);
+    return ret;
+}
+
+bool _CheckAttribute(void* data, AttrType dType, const char* attrName, AttrComparison comp, const char* value) {
+    sds query = sdsnew("SELECT COUNT(*) FROM ");
+    long long idx = -1;
+    if (dType == TILE) {
+        query = sdscat(query, "tiles WHERE tile_id = ? AND ");
+        idx = ((TileData*)data)->i;
+    }
+    else if (dType == REGION) {
+        query = sdscat(query, "regions WHERE region_id = ? AND ");
+        idx = ((Region*)data)->i;
+    }
     query = sdscat(query, attrName);
     switch (comp) {
         case LessThan:
@@ -981,9 +1020,12 @@ bool CheckTileAttribute(TileData* td, const char* attrName, AttrComparison comp,
     if (sqlite3_prepare(db, query, -1, &stmt, NULL) != SQLITE_OK) {
         fprintf(stderr, "SQL WARNING: could not prepare attribute check statement: %s\n", sqlite3_errmsg(db));
         sqlite3_finalize(stmt);
+        sdsfree(query);
         return false;
     }
-    if (sqlite3_bind_int64(stmt, 1, td->i) != SQLITE_OK) {
+    sdsfree(query);
+
+    if (sqlite3_bind_int64(stmt, 1, idx) != SQLITE_OK) {
         fprintf(stderr, "SQL ERROR: could not bind index value to attribute check statement: %s\n", sqlite3_errmsg(db));
         sqlite3_finalize(stmt);
         return false;
@@ -998,4 +1040,11 @@ bool CheckTileAttribute(TileData* td, const char* attrName, AttrComparison comp,
     int val = sqlite3_column_int(stmt, 0);
     sqlite3_finalize(stmt);
     return val > 0;
+}
+
+bool CheckTileAttribute(TileData* td, const char* attrName, AttrComparison comp, const char* value) {
+    return _CheckAttribute((void*)td, TILE, attrName, comp, value);
+}
+bool CheckRegionAttribute(Region* r, const char* attrName, AttrComparison comp, const char* value) {
+    return _CheckAttribute((void*)r, REGION, attrName, comp, value);
 }

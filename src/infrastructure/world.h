@@ -63,18 +63,6 @@ long GetTileDistance(TileData* t1, TileData* t2);
 void SetTileOutline(TileData* t, gbVec4 color, float thickness, int type);
 void ClearTileOutline(TileData* t);
 
-Region* CreateRegion(void);
-void DestroyRegion(Region* r);
-void SetRegionOutline(Region* r, gbVec4 color, float thickness, int type);
-void ClearRegionOutline(Region* r);
-void SetRegionLabel(Region* r, const char* text, float scale, gbVec4 color, gbVec2 tileOffset);
-void ClearRegionLabel(Region* r);
-void AddTileToRegion(Region* r, TileData* t);
-void RemoveTileFromRegion(Region* r, TileData* t);
-void SetRegionAsDirty(Region* r);
-DisposableRegionList GetDirtyRegions(void);
-void CleanAllRegions(void);
-
 // TODO: TileSets will leak once they have no members if they
 //       aren't tracked somehow.
 //       Don't want to automatically destroy when members are 0
@@ -91,6 +79,17 @@ TileData** GetTilesFromSet(TileSet* ts);
 TileSet* IntersectTileSets(TileSet* set1, TileSet* set2);
 
 
+Region* CreateRegion(void);
+void DestroyRegion(Region* r);
+void SetRegionOutline(Region* r, gbVec4 color, float thickness, int type);
+void ClearRegionOutline(Region* r);
+void SetRegionLabel(Region* r, const char* text, float scale, gbVec4 color, gbVec2 tileOffset);
+void ClearRegionLabel(Region* r);
+void AddTileToRegion(Region* r, TileData* t);
+void RemoveTileFromRegion(Region* r, TileData* t);
+void SetRegionAsDirty(Region* r);
+DisposableRegionList GetDirtyRegions(void);
+void CleanAllRegions(void);
 void SetRegionParent(Region* child, Region* parent);
 Region* GetRegionParent(Region* r);
 Region** GetRegionChildren(Region* r);

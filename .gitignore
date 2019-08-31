@@ -28,7 +28,6 @@ xcuserdata/
 art/tmp/*
 build/*
 tmp/*
-.vscode/settings.json
 
 # Overrides
 !.gitkeep

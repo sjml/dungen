@@ -23,6 +23,42 @@
           "kind": "build",
           "isDefault": true
         }
+      },
+      {
+        "label": "Build Compiled Project",
+        "type": "shell",
+        "command": "xcodebuild",
+        "args": [
+          "-sdk", "macosx",
+          "-scheme", "DunGen (Debug)",
+          "-project", "DunGen.xcodeproj",
+          "build"
+        ],
+        "options": {
+          "cwd": "${workspaceFolder}",
+        },
+        "presentation": {
+          "echo": false,
+          "reveal": "always",
+          "focus": false,
+          "panel": "shared",
+          "showReuseMessage": false,
+          "clear": true
+        },
+        "problemMatcher": [
+          {
+            "owner": "Xcode",
+            "fileLocation": "absolute",
+            "pattern": {
+              "regexp": "^(.*):(\\d+):(\\d+):\\s+(warning|error):\\s+(.*)$",
+              "file": 1,
+              "line": 2,
+              "column": 3,
+              "severity": 4,
+              "message": 5
+            }
+          }
+        ]
       }
     ]
 }

@@ -6790,6 +6790,98 @@ fail:
 }
 
 
+static int _wrap_SetRegionParent(lua_State* L) {
+  int SWIG_arg = 0;
+  Region *arg1 = (Region *) 0 ;
+  Region *arg2 = (Region *) 0 ;
+  
+  SWIG_check_num_args("SetRegionParent",2,2)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("SetRegionParent",1,"Region *");
+  if(!SWIG_isptrtype(L,2)) SWIG_fail_arg("SetRegionParent",2,"Region *");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_sRegion,0))){
+    SWIG_fail_ptr("SetRegionParent",1,SWIGTYPE_p_sRegion);
+  }
+  
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,2,(void**)&arg2,SWIGTYPE_p_sRegion,0))){
+    SWIG_fail_ptr("SetRegionParent",2,SWIGTYPE_p_sRegion);
+  }
+  
+  SetRegionParent(arg1,arg2);
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_GetRegionParent(lua_State* L) {
+  int SWIG_arg = 0;
+  Region *arg1 = (Region *) 0 ;
+  Region *result = 0 ;
+  
+  SWIG_check_num_args("GetRegionParent",1,1)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("GetRegionParent",1,"Region *");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_sRegion,0))){
+    SWIG_fail_ptr("GetRegionParent",1,SWIGTYPE_p_sRegion);
+  }
+  
+  result = (Region *)GetRegionParent(arg1);
+  SWIG_NewPointerObj(L,result,SWIGTYPE_p_sRegion,0); SWIG_arg++; 
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_GetRegionChildren(lua_State* L) {
+  int SWIG_arg = 0;
+  Region *arg1 = (Region *) 0 ;
+  Region **result = 0 ;
+  
+  SWIG_check_num_args("GetRegionChildren",1,1)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("GetRegionChildren",1,"Region *");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_sRegion,0))){
+    SWIG_fail_ptr("GetRegionChildren",1,SWIGTYPE_p_sRegion);
+  }
+  
+  result = (Region **)GetRegionChildren(arg1);
+  
+  {
+    lua_newtable(L);
+    if (arrlen(result) > 0) {
+      for (unsigned int i=1; i <= arrlen(result); i++) {
+        lua_pushnumber(L, i);
+        SWIG_NewPointerObj(L, result[i-1], SWIGTYPE_p_sRegion, 0);
+        lua_settable(L, -3);
+      }
+    }
+    // arrfree(result); don't free if we don't own this memory
+    
+    SWIG_arg += 1;
+  }
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
 static int _wrap_DestroyTileSet(lua_State* L) {
   int SWIG_arg = 0;
   TileSet *arg1 = (TileSet *) 0 ;
@@ -7720,6 +7812,79 @@ fail:
 }
 
 
+static int _wrap_GetRegionsByAttribute(lua_State* L) {
+  int SWIG_arg = 0;
+  char *arg1 = (char *) 0 ;
+  AttrComparison arg2 ;
+  char *arg3 = (char *) 0 ;
+  DisposableRegionList result;
+  
+  SWIG_check_num_args("GetRegionsByAttribute",3,3)
+  if(!SWIG_lua_isnilstring(L,1)) SWIG_fail_arg("GetRegionsByAttribute",1,"char const *");
+  if(!lua_isnumber(L,2)) SWIG_fail_arg("GetRegionsByAttribute",2,"AttrComparison");
+  if(!SWIG_lua_isnilstring(L,3)) SWIG_fail_arg("GetRegionsByAttribute",3,"char const *");
+  arg1 = (char *)lua_tostring(L, 1);
+  arg2 = (AttrComparison)(int)lua_tonumber(L, 2);
+  arg3 = (char *)lua_tostring(L, 3);
+  result = GetRegionsByAttribute((char const *)arg1,arg2,(char const *)arg3);
+  
+  {
+    lua_newtable(L);
+    if (arrlen(result) > 0) {
+      for (unsigned int i=1; i <= arrlen(result); i++) {
+        lua_pushnumber(L, i);
+        SWIG_NewPointerObj(L, result[i-1], SWIGTYPE_p_sRegion, 0);
+        lua_settable(L, -3);
+      }
+    }
+    arrfree(result);
+    
+    SWIG_arg += 1;
+  }
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_CheckRegionAttribute(lua_State* L) {
+  int SWIG_arg = 0;
+  Region *arg1 = (Region *) 0 ;
+  char *arg2 = (char *) 0 ;
+  AttrComparison arg3 ;
+  char *arg4 = (char *) 0 ;
+  bool result;
+  
+  SWIG_check_num_args("CheckRegionAttribute",4,4)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("CheckRegionAttribute",1,"Region *");
+  if(!SWIG_lua_isnilstring(L,2)) SWIG_fail_arg("CheckRegionAttribute",2,"char const *");
+  if(!lua_isnumber(L,3)) SWIG_fail_arg("CheckRegionAttribute",3,"AttrComparison");
+  if(!SWIG_lua_isnilstring(L,4)) SWIG_fail_arg("CheckRegionAttribute",4,"char const *");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_sRegion,0))){
+    SWIG_fail_ptr("CheckRegionAttribute",1,SWIGTYPE_p_sRegion);
+  }
+  
+  arg2 = (char *)lua_tostring(L, 2);
+  arg3 = (AttrComparison)(int)lua_tonumber(L, 3);
+  arg4 = (char *)lua_tostring(L, 4);
+  result = (bool)CheckRegionAttribute(arg1,(char const *)arg2,arg3,(char const *)arg4);
+  lua_pushboolean(L,(int)(result!=0)); SWIG_arg++;
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
 static int _wrap_GetTime(lua_State* L) {
   int SWIG_arg = 0;
   double result;
@@ -8054,6 +8219,9 @@ static swig_lua_method swig_SwigModule_methods[]= {
     { "SetRegionAsDirty", _wrap_SetRegionAsDirty},
     { "GetDirtyRegions", _wrap_GetDirtyRegions},
     { "CleanAllRegions", _wrap_CleanAllRegions},
+    { "SetRegionParent", _wrap_SetRegionParent},
+    { "GetRegionParent", _wrap_GetRegionParent},
+    { "GetRegionChildren", _wrap_GetRegionChildren},
     { "DestroyTileSet", _wrap_DestroyTileSet},
     { "AddTileToSet", _wrap_AddTileToSet},
     { "RemoveTileFromSet", _wrap_RemoveTileFromSet},
@@ -8085,6 +8253,8 @@ static swig_lua_method swig_SwigModule_methods[]= {
     { "GetRegionsTagged", _wrap_GetRegionsTagged},
     { "RegionHasTags", _wrap_RegionHasTags},
     { "GetRegionTags", _wrap_GetRegionTags},
+    { "GetRegionsByAttribute", _wrap_GetRegionsByAttribute},
+    { "CheckRegionAttribute", _wrap_CheckRegionAttribute},
     { "GetTime", _wrap_GetTime},
     { "FindSimplePath", _wrap_FindSimplePath},
     { "AddBanner", _wrap_AddBanner},
