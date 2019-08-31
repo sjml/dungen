@@ -329,7 +329,7 @@
 		3499472B22DB30D700C5BA7E /* attributes.i */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c.preprocessed; path = attributes.i; sourceTree = "<group>"; };
 		349C53B21EC4D6B9008D42C6 /* DunGen.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DunGen.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		349C53C21EC4D6B9008D42C6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = platform/macOS/Info.plist; sourceTree = SOURCE_ROOT; };
-		34A96323231B004600A9464F /* DunGen iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "DunGen iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		34A96323231B004600A9464F /* DunGen.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DunGen.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		34A96325231B004600A9464F /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		34A96326231B004600A9464F /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		34A96328231B004600A9464F /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
@@ -614,7 +614,7 @@
 				34C5B3F522DB2753007F0A79 /* libsds.a */,
 				345E93A722EB2787006FD334 /* libpqueue.a */,
 				34DB94B222EC370B0066EC6A /* libfreetype.a */,
-				34A96323231B004600A9464F /* DunGen iOS.app */,
+				34A96323231B004600A9464F /* DunGen.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -965,7 +965,7 @@
 			);
 			name = "DunGen iOS";
 			productName = "DunGen iOS";
-			productReference = 34A96323231B004600A9464F /* DunGen iOS.app */;
+			productReference = 34A96323231B004600A9464F /* DunGen.app */;
 			productType = "com.apple.product-type.application";
 		};
 		34C5B3F422DB2753007F0A79 /* sds */ = {
@@ -1566,9 +1566,10 @@
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
 				SUPPORTED_PLATFORMS = "macosx iphonesimulator iphoneos";
-				"VALID_ARCHS[sdk=iphoneos*]" = "armv7 armv7s arm64";
-				"VALID_ARCHS[sdk=iphonesimulator*]" = "i386 x86_64";
-				"VALID_ARCHS[sdk=macosx*]" = "i386 x86_64";
+				VALID_ARCHS = "";
+				"VALID_ARCHS[sdk=iphoneos*]" = arm64;
+				"VALID_ARCHS[sdk=iphonesimulator*]" = x86_64;
+				"VALID_ARCHS[sdk=macosx*]" = x86_64;
 			};
 			name = Debug;
 		};
@@ -1617,9 +1618,10 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = macosx;
 				SUPPORTED_PLATFORMS = "macosx iphonesimulator iphoneos";
-				"VALID_ARCHS[sdk=iphoneos*]" = "armv7 armv7s arm64";
-				"VALID_ARCHS[sdk=iphonesimulator*]" = "i386 x86_64";
-				"VALID_ARCHS[sdk=macosx*]" = "i386 x86_64";
+				VALID_ARCHS = "";
+				"VALID_ARCHS[sdk=iphoneos*]" = arm64;
+				"VALID_ARCHS[sdk=iphonesimulator*]" = x86_64;
+				"VALID_ARCHS[sdk=macosx*]" = x86_64;
 			};
 			name = Release;
 		};
@@ -1738,7 +1740,7 @@
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.shaneliesegang.DunGen-iOS";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = DunGen;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -1762,7 +1764,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.shaneliesegang.DunGen-iOS";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = DunGen;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
