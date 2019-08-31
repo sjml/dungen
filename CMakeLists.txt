@@ -79,6 +79,7 @@ include_directories(lib/libpqueue-f319ea0/src)
 
 include_directories(lib/single-file)
 
+include_directories(src)
 add_compile_definitions(GL_SILENCE_DEPRECATION)
 add_executable (DunGen MACOSX_BUNDLE
     src/main.c
