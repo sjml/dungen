@@ -54,10 +54,16 @@
     <ClCompile Include="..\..\..\src\scripting\wrapping.c">
       <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">TurnOffAllWarnings</WarningLevel>
       <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">TurnOffAllWarnings</WarningLevel>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="..\..\..\src\ui\banner.c" />
     <ClCompile Include="..\..\..\src\ui\choice.c" />
     <ClCompile Include="..\..\..\src\ui\tile_choice.c" />
+    <ClCompile Include="stdafx.c">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\src\scripting\interfaces\attributes.i" />
@@ -165,9 +171,9 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <PrecompiledHeaderFile>$(ProjectDir)..\..\..\src\stdafx.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\..\..\lib\glfw-3.3.0\include;$(ProjectDir)..\..\..\lib\lua-5.3.5\src;$(ProjectDir)..\..\..\lib\sqlite-amalgamation-3290000;$(ProjectDir)..\..\..\lib\sds-0bb446e;$(ProjectDir)..\..\..\lib\libpqueue-f319ea0\src;$(ProjectDir)..\..\..\lib\freetype-2.10.1\include;$(ProjectDir)..\..\..\lib\single-file</AdditionalIncludeDirectories>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\..\..\lib\glfw-3.3.0\include;$(ProjectDir)..\..\..\lib\lua-5.3.5\src;$(ProjectDir)..\..\..\lib\sqlite-amalgamation-3290000;$(ProjectDir)..\..\..\lib\sds-0bb446e;$(ProjectDir)..\..\..\lib\libpqueue-f319ea0\src;$(ProjectDir)..\..\..\lib\freetype-2.10.1\include;$(ProjectDir)..\..\..\lib\single-file;$(ProjectDir)..\..\..\src</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_MBCS;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
       <AdditionalOptions>/experimental:external /external:anglebrackets /external:W0 %(AdditionalOptions)</AdditionalOptions>
       <TreatWarningAsError>true</TreatWarningAsError>
@@ -195,9 +201,9 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <PrecompiledHeaderFile>$(ProjectDir)..\..\..\src\stdafx.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\..\..\lib\glfw-3.3.0\include;$(ProjectDir)..\..\..\lib\lua-5.3.5\src;$(ProjectDir)..\..\..\lib\sqlite-amalgamation-3290000;$(ProjectDir)..\..\..\lib\sds-0bb446e;$(ProjectDir)..\..\..\lib\libpqueue-f319ea0\src;$(ProjectDir)..\..\..\lib\freetype-2.10.1\include;$(ProjectDir)..\..\..\lib\single-file</AdditionalIncludeDirectories>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\..\..\lib\glfw-3.3.0\include;$(ProjectDir)..\..\..\lib\lua-5.3.5\src;$(ProjectDir)..\..\..\lib\sqlite-amalgamation-3290000;$(ProjectDir)..\..\..\lib\sds-0bb446e;$(ProjectDir)..\..\..\lib\libpqueue-f319ea0\src;$(ProjectDir)..\..\..\lib\freetype-2.10.1\include;$(ProjectDir)..\..\..\lib\single-file;$(ProjectDir)..\..\..\src</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_MBCS;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
       <AdditionalOptions>/experimental:external /external:anglebrackets /external:W0 %(AdditionalOptions)</AdditionalOptions>
       <TreatWarningAsError>true</TreatWarningAsError>

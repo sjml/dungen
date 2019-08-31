@@ -21,7 +21,6 @@
 3. Relaxable constraint sets
 
 ## Tech Debt
-* set precompiled headers up in Visual Studio
 * attributes.c is a mess of copypasta; think about making a single attribute-haver object that other things can point to
     - counterpoint: probably won't add any more data types, and it currently works, so ¯\\\_(ツ)\_/¯ 
 * RenderingRegions is a holdover from when they were bare TileSets; think about just making a permalist like Agents and TileData have (though TileData's is more by rendering necessity...)

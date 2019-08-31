@@ -101,6 +101,9 @@
     <ClCompile Include="..\..\..\src\ui\tile_choice.c">
       <Filter>ui</Filter>
     </ClCompile>
+    <ClCompile Include="stdafx.c">
+      <Filter>platform</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="scripting">
