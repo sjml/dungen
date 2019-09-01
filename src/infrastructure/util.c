@@ -42,7 +42,7 @@ int handleGLErrors(const char* f, const int line) {
                     errorString = "unknown error";
             }
             
-            printf("OpenGL Error in %s (%d): %s", f, line, errorString);
+            printf("OpenGL Error in %s (%d): %s\n", f, line, errorString);
         }
     } while (errorCode != GL_NO_ERROR);
     
