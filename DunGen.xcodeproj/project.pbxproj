@@ -78,6 +78,8 @@
 		3482A55822D61C6700AAD098 /* wrapping.c in Sources */ = {isa = PBXBuildFile; fileRef = 3482A55722D61BA900AAD098 /* wrapping.c */; settings = {COMPILER_FLAGS = "--no-warnings"; }; };
 		3482A56222D63C4F00AAD098 /* hlvm.c in Sources */ = {isa = PBXBuildFile; fileRef = 3482A56122D63C4F00AAD098 /* hlvm.c */; };
 		3482A56522D6842000AAD098 /* lfs.c in Sources */ = {isa = PBXBuildFile; fileRef = 3482A56422D6842000AAD098 /* lfs.c */; };
+		34905C0E231C166500AA23D4 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 34905C0C231C166500AA23D4 /* GLKit.framework */; };
+		34905C0F231C166500AA23D4 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 34905C0D231C166500AA23D4 /* OpenGLES.framework */; };
 		349C53E71EC4D6FC008D42C6 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 345D93DC1EC4C53B003B7C63 /* OpenGL.framework */; };
 		349C53E81EC4D700008D42C6 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 345D93E21EC4C54C003B7C63 /* Cocoa.framework */; };
 		349C53E91EC4D707008D42C6 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 345D93E01EC4C543003B7C63 /* IOKit.framework */; };
@@ -326,6 +328,8 @@
 		3482A56022D63C4F00AAD098 /* hlvm.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = hlvm.h; sourceTree = "<group>"; };
 		3482A56122D63C4F00AAD098 /* hlvm.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = hlvm.c; sourceTree = "<group>"; };
 		3482A56422D6842000AAD098 /* lfs.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = lfs.c; path = "lib/luafilesystem-1.7.0-2/src/lfs.c"; sourceTree = "<group>"; };
+		34905C0C231C166500AA23D4 /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS12.4.sdk/System/Library/Frameworks/GLKit.framework; sourceTree = DEVELOPER_DIR; };
+		34905C0D231C166500AA23D4 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS12.4.sdk/System/Library/Frameworks/OpenGLES.framework; sourceTree = DEVELOPER_DIR; };
 		3499472B22DB30D700C5BA7E /* attributes.i */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c.preprocessed; path = attributes.i; sourceTree = "<group>"; };
 		349C53B21EC4D6B9008D42C6 /* DunGen.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DunGen.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		349C53C21EC4D6B9008D42C6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -442,6 +446,8 @@
 				34A96345231B006500A9464F /* libpqueue.a in Frameworks */,
 				34A96346231B006500A9464F /* libsds.a in Frameworks */,
 				34A96347231B006500A9464F /* libsqlite.a in Frameworks */,
+				34905C0E231C166500AA23D4 /* GLKit.framework in Frameworks */,
+				34905C0F231C166500AA23D4 /* OpenGLES.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -622,6 +628,8 @@
 		345D93DB1EC4C53B003B7C63 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				34905C0C231C166500AA23D4 /* GLKit.framework */,
+				34905C0D231C166500AA23D4 /* OpenGLES.framework */,
 				345D93E21EC4C54C003B7C63 /* Cocoa.framework */,
 				345D93E01EC4C543003B7C63 /* IOKit.framework */,
 				345D93DE1EC4C540003B7C63 /* CoreVideo.framework */,
@@ -1472,6 +1480,7 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				EXECUTABLE_PREFIX = lib;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_PREPROCESSOR_DEFINITIONS = "$(inherited)";
 				GCC_WARN_INHIBIT_ALL_WARNINGS = YES;
 				HEADER_SEARCH_PATHS = "lib/lua-5.3.5/src";
 				MTL_FAST_MATH = YES;
@@ -1505,6 +1514,7 @@
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				EXECUTABLE_PREFIX = lib;
 				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
 					_GLFW_COCOA,
 					_GLFW_BUILD_DLL,
 				);
@@ -1676,8 +1686,8 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = src/stdafx.h;
 				GCC_PREPROCESSOR_DEFINITIONS = (
-					GL_SILENCE_DEPRECATION,
 					"$(inherited)",
+					GL_SILENCE_DEPRECATION,
 				);
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				HEADER_SEARCH_PATHS = (
@@ -1693,6 +1703,7 @@
 				INFOPLIST_FILE = platform/macOS/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = macosx;
 			};
 			name = Debug;
 		};
@@ -1704,7 +1715,10 @@
 				DEVELOPMENT_TEAM = CFJYV723M9;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = src/stdafx.h;
-				GCC_PREPROCESSOR_DEFINITIONS = GL_SILENCE_DEPRECATION;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					GL_SILENCE_DEPRECATION,
+				);
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				HEADER_SEARCH_PATHS = (
 					"lib/glfw-3.3.0/include",
@@ -1719,6 +1733,7 @@
 				INFOPLIST_FILE = platform/macOS/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = macosx;
 			};
 			name = Release;
 		};
@@ -1732,9 +1747,13 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = CFJYV723M9;
+				DEVELOPMENT_TEAM = "";
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					GLES_SILENCE_DEPRECATION,
+				);
 				INFOPLIST_FILE = "$(SRCROOT)/platform/iOS/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1742,7 +1761,9 @@
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.shaneliesegang.DunGen-iOS";
 				PRODUCT_NAME = DunGen;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -1757,16 +1778,22 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = CFJYV723M9;
+				DEVELOPMENT_TEAM = "";
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					GLES_SILENCE_DEPRECATION,
+				);
 				INFOPLIST_FILE = "$(SRCROOT)/platform/iOS/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.shaneliesegang.DunGen-iOS";
 				PRODUCT_NAME = DunGen;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 			};
@@ -1897,6 +1924,7 @@
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
 					FT2_BUILD_LIBRARY,
 					FT_CONFIG_OPTION_SYSTEM_ZLIB,
 					"FT_CONFIG_CONFIG_H=\"<ftconfig.h>\"",

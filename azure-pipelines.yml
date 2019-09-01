@@ -22,6 +22,7 @@ jobs:
       scheme: 'DunGen (Release)'
       sdk: 'macosx'
       configuration: 'Release'
+      destinationPlatformOption: 'macOS'
       xcWorkspacePath: 'DunGen.xcodeproj'
       xcodeVersion: 10
   - task: CmdLine@2
