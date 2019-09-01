@@ -290,7 +290,7 @@
 		342E3B0E231041A6008AD361 /* macOS.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = macOS.c; sourceTree = "<group>"; };
 		342E3B10231041A6008AD361 /* platform.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = platform.h; sourceTree = "<group>"; };
 		344B44F922EB931400A27ADF /* pathfind.i */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c.preprocessed; path = pathfind.i; sourceTree = "<group>"; };
-		344C39E41EC4E0B2007F9466 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = platform/macOS/Assets.xcassets; sourceTree = SOURCE_ROOT; };
+		344C39E41EC4E0B2007F9466 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		3455A6961EC4DA71000057E4 /* libglfw.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libglfw.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		345D93DC1EC4C53B003B7C63 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 		345D93DE1EC4C540003B7C63 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
@@ -328,7 +328,7 @@
 		3482A56422D6842000AAD098 /* lfs.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = lfs.c; path = "lib/luafilesystem-1.7.0-2/src/lfs.c"; sourceTree = "<group>"; };
 		3499472B22DB30D700C5BA7E /* attributes.i */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c.preprocessed; path = attributes.i; sourceTree = "<group>"; };
 		349C53B21EC4D6B9008D42C6 /* DunGen.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DunGen.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		349C53C21EC4D6B9008D42C6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = platform/macOS/Info.plist; sourceTree = SOURCE_ROOT; };
+		349C53C21EC4D6B9008D42C6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		34A96323231B004600A9464F /* DunGen.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DunGen.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		34A96325231B004600A9464F /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		34A96326231B004600A9464F /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -726,19 +726,20 @@
 		349C53B31EC4D6B9008D42C6 /* Support */ = {
 			isa = PBXGroup;
 			children = (
+				34A96348231B010100A9464F /* macOS */,
 				34A96349231B010D00A9464F /* iOS */,
-				34A96348231B010100A9464F /* Mac */,
 			);
 			name = Support;
 			sourceTree = "<group>";
 		};
-		34A96348231B010100A9464F /* Mac */ = {
+		34A96348231B010100A9464F /* macOS */ = {
 			isa = PBXGroup;
 			children = (
 				349C53C21EC4D6B9008D42C6 /* Info.plist */,
 				344C39E41EC4E0B2007F9466 /* Assets.xcassets */,
 			);
-			name = Mac;
+			name = macOS;
+			path = platform/macOS;
 			sourceTree = "<group>";
 		};
 		34A96349231B010D00A9464F /* iOS */ = {
