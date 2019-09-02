@@ -18,7 +18,6 @@ static const int windowHeight = 768;
 static GLubyte* screenShotBuffer;
 
 static int frameW, frameH;
-static GLFWwindow* window = NULL;
 
 static CameraData MainCamera;
 static gbMat4 projectionMatrix;
@@ -28,43 +27,53 @@ static gbMat4 orthoMatrix;
 
 static Region** regions = NULL;
 
+#if !(DUNGEN_MOBILE)
+    static GLFWwindow* window = NULL;
+
+    void _glfwSetup() {
+        #if DEBUG
+            glfwInitHint(GLFW_COCOA_CHDIR_RESOURCES, GLFW_FALSE);
+        #else
+            glfwInitHint(GLFW_COCOA_CHDIR_RESOURCES, GLFW_TRUE);
+        #endif
+        
+        glfwInitHint(GLFW_COCOA_MENUBAR, GLFW_TRUE);
+        
+        if (!glfwInit()) {
+            exit(EXIT_FAILURE);
+        }
+        
+        //    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+        //    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+        //    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GLFW_TRUE);
+        //    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+        
+        glfwWindowHint(GLFW_SAMPLES, 4);
+        glfwWindowHint(GLFW_COCOA_RETINA_FRAMEBUFFER, GLFW_TRUE);
+        glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
+        
+        window = glfwCreateWindow(windowWidth, windowHeight, "DunGen", NULL, NULL);
+        if (!window) {
+            glfwTerminate();
+            exit(EXIT_FAILURE);
+        }
+        glfwMakeContextCurrent(window);
+        
+        glfwSwapInterval(1);
+        
+        glfwSetCursorPosCallback(window, MouseMoveCallback);
+        glfwSetMouseButtonCallback(window, MouseClickCallback);
+        glfwSetKeyCallback(window, KeyboardCallback);
+    }
+#endif // DUNGEN_MOBILE
+
 void InitializeRendering() {
-    #if DEBUG
-        glfwInitHint(GLFW_COCOA_CHDIR_RESOURCES, GLFW_FALSE);
-    #else
-        glfwInitHint(GLFW_COCOA_CHDIR_RESOURCES, GLFW_TRUE);
-    #endif
+    #if !(DUNGEN_MOBILE)
+        _glfwSetup();
+        glClearDepth(1.0f);
+        glPolygonMode(GL_FRONT, GL_FILL);
+    #endif // !(DUNGEN_MOBILE)
     
-    glfwInitHint(GLFW_COCOA_MENUBAR, GLFW_TRUE);
-
-    if (!glfwInit()) {
-        exit(EXIT_FAILURE);
-    }
-
-//    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-//    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-//    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GLFW_TRUE);
-//    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-    
-    glfwWindowHint(GLFW_SAMPLES, 4);
-    glfwWindowHint(GLFW_COCOA_RETINA_FRAMEBUFFER, GLFW_TRUE);
-    glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
-
-    window = glfwCreateWindow(windowWidth, windowHeight, "DunGen", NULL, NULL);
-    if (!window) {
-        glfwTerminate();
-        exit(EXIT_FAILURE);
-    }
-    glfwMakeContextCurrent(window);
-
-    glfwSwapInterval(1);
-
-    glfwSetCursorPosCallback(window, MouseMoveCallback);
-    glfwSetMouseButtonCallback(window, MouseClickCallback);
-	glfwSetKeyCallback(window, KeyboardCallback);
-
-    glClearDepth(1.0f);
-    glPolygonMode(GL_FRONT, GL_FILL);
     glShadeModel(GL_FLAT);
     glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
     glEnable(GL_CULL_FACE);
@@ -106,9 +115,9 @@ void InitializeRendering() {
     glMultMatrixf(perspectiveMatrix.e);
     handleGLErrors(__FILE__, __LINE__);
 
-    glfwGetFramebufferSize(window, &frameW, &frameH);
-    screenShotBuffer = malloc(sizeof(GLubyte) * frameW * frameH * 3);
-    stbi_flip_vertically_on_write(1);
+//    glfwGetFramebufferSize(window, &frameW, &frameH);
+//    screenShotBuffer = malloc(sizeof(GLubyte) * frameW * frameH * 3);
+//    stbi_flip_vertically_on_write(1);
 
     InitializeText();
 }
@@ -118,17 +127,15 @@ void FinalizeRendering() {
 
     FinalizeText();
 
-    glfwDestroyWindow(window);
-    glfwTerminate();
+    #if !(DUNGEN_MOBILE)
+        glfwDestroyWindow(window);
+        glfwTerminate();
+    #endif // !(DUNGEN_MOBILE)
 }
 
 void DumpScreenShot(const char* fileName) {
     glReadPixels(0, 0, frameW, frameH, GL_RGB, GL_UNSIGNED_BYTE, screenShotBuffer);
     stbi_write_png(fileName, frameW, frameH, 3, screenShotBuffer, frameW * 3);
-}
-
-GLFWwindow* GetWindowHandle(void) {
-    return window;
 }
 
 void AddRegionToRendering(Region* r) {
@@ -148,6 +155,20 @@ void RemoveRegionFromRendering(Region* r) {
 Region** GetRenderingRegions() {
     return regions;
 }
+
+#if !(DUNGEN_MOBILE)
+    gbVec2 GetCursorPosition(void) {
+        double x, y;
+        glfwGetCursorPos(window, &x, &y);
+        gbVec2 pos = {(float)x, (float)y};
+        return pos;
+    }
+#else
+    gbVec2 GetCursorPosition(void) {
+        gbVec2 pos = {-1.0f, -1.0f};
+        return pos;
+    }
+#endif // !(DUNGEN_MOBILE)
 
 gbVec2 WorldToScreen(gbVec2 worldCoordinates) {
     gbVec4 wc = {worldCoordinates.x, worldCoordinates.y, 0.0f, 1.0f};
@@ -224,7 +245,12 @@ int Render() {
         glMultMatrixf(orthoMatrix.e);
         for (int i = 0; i < arrlen(regions); i++) {
             if (regions[i]->label.scale >= 0.0f) {
-                glColor4fv(regions[i]->label.color.e);
+                glColor4f(
+                    regions[i]->label.color.r,
+                    regions[i]->label.color.g,
+                    regions[i]->label.color.b,
+                    regions[i]->label.color.a
+                );
                 DrawGameText(
                     regions[i]->label.text,
                     "fonts/04B_03__.TTF",
@@ -245,13 +271,16 @@ int Render() {
     glMatrixMode(GL_PROJECTION);
     glPopMatrix();
 
-    glfwSwapBuffers(window);
-    glfwPollEvents();
-
     handleGLErrors(__FILE__, __LINE__);
 
-    if (glfwWindowShouldClose(window)) {
-        return 1;
-    }
+    #if !(DUNGEN_MOBILE)
+        glfwSwapBuffers(window);
+        glfwPollEvents();
+
+        if (glfwWindowShouldClose(window)) {
+            return 1;
+        }
+    #endif // !(DUNGEN_MOBILE)
+    
     return 0;
 }

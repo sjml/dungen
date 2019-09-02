@@ -1,13 +1,19 @@
 #import "ViewController.h"
 
-@interface ViewController ()
+#include "dungen.h"
 
+#include "infrastructure/game.h"
+#include "infrastructure/rendering.h"
+
+@interface ViewController ()
 @end
 
 @implementation ViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    self->gameTime = 0.0;
 
     GLKView *view = (GLKView*)self.view;
     view.context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES1];
@@ -16,15 +22,20 @@
     view.drawableDepthFormat = GLKViewDrawableDepthFormat24;
 
     view.drawableMultisample = GLKViewDrawableMultisample4X;
+    
+    [EAGLContext setCurrentContext:view.context];
+    InitializeDunGen("_Root");
 }
 
 - (void)update {
-//    NSTimeInterval dt = self.timeSinceLastUpdate;
+    self->gameTime += self.timeSinceLastUpdate;
+    SetTime(self->gameTime);
+    
+    GameTick();
 }
 
 - (void)glkView:(GLKView *)view drawInRect:(CGRect)rect {
-    glClearColor(0.0f, 0.0f, 1.0f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    Render();
 }
 
 

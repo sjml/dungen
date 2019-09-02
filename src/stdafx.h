@@ -1,5 +1,7 @@
 #pragma once
 
+#include "dungen.h"
+
 #include <stdlib.h>
 #include <stdbool.h>
 #include <float.h>
@@ -8,14 +10,18 @@
 #include <lauxlib.h>
 #include <lualib.h>
 
-#ifdef __clang__
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdocumentation"
-#endif // __clang__
-#include <GLFW/glfw3.h>
-#ifdef __clang__
-#pragma clang diagnostic pop
-#endif // __clang__
+#if !(DUNGEN_MOBILE)
+    #ifdef __clang__
+        #pragma clang diagnostic push
+        #pragma clang diagnostic ignored "-Wdocumentation"
+    #endif // __clang__
+    #include <GLFW/glfw3.h>
+    #ifdef __clang__
+        #pragma clang diagnostic pop
+    #endif // __clang__
+#else
+    #include <OpenGLES/ES1/gl.h>
+#endif // !(DUNGEN_MOBILE)
 
 #include <gb_math.h>
 

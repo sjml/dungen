@@ -20,12 +20,11 @@ void FinalizeRendering(void);
 
 void DumpScreenShot(const char* fileName);
 
-GLFWwindow* GetWindowHandle(void);
-
 void AddRegionToRendering(Region* r);
 void RemoveRegionFromRendering(Region* r);
 Region** GetRenderingRegions(void);
 
+gbVec2 GetCursorPosition(void);
 gbVec2 WorldToScreen(gbVec2 worldCoordinates);
 gbVec2 ScreenToWorld(gbVec2 screenCoordinates);
 

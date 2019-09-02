@@ -25,7 +25,7 @@ void InitializeGame(const char* startupElement) {
     randomSeed = (unsigned int)time(NULL);
     srand(randomSeed);
 
-    previousTime = glfwGetTime();
+    previousTime = GetTime();
 
     InitializeHLVM();
 
@@ -45,7 +45,7 @@ void FinalizeGame(void) {
 double hlvmAccum = 0.0;
 int GameTick(void) {
     previousTime = currentTime;
-    currentTime = glfwGetTime();
+    currentTime = GetTime();
 //    printf("dt: %.4f\n", currentTime - previousTime);
     double dt = gb_clamp(currentTime - previousTime, 0.0, MAX_TIMESTEP);
 
@@ -83,32 +83,42 @@ int GameTick(void) {
     return shouldStopGame;
 }
 
-double GetTime() {
-    return glfwGetTime();
-}
+#if !(DUNGEN_MOBILE)
+    double GetTime() {
+        return glfwGetTime();
+    }
 
-void MouseMoveCallback(GLFWwindow* window, double xpos, double ypos) {
-    if (GetChoiceStatus() > 0) {
-        gbVec2 pos = {(float)xpos, (float)ypos};
-        ChoiceProcessMouseMovement(pos);
+    void MouseMoveCallback(GLFWwindow* window, double xpos, double ypos) {
+        if (GetChoiceStatus() > 0) {
+            gbVec2 pos = {(float)xpos, (float)ypos};
+            ChoiceProcessMouseMovement(pos);
+        }
+        if (GetTileChoiceStatus() > 0) {
+            gbVec2 pos = {(float)xpos, (float)ypos};
+            TileChoiceProcessMouseMovement(pos);
+        }
     }
-    if (GetTileChoiceStatus() > 0) {
-        gbVec2 pos = {(float)xpos, (float)ypos};
-        TileChoiceProcessMouseMovement(pos);
-    }
-}
 
-void MouseClickCallback(GLFWwindow* window, int button, int action, int mods) {
-    if (GetChoiceStatus() >= 0 && button == GLFW_MOUSE_BUTTON_LEFT) {
-        ChoiceProcessMouseClick(action == GLFW_PRESS);
+    void MouseClickCallback(GLFWwindow* window, int button, int action, int mods) {
+        if (GetChoiceStatus() >= 0 && button == GLFW_MOUSE_BUTTON_LEFT) {
+            ChoiceProcessMouseClick(action == GLFW_PRESS);
+        }
+        if (GetTileChoiceStatus() >= 0 && button == GLFW_MOUSE_BUTTON_LEFT) {
+            TileChoiceProcessMouseClick(action == GLFW_PRESS);
+        }
     }
-    if (GetTileChoiceStatus() >= 0 && button == GLFW_MOUSE_BUTTON_LEFT) {
-        TileChoiceProcessMouseClick(action == GLFW_PRESS);
-    }
-}
 
-void KeyboardCallback(GLFWwindow* window, int key, int scancode, int action, int mode) {
-	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
-		shouldStopGame = true;
-	}
-}
+    void KeyboardCallback(GLFWwindow* window, int key, int scancode, int action, int mode) {
+        if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
+            shouldStopGame = true;
+        }
+    }
+#else
+    double _gameTime;
+    void SetTime(double gameTime) {
+        _gameTime = gameTime;
+    }
+    double GetTime() {
+        return _gameTime;
+    }
+#endif // !(DUNGEN_MOBILE)

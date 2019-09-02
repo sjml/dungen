@@ -2,8 +2,9 @@
 
 #import <GLKit/GLKit.h>
 
-@interface ViewController : GLKViewController
-
+@interface ViewController : GLKViewController {
+    double gameTime;
+}
 
 @end
 

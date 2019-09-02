@@ -1,5 +1,7 @@
 ## TODO
-0. Styler rework
+0. Mobile
+    - reimplement drawing boxes in the choice and banner renderers
+1. Styler rework
     - can it handle a region that is both water and plague?
 1. Chamber/region/room model design
     - (see brainstorm notes)

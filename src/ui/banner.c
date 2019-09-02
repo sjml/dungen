@@ -101,24 +101,24 @@ bool UpdateBanners(float dt) {
 
 void RenderBanners() {
     for (long i=0; i < arrlen(banners); i++) {
-        glColor4fv(banners[i].bgColor.e);
-        float x1 = 0.0f;
-        float x2 = 1024.0f;
-        float y1 = 768.0f - (banners[i].ti.pos.y + (padding * 0.5f));
-        float y2 = 768.0f - (banners[i].ti.pos.y - (banners[i].extents.y + (padding * 0.5f)));
+        glColor4f(banners[i].bgColor.r, banners[i].bgColor.g, banners[i].bgColor.b, banners[i].bgColor.a);
+//        float x1 = 0.0f;
+//        float x2 = 1024.0f;
+//        float y1 = 768.0f - (banners[i].ti.pos.y + (padding * 0.5f));
+//        float y2 = 768.0f - (banners[i].ti.pos.y - (banners[i].extents.y + (padding * 0.5f)));
 
         glMatrixMode(GL_MODELVIEW);
         glPushMatrix();
         glLoadIdentity();
-        glBegin(GL_TRIANGLE_STRIP);
-            glVertex2f(x2, y1);
-            glVertex2f(x2, y2);
-            glVertex2f(x1, y1);
-            glVertex2f(x1, y2);
-        glEnd();
+//        glBegin(GL_TRIANGLE_STRIP);
+//            glVertex2f(x2, y1);
+//            glVertex2f(x2, y2);
+//            glVertex2f(x1, y1);
+//            glVertex2f(x1, y2);
+//        glEnd();
         glPopMatrix();
 
-        glColor4fv(banners[i].ti.color.e);
+        glColor4f(banners[i].ti.color.r, banners[i].ti.color.g, banners[i].ti.color.b, banners[i].ti.color.a);
         DrawGameText(banners[i].ti.text, "fonts/04B_03__.TTF", banners[i].ti.scale, (int)banners[i].ti.pos.x, (int)banners[i].ti.pos.y, 0.0f);
     }
 }

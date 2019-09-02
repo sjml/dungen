@@ -7,6 +7,10 @@ int GameTick(void);
 
 double GetTime(void);
 
-void MouseMoveCallback(GLFWwindow* window, double xpos, double ypos);
-void MouseClickCallback(GLFWwindow* window, int button, int action, int mods);
-void KeyboardCallback(GLFWwindow* window, int key, int scancode, int action, int mode);
+#if !(DUNGEN_MOBILE)
+    void MouseMoveCallback(GLFWwindow* window, double xpos, double ypos);
+    void MouseClickCallback(GLFWwindow* window, int button, int action, int mods);
+    void KeyboardCallback(GLFWwindow* window, int key, int scancode, int action, int mode);
+#else
+    void SetTime(double gameTime);
+#endif // !(DUNGEN_MOBILE)

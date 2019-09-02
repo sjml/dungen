@@ -84,6 +84,24 @@
 		349C53E81EC4D700008D42C6 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 345D93E21EC4C54C003B7C63 /* Cocoa.framework */; };
 		349C53E91EC4D707008D42C6 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 345D93E01EC4C543003B7C63 /* IOKit.framework */; };
 		349C53EA1EC4D70D008D42C6 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 345D93DE1EC4C540003B7C63 /* CoreVideo.framework */; };
+		34A4E232231C830C00330A61 /* hlvm.c in Sources */ = {isa = PBXBuildFile; fileRef = 3482A56122D63C4F00AAD098 /* hlvm.c */; };
+		34A4E234231C832400330A61 /* pathfind.c in Sources */ = {isa = PBXBuildFile; fileRef = 345E93B222EB2AE4006FD334 /* pathfind.c */; };
+		34A4E235231C832400330A61 /* scripting.c in Sources */ = {isa = PBXBuildFile; fileRef = 347A941122D1B85F002BF97F /* scripting.c */; };
+		34A4E236231C832400330A61 /* wrapping.c in Sources */ = {isa = PBXBuildFile; fileRef = 3482A55722D61BA900AAD098 /* wrapping.c */; settings = {COMPILER_FLAGS = "--no-warnings"; }; };
+		34A4E237231C832400330A61 /* attributes.c in Sources */ = {isa = PBXBuildFile; fileRef = 34CD649922D9DE3B00C33190 /* attributes.c */; };
+		34A4E238231C832400330A61 /* game.c in Sources */ = {isa = PBXBuildFile; fileRef = 347A941B22D1B9C5002BF97F /* game.c */; };
+		34A4E239231C832400330A61 /* images.c in Sources */ = {isa = PBXBuildFile; fileRef = 3466A4B522D4D71B00ED6CAA /* images.c */; };
+		34A4E23A231C832400330A61 /* outline.c in Sources */ = {isa = PBXBuildFile; fileRef = 346CC51222DB507900E24845 /* outline.c */; };
+		34A4E23B231C832400330A61 /* rendering.c in Sources */ = {isa = PBXBuildFile; fileRef = 347A941422D1B85F002BF97F /* rendering.c */; };
+		34A4E23C231C832400330A61 /* util.c in Sources */ = {isa = PBXBuildFile; fileRef = 347A941E22D1BE74002BF97F /* util.c */; };
+		34A4E23D231C832400330A61 /* world.c in Sources */ = {isa = PBXBuildFile; fileRef = 347A945422D1E949002BF97F /* world.c */; };
+		34A4E23E231C832400330A61 /* text.c in Sources */ = {isa = PBXBuildFile; fileRef = 340A323322DFB74600685193 /* text.c */; };
+		34A4E23F231C832400330A61 /* banner.c in Sources */ = {isa = PBXBuildFile; fileRef = 3421A23A2311792300459647 /* banner.c */; };
+		34A4E240231C832400330A61 /* choice.c in Sources */ = {isa = PBXBuildFile; fileRef = 3421A23E2311AFF100459647 /* choice.c */; };
+		34A4E241231C832400330A61 /* tile_choice.c in Sources */ = {isa = PBXBuildFile; fileRef = 34F3478223129A93008B19FB /* tile_choice.c */; };
+		34A4E243231C834500330A61 /* iOS.c in Sources */ = {isa = PBXBuildFile; fileRef = 34A4E242231C834500330A61 /* iOS.c */; };
+		34A4E247231C8D8400330A61 /* dungen.c in Sources */ = {isa = PBXBuildFile; fileRef = 34A4E246231C8D8400330A61 /* dungen.c */; };
+		34A4E248231C8D8400330A61 /* dungen.c in Sources */ = {isa = PBXBuildFile; fileRef = 34A4E246231C8D8400330A61 /* dungen.c */; };
 		34A96327231B004600A9464F /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 34A96326231B004600A9464F /* AppDelegate.m */; };
 		34A9632A231B004600A9464F /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 34A96329231B004600A9464F /* ViewController.m */; };
 		34A96335231B004800A9464F /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 34A96334231B004800A9464F /* main.m */; };
@@ -333,6 +351,9 @@
 		3499472B22DB30D700C5BA7E /* attributes.i */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c.preprocessed; path = attributes.i; sourceTree = "<group>"; };
 		349C53B21EC4D6B9008D42C6 /* DunGen.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DunGen.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		349C53C21EC4D6B9008D42C6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		34A4E242231C834500330A61 /* iOS.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = iOS.c; sourceTree = "<group>"; };
+		34A4E245231C8D8400330A61 /* dungen.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = dungen.h; sourceTree = "<group>"; };
+		34A4E246231C8D8400330A61 /* dungen.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = dungen.c; sourceTree = "<group>"; };
 		34A96323231B004600A9464F /* DunGen.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DunGen.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		34A96325231B004600A9464F /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		34A96326231B004600A9464F /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -556,8 +577,9 @@
 		342E3B0D231041A5008AD361 /* platform */ = {
 			isa = PBXGroup;
 			children = (
-				342E3B0E231041A6008AD361 /* macOS.c */,
 				342E3B10231041A6008AD361 /* platform.h */,
+				342E3B0E231041A6008AD361 /* macOS.c */,
+				34A4E242231C834500330A61 /* iOS.c */,
 			);
 			path = platform;
 			sourceTree = "<group>";
@@ -661,6 +683,8 @@
 			children = (
 				347A945222D1DDC9002BF97F /* stdafx.h */,
 				347A941522D1B85F002BF97F /* main.c */,
+				34A4E245231C8D8400330A61 /* dungen.h */,
+				34A4E246231C8D8400330A61 /* dungen.c */,
 				3482A55F22D63C2E00AAD098 /* hlvm */,
 				345E93B022EB2AC1006FD334 /* constraints */,
 				340B5D1022D221CB00E53DCA /* scripting */,
@@ -962,6 +986,7 @@
 				34A9631F231B004600A9464F /* Sources */,
 				34A96320231B004600A9464F /* Frameworks */,
 				34A96321231B004600A9464F /* Resources */,
+				3403E6D0231C95CB0030C3B3 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -1126,6 +1151,23 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		3403E6D0231C95CB0030C3B3 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "cp -R ${PROJECT_DIR}/Resources/* ${CONFIGURATION_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}\n";
+		};
 		340B5D0D22D2138700E53DCA /* Copy Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -1270,6 +1312,7 @@
 				3421A23F2311AFF100459647 /* choice.c in Sources */,
 				342E3B11231041A6008AD361 /* macOS.c in Sources */,
 				347A941722D1B85F002BF97F /* rendering.c in Sources */,
+				34A4E247231C8D8400330A61 /* dungen.c in Sources */,
 				34CD649A22D9DE3B00C33190 /* attributes.c in Sources */,
 				347A941C22D1B9C5002BF97F /* game.c in Sources */,
 				347A941622D1B85F002BF97F /* scripting.c in Sources */,
@@ -1289,6 +1332,23 @@
 				34A9632A231B004600A9464F /* ViewController.m in Sources */,
 				34A96335231B004800A9464F /* main.m in Sources */,
 				34A96327231B004600A9464F /* AppDelegate.m in Sources */,
+				34A4E232231C830C00330A61 /* hlvm.c in Sources */,
+				34A4E243231C834500330A61 /* iOS.c in Sources */,
+				34A4E234231C832400330A61 /* pathfind.c in Sources */,
+				34A4E235231C832400330A61 /* scripting.c in Sources */,
+				34A4E236231C832400330A61 /* wrapping.c in Sources */,
+				34A4E237231C832400330A61 /* attributes.c in Sources */,
+				34A4E238231C832400330A61 /* game.c in Sources */,
+				34A4E239231C832400330A61 /* images.c in Sources */,
+				34A4E23A231C832400330A61 /* outline.c in Sources */,
+				34A4E23B231C832400330A61 /* rendering.c in Sources */,
+				34A4E23C231C832400330A61 /* util.c in Sources */,
+				34A4E23D231C832400330A61 /* world.c in Sources */,
+				34A4E23E231C832400330A61 /* text.c in Sources */,
+				34A4E23F231C832400330A61 /* banner.c in Sources */,
+				34A4E240231C832400330A61 /* choice.c in Sources */,
+				34A4E241231C832400330A61 /* tile_choice.c in Sources */,
+				34A4E248231C8D8400330A61 /* dungen.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1747,12 +1807,20 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = CFJYV723M9;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
-				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
 					GLES_SILENCE_DEPRECATION,
+				);
+				HEADER_SEARCH_PATHS = (
+					"lib/lua-5.3.5/src",
+					"lib/sqlite-amalgamation-3290000",
+					"lib/sds-0bb446e",
+					"lib/libpqueue-f319ea0/src",
+					"lib/freetype-2.10.1/include",
+					"lib/single-file",
+					src,
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/platform/iOS/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
@@ -1778,12 +1846,20 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = CFJYV723M9;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
-				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
 					GLES_SILENCE_DEPRECATION,
+				);
+				HEADER_SEARCH_PATHS = (
+					"lib/lua-5.3.5/src",
+					"lib/sqlite-amalgamation-3290000",
+					"lib/sds-0bb446e",
+					"lib/libpqueue-f319ea0/src",
+					"lib/freetype-2.10.1/include",
+					"lib/single-file",
+					src,
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/platform/iOS/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.4;

@@ -151,24 +151,24 @@ void PresentChoiceSelection(const char* description) {
 void RenderChoices() {
     for (long i=0; i < arrlen(buttons); i++) {
         if (pressedChoice == i && hoveredChoice == i) {
-            glColor4fv(btnColorPress.e);
+            glColor4f(btnColorPress.r, btnColorPress.g, btnColorPress.b, btnColorPress.a);
         }
         else if (hoveredChoice == i) {
-            glColor4fv(btnColorHover.e);
+            glColor4f(btnColorHover.r, btnColorHover.g, btnColorHover.b, btnColorHover.a);
         }
         else {
-            glColor4fv(btnColorBase.e);
+            glColor4f(btnColorBase.r, btnColorBase.g, btnColorBase.b, btnColorBase.a);
         }
 
         glMatrixMode(GL_MODELVIEW);
         glPushMatrix();
         glLoadIdentity();
-        glBegin(GL_TRIANGLE_STRIP);
-            glVertex2f(buttons[i].bb.pos.x + buttons[i].bb.dim.x, buttons[i].bb.pos.y);
-            glVertex2f(buttons[i].bb.pos.x + buttons[i].bb.dim.x, buttons[i].bb.pos.y + buttons[i].bb.dim.y);
-            glVertex2f(buttons[i].bb.pos.x, buttons[i].bb.pos.y);
-            glVertex2f(buttons[i].bb.pos.x, buttons[i].bb.pos.y + buttons[i].bb.dim.y);
-        glEnd();
+//        glBegin(GL_TRIANGLE_STRIP);
+//            glVertex2f(buttons[i].bb.pos.x + buttons[i].bb.dim.x, buttons[i].bb.pos.y);
+//            glVertex2f(buttons[i].bb.pos.x + buttons[i].bb.dim.x, buttons[i].bb.pos.y + buttons[i].bb.dim.y);
+//            glVertex2f(buttons[i].bb.pos.x, buttons[i].bb.pos.y);
+//            glVertex2f(buttons[i].bb.pos.x, buttons[i].bb.pos.y + buttons[i].bb.dim.y);
+//        glEnd();
         glPopMatrix();
 
         glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
@@ -212,9 +212,6 @@ void ChoiceProcessMouseClick(bool down) {
         }
         pressedChoice = -1;
 
-        double x, y;
-        glfwGetCursorPos(GetWindowHandle(), &x, &y);
-        gbVec2 pos = {(float)x, (float)y};
-        ChoiceProcessMouseMovement(pos);
+        ChoiceProcessMouseMovement(GetCursorPosition());
     }
 }

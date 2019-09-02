@@ -390,10 +390,10 @@ void RenderTiles(void) {
             0.0f
         );
         glScalef(tileDimensions.y, tileDimensions.y, 1.0f);
-        glColor3fv(WorldArray[i].color.e);
+        glColor4f(WorldArray[i].color.r, WorldArray[i].color.g, WorldArray[i].color.b, 1.0f);
         glDrawArrays(GL_TRIANGLE_FAN, 0, 8);
         if (WorldArray[i].overlayColor.a > 0.0f) {
-            glColor4fv(WorldArray[i].overlayColor.e);
+            glColor4f(WorldArray[i].overlayColor.r, WorldArray[i].overlayColor.g, WorldArray[i].overlayColor.b, WorldArray[i].overlayColor.a);
             glDrawArrays(GL_TRIANGLE_FAN, 0, 8);
         }
         glPopMatrix();

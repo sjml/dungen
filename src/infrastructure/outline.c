@@ -282,7 +282,7 @@ void RenderOutline(Outline* o) {
         return;
     }
 
-    glColor4fv(o->color.e);
+    glColor4f(o->color.r, o->color.g, o->color.b, o->color.a);
 
     for (int i = 0; i < arrlen(o->pointLists); i++) {
         if (arrlen(o->pointLists[0]) == 0) {
