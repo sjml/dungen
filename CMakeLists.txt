@@ -28,44 +28,44 @@ add_subdirectory(lib/freetype-2.10.1 freetype)
 include_directories(lib/freetype-2.10.1/include)
 
 add_library(lua
-    lib/lua-5.3.5/src/lapi.c
-    lib/lua-5.3.5/src/lauxlib.c
-    lib/lua-5.3.5/src/lbaselib.c
-    lib/lua-5.3.5/src/lbitlib.c
-    lib/lua-5.3.5/src/lcode.c
-    lib/lua-5.3.5/src/lcorolib.c
-    lib/lua-5.3.5/src/lctype.c
-    lib/lua-5.3.5/src/ldblib.c
-    lib/lua-5.3.5/src/ldebug.c
-    lib/lua-5.3.5/src/ldo.c
-    lib/lua-5.3.5/src/ldump.c
-    lib/lua-5.3.5/src/lfunc.c
-    lib/lua-5.3.5/src/lgc.c
-    lib/lua-5.3.5/src/linit.c
-    lib/lua-5.3.5/src/liolib.c
-    lib/lua-5.3.5/src/llex.c
-    lib/lua-5.3.5/src/lmathlib.c
-    lib/lua-5.3.5/src/lmem.c
-    lib/lua-5.3.5/src/loadlib.c
-    lib/lua-5.3.5/src/lobject.c
-    lib/lua-5.3.5/src/lopcodes.c
-    lib/lua-5.3.5/src/loslib.c
-    lib/lua-5.3.5/src/lparser.c
-    lib/lua-5.3.5/src/lstate.c
-    lib/lua-5.3.5/src/lstring.c
-    lib/lua-5.3.5/src/lstrlib.c
-    lib/lua-5.3.5/src/ltable.c
-    lib/lua-5.3.5/src/ltablib.c
-    lib/lua-5.3.5/src/ltm.c
-    lib/lua-5.3.5/src/luac.c
-    lib/lua-5.3.5/src/lundump.c
-    lib/lua-5.3.5/src/lutf8lib.c
-    lib/lua-5.3.5/src/lvm.c
-    lib/lua-5.3.5/src/lzio.c
+    lib/lua-5.3.5+system_patch/src/lapi.c
+    lib/lua-5.3.5+system_patch/src/lauxlib.c
+    lib/lua-5.3.5+system_patch/src/lbaselib.c
+    lib/lua-5.3.5+system_patch/src/lbitlib.c
+    lib/lua-5.3.5+system_patch/src/lcode.c
+    lib/lua-5.3.5+system_patch/src/lcorolib.c
+    lib/lua-5.3.5+system_patch/src/lctype.c
+    lib/lua-5.3.5+system_patch/src/ldblib.c
+    lib/lua-5.3.5+system_patch/src/ldebug.c
+    lib/lua-5.3.5+system_patch/src/ldo.c
+    lib/lua-5.3.5+system_patch/src/ldump.c
+    lib/lua-5.3.5+system_patch/src/lfunc.c
+    lib/lua-5.3.5+system_patch/src/lgc.c
+    lib/lua-5.3.5+system_patch/src/linit.c
+    lib/lua-5.3.5+system_patch/src/liolib.c
+    lib/lua-5.3.5+system_patch/src/llex.c
+    lib/lua-5.3.5+system_patch/src/lmathlib.c
+    lib/lua-5.3.5+system_patch/src/lmem.c
+    lib/lua-5.3.5+system_patch/src/loadlib.c
+    lib/lua-5.3.5+system_patch/src/lobject.c
+    lib/lua-5.3.5+system_patch/src/lopcodes.c
+    lib/lua-5.3.5+system_patch/src/loslib.c
+    lib/lua-5.3.5+system_patch/src/lparser.c
+    lib/lua-5.3.5+system_patch/src/lstate.c
+    lib/lua-5.3.5+system_patch/src/lstring.c
+    lib/lua-5.3.5+system_patch/src/lstrlib.c
+    lib/lua-5.3.5+system_patch/src/ltable.c
+    lib/lua-5.3.5+system_patch/src/ltablib.c
+    lib/lua-5.3.5+system_patch/src/ltm.c
+    lib/lua-5.3.5+system_patch/src/luac.c
+    lib/lua-5.3.5+system_patch/src/lundump.c
+    lib/lua-5.3.5+system_patch/src/lutf8lib.c
+    lib/lua-5.3.5+system_patch/src/lvm.c
+    lib/lua-5.3.5+system_patch/src/lzio.c
 
     lib/luafilesystem-1.7.0-2/src/lfs.c
 )
-include_directories(lib/lua-5.3.5/src)
+include_directories(lib/lua-5.3.5+system_patch/src)
 include_directories(lib/luafilesystem-1.7.0-2/src)
 
 add_library(sds lib/sds-0bb446e/sds.c)
@@ -77,12 +77,16 @@ include_directories(lib/sqlite-amalgamation-3290000)
 add_library(pqueue lib/libpqueue-f319ea0/src/pqueue.c)
 include_directories(lib/libpqueue-f319ea0/src)
 
+add_library(pcg lib/pcg-c-basic-0.9/pcg_basic.c)
+include_directories(lib/pcg-c-basic-0.9)
+
 include_directories(lib/single-file)
 
 include_directories(src)
 add_compile_definitions(GL_SILENCE_DEPRECATION)
 add_executable (DunGen MACOSX_BUNDLE
     src/main.c
+    src/dungen.c
     src/constraints/pathfind.c
     src/hlvm/hlvm.c
     src/infrastructure/attributes.c
@@ -117,6 +121,7 @@ target_link_libraries(DunGen
     sqlite
     sds
     pqueue
+    pcg
 )
 
 find_program(SWIG_EXE "swig")

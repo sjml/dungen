@@ -2679,9 +2679,10 @@ SWIG_Lua_dostring(lua_State *L, const char *str) {
 #define SWIGTYPE_p_p_sRegion swig_types[8]
 #define SWIGTYPE_p_sRegion swig_types[9]
 #define SWIGTYPE_p_sTileSet swig_types[10]
-#define SWIGTYPE_p_void swig_types[11]
-static swig_type_info *swig_types[13];
-static swig_module_info swig_module = {swig_types, 12, 0, 0, 0, 0};
+#define SWIGTYPE_p_uint64_t swig_types[11]
+#define SWIGTYPE_p_void swig_types[12]
+static swig_type_info *swig_types[14];
+static swig_module_info swig_module = {swig_types, 13, 0, 0, 0, 0};
 #define SWIG_TypeQuery(name) SWIG_TypeQueryModule(&swig_module, &swig_module, name)
 #define SWIG_MangledTypeQuery(name) SWIG_MangledTypeQueryModule(&swig_module, &swig_module, name)
 
@@ -4767,52 +4768,6 @@ static int _wrap_GetTextAscenderHeight(lua_State* L) {
   arg1 = (char *)lua_tostring(L, 1);
   arg2 = (float)lua_tonumber(L, 2);
   result = (float)GetTextAscenderHeight((char const *)arg1,arg2);
-  lua_pushnumber(L, (lua_Number) result); SWIG_arg++;
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_RandomRangeFloat(lua_State* L) {
-  int SWIG_arg = 0;
-  float arg1 ;
-  float arg2 ;
-  float result;
-  
-  SWIG_check_num_args("RandomRangeFloat",2,2)
-  if(!lua_isnumber(L,1)) SWIG_fail_arg("RandomRangeFloat",1,"float");
-  if(!lua_isnumber(L,2)) SWIG_fail_arg("RandomRangeFloat",2,"float");
-  arg1 = (float)lua_tonumber(L, 1);
-  arg2 = (float)lua_tonumber(L, 2);
-  result = (float)RandomRangeFloat(arg1,arg2);
-  lua_pushnumber(L, (lua_Number) result); SWIG_arg++;
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_RandomRangeInt(lua_State* L) {
-  int SWIG_arg = 0;
-  int arg1 ;
-  int arg2 ;
-  int result;
-  
-  SWIG_check_num_args("RandomRangeInt",2,2)
-  if(!lua_isnumber(L,1)) SWIG_fail_arg("RandomRangeInt",1,"int");
-  if(!lua_isnumber(L,2)) SWIG_fail_arg("RandomRangeInt",2,"int");
-  arg1 = (int)lua_tonumber(L, 1);
-  arg2 = (int)lua_tonumber(L, 2);
-  result = (int)RandomRangeInt(arg1,arg2);
   lua_pushnumber(L, (lua_Number) result); SWIG_arg++;
   return SWIG_arg;
   
@@ -8543,6 +8498,122 @@ fail:
 }
 
 
+static int _wrap_SeedRandomString(lua_State* L) {
+  int SWIG_arg = 0;
+  char *arg1 = (char *) 0 ;
+  
+  SWIG_check_num_args("SeedRandomString",1,1)
+  if(!SWIG_lua_isnilstring(L,1)) SWIG_fail_arg("SeedRandomString",1,"char const *");
+  arg1 = (char *)lua_tostring(L, 1);
+  SeedRandomString((char const *)arg1);
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_SeedRandom(lua_State* L) {
+  int SWIG_arg = 0;
+  uint64_t arg1 ;
+  uint64_t arg2 ;
+  uint64_t *argp1 ;
+  uint64_t *argp2 ;
+  
+  SWIG_check_num_args("SeedRandom",2,2)
+  if(!lua_isuserdata(L,1)) SWIG_fail_arg("SeedRandom",1,"uint64_t");
+  if(!lua_isuserdata(L,2)) SWIG_fail_arg("SeedRandom",2,"uint64_t");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&argp1,SWIGTYPE_p_uint64_t,0))){
+    SWIG_fail_ptr("SeedRandom",1,SWIGTYPE_p_uint64_t);
+  }
+  arg1 = *argp1;
+  
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,2,(void**)&argp2,SWIGTYPE_p_uint64_t,0))){
+    SWIG_fail_ptr("SeedRandom",2,SWIGTYPE_p_uint64_t);
+  }
+  arg2 = *argp2;
+  
+  SeedRandom(arg1,arg2);
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_GetRandomSeed(lua_State* L) {
+  int SWIG_arg = 0;
+  char *result = 0 ;
+  
+  SWIG_check_num_args("GetRandomSeed",0,0)
+  result = (char *)GetRandomSeed();
+  lua_pushstring(L,(const char *)result); SWIG_arg++;
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_RandomRangeFloat(lua_State* L) {
+  int SWIG_arg = 0;
+  float arg1 ;
+  float arg2 ;
+  float result;
+  
+  SWIG_check_num_args("RandomRangeFloat",2,2)
+  if(!lua_isnumber(L,1)) SWIG_fail_arg("RandomRangeFloat",1,"float");
+  if(!lua_isnumber(L,2)) SWIG_fail_arg("RandomRangeFloat",2,"float");
+  arg1 = (float)lua_tonumber(L, 1);
+  arg2 = (float)lua_tonumber(L, 2);
+  result = (float)RandomRangeFloat(arg1,arg2);
+  lua_pushnumber(L, (lua_Number) result); SWIG_arg++;
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_RandomRangeInt(lua_State* L) {
+  int SWIG_arg = 0;
+  int arg1 ;
+  int arg2 ;
+  int result;
+  
+  SWIG_check_num_args("RandomRangeInt",2,2)
+  if(!lua_isnumber(L,1)) SWIG_fail_arg("RandomRangeInt",1,"int");
+  if(!lua_isnumber(L,2)) SWIG_fail_arg("RandomRangeInt",2,"int");
+  arg1 = (int)lua_tonumber(L, 1);
+  arg2 = (int)lua_tonumber(L, 2);
+  result = (int)RandomRangeInt(arg1,arg2);
+  lua_pushnumber(L, (lua_Number) result); SWIG_arg++;
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
 static int _wrap_FindSimplePath(lua_State* L) {
   int SWIG_arg = 0;
   TileData *arg1 = (TileData *) 0 ;
@@ -8823,8 +8894,6 @@ static swig_lua_method swig_SwigModule_methods[]= {
     { "WorldToScreen", _wrap_WorldToScreen},
     { "MeasureTextExtents", _wrap_MeasureTextExtents},
     { "GetTextAscenderHeight", _wrap_GetTextAscenderHeight},
-    { "RandomRangeFloat", _wrap_RandomRangeFloat},
-    { "RandomRangeInt", _wrap_RandomRangeInt},
     { "GetIntRegister", _wrap_GetIntRegister},
     { "GetFloatRegister", _wrap_GetFloatRegister},
     { "GetStringRegister", _wrap_GetStringRegister},
@@ -8913,6 +8982,11 @@ static swig_lua_method swig_SwigModule_methods[]= {
     { "GetAgentsByAttribute", _wrap_GetAgentsByAttribute},
     { "CheckAgentAttribute", _wrap_CheckAgentAttribute},
     { "GetTime", _wrap_GetTime},
+    { "SeedRandomString", _wrap_SeedRandomString},
+    { "SeedRandom", _wrap_SeedRandom},
+    { "GetRandomSeed", _wrap_GetRandomSeed},
+    { "RandomRangeFloat", _wrap_RandomRangeFloat},
+    { "RandomRangeInt", _wrap_RandomRangeInt},
     { "FindSimplePath", _wrap_FindSimplePath},
     { "AddBanner", _wrap_AddBanner},
     { "PositionBanner", _wrap_PositionBanner},
@@ -8963,6 +9037,7 @@ static swig_type_info _swigt__p_gbVec4 = {"_p_gbVec4", "union gbVec4 *|gbVec4 *"
 static swig_type_info _swigt__p_p_sRegion = {"_p_p_sRegion", "struct sRegion **|Region **", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_sRegion = {"_p_sRegion", "struct sRegion *|Region *|sRegion *", 0, 0, (void*)&_wrap_class_Region, 0};
 static swig_type_info _swigt__p_sTileSet = {"_p_sTileSet", "struct sTileSet *|TileSet *|sTileSet *", 0, 0, (void*)&_wrap_class_TileSet, 0};
+static swig_type_info _swigt__p_uint64_t = {"_p_uint64_t", "uint64_t *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_void = {"_p_void", "void *", 0, 0, (void*)0, 0};
 
 static swig_type_info *swig_type_initial[] = {
@@ -8977,6 +9052,7 @@ static swig_type_info *swig_type_initial[] = {
   &_swigt__p_p_sRegion,
   &_swigt__p_sRegion,
   &_swigt__p_sTileSet,
+  &_swigt__p_uint64_t,
   &_swigt__p_void,
 };
 
@@ -8991,6 +9067,7 @@ static swig_cast_info _swigc__p_gbVec4[] = {  {&_swigt__p_gbVec4, 0, 0, 0},{0, 0
 static swig_cast_info _swigc__p_p_sRegion[] = {  {&_swigt__p_p_sRegion, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_sRegion[] = {  {&_swigt__p_sRegion, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_sTileSet[] = {  {&_swigt__p_sTileSet, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_uint64_t[] = {  {&_swigt__p_uint64_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_void[] = {  {&_swigt__p_void, 0, 0, 0},{0, 0, 0, 0}};
 
 static swig_cast_info *swig_cast_initial[] = {
@@ -9005,6 +9082,7 @@ static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_p_sRegion,
   _swigc__p_sRegion,
   _swigc__p_sTileSet,
+  _swigc__p_uint64_t,
   _swigc__p_void,
 };
 

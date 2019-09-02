@@ -2,12 +2,13 @@
 #include "banner.h"
 
 #include "../infrastructure/text.h"
-
+#include "../infrastructure/rendering.h"
 
 typedef struct {
     TextInfo ti;
     gbVec2 extents;
     gbVec4 bgColor;
+    float verts[8];
     float manualY;
     float duration;
 } BannerInfo;
@@ -21,17 +22,34 @@ void _repositionBanners() {
         height += banners[i].extents.y + padding;
     }
 
-    float y = (768.0f * 0.5f) + (height * -0.5f);
-    float x = 1024.0f * 0.5f;
+    Vec2i dims = GetOrthoDimensions();
+
+    float y = (dims.y * 0.5f) + (height * -0.5f);
+    float x = dims.x * 0.5f;
     for (long i = 0; i < arrlen(banners); i++) {
         if (banners[i].manualY >= 0.0f) {
             banners[i].ti.pos.x = x - (banners[i].extents.x * 0.5f);
             banners[i].ti.pos.y = banners[i].manualY;
-            continue;
         }
-        banners[i].ti.pos.x = x - (banners[i].extents.x * 0.5f);
-        banners[i].ti.pos.y = y + (banners[i].extents.y);
-        y += banners[i].extents.y + padding;
+        else {
+            banners[i].ti.pos.x = x - (banners[i].extents.x * 0.5f);
+            banners[i].ti.pos.y = y + (banners[i].extents.y);
+            y += banners[i].extents.y + padding;
+        }
+
+        float x0, y0, x1, y1;
+        x0 = 0.0f;
+        x1 = dims.x;
+        y0 = banners[i].ti.pos.y + (padding * 0.5f);
+        y1 = banners[i].ti.pos.y - (banners[i].extents.y + (padding * 0.5f));
+        banners[i].verts[0] = x0;
+        banners[i].verts[1] = y0;
+        banners[i].verts[2] = x1;
+        banners[i].verts[3] = y0;
+        banners[i].verts[4] = x0;
+        banners[i].verts[5] = y1;
+        banners[i].verts[6] = x1;
+        banners[i].verts[7] = y1;
     }
 }
 
@@ -60,7 +78,7 @@ void* AddBanner(const char* text, float scale, gbVec4 textColor, gbVec4 bgColor,
 
     arrpush(banners, bi);
     _repositionBanners();
-    
+
     return (void*)&banners[arrlen(banners) - 1];
 }
 
@@ -102,20 +120,12 @@ bool UpdateBanners(float dt) {
 void RenderBanners() {
     for (long i=0; i < arrlen(banners); i++) {
         glColor4f(banners[i].bgColor.r, banners[i].bgColor.g, banners[i].bgColor.b, banners[i].bgColor.a);
-//        float x1 = 0.0f;
-//        float x2 = 1024.0f;
-//        float y1 = 768.0f - (banners[i].ti.pos.y + (padding * 0.5f));
-//        float y2 = 768.0f - (banners[i].ti.pos.y - (banners[i].extents.y + (padding * 0.5f)));
 
         glMatrixMode(GL_MODELVIEW);
         glPushMatrix();
         glLoadIdentity();
-//        glBegin(GL_TRIANGLE_STRIP);
-//            glVertex2f(x2, y1);
-//            glVertex2f(x2, y2);
-//            glVertex2f(x1, y1);
-//            glVertex2f(x1, y2);
-//        glEnd();
+        glVertexPointer(2, GL_FLOAT, 0, banners[i].verts);
+        glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
         glPopMatrix();
 
         glColor4f(banners[i].ti.color.r, banners[i].ti.color.g, banners[i].ti.color.b, banners[i].ti.color.a);

@@ -13,6 +13,7 @@ static char** choices = NULL;
 typedef struct {
     gbRect2 bb;
     gbRect2 textBB;
+    float verts[8];
 } Button;
 static Button* buttons = NULL;
 
@@ -35,13 +36,6 @@ void AddChoice(const char* description) {
         return;
     }
 
-    // don't add duplicate choices
-    // if (arrlen(choices) > 0) {
-    //     char* last = choices[arrlen(choices)-1];
-    //     if (strcmp(last, description) == 0) {
-    //         return;
-    //     }
-    // }
     char* c = malloc(sizeof(char) * strlen(description) + 1);
     strcpy(c, description);
     arrpush(choices, c);
@@ -72,10 +66,12 @@ void PresentChoiceSelection(const char* description) {
 
     choiceStatus = 1;
 
+    Vec2i dims = GetOrthoDimensions();
+
     float fontSize = 72.0f;
     float margin = 15.0f;
-    float btnW = 1024.0f * 0.48f;
-    float btnH =  768.0f * 0.15f;
+    float btnW = dims.x * 0.48f;
+    float btnH = dims.y * 0.15f;
 
     int numRows = 0, numCols = 0;
     if (numChoices <= 4) {
@@ -106,9 +102,8 @@ void PresentChoiceSelection(const char* description) {
     float totalW = (btnW * numCols) + ((numCols-1) * margin);
 
     gbVec2 start;
-    start.x = (1024.0f * 0.5f) - (totalW * 0.5f) + (btnW * 0.5f);
-    start.y = ( 768.0f * 0.5f) - (totalH * 0.5f) + (btnH * 0.5f);
-    start.y = 768.0f - start.y;
+    start.x = (dims.x * 0.5f) - (totalW * 0.5f) + (btnW * 0.5f);
+    start.y = (dims.y * 0.5f) - (totalH * 0.5f) + (btnH * 0.5f);
     Vec2i current = {0, 0};
 
     bannerHandle = NULL;
@@ -118,14 +113,14 @@ void PresentChoiceSelection(const char* description) {
             gbVec4 bgColor = {0.8f, 0.8f, 0.8f, 0.8f};
             bannerHandle = AddBanner(description, 72.0f, textColor, bgColor, -1.0f);
             PositionBanner(bannerHandle, 100.0f);
-            start.y -= 50.0f;
+            start.y += 50.0f;
         }
     }
 
     for (long i=0; i < arrlen(choices); i++) {
         gbVec2 center;
         center.x = start.x + (btnW * current.x) + (current.x * margin);
-        center.y = start.y - (btnH * current.y) - (current.y * margin);
+        center.y = start.y + (btnH * current.y) + (current.y * margin);
 
         Button b;
         b.bb.pos.x = center.x - (btnW * 0.5f);
@@ -134,10 +129,26 @@ void PresentChoiceSelection(const char* description) {
         b.bb.dim.y = btnH;
 
         gbVec2 extents = MeasureTextExtents(choices[i], "fonts/04B_03__.TTF", fontSize);
-        b.textBB.pos.x =           center.x - (extents.x * 0.5f);
-        b.textBB.pos.y = 768.0f - (center.y - (extents.y * 0.5f));
+        b.textBB.pos.x = center.x - (extents.x * 0.5f);
+        b.textBB.pos.y = center.y + (extents.y * 0.5f);
         b.textBB.dim.x = extents.x;
         b.textBB.dim.y = extents.y;
+
+        float x0, y0, x1, y1;
+        x0 = b.bb.pos.x;
+        y1 = b.bb.pos.y;
+        x1 = b.bb.pos.x + b.bb.dim.x;
+        y0 = b.bb.pos.y + b.bb.dim.y;
+
+        b.verts[0] = x0;
+        b.verts[1] = y0;
+        b.verts[2] = x1;
+        b.verts[3] = y0;
+        b.verts[4] = x0;
+        b.verts[5] = y1;
+        b.verts[6] = x1;
+        b.verts[7] = y1;
+
         arrpush(buttons, b);
 
         current.y += 1;
@@ -146,6 +157,8 @@ void PresentChoiceSelection(const char* description) {
             current.x += 1;
         }
     }
+    
+    ChoiceProcessMouseMovement(GetCursorPosition());
 }
 
 void RenderChoices() {
@@ -163,12 +176,8 @@ void RenderChoices() {
         glMatrixMode(GL_MODELVIEW);
         glPushMatrix();
         glLoadIdentity();
-//        glBegin(GL_TRIANGLE_STRIP);
-//            glVertex2f(buttons[i].bb.pos.x + buttons[i].bb.dim.x, buttons[i].bb.pos.y);
-//            glVertex2f(buttons[i].bb.pos.x + buttons[i].bb.dim.x, buttons[i].bb.pos.y + buttons[i].bb.dim.y);
-//            glVertex2f(buttons[i].bb.pos.x, buttons[i].bb.pos.y);
-//            glVertex2f(buttons[i].bb.pos.x, buttons[i].bb.pos.y + buttons[i].bb.dim.y);
-//        glEnd();
+        glVertexPointer(2, GL_FLOAT, 0, buttons[i].verts);
+        glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
         glPopMatrix();
 
         glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
@@ -184,7 +193,6 @@ void RenderChoices() {
 }
 
 void ChoiceProcessMouseMovement(gbVec2 position) {
-    position.y = 768.0f - position.y;
     for (long i=0; i < arrlen(buttons); i++) {
         if (gb_rect2_contains_vec2(buttons[i].bb, position)) {
             hoveredChoice = (int)i;

@@ -2,9 +2,11 @@
 #include "game.h"
 
 #include <time.h>
+#include <pcg_basic.h>
 
 #include "util.h"
 #include "world.h"
+#include "rendering.h"
 #include "../scripting/scripting.h"
 #include "../hlvm/hlvm.h"
 #include "../ui/banner.h"
@@ -17,13 +19,66 @@
 
 static double previousTime, currentTime;
 
-static unsigned int randomSeed;
+static pcg32_random_t randomState;
+sds randomSeedString = NULL;
 
 static bool shouldStopGame = false;
 
+void SeedRandomString(const char* seedString) {
+    int count;
+    sds* toks = sdssplitlen(seedString, strlen(seedString), "///", 3, &count);
+    if (count != 2) {
+        sdsfreesplitres(toks, count);
+        fprintf(stderr, "ERROR: Invalid random seed. Falling back to standard seeding procedure.\n");
+        SeedRandom(0, 0);
+        return;
+    }
+    uint64_t seed = strtoull(toks[0], NULL, 10);
+    uint64_t seq  = strtoull(toks[1], NULL, 10);
+    SeedRandom(seed, seq);
+    sdsfreesplitres(toks, count);
+}
+
+void SeedRandom(uint64_t seed, uint64_t seq) {
+    // This is not the most random thing we could do, but
+    //   we don't need crypto-level randomness here.
+    if (seed == 0 && seq == 0) {
+        seed = time(NULL) ^ (intptr_t)&printf;
+        seq = (intptr_t)&previousTime;
+    }
+    if (randomSeedString != NULL) {
+        sdsfree(randomSeedString);
+    }
+    randomSeedString = sdsempty();
+    randomSeedString = sdscatprintf(randomSeedString, "%llu///%llu", seed, seq);
+    printf("Random Seed: %s\n\n", randomSeedString);
+    pcg32_srandom_r(&randomState, seed, seq);
+}
+
+const char* GetRandomSeed() {
+    return randomSeedString;
+}
+
+int RandomInt(int max) {
+    return (int)pcg32_boundedrand_r(&randomState, max);
+}
+
+// modified from gb_math
+float RandomRangeFloat(float min, float max) {
+    int int_result = RandomRangeInt(0, 2147483646);
+    float result = int_result/(float)2147483646;
+    result *= max - min;
+    result += min;
+    return result;
+}
+
+int RandomRangeInt(int min, int max) {
+    int result = RandomInt(max - min) + min;
+    return result;
+}
+
 void InitializeGame(const char* startupElement) {
-    randomSeed = (unsigned int)time(NULL);
-    srand(randomSeed);
+    SeedRandom(0, 0);
 
     previousTime = GetTime();
 
@@ -40,6 +95,7 @@ void InitializeGame(const char* startupElement) {
 
 void FinalizeGame(void) {
     FinalizeWorld();
+    sdsfree(randomSeedString);
 }
 
 double hlvmAccum = 0.0;
@@ -79,7 +135,7 @@ int GameTick(void) {
             SetIntRegister("WaitForUI", 0);
         }
     }
-    
+
     return shouldStopGame;
 }
 
@@ -89,12 +145,12 @@ int GameTick(void) {
     }
 
     void MouseMoveCallback(GLFWwindow* window, double xpos, double ypos) {
+        gbVec2 pos = {(float)xpos, (float)ypos};
+        gbVec2 orthoPos = ScreenToOrtho(pos);
         if (GetChoiceStatus() > 0) {
-            gbVec2 pos = {(float)xpos, (float)ypos};
-            ChoiceProcessMouseMovement(pos);
+            ChoiceProcessMouseMovement(orthoPos);
         }
         if (GetTileChoiceStatus() > 0) {
-            gbVec2 pos = {(float)xpos, (float)ypos};
             TileChoiceProcessMouseMovement(pos);
         }
     }
@@ -120,5 +176,29 @@ int GameTick(void) {
     }
     double GetTime() {
         return _gameTime;
+    }
+
+    void TouchCallback(double xpos, double ypos, int isDown) {
+        gbVec2 pos = {(float)xpos, (float)ypos};
+        gbVec2 orthoPos = ScreenToOrtho(pos);
+        if (GetChoiceStatus() >= 0) {
+            ChoiceProcessMouseMovement(orthoPos);
+            ChoiceProcessMouseClick(isDown);
+        }
+        if (GetTileChoiceStatus() >= 0) {
+            TileChoiceProcessMouseMovement(pos);
+            TileChoiceProcessMouseClick(isDown);
+        }
+    }
+
+    void TouchMoveCallback(double xpos, double ypos) {
+        gbVec2 pos = {(float)xpos, (float)ypos};
+        pos = ScreenToOrtho(pos);
+        if (GetChoiceStatus() > 0) {
+            ChoiceProcessMouseMovement(pos);
+        }
+        if (GetTileChoiceStatus() > 0) {
+            TileChoiceProcessMouseMovement(pos);
+        }
     }
 #endif // !(DUNGEN_MOBILE)

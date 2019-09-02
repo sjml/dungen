@@ -77,7 +77,13 @@ water = {
     tags = "ground, water"
   },
   tileFill = colors.water,
-  labelText = "Water",
+}
+
+sickWater = {
+  reqs = {
+    tags = "ground, water, plague"
+  },
+  tileFill = colors.sickWater,
 }
 
 magma = {

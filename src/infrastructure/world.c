@@ -4,7 +4,7 @@
 #include "attributes.h"
 #include "outline.h"
 #include "rendering.h"
-#include "util.h"
+#include "game.h"
 
 static const float hexVertices[] = {
     0.0f,               0.0f,
@@ -98,9 +98,12 @@ void InitializeWorld(int width, int height, float scale) {
             td->memberRegions = NULL;
             td->hexPos.x = i;
             td->hexPos.y = j;
-            td->color.r = RandomRangeFloat(0.0f, 1.0f); // 0.0f;
-            td->color.g = RandomRangeFloat(0.0f, 1.0f); // 0.0f;
-            td->color.b = RandomRangeFloat(0.0f, 1.0f); // 0.0f;
+//            td->color.r = RandomRangeFloat(0.0f, 1.0f);
+//            td->color.g = RandomRangeFloat(0.0f, 1.0f);
+//            td->color.b = RandomRangeFloat(0.0f, 1.0f);
+            td->color.r = 0.0f;
+            td->color.g = 1.0f;
+            td->color.b = 1.0f;
             td->overlayColor.r = 0.0f;
             td->overlayColor.g = 0.0f;
             td->overlayColor.b = 0.0f;
@@ -261,18 +264,19 @@ TileData* GetTileAtIndex(long long i) {
 
 // this is probably not as efficient as it could be, but not the bottleneck
 TileData* ScreenToTile(gbVec2* screenCoordinates) {
+    Vec2i winDims = GetWindowDimensions();
     if (   screenCoordinates->x < 0 || screenCoordinates->y < 0
-        || screenCoordinates->x > 1024.0f || screenCoordinates->y > 768.0f
+        || screenCoordinates->x > winDims.x || screenCoordinates->y > winDims.y
     ) {
         return NULL;
     }
 
-    const float aspect = 1024.0f / 768.0f;
+    const float aspect = (float)winDims.x / (float)winDims.y;
     const float height = 20.0f;
     const float width = height * aspect;
-    const float ratio = width / 1024.0f;
+    const float ratio = width / (float)winDims.x;
     Vec2i sizePx = { (int)(worldSize.x / ratio), (int)(worldSize.y / ratio) };
-    Vec2i offset = { (int)(1024.0f - sizePx.x), (int)(768.0f - sizePx.y) };
+    Vec2i offset = { (int)(winDims.x - sizePx.x), (int)(winDims.y - sizePx.y) };
     offset.x /= 2;
     offset.y /= 2;
 
@@ -579,10 +583,11 @@ void SetRegionLabel(Region* r, const char* text, float scale, gbVec4 color, gbVe
     center.y += tileDimensions.y * (float)tileOffset.y;
 
     gbVec2 screenPos = WorldToScreen(center);
+    gbVec2 orthoPos = ScreenToOrtho(screenPos);
 
     gbVec2 extents = MeasureTextExtents(text, "fonts/04B_03__.TTF", scale);
-    r->label.pos.x = screenPos.x - (extents.x * 0.5f) + 1.0f;
-    r->label.pos.y = screenPos.y + (extents.y * 0.5f);
+    r->label.pos.x = orthoPos.x - (extents.x * 0.5f) + 1.0f;
+    r->label.pos.y = orthoPos.y + (extents.y * 0.5f);
 }
 
 void ClearRegionLabel(Region* r) {

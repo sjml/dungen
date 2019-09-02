@@ -5,6 +5,10 @@ tdft.GetCircle = function(td, radius)
   return GetTileCircle(td, radius)
 end
 
+tdft.GetNeighbors = function(td)
+  return GetTileCircle(td, 1)
+end
+
 WEST = 1
 NORTHWEST = 2
 NORTHEAST = 3

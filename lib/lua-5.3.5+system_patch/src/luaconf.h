@@ -18,6 +18,9 @@
 ** ===================================================================
 */
 
+// /* BEGIN +system_patch */
+// iOS doesn't allow system calls; stub it out. (Android is similar, I guess?)
+// http://lua-users.org/lists/lua-l/2017-09/msg00240.html
 #if defined(__APPLE__)
     #include <TargetConditionals.h>
     #if TARGET_OS_IPHONE
@@ -26,6 +29,7 @@
 #elif defined(__ANDROID__)
     #define system(s) ((s)==NULL ? 0 : -1)
 #endif
+// /* END +system_patch */
 
 /*
 ** {====================================================================

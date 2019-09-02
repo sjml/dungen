@@ -4,9 +4,8 @@
 //     It enables the use of multiple fonts at multiple sizes without needing to prebake
 //     or manage them too specifically.
 //     HOWEVER: it is pretty wasteful with memory. Could use a smarter packing algorithm,
-//     at the minimum, but lots of other optimizations are possible. The lookups it has
-//     to do on every draw call could be also be cached. It could try to make a tri-strip
-//     instead of each glyph individually with two triangles. Et cetera.
+//     at the minimum, but lots of other optimizations are possible. The glyph dimension
+//     lookups it has to do on every draw call could be also be cached. Et cetera.
 //     Only use this if you don't care too much about memory or performance.
 
 #include "text.h"
@@ -14,13 +13,13 @@
 #include "util.h"
 
 #ifdef __clang__
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdocumentation"
+    #pragma clang diagnostic push
+    #pragma clang diagnostic ignored "-Wdocumentation"
 #endif // __clang__
 #include <ft2build.h>
 #include FT_FREETYPE_H
 #ifdef __clang__
-#pragma clang diagnostic pop
+    #pragma clang diagnostic pop
 #endif // __clang__
 
 #define MAX_VERTS (4*128)
@@ -309,19 +308,19 @@ float _DrawText(FontCacheEntry* fce, float fontSize, const char* text) {
         Glyph g = _GetGlyph(fce, fontSize, codepoint);
         FontTexture *t = g.fontTexture;
 
-        if (t->numVertices + 24 >= MAX_VERTS) {
+        if (t->numVertices + (4 * 6) >= MAX_VERTS) {
             _FlushDrawing(fce);
         }
 
         int rx, ry;
-        rx = (int)floorf(dx + g.offset.x);
-        ry = (int)floorf(g.offset.y);
-
         float x0, y0, x1, y1, s0, t0, s1, t1;
-        x0 = x1 = (float)rx;
-        y0 = y1 = (float)ry;
-        x1 += (g.bottomRight.x - g.topLeft.x);
-        y1 -= (g.bottomRight.y - g.topLeft.y);
+        
+        rx = (int)floorf(g.bottomRight.x - g.topLeft.x);
+        ry = (int)floorf(g.bottomRight.y - g.topLeft.y);
+        x0 = dx;
+        x1 = dx + rx;
+        y0 = -(int)floorf(g.offset.y);
+        y1 = y0 + ry;
 
         s0 = g.topLeft.x * fce->inverseTextureDimensions.x;
         t0 = g.topLeft.y * fce->inverseTextureDimensions.y;
@@ -344,21 +343,21 @@ float _DrawText(FontCacheEntry* fce, float fontSize, const char* text) {
         t->vertices[t->numVertices++] = y0;
         t->vertices[t->numVertices++] = s1;
         t->vertices[t->numVertices++] = t0;
+        
+        t->vertices[t->numVertices++] = x0;
+        t->vertices[t->numVertices++] = y1;
+        t->vertices[t->numVertices++] = s0;
+        t->vertices[t->numVertices++] = t1;
+        
+        t->vertices[t->numVertices++] = x1;
+        t->vertices[t->numVertices++] = y1;
+        t->vertices[t->numVertices++] = s1;
+        t->vertices[t->numVertices++] = t1;
 
         t->vertices[t->numVertices++] = x1;
         t->vertices[t->numVertices++] = y0;
         t->vertices[t->numVertices++] = s1;
         t->vertices[t->numVertices++] = t0;
-
-        t->vertices[t->numVertices++] = x0;
-        t->vertices[t->numVertices++] = y1;
-        t->vertices[t->numVertices++] = s0;
-        t->vertices[t->numVertices++] = t1;
-
-        t->vertices[t->numVertices++] = x1;
-        t->vertices[t->numVertices++] = y1;
-        t->vertices[t->numVertices++] = s1;
-        t->vertices[t->numVertices++] = t1;
     }
 
     return dx;
@@ -426,7 +425,7 @@ float DrawGameText(const char* text, const char* fontPath, float size, int pixel
     glMatrixMode(GL_MODELVIEW);
     glPushMatrix();
     glLoadIdentity();
-    glTranslatef((GLfloat)pixelX, 768.0f - (GLfloat)pixelY, 0.0f);
+    glTranslatef((GLfloat)pixelX, (GLfloat)pixelY, 0.0f);
     glRotatef(angle, 0.0f, 0.0f, 1.0f);
     glEnable(GL_TEXTURE_2D);
 
@@ -484,7 +483,7 @@ float GetTextDescenderHeight(const char* fontPath, float size) {
     if (!fce->isValid) {
         return 0.0f;
     }
-    
+
     FT_Set_Char_Size(*fce->ftFace, 0L, (FT_F26Dot6)(size * 64.0f), 72, 72);
     return (*fce->ftFace)->size->metrics.descender / 64.0f;
 }

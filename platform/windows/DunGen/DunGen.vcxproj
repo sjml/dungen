@@ -31,6 +31,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\src\constraints\pathfind.c" />
+    <ClCompile Include="..\..\..\src\dungen.c" />
     <ClCompile Include="..\..\..\src\hlvm\hlvm.c" />
     <ClCompile Include="..\..\..\src\infrastructure\attributes.c" />
     <ClCompile Include="..\..\..\src\infrastructure\game.c" />
@@ -146,7 +147,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\..\..\lib\glfw-3.3.0\include;$(ProjectDir)..\..\..\lib\lua-5.3.5\src;$(ProjectDir)..\..\..\lib\sqlite-amalgamation-3290000;$(ProjectDir)..\..\..\lib\sds-0bb446e;$(ProjectDir)..\..\..\lib\libpqueue-f319ea0\src;$(ProjectDir)..\..\..\lib\freetype-2.10.1\include;$(ProjectDir)..\..\..\lib\single-file;$(ProjectDir)..\..\..\src</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\..\..\lib\glfw-3.3.0\include;$(ProjectDir)..\..\..\lib\lua-5.3.5+system_patch\src;$(ProjectDir)..\..\..\lib\sqlite-amalgamation-3290000;$(ProjectDir)..\..\..\lib\sds-0bb446e;$(ProjectDir)..\..\..\lib\libpqueue-f319ea0\src;$(ProjectDir)..\..\..\lib\freetype-2.10.1\include;$(ProjectDir)..\..\..\lib\single-file;$(ProjectDir)..\..\..\src</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_MBCS;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
       <AdditionalOptions>/experimental:external /external:anglebrackets /external:W0 %(AdditionalOptions)</AdditionalOptions>
       <TreatWarningAsError>true</TreatWarningAsError>
@@ -168,7 +169,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\..\..\lib\glfw-3.3.0\include;$(ProjectDir)..\..\..\lib\lua-5.3.5\src;$(ProjectDir)..\..\..\lib\sqlite-amalgamation-3290000;$(ProjectDir)..\..\..\lib\sds-0bb446e;$(ProjectDir)..\..\..\lib\libpqueue-f319ea0\src;$(ProjectDir)..\..\..\lib\freetype-2.10.1\include;$(ProjectDir)..\..\..\lib\single-file;$(ProjectDir)..\..\..\src</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\..\..\lib\glfw-3.3.0\include;$(ProjectDir)..\..\..\lib\lua-5.3.5+system_patch\src;$(ProjectDir)..\..\..\lib\sqlite-amalgamation-3290000;$(ProjectDir)..\..\..\lib\sds-0bb446e;$(ProjectDir)..\..\..\lib\libpqueue-f319ea0\src;$(ProjectDir)..\..\..\lib\freetype-2.10.1\include;$(ProjectDir)..\..\..\lib\single-file;$(ProjectDir)..\..\..\src</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_MBCS;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
       <AdditionalOptions>/experimental:external /external:anglebrackets /external:W0 %(AdditionalOptions)</AdditionalOptions>
       <TreatWarningAsError>true</TreatWarningAsError>

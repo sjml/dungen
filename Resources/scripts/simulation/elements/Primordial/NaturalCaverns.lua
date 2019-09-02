@@ -1,4 +1,4 @@
-maxCaverns = 6
+maxCaverns = gir("NaturalCavernCreationCount")
 cavernCount = 0
 breakRoll = 6
 padding = 3

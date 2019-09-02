@@ -13,11 +13,11 @@
 #include  "../ui/choice.h"
 #include  "../ui/tile_choice.h"
 
-static const int windowWidth  = 1024;
-static const int windowHeight = 768;
-static GLubyte* screenShotBuffer;
+static Vec2i windowDimensions;
+static Vec2i framebufferDimensions;
+static Vec2i orthoDimensions;
 
-static int frameW, frameH;
+static GLubyte* screenShotBuffer;
 
 static CameraData MainCamera;
 static gbMat4 projectionMatrix;
@@ -26,6 +26,9 @@ static gbMat4 perspectiveMatrix;
 static gbMat4 orthoMatrix;
 
 static Region** regions = NULL;
+
+static const int defaultWindowWidth  = 1024;
+static const int defaultWindowHeight = 768;
 
 #if !(DUNGEN_MOBILE)
     static GLFWwindow* window = NULL;
@@ -36,31 +39,35 @@ static Region** regions = NULL;
         #else
             glfwInitHint(GLFW_COCOA_CHDIR_RESOURCES, GLFW_TRUE);
         #endif
-        
+
         glfwInitHint(GLFW_COCOA_MENUBAR, GLFW_TRUE);
-        
+
         if (!glfwInit()) {
             exit(EXIT_FAILURE);
         }
-        
+
         //    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
         //    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
         //    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GLFW_TRUE);
         //    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-        
+
         glfwWindowHint(GLFW_SAMPLES, 4);
         glfwWindowHint(GLFW_COCOA_RETINA_FRAMEBUFFER, GLFW_TRUE);
         glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
-        
-        window = glfwCreateWindow(windowWidth, windowHeight, "DunGen", NULL, NULL);
+
+        window = glfwCreateWindow(defaultWindowWidth, defaultWindowHeight, "DunGen", NULL, NULL);
         if (!window) {
             glfwTerminate();
             exit(EXIT_FAILURE);
         }
+
+        glfwGetFramebufferSize(window, &framebufferDimensions.x, &framebufferDimensions.y);
+        glfwGetWindowSize(window, &windowDimensions.x, &windowDimensions.y);
+
         glfwMakeContextCurrent(window);
-        
+
         glfwSwapInterval(1);
-        
+
         glfwSetCursorPosCallback(window, MouseMoveCallback);
         glfwSetMouseButtonCallback(window, MouseClickCallback);
         glfwSetKeyCallback(window, KeyboardCallback);
@@ -73,7 +80,7 @@ void InitializeRendering() {
         glClearDepth(1.0f);
         glPolygonMode(GL_FRONT, GL_FILL);
     #endif // !(DUNGEN_MOBILE)
-    
+
     glShadeModel(GL_FLAT);
     glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
     glEnable(GL_CULL_FACE);
@@ -101,14 +108,17 @@ void InitializeRendering() {
     MainCamera.up.z = 0.0f;
     MainCamera.zFarClip = 1.0f;
     MainCamera.zNearClip = -1.0f;
-    MainCamera.windowWidth = windowWidth;
-    MainCamera.windowHeight = windowHeight;
+    MainCamera.windowWidth = windowDimensions.x;
+    MainCamera.windowHeight = windowDimensions.y;
 
-    gb_mat4_perspective(&projectionMatrix, MainCamera.aperture, (float)MainCamera.windowWidth / (float)MainCamera.windowHeight, MainCamera.zNearClip, MainCamera.zFarClip);
+    float aspect = (float)MainCamera.windowWidth / (float)MainCamera.windowHeight;
+    gb_mat4_perspective(&projectionMatrix, MainCamera.aperture, aspect, MainCamera.zNearClip, MainCamera.zFarClip);
     gb_mat4_look_at(&modelViewMatrix, MainCamera.position, MainCamera.view, MainCamera.up);
     gb_mat4_mul(&perspectiveMatrix, &projectionMatrix, &modelViewMatrix);
 
-    gb_mat4_ortho2d(&orthoMatrix, 0.0f, 1024.0f, 0.0f, 768.0f);
+    orthoDimensions.y = defaultWindowHeight;
+    orthoDimensions.x = (int)((float)defaultWindowHeight * aspect);
+    gb_mat4_ortho2d(&orthoMatrix, 0.0f, (float)orthoDimensions.x, (float)orthoDimensions.y, 0.0f);
 
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
@@ -133,9 +143,31 @@ void FinalizeRendering() {
     #endif // !(DUNGEN_MOBILE)
 }
 
+Vec2i GetWindowDimensions(void) {
+    return windowDimensions;
+}
+
+Vec2i GetFramebufferDimensions(void) {
+    return framebufferDimensions;
+}
+
+Vec2i GetOrthoDimensions(void) {
+    return orthoDimensions;
+}
+
+void SetWindowDimensions(Vec2i dims) {
+    windowDimensions.x = dims.x;
+    windowDimensions.y = dims.y;
+}
+
+void SetFramebufferDimensions(Vec2i dims) {
+    framebufferDimensions.x = dims.x;
+    framebufferDimensions.y = dims.y;
+}
+
 void DumpScreenShot(const char* fileName) {
-    glReadPixels(0, 0, frameW, frameH, GL_RGB, GL_UNSIGNED_BYTE, screenShotBuffer);
-    stbi_write_png(fileName, frameW, frameH, 3, screenShotBuffer, frameW * 3);
+//    glReadPixels(0, 0, frameW, frameH, GL_RGB, GL_UNSIGNED_BYTE, screenShotBuffer);
+//    stbi_write_png(fileName, frameW, frameH, 3, screenShotBuffer, frameW * 3);
 }
 
 void AddRegionToRendering(Region* r) {
@@ -178,17 +210,15 @@ gbVec2 WorldToScreen(gbVec2 worldCoordinates) {
     gbVec3 ndc;
     gb_vec3_div(&ndc, clip.xyz, clip.w);
 
-    // these would properly come from the viewport function if we had one
-    gbVec2 viewDim = { 1024.0f, 768.0f };
     gbVec2 viewOffset = { 0.0f, 0.0f };
 
     gbVec2 spos = {
             (
                 (ndc.x + 1.0f) / 2.0f
-            ) * viewDim.x + viewOffset.x,
+            ) * windowDimensions.x + viewOffset.x,
             (
                 (1.0f - ndc.y) / 2.0f
-            ) * viewDim.y + viewOffset.y
+            ) * windowDimensions.y + viewOffset.y
     };
 
     return spos;
@@ -202,12 +232,10 @@ gbVec2 ScreenToWorld(gbVec2 screenCoordinates) {
         screenCoordinates.x, screenCoordinates.y, 0.0f, 1.0f
     };
 
-    // these would properly come from the viewport function if we had one
-    gbVec2 viewDim = { 1024.0f, 768.0f };
     gbVec2 viewOffset = { 0.0f, 0.0f };
 
-    in.x = (in.x - viewOffset.x) / viewDim.x;
-    in.y = (in.y - viewOffset.y) / viewDim.y;
+    in.x = (in.x - viewOffset.x) / windowDimensions.x;
+    in.y = (in.y - viewOffset.y) / windowDimensions.y;
 
     in.x = in.x * 2 - 1;
     in.y = in.y * 2 - 1;
@@ -221,6 +249,17 @@ gbVec2 ScreenToWorld(gbVec2 screenCoordinates) {
 
     float multFactor = 10.0f; // TODO: this shouldn't be necessary :-/
     gbVec2 ret = {out.x * -multFactor, out.y * multFactor};
+    return ret;
+}
+
+gbVec2 ScreenToOrtho(gbVec2 screenCoordinates) {
+    float xPerc = screenCoordinates.x / windowDimensions.x;
+    float yPerc = screenCoordinates.y / windowDimensions.y;
+    
+    gbVec2 ret = {
+        xPerc * orthoDimensions.x,
+        yPerc * orthoDimensions.y
+    };
     return ret;
 }
 
@@ -281,6 +320,6 @@ int Render() {
             return 1;
         }
     #endif // !(DUNGEN_MOBILE)
-    
+
     return 0;
 }

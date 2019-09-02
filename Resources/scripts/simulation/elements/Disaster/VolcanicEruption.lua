@@ -1,5 +1,5 @@
 legalSet = TileSet()
-for i=0, gir("TileWidth") - 1 do
+for i=3, gir("TileWidth") - 4 do
   legalSet = AddTileToSet(legalSet, GetTileAtPosition(i, gir("TileHeight") - 1))
 end
 stsr("RandomTileSet", legalSet)

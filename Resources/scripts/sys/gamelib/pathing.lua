@@ -53,3 +53,21 @@ function getStraightLinePath(startTile, endTile)
 
   return path
 end
+
+function getTilePath(startingTile, directionList)
+  if startingTile == nil then
+    return {}
+  end
+
+  local path = {startingTile}
+  local curr = startingTile
+  for _, dir in pairs(directionList) do
+    curr = curr:GetNeighbor(dir)
+    if curr == nil then
+      break
+    end
+    table.insert(path, curr)
+  end
+
+  return path
+end

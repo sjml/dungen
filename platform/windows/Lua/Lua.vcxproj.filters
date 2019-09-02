@@ -7,106 +7,106 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\lib\lua-5.3.5\src\lmem.c">
+    <ClCompile Include="..\..\..\lib\lua-5.3.5+system_patch\src\lmem.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\lib\lua-5.3.5\src\loadlib.c">
+    <ClCompile Include="..\..\..\lib\lua-5.3.5+system_patch\src\loadlib.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\lib\lua-5.3.5\src\lobject.c">
+    <ClCompile Include="..\..\..\lib\lua-5.3.5+system_patch\src\lobject.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\lib\lua-5.3.5\src\lopcodes.c">
+    <ClCompile Include="..\..\..\lib\lua-5.3.5+system_patch\src\lopcodes.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\lib\lua-5.3.5\src\loslib.c">
+    <ClCompile Include="..\..\..\lib\lua-5.3.5+system_patch\src\loslib.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\lib\lua-5.3.5\src\lparser.c">
+    <ClCompile Include="..\..\..\lib\lua-5.3.5+system_patch\src\lparser.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\lib\lua-5.3.5\src\lstate.c">
+    <ClCompile Include="..\..\..\lib\lua-5.3.5+system_patch\src\lstate.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\lib\lua-5.3.5\src\lstring.c">
+    <ClCompile Include="..\..\..\lib\lua-5.3.5+system_patch\src\lstring.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\lib\lua-5.3.5\src\lstrlib.c">
+    <ClCompile Include="..\..\..\lib\lua-5.3.5+system_patch\src\lstrlib.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\lib\lua-5.3.5\src\ltable.c">
+    <ClCompile Include="..\..\..\lib\lua-5.3.5+system_patch\src\ltable.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\lib\lua-5.3.5\src\ltablib.c">
+    <ClCompile Include="..\..\..\lib\lua-5.3.5+system_patch\src\ltablib.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\lib\lua-5.3.5\src\ltm.c">
+    <ClCompile Include="..\..\..\lib\lua-5.3.5+system_patch\src\ltm.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\lib\lua-5.3.5\src\luac.c">
+    <ClCompile Include="..\..\..\lib\lua-5.3.5+system_patch\src\luac.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\lib\lua-5.3.5\src\lundump.c">
+    <ClCompile Include="..\..\..\lib\lua-5.3.5+system_patch\src\lundump.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\lib\lua-5.3.5\src\lutf8lib.c">
+    <ClCompile Include="..\..\..\lib\lua-5.3.5+system_patch\src\lutf8lib.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\lib\lua-5.3.5\src\lvm.c">
+    <ClCompile Include="..\..\..\lib\lua-5.3.5+system_patch\src\lvm.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\lib\lua-5.3.5\src\lzio.c">
+    <ClCompile Include="..\..\..\lib\lua-5.3.5+system_patch\src\lzio.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\lib\lua-5.3.5\src\lapi.c">
+    <ClCompile Include="..\..\..\lib\lua-5.3.5+system_patch\src\lapi.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\lib\lua-5.3.5\src\lauxlib.c">
+    <ClCompile Include="..\..\..\lib\lua-5.3.5+system_patch\src\lauxlib.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\lib\lua-5.3.5\src\lbaselib.c">
+    <ClCompile Include="..\..\..\lib\lua-5.3.5+system_patch\src\lbaselib.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\lib\lua-5.3.5\src\lbitlib.c">
+    <ClCompile Include="..\..\..\lib\lua-5.3.5+system_patch\src\lbitlib.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\lib\lua-5.3.5\src\lcode.c">
+    <ClCompile Include="..\..\..\lib\lua-5.3.5+system_patch\src\lcode.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\lib\lua-5.3.5\src\lcorolib.c">
+    <ClCompile Include="..\..\..\lib\lua-5.3.5+system_patch\src\lcorolib.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\lib\lua-5.3.5\src\lctype.c">
+    <ClCompile Include="..\..\..\lib\lua-5.3.5+system_patch\src\lctype.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\lib\lua-5.3.5\src\ldblib.c">
+    <ClCompile Include="..\..\..\lib\lua-5.3.5+system_patch\src\ldblib.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\lib\lua-5.3.5\src\ldebug.c">
+    <ClCompile Include="..\..\..\lib\lua-5.3.5+system_patch\src\ldebug.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\lib\lua-5.3.5\src\ldo.c">
+    <ClCompile Include="..\..\..\lib\lua-5.3.5+system_patch\src\ldo.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\lib\lua-5.3.5\src\ldump.c">
+    <ClCompile Include="..\..\..\lib\lua-5.3.5+system_patch\src\ldump.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\lib\lua-5.3.5\src\lfunc.c">
+    <ClCompile Include="..\..\..\lib\lua-5.3.5+system_patch\src\lfunc.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\lib\lua-5.3.5\src\lgc.c">
+    <ClCompile Include="..\..\..\lib\lua-5.3.5+system_patch\src\lgc.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\lib\lua-5.3.5\src\linit.c">
+    <ClCompile Include="..\..\..\lib\lua-5.3.5+system_patch\src\linit.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\lib\lua-5.3.5\src\liolib.c">
+    <ClCompile Include="..\..\..\lib\lua-5.3.5+system_patch\src\liolib.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\lib\lua-5.3.5\src\llex.c">
+    <ClCompile Include="..\..\..\lib\lua-5.3.5+system_patch\src\llex.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\lib\lua-5.3.5\src\lmathlib.c">
+    <ClCompile Include="..\..\..\lib\lua-5.3.5+system_patch\src\lmathlib.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\lib\luafilesystem-1.7.0-2\src\lfs.c">

@@ -1,12 +1,8 @@
 ## TODO
-0. Mobile
-    - reimplement drawing boxes in the choice and banner renderers
-    - fix viewport / aspect ratio issues
-    - also orientation/rotation is screwy; lock it down
-    - implement touch input for choices
-    - then get back to agents :) 
 1. Styler rework
     - can it handle a region that is both water and plague?
+    - rendering of sub-regions; does that work?
+    - somewhat related: checking if tile is in region should check subregions
 2. Chamber/region/room model design
     - (see brainstorm notes)
     - somewhat more than tilesets
@@ -38,7 +34,6 @@
 * overusing the stretchy buffer right now; look for more chances to just use a static array
     - also not a huge deal, but I think the *free functions also NULL the pointer, so might have some redundant calls
     - also the type of the *len calls is ptrdiff_t, not necessarily long
-* pull window dimensions from central spot instead of `1024.0f`-ing all over the place
 * figure out why ScreenToWorld needs that multiplier at the end :-/ 
 
 ## Horizon
@@ -48,7 +43,6 @@
 * in-game console
 * HLVM exceptions (C + Lua invoking)
 * pull sim settings and other stuff out into config file that Lua pulls in
-* specify (and store) random seed
 * expose resources directory on mac?
 * history recording -- optional live captioning
     - banner: "The Primordial Age"

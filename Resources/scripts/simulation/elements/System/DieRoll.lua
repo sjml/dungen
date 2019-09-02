@@ -20,5 +20,5 @@ if gir("InterceptDieRolls") == 1 and gir("DieRollInterceptable") == 1 then
 
   sir("DieRollResult", choiceMappings[gir("ChoiceSelection")])
 else
-  sir("DieRollResult", RandomRangeInt(1, gir("DieSides")))
+  sir("DieRollResult", RandomRangeInt(1, gir("DieSides") + 1))
 end

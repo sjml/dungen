@@ -88,7 +88,7 @@ void TileChoiceProcessMouseClick(bool down) {
             pressedTile->overlayColor.a = 1.0f;
         }
     }
-    else {
+    else if (pressedTile != NULL) {
         if (pressedTile == hoveredTile) {
             // make the choice
             choiceStatus = 0;
