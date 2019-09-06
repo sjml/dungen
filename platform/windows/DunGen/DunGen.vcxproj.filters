@@ -104,6 +104,7 @@
     <ClCompile Include="stdafx.c">
       <Filter>platform</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\dungen.c" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="scripting">

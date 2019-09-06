@@ -315,11 +315,11 @@ float _DrawText(FontCacheEntry* fce, float fontSize, const char* text) {
         int rx, ry;
         float x0, y0, x1, y1, s0, t0, s1, t1;
         
-        rx = (int)floorf(g.bottomRight.x - g.topLeft.x);
-        ry = (int)floorf(g.bottomRight.y - g.topLeft.y);
+        rx = (int)floorf((float)g.bottomRight.x - (float)g.topLeft.x);
+        ry = (int)floorf((float)g.bottomRight.y - (float)g.topLeft.y);
         x0 = dx;
         x1 = dx + rx;
-        y0 = -(int)floorf(g.offset.y);
+        y0 = -floorf(g.offset.y);
         y1 = y0 + ry;
 
         s0 = g.topLeft.x * fce->inverseTextureDimensions.x;

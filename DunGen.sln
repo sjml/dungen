@@ -17,6 +17,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "pqueue", "platform\windows\
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FreeType", "platform\windows\FreeType\FreeType.vcxproj", "{FF5877D3-BB64-4863-B8E8-19EC67A25797}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "pcg", "platform\windows\pcg\pcg.vcxproj", "{D19C4D11-698E-4A61-B1FD-0805D00FD8EF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -51,6 +53,10 @@ Global
 		{FF5877D3-BB64-4863-B8E8-19EC67A25797}.Debug|x86.Build.0 = Debug|Win32
 		{FF5877D3-BB64-4863-B8E8-19EC67A25797}.Release|x86.ActiveCfg = Release|Win32
 		{FF5877D3-BB64-4863-B8E8-19EC67A25797}.Release|x86.Build.0 = Release|Win32
+		{D19C4D11-698E-4A61-B1FD-0805D00FD8EF}.Debug|x86.ActiveCfg = Debug|Win32
+		{D19C4D11-698E-4A61-B1FD-0805D00FD8EF}.Debug|x86.Build.0 = Debug|Win32
+		{D19C4D11-698E-4A61-B1FD-0805D00FD8EF}.Release|x86.ActiveCfg = Release|Win32
+		{D19C4D11-698E-4A61-B1FD-0805D00FD8EF}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
