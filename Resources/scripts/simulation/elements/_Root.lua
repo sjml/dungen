@@ -25,3 +25,4 @@ chamber:AddTag("natural")
 chamber:AddTag("plague")
 
 push("Primordial.FlowingRiver")
+push("Disaster.VolcanicEruption")

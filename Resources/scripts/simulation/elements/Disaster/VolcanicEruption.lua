@@ -6,6 +6,7 @@ stsr("RandomTileSet", legalSet)
 push("System.RandomTile")
 
 baseTile = gtr("RandomTile")
+baseTile = GetTileAtPosition(45, 52)
 DestroyTileSet(legalSet)
 
 pocket = makeChamber(baseTile, 3)

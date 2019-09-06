@@ -59,12 +59,12 @@ function checkForEncounters(agent, targetTile, fromTile)
     if targetTile:HasTags("gold") then
       sir("DieSides", 4)
       push("System.DieRoll")
-      washingTags["gold"] = gir("DieRollResult")
+      washingTags["gold"] = gir("DieRollResult") + 1
     end
     if targetTile:HasTags("gems") then
       sir("DieSides", 2)
       push("System.DieRoll")
-      washingTags["gems"] = gir("DieRollResult")
+      washingTags["gems"] = gir("DieRollResult") + 1
     end
 
     local chamber = getChamber(targetTile)
