@@ -13,7 +13,7 @@ complexSolver:Solve()
 
 base = complexSolver.pickedTile
 
-chamber = makeChamber(base, 1)
+chamber = makeRoundChamber(base, 1)
 centers = {base}
 chambers = {chamber}
 
@@ -32,7 +32,7 @@ for i=1,2 do
   local caveSolver = ConstraintSolver(caveConstraints)
   caveSolver:Solve()
   table.insert(centers, caveSolver.favoriteTile)
-  table.insert(chambers, makeChamber(caveSolver.favoriteTile, 1))
+  table.insert(chambers, makeRoundChamber(caveSolver.favoriteTile, 1))
 end
 
 str("TunnelStart", base)

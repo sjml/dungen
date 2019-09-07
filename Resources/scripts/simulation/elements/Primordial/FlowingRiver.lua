@@ -214,7 +214,7 @@ while (riverAgent:GetAttributeInt("alive") ~= 0) do
     curr = explorePath(riverAgent, curr, path)
     if curr ~= nil then
       local base = curr:GetNeighbor(WEST):GetNeighbor(WEST)
-      local c = makeChamber(base, 1, riverAgent)
+      local c = makeRoundChamber(base, 1, riverAgent)
     end
   else
     -- waterfall

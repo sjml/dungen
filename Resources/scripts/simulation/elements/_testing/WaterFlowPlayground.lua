@@ -1,5 +1,5 @@
 local cavernCenter = GetTileAtPosition(5, 20)
-local chamber = makeChamber(cavernCenter, 1)
+local chamber = makeRoundChamber(cavernCenter, 1)
 chamber:AddTag("natural")
 
 -- local extension = {

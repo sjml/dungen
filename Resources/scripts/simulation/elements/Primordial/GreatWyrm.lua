@@ -15,7 +15,7 @@ wyrmSolver = ConstraintSolver(wyrmConstraints)
 wyrmSolver:Solve()
 
 base = wyrmSolver.pickedTile
-c = makeChamber(base, 2)
+c = makeRoundChamber(base, 2)
 c:AddTag("GreatWyrm")
 
 for i=1,5 do

@@ -9,7 +9,7 @@ baseTile = gtr("RandomTile")
 baseTile = GetTileAtPosition(45, 52)
 DestroyTileSet(legalSet)
 
-pocket = makeChamber(baseTile, 3)
+pocket = makeRoundChamber(baseTile, 3)
 pocket:AddTag("magma")
 
 

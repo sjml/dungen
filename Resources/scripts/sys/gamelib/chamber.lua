@@ -1,4 +1,4 @@
-function makeChamber(baseTile, radius, agent)
+function makeRoundChamber(baseTile, radius, agent)
   local cavern = baseTile:GetCircle(radius)
   return makeChamberFromList(cavern, agent)
 end

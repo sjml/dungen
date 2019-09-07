@@ -1,0 +1,30 @@
+Want to be able to store and retrieve objects from individual chambers
+    - change out the current "empty" mechanic
+    - int attribute: chamberStorageAmount
+    - string attributes: chamberStorage1, chamberStorage2, etc.
+    - capacity? hmmm.
+
+    - store item:
+        - increment chamberStorageAmount
+        - stick it in the next open string
+    - remove item:
+        - find it in the strings, remove it, shift all the others down
+        - decrement chamberStorageAmount
+    - after storing/adding
+        - remove all tags labeled "storage" within chamber
+        - go through strings, add that tag to lowest tile (piling up)
+    - get stored items: list of strings
+
+Want to be able to merge chambers
+    - merge tags
+    - do anything with attributes?
+        - so far it's mostly "open" and "treasure"
+        - plague is also there; easy to transfer
+    - take all tiles out of their domain if it has one, add them to merging agent
+    - same with disappearing chamber's region
+        - after resolving encounter between agents, of course
+    - unstore everything from disappearing chamber, store it in new chamber
+
+    -- wait until after we've got agents interacting to worry about this
+    - carve first, then merge? or check with each carving?
+        - something like FATE, magma, or water needs to react quickly

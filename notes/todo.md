@@ -5,6 +5,8 @@
     - somewhat related: checking if tile is in region should check subregions
 2. Change treasure handling -- raw ore isn't treasure
     - figure out a way for river to wash an actual treasure into a next chamber
+    - change visualization of gold vein to something more ore-y
+    - 
 3. Finish agent implementation with river as test case
     - add magma as other agent?
 4. Relaxable constraint sets
@@ -24,9 +26,6 @@
 * figure out why ScreenToWorld needs that multiplier at the end :-/ 
 
 ## Horizon
-* would require overhaul, but:
-    - putting gold vein into spaces between tiles instead of tiles themselves
-    - more for visual appeal than anything else... might be a better way to accomplish that
 * in-game console
 * HLVM exceptions (C + Lua invoking)
 * pull sim settings and other stuff out into config file that Lua pulls in

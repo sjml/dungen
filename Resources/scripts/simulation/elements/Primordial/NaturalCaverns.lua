@@ -22,7 +22,7 @@ while (cavernCount < maxCaverns) do
     break
   end
 
-  chamber = makeChamber(base, 1)
+  chamber = makeRoundChamber(base, 1)
   chamber:AddTag("natural")
 
   sir("DieSides", 8)

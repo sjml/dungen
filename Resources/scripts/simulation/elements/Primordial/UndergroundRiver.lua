@@ -71,7 +71,7 @@ while (true) do
     current = tryPath(current, path)
     if current ~= nil then
       local base = current:GetNeighbor(WEST):GetNeighbor(WEST)
-      local c = makeChamber(base, 1)
+      local c = makeRoundChamber(base, 1)
       for i=1,5 do
         storeInChamber(c, "water", true)
       end

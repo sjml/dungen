@@ -1,9 +1,9 @@
 local cavernCenter1 = GetTileAtPosition(5, 45)
-local chamber = makeChamber(cavernCenter1, 1)
+local chamber = makeRoundChamber(cavernCenter1, 1)
 chamber:AddTag("natural")
 
 local cavernCenter2 = GetTileAtPosition(20, 23)
-local chamber = makeChamber(cavernCenter2, 1)
+local chamber = makeRoundChamber(cavernCenter2, 1)
 chamber:AddTag("natural")
 
 local midPoint = GetTileAtPosition(20, 45)

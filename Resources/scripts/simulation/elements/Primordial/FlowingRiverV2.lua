@@ -359,7 +359,7 @@ while (riverAgent:GetAttributeInt("alive") ~= 0) do
     local cavernBase = curr:GetNeighbor(EAST)
     if cavernBase then cavernBase = cavernBase:GetNeighbor(EAST) end
     if cavernBase then
-      makeChamber(cavernBase, 1, riverAgent)
+      makeRoundChamber(cavernBase, 1, riverAgent)
       curr = explorePath(riverAgent, curr, {EAST, EAST}, true)
       curr = explorePath(riverAgent, curr, {EAST, EAST}, true)
     else
