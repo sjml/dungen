@@ -96,7 +96,7 @@
     <ClCompile>
       <WarningLevel>TurnOffAllWarnings</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <SDLCheck>true</SDLCheck>
+      <SDLCheck>false</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <PreprocessorDefinitions>_MBCS;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS;FT2_BUILD_LIBRARY;FT_CONFIG_CONFIG_H=&lt;ftconfig.h&gt;;FT_CONFIG_MODULES_H=&lt;ftmodule.h&gt;</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(ProjectDir)..\..\..\lib\freetype-2.10.1\include;$(ProjectDir)..\..\..\lib\freetype-2.10.1\include\freetype\config;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -108,7 +108,7 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <SDLCheck>true</SDLCheck>
+      <SDLCheck>false</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <PreprocessorDefinitions>_MBCS;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS;FT2_BUILD_LIBRARY;FT_CONFIG_CONFIG_H=&lt;ftconfig.h&gt;;FT_CONFIG_MODULES_H=&lt;ftmodule.h&gt;</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(ProjectDir)..\..\..\lib\freetype-2.10.1\include;$(ProjectDir)..\..\..\lib\freetype-2.10.1\include\freetype\config;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>

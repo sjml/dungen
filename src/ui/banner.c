@@ -39,7 +39,7 @@ void _repositionBanners() {
 
         float x0, y0, x1, y1;
         x0 = 0.0f;
-        x1 = dims.x;
+        x1 = (float)dims.x;
         y0 = banners[i].ti.pos.y + (padding * 0.5f);
         y1 = banners[i].ti.pos.y - (banners[i].extents.y + (padding * 0.5f));
         banners[i].verts[0] = x0;
