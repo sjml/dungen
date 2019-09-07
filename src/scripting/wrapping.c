@@ -6450,6 +6450,30 @@ fail:
 }
 
 
+static int _wrap_GetTileOwner(lua_State* L) {
+  int SWIG_arg = 0;
+  TileData *arg1 = (TileData *) 0 ;
+  Agent *result = 0 ;
+  
+  SWIG_check_num_args("GetTileOwner",1,1)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("GetTileOwner",1,"TileData *");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_TileData,0))){
+    SWIG_fail_ptr("GetTileOwner",1,SWIGTYPE_p_TileData);
+  }
+  
+  result = (Agent *)GetTileOwner(arg1);
+  SWIG_NewPointerObj(L,result,SWIGTYPE_p_Agent,0); SWIG_arg++; 
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
 static int _wrap_SetTileOutline(lua_State* L) {
   int SWIG_arg = 0;
   TileData *arg1 = (TileData *) 0 ;
@@ -8659,6 +8683,60 @@ fail:
 }
 
 
+static int _wrap_FindPathThroughAttribute(lua_State* L) {
+  int SWIG_arg = 0;
+  TileData *arg1 = (TileData *) 0 ;
+  TileData *arg2 = (TileData *) 0 ;
+  char *arg3 = (char *) 0 ;
+  AttrComparison arg4 ;
+  char *arg5 = (char *) 0 ;
+  TileData **result = 0 ;
+  
+  SWIG_check_num_args("FindPathThroughAttribute",5,5)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("FindPathThroughAttribute",1,"TileData *");
+  if(!SWIG_isptrtype(L,2)) SWIG_fail_arg("FindPathThroughAttribute",2,"TileData *");
+  if(!SWIG_lua_isnilstring(L,3)) SWIG_fail_arg("FindPathThroughAttribute",3,"char const *");
+  if(!lua_isnumber(L,4)) SWIG_fail_arg("FindPathThroughAttribute",4,"AttrComparison");
+  if(!SWIG_lua_isnilstring(L,5)) SWIG_fail_arg("FindPathThroughAttribute",5,"char const *");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_TileData,0))){
+    SWIG_fail_ptr("FindPathThroughAttribute",1,SWIGTYPE_p_TileData);
+  }
+  
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,2,(void**)&arg2,SWIGTYPE_p_TileData,0))){
+    SWIG_fail_ptr("FindPathThroughAttribute",2,SWIGTYPE_p_TileData);
+  }
+  
+  arg3 = (char *)lua_tostring(L, 3);
+  arg4 = (AttrComparison)(int)lua_tonumber(L, 4);
+  arg5 = (char *)lua_tostring(L, 5);
+  result = (TileData **)FindPathThroughAttribute(arg1,arg2,(char const *)arg3,arg4,(char const *)arg5);
+  
+  {
+    lua_newtable(L);
+    if (arrlen(result) > 0) {
+      for (unsigned int i=1; i <= arrlen(result); i++) {
+        lua_pushnumber(L, i);
+        SWIG_NewPointerObj(L, result[i-1], SWIGTYPE_p_TileData, 1);
+        lua_settable(L, -3);
+      }
+    }
+    arrfree(result);
+    
+    SWIG_arg += 1;
+  }
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
 static int _wrap_AddBanner(lua_State* L) {
   int SWIG_arg = 0;
   char *arg1 = (char *) 0 ;
@@ -8916,6 +8994,7 @@ static swig_lua_method swig_SwigModule_methods[]= {
     { "ScreenToTile", _wrap_ScreenToTile},
     { "GetTileNeighbors", _wrap_GetTileNeighbors},
     { "GetTileCircle", _wrap_GetTileCircle},
+    { "GetTileOwner", _wrap_GetTileOwner},
     { "SetTileOutline", _wrap_SetTileOutline},
     { "ClearTileOutline", _wrap_ClearTileOutline},
     { "DestroyTileSet", _wrap_DestroyTileSet},
@@ -8988,6 +9067,7 @@ static swig_lua_method swig_SwigModule_methods[]= {
     { "RandomRangeFloat", _wrap_RandomRangeFloat},
     { "RandomRangeInt", _wrap_RandomRangeInt},
     { "FindSimplePath", _wrap_FindSimplePath},
+    { "FindPathThroughAttribute", _wrap_FindPathThroughAttribute},
     { "AddBanner", _wrap_AddBanner},
     { "PositionBanner", _wrap_PositionBanner},
     { "RemoveBanner", _wrap_RemoveBanner},

@@ -69,6 +69,7 @@ TileData* GetTileAtIndex(long long i);
 TileData* ScreenToTile(gbVec2* screenCoordinates);
 TileData** GetTileNeighbors(TileData* center);
 TileData** GetTileCircle(TileData* center, int radius);
+Agent* GetTileOwner(TileData* t);
 void SetTileOutline(TileData* t, gbVec4 color, float thickness, int type);
 void ClearTileOutline(TileData* t);
 

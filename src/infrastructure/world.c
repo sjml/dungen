@@ -196,6 +196,14 @@ TileData** GetAllTiles() {
     return ret;
 }
 
+TileSet* GetAllTilesAsSet(void) {
+    TileSet* ret = NULL;
+    for (long long i=0; i < arrlen(WorldArray); i++) {
+        ret = AddTileToSet(ret, &WorldArray[i]);
+    }
+    return ret;
+}
+
 void SetTileAsDirty(TileData* td) {
     dirtyTiles = AddTileToSet(dirtyTiles, td);
 }
@@ -381,6 +389,25 @@ TileData** GetTileCircle(TileData* center, int radius) {
     TileData** ret = GetTilesFromSet(ts);
     DestroyTileSet(ts);
     return ret;
+}
+
+Agent* GetTileOwner(TileData* t) {
+    Region** regionsToCheck = NULL;
+    for (long long i = 0; i < arrlen(t->memberRegions); i++) {
+        arrpush(regionsToCheck, t->memberRegions[i]);
+    }
+    for (long long i = 0; i < arrlen(regionsToCheck); i++) {
+        if (regionsToCheck[i]->parent != NULL) {
+            arrpush(regionsToCheck, regionsToCheck[i]->parent);
+        }
+        int agentIdx = GetRegionAttributeInt(regionsToCheck[i], "domainOwner");
+        if (agentIdx > 0) {
+            arrfree(regionsToCheck);
+            return agents[agentIdx - 1];
+        }
+    }
+    arrfree(regionsToCheck);
+    return NULL;
 }
 
 void RenderTiles(void) {
@@ -602,6 +629,7 @@ Agent* CreateAgent(void) {
     a->domain = CreateRegion();
     arrpush(agents, a);
     a->i = arrlen(agents);
+    SetRegionAttributeInt(a->domain, "domainOwner", (int)a->i);
 
     SetupAgentAttributeData(a);
 

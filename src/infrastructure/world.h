@@ -57,6 +57,7 @@ gbVec2** GetWorldPointList(void);
 void RenderTiles(void);
 
 TileData** GetAllTiles(void);
+TileSet* GetAllTilesAsSet(void);
 void SetTileAsDirty(TileData* td);
 TileData** GetDirtyTiles(void);
 void CleanAllTiles(void);
@@ -65,6 +66,7 @@ TileData* GetTileAtIndex(long long i);
 TileData* ScreenToTile(gbVec2* screenCoordinates);
 TileData** GetTileNeighbors(TileData* center);
 TileData** GetTileCircle(TileData* center, int radius);
+Agent* GetTileOwner(TileData* t);
 long GetTileDistance(TileData* t1, TileData* t2);
 void SetTileOutline(TileData* t, gbVec4 color, float thickness, int type);
 void ClearTileOutline(TileData* t);

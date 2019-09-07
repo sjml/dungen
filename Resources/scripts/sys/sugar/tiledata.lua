@@ -99,3 +99,12 @@ end
 tdft.ClearOutline = function(td)
   return ClearTileOutline(td)
 end
+
+tdft.GetOwner = function(td)
+  return GetTileOwner(td)
+end
+
+tdft.HasOpenPathTo = function(td, other)
+  local path = FindPathThroughAttribute(td, other, "open", Equal, 1)
+  return #path > 0
+end

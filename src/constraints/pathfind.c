@@ -37,27 +37,30 @@ static void set_pos(void *a, size_t pos) {
     ((TileNode *) a)->pos = pos;
 }
 
-TileData** FindSimplePath(TileData* start, TileData* end) {
+TileData** FindPathThroughValids(TileData* start, TileData* end, TileSet* validTiles) {
     pqueue_t *frontier = pqueue_init(5, cmp_pri, get_pri, set_pri, get_pos, set_pos);
     struct { TileData* key; unsigned long value; } *costs = NULL;
     struct { TileData* key; TileData* value; } *parents = NULL;
-    
+
     TileNode* startNode = malloc(sizeof(TileNode));
     startNode->priority = INT_MAX;
     startNode->tile = start;
     pqueue_insert(frontier, startNode);
     hmput(costs, start, 0);
     hmput(parents, start, NULL);
-    
+
     while (!(pqueue_size(frontier) == 0)) {
         TileNode* current = pqueue_pop(frontier);
         if (current->tile == end) {
             free(current);
             break;
         }
-        
+
         TileData** neighbors = GetTileNeighbors(current->tile);
         for (int n=0; n < arrlen(neighbors); n++) {
+            if (!IsTileInSet(validTiles, neighbors[n])) {
+                continue;
+            }
             unsigned long cost = hmget(costs, current->tile);
             cost += 1; // TODO: have this be smarter about calculating from current to neighbors[n]
             if (hmgeti(costs, neighbors[n]) < 0 || cost < hmget(costs, neighbors[n])) {
@@ -72,7 +75,7 @@ TileData** FindSimplePath(TileData* start, TileData* end) {
         free(current);
         arrfree(neighbors);
     }
-    
+
     TileData** pathRev = NULL;
     TileData* next = hmget(parents, end);
     if (next == NULL) {
@@ -88,7 +91,7 @@ TileData** FindSimplePath(TileData* start, TileData* end) {
         arrpush(path, pathRev[i]);
     }
     arrfree(pathRev);
-    
+
     while (!(pqueue_size(frontier) == 0)) {
         TileNode* c = pqueue_pop(frontier);
         free(c);
@@ -97,4 +100,23 @@ TileData** FindSimplePath(TileData* start, TileData* end) {
     hmfree(costs);
     hmfree(parents);
     return path;
+}
+
+TileData** FindSimplePath(TileData* start, TileData* end) {
+    TileSet* ts = GetAllTilesAsSet();
+    TileData** ret = FindPathThroughValids(start, end, ts);
+    DestroyTileSet(ts);
+    return ret;
+}
+
+TileData** FindPathThroughAttribute(TileData* start, TileData* end, const char* attrName, AttrComparison comp, const char* value) {
+    TileData** vts = GetTilesByAttribute(attrName, comp, value);
+    TileSet* ts = NULL;
+    for (long i=0; i < arrlen(vts); i++) {
+        ts = AddTileToSet(ts, vts[i]);
+    }
+    arrfree(vts);
+    TileData** ret = FindPathThroughValids(start, end, ts);
+    DestroyTileSet(ts);
+    return ret;
 }
