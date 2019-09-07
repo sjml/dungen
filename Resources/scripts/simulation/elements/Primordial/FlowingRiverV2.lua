@@ -10,21 +10,37 @@ end
 
 
 
+function addWashedTags(tile)
+  for k,v in pairs(washingTags) do print(k,v) end
+  for tag, duration in pairs(washingTags) do
+    tile:AddTag(tag)
+    if duration == 1 then
+      washingTags[tag] = nil
+    else
+      washingTags[tag] = duration - 1
+    end
+  end
+end
+
+
+
 function addWater(tile)
   if tile:HasTags("water") ~= true then
     tile:AddTag("water")
+    addWashedTags(tile)
     table.insert(flowPath, tile)
     return true
   end
 
   local preferenceOrder = {SOUTHEAST, SOUTHWEST, EAST, WEST}
+  local secondaryPrefs  = {NORTHEAST, NORTHWEST}
 
+  -- so it meanders down as it falls
   if #flowPath >= 2
      and flowPath[#flowPath - 1]:GetNeighbor(SOUTHEAST) == flowPath[#flowPath] then
     preferenceOrder = {SOUTHWEST, SOUTHEAST, EAST, WEST}
   end
 
-  local secondaryPrefs  = {NORTHEAST, NORTHWEST}
 
   local backFlow = 7
 
@@ -40,10 +56,16 @@ function addWater(tile)
       end
     end
     flowCheckIdx = flowCheckIdx - 1
+    local tcc = getChamber(tc)
+    if tcc ~= nil and tcc ~= getChamber(flowPath[#flowPath]) then
+      nextFlow = nil
+      break
+    end
   end
 
   if nextFlow ~= nil then
     nextFlow:AddTag("water")
+    addWashedTags(nextFlow)
     table.insert(flowPath, nextFlow)
     return true
   end
@@ -59,10 +81,16 @@ function addWater(tile)
       end
     end
     flowCheckIdx = flowCheckIdx - 1
+    local tcc = getChamber(tc)
+    if tcc ~= nil and tcc ~= getChamber(flowPath[#flowPath]) then
+      nextFlow = nil
+      break
+    end
   end
 
   if nextFlow ~= nil then
     nextFlow:AddTag("water")
+    addWashedTags(tile)
     table.insert(flowPath, nextFlow)
     return true
   end
@@ -93,7 +121,7 @@ function checkForEncounters(agent, targetTile, originTile, agentsMet, chambersMe
   if chamber ~= nil then
     if chamberList[chamber.i] == nil then
       chamberList[chamber.i] = 1
-      print("entered chamber")
+      -- print("entered chamber")
       numEncounters = numEncounters + 1
 
       local accessPoints = getChamberAccesses(chamber)
@@ -125,6 +153,7 @@ function checkForEncounters(agent, targetTile, originTile, agentsMet, chambersMe
       local egressPoint = nil
       while egressPoint == nil and addWater(targetTile) do
         local last = flowPath[#flowPath]
+        AddTileToRegion(agent.domain, last)
         for _, t_d in ipairs(accessPoints) do
           if t_d[1] == last then
             egressPoint = t_d
@@ -138,10 +167,21 @@ function checkForEncounters(agent, targetTile, originTile, agentsMet, chambersMe
       else
         exitPoint = egressPoint[1]
       end
+
+      if chamber:HasTags("plague") then
+        sir("DieSides", 4)
+        push("System.DieRoll")
+        washingTags["plague"] = gir("DieRollResult") + 8
+      end
+    end
+  else
+    if targetTile:HasTags("gold") then
+      targetTile:RemoveTag("gold")
+      sir("DieSides", 4)
+      push("System.DieRoll")
+      washingTags["gold"] = gir("DieRollResult") + 1
     end
   end
-
-  -- do any last checks for individual tile stuff
 
   return exitPoint, numEncounters
 end
@@ -178,12 +218,19 @@ function exploreTile(agent, targetTile, originTile, isCarving)
       end
     end)
 
-    -- make a hole
-    carveOut(agent, targetTile)
-    addWater(targetTile)
-
     local continuations = {}
     local numEncounters = 0
+
+    -- make a hole
+    carveOut(agent, targetTile)
+    local cont, encs = checkForEncounters(agent, targetTile, originTile)
+    addWater(targetTile)
+    if cont ~= nil then
+      continuations[cont] = 1
+    end
+    numEncounters = numEncounters + encs
+    local tileEncs = numEncounters
+
     local agentsMet = {}
     local chambersMet = {}
     -- which can we get to *now*
@@ -203,12 +250,14 @@ function exploreTile(agent, targetTile, originTile, isCarving)
     if numEncounters == 0 then
       return targetTile
     else
+      if numEncounters ~= tileEncs then
+        table.remove(continuations, 1)
+      end
       -- TODO: get all the possibilities and pick one randomly?
       for tile, _ in pairs(continuations) do
         return tile
       end
     end
-
   else
     -- already open, so just check this one
     local cont, encs = checkForEncounters(agent, targetTile, originTile)
@@ -240,6 +289,7 @@ end
 
 
 function reflowRiver(agent)
+  -- print("reflowing...")
   local src = GetTileAtIndex(agent:GetAttributeInt("riverSource"))
   for _, t in pairs(GetTilesFromSet(agent.domain.tiles)) do
     agent.domain:RemoveTile(t)
@@ -248,19 +298,18 @@ function reflowRiver(agent)
 
   flowPath = {}
   washingTags = {}
-  local curr = src
   local flowing = true
   while flowing do
-    flowing = addWater(curr)
+    flowing = addWater(src)
 
     local prev  = flowPath[#flowPath - 1]
     local mouth = flowPath[#flowPath]
     if prev ~= nil and mouth ~= nil then
-      checkForEncounters(agent, mouth, prev)
+      mouth = checkForEncounters(agent, mouth, prev)
     end
 
     if #flowPath %3 == 0 then
-      push()
+      -- push()
     end
   end
 
@@ -319,6 +368,7 @@ while (riverAgent:GetAttributeInt("alive") ~= 0) do
   else
     -- waterfall
     path = {
+      EAST,
       EAST,
       EAST,
       SOUTHEAST,

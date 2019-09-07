@@ -14,16 +14,13 @@
 
 -- push("_testing.WaterFlowPlayground")
 
--- -- sir("DieSides", 4)
--- -- push("System.DieRoll")
--- -- for i=1,gir("DieRollResult") do
--- --   storeInChamber(chamber, "gems", true)
--- -- end
--- -- chamber:SetAttributeInt("treasure", gir("DieRollResult") + chamber:GetAttributeInt("treasure"))
-
--- chamber:AddTag("plague")
+local cavernCenter = GetTileAtPosition(5, 20)
+local chamber = makeChamber(cavernCenter, 1)
+chamber:AddTag("natural")
+chamber:AddTag("plague")
 
 -- push("Primordial.FlowingRiver")
-SeedRandomString("140734188864354///4561179728")
+-- SeedRandomString("140734188874162///4364600400") -- chamber forming around gold vein, not washing
+SeedRandomString("140734188878915///4375671888") -- chambers need to be able to merge
 push("Primordial.FlowingRiverV2")
 -- push("Disaster.VolcanicEruption")

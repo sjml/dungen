@@ -96,7 +96,10 @@ magma = {
 
 gold = {
   reqs = {
-    tags = "gold"
+    tags = "gold",
+    attributes = {
+      {"open", Equal, 0}
+    },
   },
   tileFill = colors.gold,
 }
