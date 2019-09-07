@@ -583,14 +583,11 @@ void ClearRegionOutline(Region* r) {
     }
 }
 
-void SetRegionLabel(Region* r, const char* text, float scale, gbVec4 color, gbVec2 tileOffset) {
-    r->label.text = malloc(sizeof(char) * (strlen(text) + 1));
-    strcpy(r->label.text, text);
-    r->label.scale = scale;
-    r->label.color.r = color.r;
-    r->label.color.g = color.g;
-    r->label.color.b = color.b;
-    r->label.color.a = color.a;
+gbVec2 GetRegionCenterPoint(Region* r) {
+    gbVec2 center = { 0.0f, 0.0f };
+    if (GetTileSetCount(r->tiles) == 0) {
+        return center;
+    }
 
     gbVec2 min = {  FLT_MAX,  FLT_MAX };
     gbVec2 max = { -FLT_MAX, -FLT_MAX };
@@ -601,11 +598,21 @@ void SetRegionLabel(Region* r, const char* text, float scale, gbVec4 color, gbVe
         max.y = gb_max(max.y, r->tiles[i].key->worldPos.y);
     }
 
-    gbVec2 center = {
-        (max.x - min.x) * 0.5f,
-        (max.y - min.y) * 0.5f
-    };
     gb_vec2_lerp(&center, min, max, 0.5f);
+    return center;
+}
+
+void SetRegionLabel(Region* r, const char* text, float scale, gbVec4 color, gbVec2 tileOffset) {
+    r->label.text = malloc(sizeof(char) * (strlen(text) + 1));
+    strcpy(r->label.text, text);
+    r->label.scale = scale;
+    r->label.color.r = color.r;
+    r->label.color.g = color.g;
+    r->label.color.b = color.b;
+    r->label.color.a = color.a;
+
+    gbVec2 center = GetRegionCenterPoint(r);
+
     center.x += tileDimensions.x * (float)tileOffset.x;
     center.y += tileDimensions.y * (float)tileOffset.y;
 

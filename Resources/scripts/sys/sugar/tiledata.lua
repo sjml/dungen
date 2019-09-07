@@ -6,7 +6,7 @@ tdft.GetCircle = function(td, radius)
 end
 
 tdft.GetNeighbors = function(td)
-  return GetTileCircle(td, 1)
+  return GetTileNeighbors(td)
 end
 
 WEST = 1
@@ -32,6 +32,29 @@ tdft.GetNeighbor = function(td, direction)
     ret = GetTileAtIndex(td.neighborSW)
   end
   return ret
+end
+
+tdft.GetNeighborDirection = function(td, n)
+  if td:GetNeighbor(WEST) == n then
+    return WEST
+  end
+  if td:GetNeighbor(NORTHWEST) == n then
+    return NORTHWEST
+  end
+  if td:GetNeighbor(NORTHEAST) == n then
+    return NORTHEAST
+  end
+  if td:GetNeighbor(EAST) == n then
+    return EAST
+  end
+  if td:GetNeighbor(SOUTHEAST) == n then
+    return SOUTHEAST
+  end
+  if td:GetNeighbor(SOUTHWEST) == n then
+    return SOUTHWEST
+  end
+
+  return -1
 end
 
 tdft.BuildPath = function(td, dirList)

@@ -1,6 +1,7 @@
 -- push("_testing._Root")
 -- push("_testing.UnitTest")
 -- push("_testing.UI")
+-- push("_testing.Pathing")
 
 -- push("Meta.Splash")
 -- push("Meta.Intro")
@@ -9,11 +10,9 @@
 
 -- push("Meta.Outro")
 
-push("Primordial.GoldVein")
+-- push("Primordial.GoldVein")
 
--- local cavernCenter = GetTileAtPosition(30, 21)
--- local chamber = makeChamber(cavernCenter, 1)
--- chamber:AddTag("natural")
+-- push("_testing.WaterFlowPlayground")
 
 -- -- sir("DieSides", 4)
 -- -- push("System.DieRoll")
@@ -24,5 +23,7 @@ push("Primordial.GoldVein")
 
 -- chamber:AddTag("plague")
 
-push("Primordial.FlowingRiver")
+-- push("Primordial.FlowingRiver")
+SeedRandomString("140734188864354///4561179728")
+push("Primordial.FlowingRiverV2")
 -- push("Disaster.VolcanicEruption")

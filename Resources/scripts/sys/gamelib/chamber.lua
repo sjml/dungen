@@ -32,6 +32,29 @@ function getChamber(tile)
   return nil
 end
 
+function getChamberAccesses(chamber)
+  local accessIdxs = {}
+
+  for _, t in pairs(GetTilesFromSet(chamber.tiles)) do
+    for _, dir in pairs({WEST, NORTHWEST, NORTHEAST, EAST, SOUTHEAST, SOUTHWEST}) do
+      local n = t:GetNeighbor(dir)
+      if n ~= nil then
+        if IsTileInSet(chamber.tiles, n) ~= true and
+           n:GetAttributeInt("open") == 1 then
+            accessIdxs[n.i] = dir
+        end
+      end
+    end
+  end
+
+  local accessTiles = {}
+  for idx, dir in pairs(accessIdxs) do
+    table.insert(accessTiles, {GetTileAtIndex(idx), dir})
+  end
+
+  return accessTiles
+end
+
 -- for things like water and magma
 function getFloodTile(chamber, tag, source)
   local tiles = GetTilesFromSet(chamber.tiles)

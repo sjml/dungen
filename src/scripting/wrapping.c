@@ -6905,6 +6905,35 @@ fail:
 }
 
 
+static int _wrap_GetRegionCenterPoint(lua_State* L) {
+  int SWIG_arg = 0;
+  Region *arg1 = (Region *) 0 ;
+  gbVec2 result;
+  
+  SWIG_check_num_args("GetRegionCenterPoint",1,1)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("GetRegionCenterPoint",1,"Region *");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_sRegion,0))){
+    SWIG_fail_ptr("GetRegionCenterPoint",1,SWIGTYPE_p_sRegion);
+  }
+  
+  result = GetRegionCenterPoint(arg1);
+  {
+    gbVec2 * resultptr;
+    resultptr = (gbVec2 *) malloc(sizeof(gbVec2));
+    memmove(resultptr, &result, sizeof(gbVec2));
+    SWIG_NewPointerObj(L,(void *) resultptr,SWIGTYPE_p_gbVec2,1); SWIG_arg++;
+  }
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
 static int _wrap_SetRegionLabel(lua_State* L) {
   int SWIG_arg = 0;
   Region *arg1 = (Region *) 0 ;
@@ -9008,6 +9037,7 @@ static swig_lua_method swig_SwigModule_methods[]= {
     { "DestroyRegion", _wrap_DestroyRegion},
     { "SetRegionOutline", _wrap_SetRegionOutline},
     { "ClearRegionOutline", _wrap_ClearRegionOutline},
+    { "GetRegionCenterPoint", _wrap_GetRegionCenterPoint},
     { "SetRegionLabel", _wrap_SetRegionLabel},
     { "ClearRegionLabel", _wrap_ClearRegionLabel},
     { "AddTileToRegion", _wrap_AddTileToRegion},
