@@ -1,4 +1,23 @@
+All tunneling and chambering needs to be centralized
+    - carve out
+    - check for encounters
+    - should this be done with the HLVM and pushes or with functions?
+        - for purity: pushes, but that means a render call each time
+        - maybe just the encounters are done with the stack
+    - don't allow carving without an agent
+    - needs to be agentized:
+        - search for: SetAttributeInt("open", 1)
+        - cave complex
+        - great wyrm
+        - natural caverns
+        - earthquake
+        - fallen star
+        - plague(?)
+        - volcanic eruption
+
 Want to be able to merge chambers
+    - only merge if they *share* a tile
+        - still check for encounters on neighbors of carve, but don't merge from them
     - merge tags
     - do anything with attributes?
         - so far it's mostly "open" and "treasure"
@@ -6,6 +25,7 @@ Want to be able to merge chambers
     - take all tiles out of their domain if it has one, add them to merging agent
     - same with disappearing chamber's region
         - after resolving encounter between agents, of course
+        - winner takes possession
     - unstore everything from disappearing chamber, store it in new chamber
 
     -- wait until after we've got agents interacting to worry about this
