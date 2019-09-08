@@ -40,21 +40,42 @@ while topTile:HasTags("sky") do
   topTile = chasmPath[topIdx]
 end
 
- conePath = { -- build a triangle at the top of the chasm
+leftConePath = {
   NORTHWEST,
+  WEST,
   WEST,
   NORTHEAST,
   EAST,
-  SOUTHEAST,
+  NORTHWEST,
+}
+rightConePath = {
+  NORTHEAST,
+  EAST,
   EAST,
   NORTHWEST,
-  NORTHWEST,
   WEST,
+  NORTHEAST,
 }
 
-cone = topTile:BuildPath(conePath)
-for _, coneTile in pairs(cone) do
-  coneTile:AddTag("ground")
-  coneTile:RemoveTag("sky")
-  coneTile:SetAttributeInt("open", 0)
+leftCone = topTile:BuildPath(leftConePath)
+rightCone = topTile:BuildPath(rightConePath)
+for _, cone in pairs({leftCone, rightCone}) do
+  for _, coneTile in pairs(cone) do
+    coneTile:AddTag("ground")
+    coneTile:RemoveTag("sky")
+    coneTile:SetAttributeInt("open", 0)
+  end
+end
+
+if count % 2 == 0 then
+  craterPath = {NORTHWEST, NORTHEAST}
+else
+  craterPath = {NORTHEAST, NORTHWEST}
+end
+
+crater = topTile:BuildPath(craterPath)
+for _, craterTile in pairs(crater) do
+  craterTile:AddTag("ground")
+  craterTile:RemoveTag("sky")
+  craterTile:SetAttributeInt("open", 1)
 end
