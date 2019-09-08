@@ -1,3 +1,30 @@
+-- ENCOUNTERS
+  -- if it finds sky:
+    -- make a lake and die
+
+  -- how does it react when it finds already-open space that is not a chamber?
+    -- i.e. earthquake path, magma chimney, mine shaft, etc.
+
+  -- if it finds magma:
+    -- make a chimney upwards and fill with steam
+
+  -- if it finds a chamber, flood it, continue on
+    -- if it's a monster's cavern:
+      -- if we're in the primordial era, transform the monster to an aquatic one
+      -- otherwise, it tries to escape via connected tunnels
+        -- if it can't, it dies
+    -- if it's a civilization's cavern:
+      -- they lose one of whatever population was there; the rest move out
+
+    -- what if it encounters FATE?
+      -- ideally: back off and route around it... but that might be hard to manage
+      -- more easily: just stop entirely
+
+-- NOTE: when picking starting point, make sure to pick a tile that is currently closed
+
+
+
+
 local flowPath = {}
 local washingTags = {}
 

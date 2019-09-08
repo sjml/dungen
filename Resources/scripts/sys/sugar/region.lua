@@ -12,7 +12,7 @@ rft.SetAttributeString = function(r, name, value)
 end
 
 rft.GetAttributeInt = function(r, name)
-  return GetRegionAttributeInt(r, name)
+  return math.floor(GetRegionAttributeInt(r, name))
 end
 
 rft.GetAttributeFloat = function(r, name)
@@ -20,7 +20,7 @@ rft.GetAttributeFloat = function(r, name)
 end
 
 rft.GetAttributeString = function(r, name)
-  return GetRegionAttributeString(ts, name)
+  return GetRegionAttributeString(r, name)
 end
 
 rft.CheckAttribute = function(r, name, comp, value)

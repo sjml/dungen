@@ -55,77 +55,110 @@ function getChamberAccesses(chamber)
   return accessTiles
 end
 
--- for things like water and magma
-function getFloodTile(chamber, tag, source)
-  local tiles = GetTilesFromSet(chamber.tiles)
-  local notFlooded = {}
-  for _, t in pairs(tiles) do
-    if t:HasTags(tag) ~= true then
-      table.insert(notFlooded, t)
-    end
-  end
+function storeItemInChamber(chamber, tag)
+  local cap = chamber:GetAttributeInt("chamberStorageAmount")
+  chamber:SetAttributeInt("chamberStorageAmount", cap + 1)
+  local sAttr = "chamberStorage" .. tostring(cap + 1)
+  chamber:SetAttributeString(sAttr, tag)
 
-  if #notFlooded == 0 then
-    return nil
-  end
-
-  -- find lowest tile *without* this tag (since it can overlap)
-  local lowY = -1
-  local xVals = {}
-  local lowTile = nil
-  for _, t in pairs(notFlooded) do
-    if t.hexPos.y > lowY then
-      xVals = {}
-      table.insert(xVals, t.hexPos.x)
-      lowY = t.hexPos.y
-      lowTile = t
-    elseif t.hexPos.y == lowY then
-      table.insert(xVals, t.hexPos.x)
-    end
-  end
-  -- pick the one nearest the source of the flow
-  for _, x in pairs(xVals) do
-    if math.abs(x - source.hexPos.x) < math.abs(lowTile.hexPos.x - source.hexPos.x) then
-      lowTile = GetTileAtPosition(x, lowY)
-    end
-  end
-
-  return lowTile
+  -- TODO: this function should be the one to actually
+  --   check if there's room, instead of the display reset
+  return _resetStorageDisplay(chamber)
 end
 
--- for things like gold, food, people
-function storeInChamber(chamber, tag)
-  local tiles = GetTilesFromSet(chamber.tiles)
-  local empties = {}
-  for _, t in pairs(tiles) do
-    if t:GetAttributeInt("empty") == 1 then
-      table.insert(empties, t)
+function removeItemFromChamber(chamber, tag)
+  local cap = chamber:GetAttributeInt("chamberStorageAmount")
+
+  local found = false
+  for i=1,cap do
+    local sAttr = "chamberStorage" .. tostring(i)
+    if found then
+      local prev = "chamberStorage" .. tostring(i-1)
+      chamber:SetAttributeString(prev, chamber:GetAttributeString(sAttr))
+    else
+      if chamber:GetAttributeString(sAttr) == tag then
+        found = true
+      end
     end
   end
 
-  if (#empties == 0) then
-    return nil
+  if found then
+    chamber:SetAttributeInt("chamberStorageAmount", cap - 1)
+    _resetStorageDisplay(chamber)
+    return true
+  else
+    return false
   end
+end
 
-  local lowY = -1
-  local xVals = {}
-  local lowTile = nil
-  for _, tile in pairs(empties) do
-    if tile.hexPos.y > lowY then
-      xVals = {}
-      table.insert(xVals, tile.hexPos.x)
-      lowY = tile.hexPos.y
-      lowTile = tile
-    elseif tile.hexPos.y == lowY then
-      table.insert(xVals, tile.hexPos.x)
+function getItemsInChamber(chamber)
+  local ret = {}
+  local cap = chamber:GetAttributeInt("chamberStorageAmount")
+  for i=1,cap do
+    table.insert(ret, chamber:GetAttributeString("chamberStorage" .. tostring(i)))
+  end
+  return ret
+end
+
+function _resetStorageDisplay(chamber)
+  -- clear out all storage tags
+  local chamberTiles = GetTilesFromSet(chamber.tiles)
+  for _, tile in pairs(chamberTiles) do
+    local tags = tile:GetTags()
+    for _, tag in pairs(tags) do
+      if tag:starts("storage_") then
+        tile:RemoveTag(tag)
+        tile:RemoveTag(tag:sub(string.len("storage_")+1, -1))
+        tile:SetAttributeInt("open", 1)
+      end
     end
   end
-  table.sort(xVals)
-  local xCoord = xVals[math.ceil(#xVals / 2)]
-  local lowTile = GetTileAtPosition(xCoord, lowY)
 
-  lowTile:SetAttributeInt("empty", 0)
-  lowTile:AddTag(tag)
+  local cap = chamber:GetAttributeInt("chamberStorageAmount")
+  for i=1,cap do
+    local tag = chamber:GetAttributeString("chamberStorage" .. tostring(i))
+    local sTag = "storage_" .. tag
+    local empties = {}
+    for _, tile in pairs(chamberTiles) do
+      local tTags = tile:GetTags()
+      local open = true
+      for _, tag in pairs(tTags) do
+        if tag:starts("storage_") then
+          open = false
+          break
+        end
+      end
+      if open then
+        table.insert(empties, tile)
+      end
+    end
 
-  return lowTile
+    if #empties == 0 then
+      io.stderr:write("LUA ERROR: Couldn't fit `"..tag.."` in storage chamber.\n")
+      return false
+    end
+
+    local lowY = -1
+    local xVals = {}
+    local lowTile = nil
+    for _, tile in pairs(empties) do
+      if tile.hexPos.y > lowY then
+        xVals = {}
+        table.insert(xVals, tile.hexPos.x)
+        lowY = tile.hexPos.y
+        lowTile = tile
+      elseif tile.hexPos.y == lowY then
+        table.insert(xVals, tile.hexPos.x)
+      end
+    end
+    table.sort(xVals)
+    local xCoord = xVals[math.ceil(#xVals / 2)]
+    local lowTile = GetTileAtPosition(xCoord, lowY)
+
+    lowTile:AddTag(tag)
+    lowTile:AddTag(sTag)
+    lowTile:SetAttributeInt("open", 0)
+  end
+
+  return true
 end

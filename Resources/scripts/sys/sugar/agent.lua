@@ -12,7 +12,7 @@ aft.SetAttributeString = function(a, name, value)
 end
 
 aft.GetAttributeInt = function(a, name)
-  return GetAgentAttributeInt(a, name)
+  return math.floor(GetAgentAttributeInt(a, name))
 end
 
 aft.GetAttributeFloat = function(a, name)

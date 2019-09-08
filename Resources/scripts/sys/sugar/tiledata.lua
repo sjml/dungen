@@ -84,7 +84,7 @@ tdft.SetAttributeString = function(td, name, value)
 end
 
 tdft.GetAttributeInt = function(td, name)
-  return GetTileAttributeInt(td, name)
+  return math.floor(GetTileAttributeInt(td, name))
 end
 
 tdft.GetAttributeFloat = function(td, name)
