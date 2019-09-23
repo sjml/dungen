@@ -314,7 +314,7 @@ float _DrawText(FontCacheEntry* fce, float fontSize, const char* text) {
 
         int rx, ry;
         float x0, y0, x1, y1, s0, t0, s1, t1;
-        
+
         rx = (int)floorf((float)g.bottomRight.x - (float)g.topLeft.x);
         ry = (int)floorf((float)g.bottomRight.y - (float)g.topLeft.y);
         x0 = dx;
@@ -343,12 +343,12 @@ float _DrawText(FontCacheEntry* fce, float fontSize, const char* text) {
         t->vertices[t->numVertices++] = y0;
         t->vertices[t->numVertices++] = s1;
         t->vertices[t->numVertices++] = t0;
-        
+
         t->vertices[t->numVertices++] = x0;
         t->vertices[t->numVertices++] = y1;
         t->vertices[t->numVertices++] = s0;
         t->vertices[t->numVertices++] = t1;
-        
+
         t->vertices[t->numVertices++] = x1;
         t->vertices[t->numVertices++] = y1;
         t->vertices[t->numVertices++] = s1;
@@ -428,12 +428,14 @@ float DrawGameText(const char* text, const char* fontPath, float size, int pixel
     glTranslatef((GLfloat)pixelX, (GLfloat)pixelY, 0.0f);
     glRotatef(angle, 0.0f, 0.0f, 1.0f);
     glEnable(GL_TEXTURE_2D);
+    glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 
     _StartDrawing(fce);
         float dx = _DrawText(fce, size, text);
     _EndDrawing(fce);
 
     glDisable(GL_TEXTURE_2D);
+    glDisableClientState(GL_TEXTURE_COORD_ARRAY);
     glPopMatrix();
     glMatrixMode(GL_MODELVIEW);
 
