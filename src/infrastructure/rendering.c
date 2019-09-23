@@ -34,13 +34,15 @@ static const int defaultWindowHeight = 768;
     static GLFWwindow* window = NULL;
 
     void _glfwSetup() {
-        #if DEBUG
-            glfwInitHint(GLFW_COCOA_CHDIR_RESOURCES, GLFW_FALSE);
-        #else
-            glfwInitHint(GLFW_COCOA_CHDIR_RESOURCES, GLFW_TRUE);
-        #endif
+        #if !(DUNGEN_WASM)
+            #if DEBUG
+                glfwInitHint(GLFW_COCOA_CHDIR_RESOURCES, GLFW_FALSE);
+            #else
+                glfwInitHint(GLFW_COCOA_CHDIR_RESOURCES, GLFW_TRUE);
+            #endif
 
-        glfwInitHint(GLFW_COCOA_MENUBAR, GLFW_TRUE);
+            glfwInitHint(GLFW_COCOA_MENUBAR, GLFW_TRUE);
+        #endif // DUNGEN_WASM
 
         if (!glfwInit()) {
             exit(EXIT_FAILURE);
@@ -52,7 +54,9 @@ static const int defaultWindowHeight = 768;
         //    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
         glfwWindowHint(GLFW_SAMPLES, 4);
-        glfwWindowHint(GLFW_COCOA_RETINA_FRAMEBUFFER, GLFW_TRUE);
+        #if !(DUNGEN_WASM)
+            glfwWindowHint(GLFW_COCOA_RETINA_FRAMEBUFFER, GLFW_TRUE);
+        #endif // DUNGEN_WASM
         glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 
         window = glfwCreateWindow(defaultWindowWidth, defaultWindowHeight, "DunGen", NULL, NULL);
@@ -66,7 +70,9 @@ static const int defaultWindowHeight = 768;
 
         glfwMakeContextCurrent(window);
 
-        glfwSwapInterval(1);
+        #if !(DUNGEN_WASM)
+            glfwSwapInterval(1);
+        #endif
 
         glfwSetCursorPosCallback(window, MouseMoveCallback);
         glfwSetMouseButtonCallback(window, MouseClickCallback);
@@ -255,7 +261,7 @@ gbVec2 ScreenToWorld(gbVec2 screenCoordinates) {
 gbVec2 ScreenToOrtho(gbVec2 screenCoordinates) {
     float xPerc = screenCoordinates.x / windowDimensions.x;
     float yPerc = screenCoordinates.y / windowDimensions.y;
-    
+
     gbVec2 ret = {
         xPerc * orthoDimensions.x,
         yPerc * orthoDimensions.y

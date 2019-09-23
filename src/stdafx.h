@@ -10,6 +10,10 @@
 #include <lauxlib.h>
 #include <lualib.h>
 
+#ifdef __EMSCRIPTEN__
+    #include <emscripten/emscripten.h>
+#endif
+
 #if !(DUNGEN_MOBILE)
     #ifdef __clang__
         #pragma clang diagnostic push

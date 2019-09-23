@@ -9,6 +9,11 @@
     #endif // TARGET_OS_OSX
 #endif // __APPLE__
 
+#ifdef __EMSCRIPTEN__
+    #define DUNGEN_WASM 1
+#else
+    #define DUNGEN_WASM 0
+#endif // __EMSCRIPTEN__
 
 
 void InitializeDunGen(const char* startupElement);

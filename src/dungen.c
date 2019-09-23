@@ -12,22 +12,34 @@ void InitializeDunGen(const char* startupElement) {
     InitializeRendering();
     InitializeLua();
     InitializeAttributes();
-    
     InitializeGame(startupElement);
 }
 
+bool _TickAndRender() {
+    bool updateStopping = GameTick();
+    bool renderStopping = Render();
+    return updateStopping || renderStopping;
+}
+
+void _RawTickAndRender() {
+    GameTick();
+    Render();
+}
+
 void RunDunGen(void) {
-    bool shouldStop = false;
-    while (!shouldStop) {
-        bool updateStopping = GameTick();
-        bool renderStopping = Render();
-        shouldStop = updateStopping || renderStopping;
-    }
+    #if !(DUNGEN_WASM)
+        bool shouldStop = false;
+        while (!shouldStop) {
+            shouldStop = _TickAndRender();
+        }
+    #else
+        emscripten_set_main_loop(_RawTickAndRender, 0, 0);
+    #endif // DUNGEN_WASM
 }
 
 void FinalizeDunGen(void) {
     FinalizeGame();
-    
+
     FinalizeAttributes();
     FinalizeLua();
     FinalizeRendering();
