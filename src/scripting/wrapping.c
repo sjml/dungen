@@ -6791,6 +6791,26 @@ fail:
 }
 
 
+static int _wrap_GetRegionByIndex(lua_State* L) {
+  int SWIG_arg = 0;
+  long long arg1 ;
+  Region *result = 0 ;
+  
+  SWIG_check_num_args("GetRegionByIndex",1,1)
+  if(!lua_isnumber(L,1)) SWIG_fail_arg("GetRegionByIndex",1,"long long");
+  arg1 = (long long)lua_tonumber(L, 1);
+  result = (Region *)GetRegionByIndex(arg1);
+  SWIG_NewPointerObj(L,result,SWIGTYPE_p_sRegion,0); SWIG_arg++; 
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
 static int _wrap_DestroyRegion(lua_State* L) {
   int SWIG_arg = 0;
   Region *arg1 = (Region *) 0 ;
@@ -7277,6 +7297,26 @@ static int _wrap_CreateAgent(lua_State* L) {
   
   SWIG_check_num_args("CreateAgent",0,0)
   result = (Agent *)CreateAgent();
+  SWIG_NewPointerObj(L,result,SWIGTYPE_p_Agent,0); SWIG_arg++; 
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_GetAgentByIndex(lua_State* L) {
+  int SWIG_arg = 0;
+  long long arg1 ;
+  Agent *result = 0 ;
+  
+  SWIG_check_num_args("GetAgentByIndex",1,1)
+  if(!lua_isnumber(L,1)) SWIG_fail_arg("GetAgentByIndex",1,"long long");
+  arg1 = (long long)lua_tonumber(L, 1);
+  result = (Agent *)GetAgentByIndex(arg1);
   SWIG_NewPointerObj(L,result,SWIGTYPE_p_Agent,0); SWIG_arg++; 
   return SWIG_arg;
   
@@ -9034,6 +9074,7 @@ static swig_lua_method swig_SwigModule_methods[]= {
     { "GetTilesFromSet", _wrap_GetTilesFromSet},
     { "IntersectTileSets", _wrap_IntersectTileSets},
     { "CreateRegion", _wrap_CreateRegion},
+    { "GetRegionByIndex", _wrap_GetRegionByIndex},
     { "DestroyRegion", _wrap_DestroyRegion},
     { "SetRegionOutline", _wrap_SetRegionOutline},
     { "ClearRegionOutline", _wrap_ClearRegionOutline},
@@ -9049,6 +9090,7 @@ static swig_lua_method swig_SwigModule_methods[]= {
     { "GetRegionParent", _wrap_GetRegionParent},
     { "GetRegionChildren", _wrap_GetRegionChildren},
     { "CreateAgent", _wrap_CreateAgent},
+    { "GetAgentByIndex", _wrap_GetAgentByIndex},
     { "GetAllAgents", _wrap_GetAllAgents},
     { "SetTileAttributeInt", _wrap_SetTileAttributeInt},
     { "SetTileAttributeFloat", _wrap_SetTileAttributeFloat},

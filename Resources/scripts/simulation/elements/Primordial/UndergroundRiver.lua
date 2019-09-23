@@ -28,15 +28,6 @@
 local flowPath = {}
 local washingTags = {}
 
-
-function carveOut(agent, targetTile)
-  targetTile:SetAttributeInt("open", 1)
-  targetTile:SetAttributeInt("carvedBy", agent.i)
-  agent.domain:AddTile(targetTile)
-end
-
-
-
 function addWashedTags(tile)
   for k,v in pairs(washingTags) do print(k,v) end
   for tag, duration in pairs(washingTags) do
@@ -50,12 +41,16 @@ function addWashedTags(tile)
 end
 
 
+function waterTile(tile)
+  tile:AddTag("water")
+  addWashedTags(tile)
+  table.insert(flowPath, tile)
+end
+
 
 function addWater(tile)
   if tile:HasTags("water") ~= true then
-    tile:AddTag("water")
-    addWashedTags(tile)
-    table.insert(flowPath, tile)
+    waterTile(tile)
     return true
   end
 
@@ -67,7 +62,6 @@ function addWater(tile)
      and flowPath[#flowPath - 1]:GetNeighbor(SOUTHEAST) == flowPath[#flowPath] then
     preferenceOrder = {SOUTHWEST, SOUTHEAST, EAST, WEST}
   end
-
 
   local backFlow = 7
 
@@ -91,9 +85,7 @@ function addWater(tile)
   end
 
   if nextFlow ~= nil then
-    nextFlow:AddTag("water")
-    addWashedTags(nextFlow)
-    table.insert(flowPath, nextFlow)
+    waterTile(nextFlow)
     return true
   end
 
@@ -116,9 +108,7 @@ function addWater(tile)
   end
 
   if nextFlow ~= nil then
-    nextFlow:AddTag("water")
-    addWashedTags(tile)
-    table.insert(flowPath, nextFlow)
+    waterTile(nextFlow)
     return true
   end
 
@@ -299,15 +289,14 @@ function explorePath(agent, startTile, path, isCarving)
   for i, dir in ipairs(path) do
     local next = curr:GetNeighbor(dir)
     if next == nil then
-      agent:SetAttributeInt("alive", 0)
       return nil
     end
 
     curr = exploreTile(agent, next, curr, isCarving)
     if   curr == nil  -- couldn't find a next tile
       or curr ~= next -- the next tile isn't what we expected; probably had an encounter
-      then
-        break
+    then
+      break
     end
   end
   return curr
@@ -315,7 +304,7 @@ end
 
 
 
-function reflowRiver(agent)
+function reflowRiver(agent, animate)
   -- print("reflowing...")
   local src = GetTileAtIndex(agent:GetAttributeInt("riverSource"))
   for _, t in pairs(GetTilesFromSet(agent.domain.tiles)) do
@@ -335,8 +324,8 @@ function reflowRiver(agent)
       mouth = checkForEncounters(agent, mouth, prev)
     end
 
-    if #flowPath %3 == 0 then
-      -- push()
+    if animate and #flowPath % 2 == 0 then
+      push()
     end
   end
 

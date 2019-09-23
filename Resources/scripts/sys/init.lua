@@ -32,6 +32,7 @@ require("sys.sugar.agent")
 
 require("sys.gamelib.chamber")
 require("sys.gamelib.pathing")
+require("sys.gamelib.exploration")
 
 ProFi = require("lib.ProFi")
 ordered_table = require("lib.ordered_table")

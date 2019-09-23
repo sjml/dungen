@@ -88,6 +88,7 @@ TileSet* IntersectTileSets(TileSet* set1, TileSet* set2);
 
 
 Region* CreateRegion(void);
+Region* GetRegionByIndex(long long idx);
 void DestroyRegion(Region* r);
 void SetRegionOutline(Region* r, gbVec4 color, float thickness, int type);
 void ClearRegionOutline(Region* r);
@@ -105,4 +106,5 @@ Region** GetRegionChildren(Region* r);
 
 
 Agent* CreateAgent(void);
+Agent* GetAgentByIndex(long long idx);
 Agent** GetAllAgents(void);

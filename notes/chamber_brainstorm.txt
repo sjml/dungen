@@ -1,4 +1,5 @@
 All tunneling and chambering needs to be centralized
+    - will be part of the process of generalizing the new river logic
     - carve out
     - check for encounters
     - should this be done with the HLVM and pushes or with functions?

@@ -63,6 +63,29 @@ function table.slice(tbl, first, last, step)
   return sliced
 end
 
+function rmTableDupes(t)
+  local hash = {}
+  local j = 1
+  local n = #t
+  for i=1, n do
+    local test = t[i]
+    -- TODO: oh my this is quite a hackhack
+    -- if type(test) == "userdata" and getmetatable(test)[".type"] == "TileData" then
+    --   test = t[i].i
+    -- end
+    if hash[test] == nil then
+      hash[test] = true
+      if i ~= j then
+        t[j] = t[i]
+        t[i] = nil
+      end
+      j = j + 1
+    else
+      t[i] = nil
+    end
+  end
+end
+
 function GetFunctionTable(classname)
   local reg = debug.getregistry()
   local classTable = reg["SWIG"][classname]

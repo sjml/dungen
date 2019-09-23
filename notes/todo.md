@@ -1,4 +1,7 @@
 ## TODO
+0. Rework river encounters to use centralized system
+    - rename central functions
+    - rivers should only backflow within chambers, but within chambers, there should be no limit on backflow (flood the chamber until an egress is found, basically, but don't go back along the path or to previous chambers)
 1. Styler rework
     - can it handle a region that is both water and plague?
     - rendering of sub-regions; does that work?

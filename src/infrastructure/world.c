@@ -449,6 +449,19 @@ Region* CreateRegion() {
     return r;
 }
 
+Region* GetRegionByIndex(long long idx) {
+    Region** regions = GetRenderingRegions();
+    Region* ret = NULL;
+    for (long long i = 0; i < arrlen(regions); i++) {
+        if (regions[i]->i == idx) {
+            ret = regions[i];
+            break;
+        }
+    }
+    arrfree(regions);
+    return ret;
+}
+
 void DestroyRegion(Region* r) {
     SetRegionParent(r, NULL);
     for (long i=0; i < arrlen(r->children); i++) {
@@ -641,6 +654,18 @@ Agent* CreateAgent(void) {
     SetupAgentAttributeData(a);
 
     return a;
+}
+
+// this *should* be as simple as just an array lookup, but with my luck
+//   I'll change it so agents can be deleted and forget to update this
+//   so trading some inefficiency for protection against future buffoonery.
+Agent* GetAgentByIndex(long long idx) {
+    for (long long i = 0; i < arrlen(agents); i++) {
+        if (agents[i]->i == idx) {
+            return agents[i];
+        }
+    }
+    return NULL;
 }
 
 Agent** GetAllAgents(void) {
