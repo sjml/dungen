@@ -5,11 +5,10 @@
 
 
 
-%typemap(in) gbVec4*
+%typemap(in) gbVec4* (gbVec4 tempVec)
 {
     // gbVec4 pointer conversion
     gbVec4 *vecPtr;
-    gbVec4 vec;
     if (SWIG_IsOK(SWIG_ConvertPtr(L,$input,(void**)&vecPtr,SWIGTYPE_p_gbVec4,0))) {
         $1 = vecPtr;
     }
@@ -39,11 +38,11 @@
         }
 
         // build the vector
-        vec.x = x;
-        vec.y = y;
-        vec.z = z;
-        vec.w = w;
-        $1 = &vec;
+        tempVec.x = x;
+        tempVec.y = y;
+        tempVec.z = z;
+        tempVec.w = w;
+        $1 = &tempVec;
     }
 }
 
@@ -96,11 +95,10 @@
     }
 }
 
-%typemap(in) gbVec3*
+%typemap(in) gbVec3* (gbVec3 tempVec)
 {
     // gbVec3 pointer conversion
     gbVec3 *vecPtr;
-    gbVec3 vec;
     if (SWIG_IsOK(SWIG_ConvertPtr(L,$input,(void**)&vecPtr,SWIGTYPE_p_gbVec3,0))) {
         $1 = vecPtr;
     }
@@ -122,10 +120,10 @@
         lua_pop(L, 1);
 
         // build the vector
-        vec.x = x;
-        vec.y = y;
-        vec.z = z;
-        $1 = &vec;
+        tempVec.x = x;
+        tempVec.y = y;
+        tempVec.z = z;
+        $1 = &tempVec;
     }
 }
 
@@ -169,11 +167,10 @@
 }
 
 
-%typemap(in) gbVec2*
+%typemap(in) gbVec2* (gbVec2 tempVec)
 {
     // gbVec2 pointer conversion
     gbVec2 *vecPtr;
-    gbVec2 vec;
     if (SWIG_IsOK(SWIG_ConvertPtr(L,$input,(void**)&vecPtr,SWIGTYPE_p_gbVec2,0))) {
         $1 = vecPtr;
     }
@@ -190,9 +187,9 @@
         lua_pop(L, 1);
 
         // build the vector
-        vec.x = x;
-        vec.y = y;
-        $1 = &vec;
+        tempVec.x = x;
+        tempVec.y = y;
+        $1 = &tempVec;
     }
 }
 
@@ -229,11 +226,10 @@
 }
 
 
-%typemap(in) Vec2i*
+%typemap(in) Vec2i* (Vec2i tempVec)
 {
     // Vec2i pointer conversion
     Vec2i *vecPtr;
-    Vec2i vec;
     if (SWIG_IsOK(SWIG_ConvertPtr(L,$input,(void**)&vecPtr,SWIGTYPE_p_Vec2i,0))) {
         $1 = vecPtr;
     }
@@ -250,9 +246,9 @@
         lua_pop(L, 1);
 
         // build the vector
-        vec.x = x;
-        vec.y = y;
-        $1 = &vec;
+        tempVec.x = x;
+        tempVec.y = y;
+        $1 = &tempVec;
     }
 }
 

@@ -2755,13 +2755,13 @@ static int _wrap_Vec2i_x_set(lua_State* L) {
   int SWIG_arg = 0;
   Vec2i *arg1 = (Vec2i *) 0 ;
   int arg2 ;
+  Vec2i tempVec1 ;
   
   SWIG_check_num_args("Vec2i::x",2,2)
   if(!lua_isnumber(L,2)) SWIG_fail_arg("Vec2i::x",2,"int");
   {
     // Vec2i pointer conversion
     Vec2i *vecPtr;
-    Vec2i vec;
     if (SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&vecPtr,SWIGTYPE_p_Vec2i,0))) {
       arg1 = vecPtr;
     }
@@ -2778,9 +2778,9 @@ static int _wrap_Vec2i_x_set(lua_State* L) {
       lua_pop(L, 1);
       
       // build the vector
-      vec.x = x;
-      vec.y = y;
-      arg1 = &vec;
+      tempVec1.x = x;
+      tempVec1.y = y;
+      arg1 = &tempVec1;
     }
   }
   arg2 = (int)lua_tonumber(L, 2);
@@ -2799,13 +2799,13 @@ fail:
 static int _wrap_Vec2i_x_get(lua_State* L) {
   int SWIG_arg = 0;
   Vec2i *arg1 = (Vec2i *) 0 ;
+  Vec2i tempVec1 ;
   int result;
   
   SWIG_check_num_args("Vec2i::x",1,1)
   {
     // Vec2i pointer conversion
     Vec2i *vecPtr;
-    Vec2i vec;
     if (SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&vecPtr,SWIGTYPE_p_Vec2i,0))) {
       arg1 = vecPtr;
     }
@@ -2822,9 +2822,9 @@ static int _wrap_Vec2i_x_get(lua_State* L) {
       lua_pop(L, 1);
       
       // build the vector
-      vec.x = x;
-      vec.y = y;
-      arg1 = &vec;
+      tempVec1.x = x;
+      tempVec1.y = y;
+      arg1 = &tempVec1;
     }
   }
   result = (int) ((arg1)->x);
@@ -2843,13 +2843,13 @@ static int _wrap_Vec2i_y_set(lua_State* L) {
   int SWIG_arg = 0;
   Vec2i *arg1 = (Vec2i *) 0 ;
   int arg2 ;
+  Vec2i tempVec1 ;
   
   SWIG_check_num_args("Vec2i::y",2,2)
   if(!lua_isnumber(L,2)) SWIG_fail_arg("Vec2i::y",2,"int");
   {
     // Vec2i pointer conversion
     Vec2i *vecPtr;
-    Vec2i vec;
     if (SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&vecPtr,SWIGTYPE_p_Vec2i,0))) {
       arg1 = vecPtr;
     }
@@ -2866,9 +2866,9 @@ static int _wrap_Vec2i_y_set(lua_State* L) {
       lua_pop(L, 1);
       
       // build the vector
-      vec.x = x;
-      vec.y = y;
-      arg1 = &vec;
+      tempVec1.x = x;
+      tempVec1.y = y;
+      arg1 = &tempVec1;
     }
   }
   arg2 = (int)lua_tonumber(L, 2);
@@ -2887,13 +2887,13 @@ fail:
 static int _wrap_Vec2i_y_get(lua_State* L) {
   int SWIG_arg = 0;
   Vec2i *arg1 = (Vec2i *) 0 ;
+  Vec2i tempVec1 ;
   int result;
   
   SWIG_check_num_args("Vec2i::y",1,1)
   {
     // Vec2i pointer conversion
     Vec2i *vecPtr;
-    Vec2i vec;
     if (SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&vecPtr,SWIGTYPE_p_Vec2i,0))) {
       arg1 = vecPtr;
     }
@@ -2910,9 +2910,9 @@ static int _wrap_Vec2i_y_get(lua_State* L) {
       lua_pop(L, 1);
       
       // build the vector
-      vec.x = x;
-      vec.y = y;
-      arg1 = &vec;
+      tempVec1.x = x;
+      tempVec1.y = y;
+      arg1 = &tempVec1;
     }
   }
   result = (int) ((arg1)->y);
@@ -3522,6 +3522,7 @@ static int _wrap_gbVec3_xy_set(lua_State* L) {
   int SWIG_arg = 0;
   union gbVec3 *arg1 = (union gbVec3 *) 0 ;
   gbVec2 *arg2 = (gbVec2 *) 0 ;
+  gbVec2 tempVec2 ;
   
   SWIG_check_num_args("gbVec3::xy",2,2)
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("gbVec3::xy",1,"union gbVec3 *");
@@ -3533,7 +3534,6 @@ static int _wrap_gbVec3_xy_set(lua_State* L) {
   {
     // gbVec2 pointer conversion
     gbVec2 *vecPtr;
-    gbVec2 vec;
     if (SWIG_IsOK(SWIG_ConvertPtr(L,2,(void**)&vecPtr,SWIGTYPE_p_gbVec2,0))) {
       arg2 = vecPtr;
     }
@@ -3550,9 +3550,9 @@ static int _wrap_gbVec3_xy_set(lua_State* L) {
       lua_pop(L, 1);
       
       // build the vector
-      vec.x = x;
-      vec.y = y;
-      arg2 = &vec;
+      tempVec2.x = x;
+      tempVec2.y = y;
+      arg2 = &tempVec2;
     }
   }
   {
@@ -4129,6 +4129,7 @@ static int _wrap_gbVec4_xy_set(lua_State* L) {
   int SWIG_arg = 0;
   union gbVec4 *arg1 = (union gbVec4 *) 0 ;
   gbVec2 *arg2 = (gbVec2 *) 0 ;
+  gbVec2 tempVec2 ;
   
   SWIG_check_num_args("gbVec4::xy",2,2)
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("gbVec4::xy",1,"union gbVec4 *");
@@ -4140,7 +4141,6 @@ static int _wrap_gbVec4_xy_set(lua_State* L) {
   {
     // gbVec2 pointer conversion
     gbVec2 *vecPtr;
-    gbVec2 vec;
     if (SWIG_IsOK(SWIG_ConvertPtr(L,2,(void**)&vecPtr,SWIGTYPE_p_gbVec2,0))) {
       arg2 = vecPtr;
     }
@@ -4157,9 +4157,9 @@ static int _wrap_gbVec4_xy_set(lua_State* L) {
       lua_pop(L, 1);
       
       // build the vector
-      vec.x = x;
-      vec.y = y;
-      arg2 = &vec;
+      tempVec2.x = x;
+      tempVec2.y = y;
+      arg2 = &tempVec2;
     }
   }
   {
@@ -4206,6 +4206,7 @@ static int _wrap_gbVec4_zw_set(lua_State* L) {
   int SWIG_arg = 0;
   union gbVec4 *arg1 = (union gbVec4 *) 0 ;
   gbVec2 *arg2 = (gbVec2 *) 0 ;
+  gbVec2 tempVec2 ;
   
   SWIG_check_num_args("gbVec4::zw",2,2)
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("gbVec4::zw",1,"union gbVec4 *");
@@ -4217,7 +4218,6 @@ static int _wrap_gbVec4_zw_set(lua_State* L) {
   {
     // gbVec2 pointer conversion
     gbVec2 *vecPtr;
-    gbVec2 vec;
     if (SWIG_IsOK(SWIG_ConvertPtr(L,2,(void**)&vecPtr,SWIGTYPE_p_gbVec2,0))) {
       arg2 = vecPtr;
     }
@@ -4234,9 +4234,9 @@ static int _wrap_gbVec4_zw_set(lua_State* L) {
       lua_pop(L, 1);
       
       // build the vector
-      vec.x = x;
-      vec.y = y;
-      arg2 = &vec;
+      tempVec2.x = x;
+      tempVec2.y = y;
+      arg2 = &tempVec2;
     }
   }
   {
@@ -4283,6 +4283,7 @@ static int _wrap_gbVec4_xyz_set(lua_State* L) {
   int SWIG_arg = 0;
   union gbVec4 *arg1 = (union gbVec4 *) 0 ;
   gbVec3 *arg2 = (gbVec3 *) 0 ;
+  gbVec3 tempVec2 ;
   
   SWIG_check_num_args("gbVec4::xyz",2,2)
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("gbVec4::xyz",1,"union gbVec4 *");
@@ -4294,7 +4295,6 @@ static int _wrap_gbVec4_xyz_set(lua_State* L) {
   {
     // gbVec3 pointer conversion
     gbVec3 *vecPtr;
-    gbVec3 vec;
     if (SWIG_IsOK(SWIG_ConvertPtr(L,2,(void**)&vecPtr,SWIGTYPE_p_gbVec3,0))) {
       arg2 = vecPtr;
     }
@@ -4316,10 +4316,10 @@ static int _wrap_gbVec4_xyz_set(lua_State* L) {
       lua_pop(L, 1);
       
       // build the vector
-      vec.x = x;
-      vec.y = y;
-      vec.z = z;
-      arg2 = &vec;
+      tempVec2.x = x;
+      tempVec2.y = y;
+      tempVec2.z = z;
+      arg2 = &tempVec2;
     }
   }
   {
@@ -4367,6 +4367,7 @@ static int _wrap_gbVec4_rgb_set(lua_State* L) {
   int SWIG_arg = 0;
   union gbVec4 *arg1 = (union gbVec4 *) 0 ;
   gbVec3 *arg2 = (gbVec3 *) 0 ;
+  gbVec3 tempVec2 ;
   
   SWIG_check_num_args("gbVec4::rgb",2,2)
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("gbVec4::rgb",1,"union gbVec4 *");
@@ -4378,7 +4379,6 @@ static int _wrap_gbVec4_rgb_set(lua_State* L) {
   {
     // gbVec3 pointer conversion
     gbVec3 *vecPtr;
-    gbVec3 vec;
     if (SWIG_IsOK(SWIG_ConvertPtr(L,2,(void**)&vecPtr,SWIGTYPE_p_gbVec3,0))) {
       arg2 = vecPtr;
     }
@@ -4400,10 +4400,10 @@ static int _wrap_gbVec4_rgb_set(lua_State* L) {
       lua_pop(L, 1);
       
       // build the vector
-      vec.x = x;
-      vec.y = y;
-      vec.z = z;
-      arg2 = &vec;
+      tempVec2.x = x;
+      tempVec2.y = y;
+      tempVec2.z = z;
+      arg2 = &tempVec2;
     }
   }
   {
@@ -5051,6 +5051,7 @@ static int _wrap_TileData_hexPos_set(lua_State* L) {
   int SWIG_arg = 0;
   TileData *arg1 = (TileData *) 0 ;
   Vec2i *arg2 = (Vec2i *) 0 ;
+  Vec2i tempVec2 ;
   
   SWIG_check_num_args("TileData::hexPos",2,2)
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("TileData::hexPos",1,"TileData *");
@@ -5062,7 +5063,6 @@ static int _wrap_TileData_hexPos_set(lua_State* L) {
   {
     // Vec2i pointer conversion
     Vec2i *vecPtr;
-    Vec2i vec;
     if (SWIG_IsOK(SWIG_ConvertPtr(L,2,(void**)&vecPtr,SWIGTYPE_p_Vec2i,0))) {
       arg2 = vecPtr;
     }
@@ -5079,9 +5079,9 @@ static int _wrap_TileData_hexPos_set(lua_State* L) {
       lua_pop(L, 1);
       
       // build the vector
-      vec.x = x;
-      vec.y = y;
-      arg2 = &vec;
+      tempVec2.x = x;
+      tempVec2.y = y;
+      arg2 = &tempVec2;
     }
   }
   {
@@ -5128,6 +5128,7 @@ static int _wrap_TileData_worldPos_set(lua_State* L) {
   int SWIG_arg = 0;
   TileData *arg1 = (TileData *) 0 ;
   gbVec2 *arg2 = (gbVec2 *) 0 ;
+  gbVec2 tempVec2 ;
   
   SWIG_check_num_args("TileData::worldPos",2,2)
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("TileData::worldPos",1,"TileData *");
@@ -5139,7 +5140,6 @@ static int _wrap_TileData_worldPos_set(lua_State* L) {
   {
     // gbVec2 pointer conversion
     gbVec2 *vecPtr;
-    gbVec2 vec;
     if (SWIG_IsOK(SWIG_ConvertPtr(L,2,(void**)&vecPtr,SWIGTYPE_p_gbVec2,0))) {
       arg2 = vecPtr;
     }
@@ -5156,9 +5156,9 @@ static int _wrap_TileData_worldPos_set(lua_State* L) {
       lua_pop(L, 1);
       
       // build the vector
-      vec.x = x;
-      vec.y = y;
-      arg2 = &vec;
+      tempVec2.x = x;
+      tempVec2.y = y;
+      arg2 = &tempVec2;
     }
   }
   {
@@ -5205,6 +5205,7 @@ static int _wrap_TileData_color_set(lua_State* L) {
   int SWIG_arg = 0;
   TileData *arg1 = (TileData *) 0 ;
   gbVec3 *arg2 = (gbVec3 *) 0 ;
+  gbVec3 tempVec2 ;
   
   SWIG_check_num_args("TileData::color",2,2)
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("TileData::color",1,"TileData *");
@@ -5216,7 +5217,6 @@ static int _wrap_TileData_color_set(lua_State* L) {
   {
     // gbVec3 pointer conversion
     gbVec3 *vecPtr;
-    gbVec3 vec;
     if (SWIG_IsOK(SWIG_ConvertPtr(L,2,(void**)&vecPtr,SWIGTYPE_p_gbVec3,0))) {
       arg2 = vecPtr;
     }
@@ -5238,10 +5238,10 @@ static int _wrap_TileData_color_set(lua_State* L) {
       lua_pop(L, 1);
       
       // build the vector
-      vec.x = x;
-      vec.y = y;
-      vec.z = z;
-      arg2 = &vec;
+      tempVec2.x = x;
+      tempVec2.y = y;
+      tempVec2.z = z;
+      arg2 = &tempVec2;
     }
   }
   {
@@ -6331,13 +6331,13 @@ fail:
 static int _wrap_ScreenToTile(lua_State* L) {
   int SWIG_arg = 0;
   gbVec2 *arg1 = (gbVec2 *) 0 ;
+  gbVec2 tempVec1 ;
   TileData *result = 0 ;
   
   SWIG_check_num_args("ScreenToTile",1,1)
   {
     // gbVec2 pointer conversion
     gbVec2 *vecPtr;
-    gbVec2 vec;
     if (SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&vecPtr,SWIGTYPE_p_gbVec2,0))) {
       arg1 = vecPtr;
     }
@@ -6354,9 +6354,9 @@ static int _wrap_ScreenToTile(lua_State* L) {
       lua_pop(L, 1);
       
       // build the vector
-      vec.x = x;
-      vec.y = y;
-      arg1 = &vec;
+      tempVec1.x = x;
+      tempVec1.y = y;
+      arg1 = &tempVec1;
     }
   }
   result = (TileData *)ScreenToTile(arg1);
