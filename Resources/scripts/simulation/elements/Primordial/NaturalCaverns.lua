@@ -46,7 +46,7 @@ while (cavernCount < maxCaverns) do
     sir("DieSides", 4)
     push("System.DieRoll")
     for i=1,gir("DieRollResult") do
-      storeInChamber(chamber, "gems", true)
+      storeItemInChamber(chamber, "gems", true)
     end
     chamber:SetAttributeInt("treasure", gir("DieRollResult") + chamber:GetAttributeInt("treasure"))
     -- chamber:AddTag("gems")
@@ -64,14 +64,14 @@ while (cavernCount < maxCaverns) do
     chamber:AddTag("water")
     local stillSpace = true
     while (stillSpace) do
-      stillSpace = storeInChamber(chamber, "water", true)
+      stillSpace = storeItemInChamber(chamber, "water", true)
     end
   elseif (result == 8) then
     -- magma
     chamber:AddTag("magma")
     local stillSpace = true
     while (stillSpace) do
-      stillSpace = storeInChamber(chamber, "magma", true)
+      stillSpace = storeItemInChamber(chamber, "magma", true)
     end
   end
 

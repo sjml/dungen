@@ -4,21 +4,31 @@
 %}
 
 
-%nodefaultdtor TileData;
+%nodefaultdtor TileDrawData;
+typedef struct {
+    gbVec2 worldPos;
+    gbVec3 color;
+} TileDrawData;
+
+%nodefaultdtor TileMetaData;
 typedef struct {
     long long i;
     Vec2i hexPos;
-    gbVec2 worldPos;
-    gbVec3 color;
 
-    int neighborW;
-    int neighborNW;
-    int neighborNE;
-    int neighborE;
-    int neighborSE;
-    int neighborSW;
+    long long neighborW;
+    long long neighborNW;
+    long long neighborNE;
+    long long neighborE;
+    long long neighborSE;
+    long long neighborSW;
 
     Region** memberRegions;
+} TileMetaData;
+
+%nodefaultdtor TileData;
+typedef struct {
+    TileDrawData* draw;
+    TileMetaData* meta;
 } TileData;
 
 %nodefaultctor sRegion;

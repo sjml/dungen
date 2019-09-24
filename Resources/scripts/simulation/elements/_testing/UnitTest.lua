@@ -60,16 +60,16 @@ errCount = errCount + basicAssert("C", tags[4], "Tag retrieval 4")
 
 tiles = GetTilesTagged("B, C")
 errCount = errCount + basicAssert(2, #tiles, "Multi-tag count")
-tileIndices = {tiles[1].i, tiles[2].i}
-errCount = errCount + basicAssert(td.i,  tileIndices, "Tile retrieval by tag 1")
-errCount = errCount + basicAssert(td2.i, tileIndices, "Tile retrieval by tag 2")
+tileIndices = {tiles[1].meta.i, tiles[2].meta.i}
+errCount = errCount + basicAssert(td.meta.i,  tileIndices, "Tile retrieval by tag 1")
+errCount = errCount + basicAssert(td2.meta.i, tileIndices, "Tile retrieval by tag 2")
 
 tiles = GetTilesTagged("C")
 errCount = errCount + basicAssert(3, #tiles, "Tag count 2")
-tileIndices = {tiles[1].i, tiles[2].i, tiles[3].i}
-errCount = errCount + basicAssert(td.i,  tileIndices, "Tile retrieval by tag 3")
-errCount = errCount + basicAssert(td2.i, tileIndices, "Tile retrieval by tag 4")
-errCount = errCount + basicAssert(td3.i, tileIndices, "Tile retrieval by tag 5")
+tileIndices = {tiles[1].meta.i, tiles[2].meta.i, tiles[3].meta.i}
+errCount = errCount + basicAssert(td.meta.i,  tileIndices, "Tile retrieval by tag 3")
+errCount = errCount + basicAssert(td2.meta.i, tileIndices, "Tile retrieval by tag 4")
+errCount = errCount + basicAssert(td3.meta.i, tileIndices, "Tile retrieval by tag 5")
 
 reg = Region()
 AddTileToRegion(reg, GetTileAtIndex(0))
@@ -79,8 +79,8 @@ AddTileToRegion(reg, GetTileAtPosition(3, 2))
 reg:AddTag("Q")
 errCount = errCount + basicAssert(reg:HasTags("Q"), true, "Region tag check")
 errCount = errCount + basicAssert(GetTileAtIndex(0):HasTags("Q"), false, "Region tags not propagated")
-errCount = errCount + basicAssert(#GetTileAtIndex(0).memberRegions, 1, "Tile membership count")
-errCount = errCount + basicAssert(GetTileAtIndex(0).memberRegions[1].i, reg.i, "Tile membership check")
+errCount = errCount + basicAssert(#GetTileAtIndex(0).meta.memberRegions, 1, "Tile membership count")
+errCount = errCount + basicAssert(GetTileAtIndex(0).meta.memberRegions[1].i, reg.i, "Tile membership check")
 
 aList = GetAllAgents()
 errCount = errCount + basicAssert(#aList, 0, "No agents to start off")
@@ -120,10 +120,10 @@ tdStart = GetTileAtIndex(0)
 tdEnd = GetTileAtIndex(1024)
 path = FindSimplePath(tdStart, tdEnd)
 for _, t in pairs(path) do
-  t.color = {0.0, 0.0, 1.0}
+  t.draw.color = {0.0, 0.0, 1.0}
 end
-tdStart.color = {0.0, 1.0, 0.0}
-tdEnd.color = {1.0, 0.0, 0.0}
+tdStart.draw.color = {0.0, 1.0, 0.0}
+tdEnd.draw.color = {1.0, 0.0, 0.0}
 
 hc = HasAllTags("B, ground")
 hc_tagged = hc:GetPassingTiles()
@@ -134,11 +134,11 @@ hc_tagged2 = hc2:GetPassingTiles()
 errCount = errCount + basicAssert(#hc_tagged2:toList(), 1, "Has tags constraint in isolation 2")
 hc_tag_combine = hc_tagged:intersection(hc_tagged2)
 errCount = errCount + basicAssert(#hc_tag_combine:toList(), 1, "Tag constraint combinations")
-errCount = errCount + basicAssert(hc_tag_combine:toList()[1].i, td.i, "Constraint outcome")
+errCount = errCount + basicAssert(hc_tag_combine:toList()[1].meta.i, td.meta.i, "Constraint outcome")
 hc3 = HasNoneOfTags("Non-Existent, A")
-errCount = errCount + basicAssert(true, hc3:CheckTile(td3.i), "Has none of tags constraint positive")
+errCount = errCount + basicAssert(true, hc3:CheckTile(td3.meta.i), "Has none of tags constraint positive")
 hc4 = HasNoneOfTags("A, B, C")
-errCount = errCount + basicAssert(false, hc4:CheckTile(td3.i), "Has none of tags constraint negative")
+errCount = errCount + basicAssert(false, hc4:CheckTile(td3.meta.i), "Has none of tags constraint negative")
 
 ac = HasAttributes("open", GreaterThan, 0)
 openTiles = ac:GetPassingTiles()

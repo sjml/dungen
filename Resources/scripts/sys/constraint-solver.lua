@@ -232,8 +232,8 @@ function CloseToTile:initialize(target)
 end
 
 function CloseToTile:GetRanking(td)
-  local dx = self.target.hexPos.x - td.hexPos.x
-  local dy = self.target.hexPos.y - td.hexPos.y
+  local dx = self.target.meta.hexPos.x - td.meta.hexPos.x
+  local dy = self.target.meta.hexPos.y - td.meta.hexPos.y
   local dist = math.sqrt(dx * dx + dy * dy)
   return dist / self.maxDist
 end

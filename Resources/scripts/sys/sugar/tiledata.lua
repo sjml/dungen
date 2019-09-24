@@ -19,17 +19,17 @@ SOUTHWEST = 6
 tdft.GetNeighbor = function(td, direction)
   local ret = nil
   if     direction == WEST then
-    ret = GetTileAtIndex(td.neighborW)
+    ret = GetTileAtIndex(td.meta.neighborW)
   elseif direction == NORTHWEST then
-    ret = GetTileAtIndex(td.neighborNW)
+    ret = GetTileAtIndex(td.meta.neighborNW)
   elseif direction == NORTHEAST then
-    ret = GetTileAtIndex(td.neighborNE)
+    ret = GetTileAtIndex(td.meta.neighborNE)
   elseif direction == EAST then
-    ret = GetTileAtIndex(td.neighborE)
+    ret = GetTileAtIndex(td.meta.neighborE)
   elseif direction == SOUTHEAST then
-    ret = GetTileAtIndex(td.neighborSE)
+    ret = GetTileAtIndex(td.meta.neighborSE)
   elseif direction == SOUTHWEST then
-    ret = GetTileAtIndex(td.neighborSW)
+    ret = GetTileAtIndex(td.meta.neighborSW)
   end
   return ret
 end

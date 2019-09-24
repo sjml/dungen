@@ -346,7 +346,7 @@ riverAgent:SetAttributeString("type", "Natural")
 riverAgent:SetAttributeString("class", "Water")
 riverAgent:SetAttributeString("alignment", "Indifferent")
 
-riverAgent:SetAttributeInt("riverSource", source.i)
+riverAgent:SetAttributeInt("riverSource", source.meta.i)
 carveOut(riverAgent, source)
 addWater(source)
 

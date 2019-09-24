@@ -8,22 +8,29 @@ typedef struct sRegion      Region;
 typedef struct sTileSet     TileSet;
 
 typedef struct {
-    long long i;
-    Vec2i hexPos;
     gbVec2 worldPos;
     gbVec3 color;
     gbVec4 overlayColor; // not exposed to Lua
+} TileDrawData;
+
+typedef struct {
+    long long i;
+    Vec2i hexPos;
     Outline* outline; // not exposed to Lua
 
-    // clockwise neighbors
-    int neighborW;
-    int neighborNW;
-    int neighborNE;
-    int neighborE;
-    int neighborSE;
-    int neighborSW;
+    long long neighborW;
+    long long neighborNW;
+    long long neighborNE;
+    long long neighborE;
+    long long neighborSE;
+    long long neighborSW;
 
     Region** memberRegions;
+} TileMetaData;
+
+typedef struct {
+    TileDrawData* draw;
+    TileMetaData* meta;
 } TileData;
 
 typedef struct sRegion {
@@ -71,13 +78,13 @@ long GetTileDistance(TileData* t1, TileData* t2);
 void SetTileOutline(TileData* t, gbVec4 color, float thickness, int type);
 void ClearTileOutline(TileData* t);
 
-// TODO: TileSets will leak once they have no members if they
-//       aren't tracked somehow.
+// TODO: TileSets will leak once they have no members if they aren't tracked somehow.
 //       Don't want to automatically destroy when members are 0
 //       because might still be working with it. Also hard to track
 //       since they could be sitting in registers or in the Lua runtime.
 //       Smart pointers would help, but too heavyweight.
-//       For now, I don't care about the leaks.
+//       For now, I don't care about the leaks; just try and be vigilant
+//       about destroying them.
 void DestroyTileSet(TileSet* ts);
 TileSet* AddTileToSet(TileSet* ts, TileData* t);
 TileSet* RemoveTileFromSet(TileSet* ts, TileData* t);

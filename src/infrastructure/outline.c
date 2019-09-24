@@ -117,9 +117,9 @@ Outline* CreateOutline(TileSet* ts, float thickness, int type) {
         Vec2i edgeIndices[6];
 
         // nw
-        edgeIndices[0].x = 2 * tile->hexPos.x;
-        edgeIndices[0].y = 2 * tile->hexPos.y;
-        if (tile->hexPos.y % 2 == 1) {
+        edgeIndices[0].x = 2 * tile->meta->hexPos.x;
+        edgeIndices[0].y = 2 * tile->meta->hexPos.y;
+        if (tile->meta->hexPos.y % 2 == 1) {
             edgeIndices[0].x += 1;
         }
         // ne
@@ -132,8 +132,8 @@ Outline* CreateOutline(TileSet* ts, float thickness, int type) {
         edgeIndices[3].x = edgeIndices[2].x - 1;
         edgeIndices[3].y = edgeIndices[2].y;
         // w
-        edgeIndices[4].x = tile->hexPos.x;
-        edgeIndices[4].y = (2 * tile->hexPos.y) + 1;
+        edgeIndices[4].x = tile->meta->hexPos.x;
+        edgeIndices[4].y = (2 * tile->meta->hexPos.y) + 1;
         // e
         edgeIndices[5].x = edgeIndices[4].x + 1;
         edgeIndices[5].y = edgeIndices[4].y;

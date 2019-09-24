@@ -13,7 +13,7 @@ DestroyTileSet(legalSet)
 
 -- If the starting point was near the surface, ensure the other side dips a bit
 offset = 0
-if (startTile.hexPos.y - gir("GroundLine") < 3) then
+if (startTile.meta.hexPos.y - gir("GroundLine") < 3) then
   offset = 5
 end
 

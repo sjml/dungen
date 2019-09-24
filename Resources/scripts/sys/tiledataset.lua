@@ -6,7 +6,7 @@ TileDataSet.__index = TileDataSet
 function TileDataSet:new(t)
   local set = {}
   for _, el in ipairs(t or {}) do
-    set[el.i] = true
+    set[el.meta.i] = true
   end
   setmetatable(set, TileDataSet)
   return set

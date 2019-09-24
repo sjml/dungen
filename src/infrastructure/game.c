@@ -113,8 +113,11 @@ int GameTick(void) {
             int hlvmTickCount = 0;
             while (hlvmTickCount++ < TICKS_PER_CYCLE) {
                 lua_getglobal(GetLuaState(), "HLVMProcess");
-                if (lua_pcall(GetLuaState(), 0, 0, 0) != 0) {
+                if (!lua_isfunction(GetLuaState(), -1)) {
                     fprintf(stderr, "ERROR: No global 'HLVMProcess()' function defined in Lua!\n");
+                }
+                if (lua_pcall(GetLuaState(), 0, 0, 0) != 0) {
+                    fprintf(stderr, "ERROR: %s\n", lua_tostring(GetLuaState(), -1));
                 }
             }
         }

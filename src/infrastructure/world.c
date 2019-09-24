@@ -7,30 +7,19 @@
 #include "game.h"
 
 static const float hexVertices[] = {
-    0.0f,               0.0f,
-    0.5f * -0.8660254f, 0.5f *  0.5f,
     0.5f * -0.8660254f, 0.5f * -0.5f,
     0.5f *  0.0000000f, 0.5f * -1.0f,
-    0.5f *  0.8660254f, 0.5f * -0.5f,
-    0.5f *  0.8660254f, 0.5f *  0.5f,
-    0.5f *  0.0f,       0.5f *  1.0f,
     0.5f * -0.8660254f, 0.5f *  0.5f,
+    0.5f *  0.8660254f, 0.5f * -0.5f,
+    0.5f *  0.0f,       0.5f *  1.0f,
+    0.5f *  0.8660254f, 0.5f *  0.5f,
 };
 
-//const float hexTexVertices[] = {
-//    hexVertices[0]  + 0.5f, hexVertices[1]  + 0.5f,
-//    hexVertices[2]  + 0.5f, hexVertices[3]  + 0.5f,
-//    hexVertices[4]  + 0.5f, hexVertices[5]  + 0.5f,
-//    hexVertices[6]  + 0.5f, hexVertices[7]  + 0.5f,
-//    hexVertices[8]  + 0.5f, hexVertices[9]  + 0.5f,
-//    hexVertices[10] + 0.5f, hexVertices[11] + 0.5f,
-//    hexVertices[12] + 0.5f, hexVertices[13] + 0.5f,
-//    hexVertices[14] + 0.5f, hexVertices[15] + 0.5f,
-//};
 
-
-
+static TileDrawData* TileDrawArray = NULL;
+static TileMetaData* TileMetaArray = NULL;
 static TileData* WorldArray = NULL;
+
 static TileSet* dirtyTiles = NULL;
 static struct { Region* key; int value; }* dirtyRegions = NULL;
 static gbVec2** PointList = NULL;
@@ -57,6 +46,8 @@ void InitializeWorld(int width, int height, float scale) {
         worldSize.x += tileDimensions.x / 2.0f;
     }
 
+    arrsetlen(TileDrawArray, (unsigned int)(width * height));
+    arrsetlen(TileMetaArray, (unsigned int)(width * height));
     arrsetlen(WorldArray, (unsigned int)(width * height));
     arrsetlen(PointList, (unsigned int)(height+1));
 
@@ -94,64 +85,67 @@ void InitializeWorld(int width, int height, float scale) {
     for (int j = 0; j < height; j++) {
         for (int i = 0; i < width; i++) {
             TileData* td = &WorldArray[j*width + i];
-            td->i = j*width + i;
-            td->memberRegions = NULL;
-            td->hexPos.x = i;
-            td->hexPos.y = j;
-//            td->color.r = RandomRangeFloat(0.0f, 1.0f);
-//            td->color.g = RandomRangeFloat(0.0f, 1.0f);
-//            td->color.b = RandomRangeFloat(0.0f, 1.0f);
-            td->color.r = 0.0f;
-            td->color.g = 1.0f;
-            td->color.b = 1.0f;
-            td->overlayColor.r = 0.0f;
-            td->overlayColor.g = 0.0f;
-            td->overlayColor.b = 0.0f;
-            td->overlayColor.a = 0.0f;
-            td->outline = NULL;
+            td->draw = &TileDrawArray[j*width + i];
+            td->meta = &TileMetaArray[j*width + i];
+
+            td->meta->i = j*width + i;
+            td->meta->memberRegions = NULL;
+            td->meta->hexPos.x = i;
+            td->meta->hexPos.y = j;
+//            td->draw->color.r = RandomRangeFloat(0.0f, 1.0f);
+//            td->draw->color.g = RandomRangeFloat(0.0f, 1.0f);
+//            td->draw->color.b = RandomRangeFloat(0.0f, 1.0f);
+            td->draw->color.r = 0.0f;
+            td->draw->color.g = 1.0f;
+            td->draw->color.b = 1.0f;
+            td->draw->overlayColor.r = 0.0f;
+            td->draw->overlayColor.g = 0.0f;
+            td->draw->overlayColor.b = 0.0f;
+            td->draw->overlayColor.a = 0.0f;
+            td->meta->outline = NULL;
 
             modVector.x = tileDimensions.x * i;
             modVector.y = -((tileDimensions.y - (tileSize * 0.5f)) * j);
             if (j % 2) {
                 modVector.x += tileDimensions.x * 0.5f;
             }
-            gb_vec2_add(&td->worldPos, startingPos, modVector);
+            gb_vec2_add(&td->draw->worldPos, startingPos, modVector);
 
-            td->neighborE = j * width + i + 1;
-            td->neighborW = j * width + i - 1;
+            td->meta->neighborE = j * width + i + 1;
+            td->meta->neighborW = j * width + i - 1;
             if (j % 2) {
-                td->neighborNW = (j-1) * width + i;
-                td->neighborNE = (j-1) * width + i + 1;
-                td->neighborSW = (j+1) * width + i;
-                td->neighborSE = (j+1) * width + i + 1;
+                td->meta->neighborNW = (j-1) * width + i;
+                td->meta->neighborNE = (j-1) * width + i + 1;
+                td->meta->neighborSW = (j+1) * width + i;
+                td->meta->neighborSE = (j+1) * width + i + 1;
             }
             else {
-                td->neighborNW = (j-1) * width + i - 1;
-                td->neighborNE = (j-1) * width + i;
-                td->neighborSW = (j+1) * width + i - 1;
-                td->neighborSE = (j+1) * width + i;
+                td->meta->neighborNW = (j-1) * width + i - 1;
+                td->meta->neighborNE = (j-1) * width + i;
+                td->meta->neighborSW = (j+1) * width + i - 1;
+                td->meta->neighborSE = (j+1) * width + i;
             }
             if (i == 0) {
-                td->neighborW = -1;
+                td->meta->neighborW = -1;
                 if (!(j % 2)) {
-                    td->neighborNW = -1;
-                    td->neighborSW = -1;
+                    td->meta->neighborNW = -1;
+                    td->meta->neighborSW = -1;
                 }
             }
             if (i == width - 1) {
-                td->neighborE = -1;
+                td->meta->neighborE = -1;
                 if (j % 2) {
-                    td->neighborNE = -1;
-                    td->neighborSE = -1;
+                    td->meta->neighborNE = -1;
+                    td->meta->neighborSE = -1;
                 }
             }
             if (j == 0) {
-                td->neighborNW = -1;
-                td->neighborNE = -1;
+                td->meta->neighborNW = -1;
+                td->meta->neighborNE = -1;
             }
             if (j == height - 1) {
-                td->neighborSW = -1;
-                td->neighborSE = -1;
+                td->meta->neighborSW = -1;
+                td->meta->neighborSE = -1;
             }
         }
     }
@@ -160,8 +154,8 @@ void InitializeWorld(int width, int height, float scale) {
 }
 
 long GetTileDistance(TileData* t1, TileData* t2) {
-    long dx = abs(t1->hexPos.x - t2->hexPos.x);
-    long dy = abs(t1->hexPos.y - t2->hexPos.y);
+    long dx = abs(t1->meta->hexPos.x - t2->meta->hexPos.x);
+    long dy = abs(t1->meta->hexPos.y - t2->meta->hexPos.y);
 
     return dx + dy;
 }
@@ -344,23 +338,23 @@ TileData* ScreenToTile(gbVec2* screenCoordinates) {
 
 TileData** GetTileNeighbors(TileData* center) {
     TileData** neighbors = NULL;
-    if (center->neighborW != -1) {
-        arrpush(neighbors, &WorldArray[center->neighborW]);
+    if (center->meta->neighborW != -1) {
+        arrpush(neighbors, &WorldArray[center->meta->neighborW]);
     }
-    if (center->neighborNW != -1) {
-        arrpush(neighbors, &WorldArray[center->neighborNW]);
+    if (center->meta->neighborNW != -1) {
+        arrpush(neighbors, &WorldArray[center->meta->neighborNW]);
     }
-    if (center->neighborNE != -1) {
-        arrpush(neighbors, &WorldArray[center->neighborNE]);
+    if (center->meta->neighborNE != -1) {
+        arrpush(neighbors, &WorldArray[center->meta->neighborNE]);
     }
-    if (center->neighborE != -1) {
-        arrpush(neighbors, &WorldArray[center->neighborE]);
+    if (center->meta->neighborE != -1) {
+        arrpush(neighbors, &WorldArray[center->meta->neighborE]);
     }
-    if (center->neighborSE != -1) {
-        arrpush(neighbors, &WorldArray[center->neighborSE]);
+    if (center->meta->neighborSE != -1) {
+        arrpush(neighbors, &WorldArray[center->meta->neighborSE]);
     }
-    if (center->neighborSW != -1) {
-        arrpush(neighbors, &WorldArray[center->neighborSW]);
+    if (center->meta->neighborSW != -1) {
+        arrpush(neighbors, &WorldArray[center->meta->neighborSW]);
     }
 
     return neighbors;
@@ -393,8 +387,8 @@ TileData** GetTileCircle(TileData* center, int radius) {
 
 Agent* GetTileOwner(TileData* t) {
     Region** regionsToCheck = NULL;
-    for (long long i = 0; i < arrlen(t->memberRegions); i++) {
-        arrpush(regionsToCheck, t->memberRegions[i]);
+    for (long long i = 0; i < arrlen(t->meta->memberRegions); i++) {
+        arrpush(regionsToCheck, t->meta->memberRegions[i]);
     }
     for (long long i = 0; i < arrlen(regionsToCheck); i++) {
         if (regionsToCheck[i]->parent != NULL) {
@@ -416,22 +410,22 @@ void RenderTiles(void) {
     for (long long i = 0; i < arrlen(WorldArray); i++) {
         glPushMatrix();
         glTranslatef(
-            WorldArray[i].worldPos.x,
-            WorldArray[i].worldPos.y,
+            WorldArray[i].draw->worldPos.x,
+            WorldArray[i].draw->worldPos.y,
             0.0f
         );
         glScalef(tileDimensions.y, tileDimensions.y, 1.0f);
-        glColor4f(WorldArray[i].color.r, WorldArray[i].color.g, WorldArray[i].color.b, 1.0f);
-        glDrawArrays(GL_TRIANGLE_FAN, 0, 8);
-        if (WorldArray[i].overlayColor.a > 0.0f) {
-            glColor4f(WorldArray[i].overlayColor.r, WorldArray[i].overlayColor.g, WorldArray[i].overlayColor.b, WorldArray[i].overlayColor.a);
+        glColor4f(WorldArray[i].draw->color.r, WorldArray[i].draw->color.g, WorldArray[i].draw->color.b, 1.0f);
+        glDrawArrays(GL_TRIANGLE_STRIP, 0, 6);
+        if (WorldArray[i].draw->overlayColor.a > 0.0f) {
+            glColor4f(WorldArray[i].draw->overlayColor.r, WorldArray[i].draw->overlayColor.g, WorldArray[i].draw->overlayColor.b, WorldArray[i].draw->overlayColor.a);
             glDrawArrays(GL_TRIANGLE_FAN, 0, 8);
         }
         glPopMatrix();
     }
     for (long i = 0; i < arrlen(WorldArray); i++) {
-        if (WorldArray[i].outline != NULL) {
-            RenderOutline(WorldArray[i].outline);
+        if (WorldArray[i].meta->outline != NULL) {
+            RenderOutline(WorldArray[i].meta->outline);
         }
     }
 }
@@ -488,15 +482,15 @@ void AddTileToRegion(Region* r, TileData* t) {
     long len = hmlen(r->tiles);
     r->tiles = AddTileToSet(r->tiles, t);
     if (len != hmlen(r->tiles)) {
-        arrpush(t->memberRegions, r);
+        arrpush(t->meta->memberRegions, r);
     }
 }
 
 void RemoveTileFromRegion(Region* r, TileData* t) {
     r->tiles = RemoveTileFromSet(r->tiles, t);
-    for (long i=0; i < arrlen(t->memberRegions); i++) {
-        if (t->memberRegions[i] == r) {
-            arrdel(t->memberRegions, i);
+    for (long i=0; i < arrlen(t->meta->memberRegions); i++) {
+        if (t->meta->memberRegions[i] == r) {
+            arrdel(t->meta->memberRegions, i);
             break;
         }
     }
@@ -558,23 +552,23 @@ TileData** GetTilesFromSet(TileSet* ts) {
 }
 
 void SetTileOutline(TileData* t, gbVec4 color, float thickness, int type) {
-    if (t->outline != NULL) {
+    if (t->meta->outline != NULL) {
         ClearTileOutline(t);
     }
     TileSet* singleTile = NULL;
     hmput(singleTile, t, 1);
-    t->outline = CreateOutline(singleTile, thickness, type);
-    t->outline->color.r = color.r;
-    t->outline->color.g = color.g;
-    t->outline->color.b = color.b;
-    t->outline->color.a = color.a;
+    t->meta->outline = CreateOutline(singleTile, thickness, type);
+    t->meta->outline->color.r = color.r;
+    t->meta->outline->color.g = color.g;
+    t->meta->outline->color.b = color.b;
+    t->meta->outline->color.a = color.a;
     DestroyTileSet(singleTile);
 }
 
 void ClearTileOutline(TileData* t) {
-    if (t->outline!= NULL) {
-        DestroyOutline(t->outline);
-        t->outline = NULL;
+    if (t->meta->outline!= NULL) {
+        DestroyOutline(t->meta->outline);
+        t->meta->outline = NULL;
     }
 }
 
@@ -605,10 +599,10 @@ gbVec2 GetRegionCenterPoint(Region* r) {
     gbVec2 min = {  FLT_MAX,  FLT_MAX };
     gbVec2 max = { -FLT_MAX, -FLT_MAX };
     for (long i=0; i < hmlen(r->tiles); i++) {
-        min.x = gb_min(min.x, r->tiles[i].key->worldPos.x);
-        min.y = gb_min(min.y, r->tiles[i].key->worldPos.y);
-        max.x = gb_max(max.x, r->tiles[i].key->worldPos.x);
-        max.y = gb_max(max.y, r->tiles[i].key->worldPos.y);
+        min.x = gb_min(min.x, r->tiles[i].key->draw->worldPos.x);
+        min.y = gb_min(min.y, r->tiles[i].key->draw->worldPos.y);
+        max.x = gb_max(max.x, r->tiles[i].key->draw->worldPos.x);
+        max.y = gb_max(max.y, r->tiles[i].key->draw->worldPos.y);
     }
 
     gb_vec2_lerp(&center, min, max, 0.5f);

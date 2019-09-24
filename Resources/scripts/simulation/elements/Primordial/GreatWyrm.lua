@@ -21,16 +21,16 @@ c:AddTag("GreatWyrm")
 for i=1,5 do
   local t = nil
   if RandomRangeInt(0,4) == 0 then
-    t = storeInChamber(c, "gems")
+    t = storeItemInChamber(c, "gems")
     if t then
       t:AddTag("gold")
     end
   else
-    t = storeInChamber(c, "gold")
+    t = storeItemInChamber(c, "gold")
   end
-  if t ~= nil then
-    t:SetAttributeInt("treasure", 1 + t:GetAttributeInt("treasure"))
-  end
+  -- if t ~= nil then
+  --   t:SetAttributeInt("treasure", 1 + t:GetAttributeInt("treasure"))
+  -- end
 end
 
 base:AddTag("monster")

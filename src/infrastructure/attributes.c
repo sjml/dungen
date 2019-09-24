@@ -219,7 +219,7 @@ void _SetAttributeInt(void* data, AttrType dType, const char* name, int value) {
     if (dType == TILE) {
         tableName = "tiles";
         idName = "tile_id";
-        idx = ((TileData*)data)->i;
+        idx = ((TileData*)data)->meta->i;
     }
     else if (dType == REGION) {
         tableName = "regions";
@@ -296,7 +296,7 @@ void _SetAttributeFloat(void* data, AttrType dType, const char* name, float valu
     if (dType == TILE) {
         tableName = "tiles";
         idName = "tile_id";
-        idx = ((TileData*)data)->i;
+        idx = ((TileData*)data)->meta->i;
     }
     else if (dType == REGION) {
         tableName = "regions";
@@ -374,7 +374,7 @@ void _SetAttributeString(void* data, AttrType dType, const char* name, const cha
     if (dType == TILE) {
         tableName = "tiles";
         idName = "tile_id";
-        idx = ((TileData*)data)->i;
+        idx = ((TileData*)data)->meta->i;
     }
     else if (dType == REGION) {
         tableName = "regions";
@@ -456,7 +456,7 @@ int _GetAttributeInt(void* data, AttrType dType, const char* name) {
     if (dType == TILE) {
         tableName = "tiles";
         idName = "tile_id";
-        idx = ((TileData*)data)->i;
+        idx = ((TileData*)data)->meta->i;
     }
     else if (dType == REGION) {
         tableName = "regions";
@@ -520,7 +520,7 @@ float _GetAttributeFloat(void* data, AttrType dType, const char* name) {
     if (dType == TILE) {
         tableName = "tiles";
         idName = "tile_id";
-        idx = ((TileData*)data)->i;
+        idx = ((TileData*)data)->meta->i;
     }
     else if (dType == REGION) {
         tableName = "regions";
@@ -584,7 +584,7 @@ char* _GetAttributeString(void* data, AttrType dType, const char* name) {
     if (dType == TILE) {
         tableName = "tiles";
         idName = "tile_id";
-        idx = ((TileData*)data)->i;
+        idx = ((TileData*)data)->meta->i;
     }
     else if (dType == REGION) {
         tableName = "regions";
@@ -654,7 +654,7 @@ bool AddTileTag(TileData* data, char* tag) {
     long long* tileList = hmget(tagIdxToTiles, id);
     bool already = false;
     for (int i=0; i < arrlen(tileList); i++) {
-        if (tileList[i] == data->i) {
+        if (tileList[i] == data->meta->i) {
             already = true;
             break;
         }
@@ -662,12 +662,12 @@ bool AddTileTag(TileData* data, char* tag) {
     if (already) {
         return false;
     }
-    arrpush(tileList, data->i);
+    arrpush(tileList, data->meta->i);
     hmput(tagIdxToTiles, id, tileList);
 
-    long long* tagList = hmget(tileIdxToTags, data->i);
+    long long* tagList = hmget(tileIdxToTags, data->meta->i);
     arrpush(tagList, id);
-    hmput(tileIdxToTags, data->i, tagList);
+    hmput(tileIdxToTags, data->meta->i, tagList);
 
     SetTileAsDirty(data);
     return true;
@@ -739,12 +739,12 @@ bool RemoveTileTag(TileData* data, const char* tag) {
     }
     long long* tileList = hmget(tagIdxToTiles, id);
     for (int i = 0; i < arrlen(tileList); i++) {
-        if (tileList[i] == data->i) {
-            long long* tagList = hmget(tileIdxToTags, data->i);
+        if (tileList[i] == data->meta->i) {
+            long long* tagList = hmget(tileIdxToTags, data->meta->i);
             for (int j = 0; j < arrlen(tagList); j++) {
                 if (tagList[j] == id) {
                     arrdel(tagList, j);
-                    hmput(tileIdxToTags, data->i, tagList);
+                    hmput(tileIdxToTags, data->meta->i, tagList);
                     break;
                 }
             }
@@ -980,7 +980,7 @@ bool TileHasTags(TileData* data, const char* tagString) {
         long long* tiles = hmget(tagIdxToTiles, id);
         bool found = false;
         for (int t=0; t < arrlen(tiles); t++) {
-            if (tiles[t] == data->i) {
+            if (tiles[t] == data->meta->i) {
                 found = true;
                 break;
             }
@@ -1055,7 +1055,7 @@ bool AgentHasTags(Agent* data, const char* tagString) {
 
 char** GetTileTags(TileData* data) {
     char** ret = NULL;
-    long long* tagIndices = hmget(tileIdxToTags, data->i);
+    long long* tagIndices = hmget(tileIdxToTags, data->meta->i);
 
     for (int i=0; i < arrlen(tagIndices); i++) {
         char* t = hmget(tags_IdxToString, tagIndices[i]);
@@ -1188,7 +1188,7 @@ bool _CheckAttribute(void* data, AttrType dType, const char* attrName, AttrCompa
     long long idx = -1;
     if (dType == TILE) {
         query = sdscat(query, "tiles WHERE tile_id = ? AND ");
-        idx = ((TileData*)data)->i;
+        idx = ((TileData*)data)->meta->i;
     }
     else if (dType == REGION) {
         query = sdscat(query, "regions WHERE region_id = ? AND ");

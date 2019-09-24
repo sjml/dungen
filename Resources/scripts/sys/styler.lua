@@ -64,8 +64,8 @@ local function checkStyle(styleTable, target)
 
   if (reqs.tags ~= nil) then
     local tags = Set:new(reqs.tags:split(", "))
-    if target.memberRegions ~= nil then
-      for _, reg in pairs(target.memberRegions) do
+    if target.meta ~= nil and target.meta.memberRegions ~= nil then
+      for _, reg in pairs(target.meta.memberRegions) do
         local rTags = reg:GetTags()
         for _, rt in pairs(rTags) do
           if tags[rt] ~= nil then
@@ -108,11 +108,11 @@ local function applyFillStyle(styleTable, target)
       and type(styleTable.tileFill[2]) == "number"
       and type(styleTable.tileFill[3]) == "number"
     ) then
-      target.color = styleTable.tileFill
+      target.draw.color = styleTable.tileFill
     elseif (type(styleTable.tileFill[1]) == "function") then
       local args = table.slice(styleTable.tileFill, 2)
       table.insert(args, target)
-      target.color = styleTable.tileFill[1](table.unpack(args))
+      target.draw.color = styleTable.tileFill[1](table.unpack(args))
     end
   end
 end

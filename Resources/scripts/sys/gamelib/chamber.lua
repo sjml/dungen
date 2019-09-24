@@ -21,7 +21,7 @@ function makeChamberFromList(tileList, agent)
 end
 
 function getChamber(tile)
-  local regs = tile.memberRegions
+  local regs = tile.meta.memberRegions
   while #regs > 0 do
     local reg = table.remove(regs)
     if reg:HasTags("chamber") then
@@ -41,7 +41,7 @@ function getChamberAccesses(chamber)
       if n ~= nil then
         if IsTileInSet(chamber.tiles, n) ~= true and
            n:GetAttributeInt("open") == 1 then
-            accessIdxs[n.i] = dir
+            accessIdxs[n.meta.i] = dir
         end
       end
     end
@@ -142,13 +142,13 @@ function _resetStorageDisplay(chamber)
     local xVals = {}
     local lowTile = nil
     for _, tile in pairs(empties) do
-      if tile.hexPos.y > lowY then
+      if tile.meta.hexPos.y > lowY then
         xVals = {}
-        table.insert(xVals, tile.hexPos.x)
-        lowY = tile.hexPos.y
+        table.insert(xVals, tile.meta.hexPos.x)
+        lowY = tile.meta.hexPos.y
         lowTile = tile
-      elseif tile.hexPos.y == lowY then
-        table.insert(xVals, tile.hexPos.x)
+      elseif tile.meta.hexPos.y == lowY then
+        table.insert(xVals, tile.meta.hexPos.x)
       end
     end
     table.sort(xVals)

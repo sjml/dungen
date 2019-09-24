@@ -14,32 +14,30 @@ int handleGLErrors(const char* f, const int line) {
     do
     {
         errorCode = glGetError();
-        if (errorCode != GL_NO_ERROR)
-        {
+        if (errorCode != GL_NO_ERROR) {
             errorFound = true;
 
-            switch (errorCode)
-            {
+            switch (errorCode) {
                 case GL_INVALID_ENUM:
-                    errorString = "unacceptable value for enumerated argument";
+                    errorString = "GL_INVALID_ENUM";
                     break;
                 case GL_INVALID_VALUE:
-                    errorString = "argument value out of range";
+                    errorString = "GL_INVALID_VALUE";
                     break;
                 case GL_INVALID_OPERATION:
-                    errorString = "the specified argument is not allowed in the current state";
+                    errorString = "GL_INVALID_OPERATION";
                     break;
                 case GL_STACK_OVERFLOW:
-                    errorString = "internal stack overflow";
+                    errorString = "GL_STACK_OVERFLOW";
                     break;
                 case GL_STACK_UNDERFLOW:
-                    errorString = "internal stack underflow";
+                    errorString = "GL_STACK_UNDERFLOW";
                     break;
                 case GL_OUT_OF_MEMORY:
-                    errorString = "not enough memory to execute command";
+                    errorString = "GL_OUT_OF_MEMORY";
                     break;
                 default:
-                    errorString = "unknown error";
+                    errorString = "unknown error code";
             }
 
             printf("OpenGL Error in %s (%d): %s\n", f, line, errorString);

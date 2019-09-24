@@ -34,10 +34,10 @@ void PresentTileChoice(void) {
     for (long i = 0; i < dims.x * dims.y; i++) {
         TileData* t = GetTileAtIndex(i);
         if (!IsTileInSet(valid, t)) {
-            t->overlayColor.r = 1.0f;
-            t->overlayColor.g = 1.0f;
-            t->overlayColor.b = 1.0f;
-            t->overlayColor.a = 0.5f;
+            t->draw->overlayColor.r = 1.0f;
+            t->draw->overlayColor.g = 1.0f;
+            t->draw->overlayColor.b = 1.0f;
+            t->draw->overlayColor.a = 0.5f;
         }
     }
 }
@@ -53,16 +53,16 @@ void TileChoiceProcessMouseMovement(gbVec2 position) {
     }
 
     if (hoveredTile != NULL && hoveredTile == pressedTile) {
-        pressedTile->overlayColor.r = 0.0f;
-        pressedTile->overlayColor.g = 0.0f;
-        pressedTile->overlayColor.b = 0.0f;
-        pressedTile->overlayColor.a = 0.0f;
+        pressedTile->draw->overlayColor.r = 0.0f;
+        pressedTile->draw->overlayColor.g = 0.0f;
+        pressedTile->draw->overlayColor.b = 0.0f;
+        pressedTile->draw->overlayColor.a = 0.0f;
     }
     if (current != NULL && current == pressedTile) {
-        pressedTile->overlayColor.r = 1.0f;
-        pressedTile->overlayColor.g = 0.0f;
-        pressedTile->overlayColor.b = 0.0f;
-        pressedTile->overlayColor.a = 1.0f;
+        pressedTile->draw->overlayColor.r = 1.0f;
+        pressedTile->draw->overlayColor.g = 0.0f;
+        pressedTile->draw->overlayColor.b = 0.0f;
+        pressedTile->draw->overlayColor.a = 1.0f;
     }
 
     if (hoveredTile != NULL) {
@@ -82,10 +82,10 @@ void TileChoiceProcessMouseClick(bool down) {
     if (down) {
         if (hoveredTile != NULL && IsTileInSet(valid, hoveredTile)) {
             pressedTile = hoveredTile;
-            pressedTile->overlayColor.r = 1.0f;
-            pressedTile->overlayColor.g = 0.0f;
-            pressedTile->overlayColor.b = 0.0f;
-            pressedTile->overlayColor.a = 1.0f;
+            pressedTile->draw->overlayColor.r = 1.0f;
+            pressedTile->draw->overlayColor.g = 0.0f;
+            pressedTile->draw->overlayColor.b = 0.0f;
+            pressedTile->draw->overlayColor.a = 1.0f;
         }
     }
     else if (pressedTile != NULL) {
@@ -100,16 +100,16 @@ void TileChoiceProcessMouseClick(bool down) {
             Vec2i dims = GetWorldDimensions();
             for (long i = 0; i < dims.x * dims.y; i++) {
                 TileData* t = GetTileAtIndex(i);
-                t->overlayColor.r = 0.0f;
-                t->overlayColor.g = 0.0f;
-                t->overlayColor.b = 0.0f;
-                t->overlayColor.a = 0.0f;
+                t->draw->overlayColor.r = 0.0f;
+                t->draw->overlayColor.g = 0.0f;
+                t->draw->overlayColor.b = 0.0f;
+                t->draw->overlayColor.a = 0.0f;
             }
         }
-        pressedTile->overlayColor.r = 0.0f;
-        pressedTile->overlayColor.g = 0.0f;
-        pressedTile->overlayColor.b = 0.0f;
-        pressedTile->overlayColor.a = 0.0f;
+        pressedTile->draw->overlayColor.r = 0.0f;
+        pressedTile->draw->overlayColor.g = 0.0f;
+        pressedTile->draw->overlayColor.b = 0.0f;
+        pressedTile->draw->overlayColor.a = 0.0f;
         pressedTile = NULL;
 
         if (choiceStatus > 0) {

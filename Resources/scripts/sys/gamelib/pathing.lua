@@ -2,8 +2,8 @@
 -- does a simple bresenham march, grabbing every tile under the pixels
   -- hella inefficient, but our numbers are small
 function getStraightLinePath(startTile, endTile)
-  local startWorld = startTile.worldPos
-  local endWorld = endTile.worldPos
+  local startWorld = startTile.draw.worldPos
+  local endWorld = endTile.draw.worldPos
 
   local pixStartF = WorldToScreen(startWorld)
   local pixEndF = WorldToScreen(endWorld)
@@ -36,8 +36,8 @@ function getStraightLinePath(startTile, endTile)
   local err = dx - dy
   repeat
     local t = ScreenToTile({pixCurrent.x, pixCurrent.y})
-    if check[t] == nil then
-      check[t] = 1
+    if check[t.meta.i] == nil then
+      check[t.meta.i] = 1
       table.insert(path, t)
     end
     local e2 = 2 * err
