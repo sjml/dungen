@@ -6,15 +6,6 @@
 #include "rendering.h"
 #include "game.h"
 
-static const float hexVertices[] = {
-    0.5f * -0.8660254f, 0.5f * -0.5f,
-    0.5f *  0.0000000f, 0.5f * -1.0f,
-    0.5f * -0.8660254f, 0.5f *  0.5f,
-    0.5f *  0.8660254f, 0.5f * -0.5f,
-    0.5f *  0.0f,       0.5f *  1.0f,
-    0.5f *  0.8660254f, 0.5f *  0.5f,
-};
-
 
 static TileDrawData* TileDrawArray = NULL;
 static TileMetaData* TileMetaArray = NULL;
@@ -173,12 +164,24 @@ Vec2i GetWorldDimensions() {
     return dim;
 }
 
+gbVec2 GetTileDimensions() {
+    return tileDimensions;
+}
+
 float GetWorldScale() {
     return tileSize;
 }
 
 gbVec2** GetWorldPointList() {
     return PointList;
+}
+
+TileData* GetTileStartPointer(void) {
+    return &WorldArray[0];
+}
+
+long long GetNumberOfTiles(void) {
+    return arrlen(WorldArray);
 }
 
 TileData** GetAllTiles() {
@@ -207,6 +210,8 @@ TileData** GetDirtyTiles(void) {
 }
 
 void CleanAllTiles(void) {
+    UpdateRenderBuffers(dirtyTiles);
+    
     hmfree(dirtyTiles);
     dirtyTiles = NULL;
 }
@@ -405,29 +410,29 @@ Agent* GetTileOwner(TileData* t) {
 }
 
 void RenderTiles(void) {
-    glVertexPointer(2, GL_FLOAT, 0, hexVertices);
-
-    for (long long i = 0; i < arrlen(WorldArray); i++) {
-        glPushMatrix();
-        glTranslatef(
-            WorldArray[i].draw->worldPos.x,
-            WorldArray[i].draw->worldPos.y,
-            0.0f
-        );
-        glScalef(tileDimensions.y, tileDimensions.y, 1.0f);
-        glColor4f(WorldArray[i].draw->color.r, WorldArray[i].draw->color.g, WorldArray[i].draw->color.b, 1.0f);
-        glDrawArrays(GL_TRIANGLE_STRIP, 0, 6);
-        if (WorldArray[i].draw->overlayColor.a > 0.0f) {
-            glColor4f(WorldArray[i].draw->overlayColor.r, WorldArray[i].draw->overlayColor.g, WorldArray[i].draw->overlayColor.b, WorldArray[i].draw->overlayColor.a);
-            glDrawArrays(GL_TRIANGLE_FAN, 0, 8);
-        }
-        glPopMatrix();
-    }
-    for (long i = 0; i < arrlen(WorldArray); i++) {
-        if (WorldArray[i].meta->outline != NULL) {
-            RenderOutline(WorldArray[i].meta->outline);
-        }
-    }
+//    glVertexPointer(2, GL_FLOAT, 0, hexVertices);
+//
+//    for (long long i = 0; i < arrlen(WorldArray); i++) {
+//        glPushMatrix();
+//        glTranslatef(
+//            WorldArray[i].draw->worldPos.x,
+//            WorldArray[i].draw->worldPos.y,
+//            0.0f
+//        );
+//        glScalef(tileDimensions.y, tileDimensions.y, 1.0f);
+//        glColor4f(WorldArray[i].draw->color.r, WorldArray[i].draw->color.g, WorldArray[i].draw->color.b, 1.0f);
+//        glDrawArrays(GL_TRIANGLE_STRIP, 0, 6);
+//        if (WorldArray[i].draw->overlayColor.a > 0.0f) {
+//            glColor4f(WorldArray[i].draw->overlayColor.r, WorldArray[i].draw->overlayColor.g, WorldArray[i].draw->overlayColor.b, WorldArray[i].draw->overlayColor.a);
+//            glDrawArrays(GL_TRIANGLE_FAN, 0, 8);
+//        }
+//        glPopMatrix();
+//    }
+//    for (long i = 0; i < arrlen(WorldArray); i++) {
+//        if (WorldArray[i].meta->outline != NULL) {
+//            RenderOutline(WorldArray[i].meta->outline);
+//        }
+//    }
 }
 
 Region* CreateRegion() {

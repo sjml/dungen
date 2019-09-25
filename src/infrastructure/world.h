@@ -58,11 +58,14 @@ typedef struct sTileSet {
 void InitializeWorld(int width, int height, float scale);
 void FinalizeWorld(void);
 Vec2i GetWorldDimensions(void);
+gbVec2 GetTileDimensions(void);
 float GetWorldScale(void);
 gbVec2** GetWorldPointList(void);
 
 void RenderTiles(void);
 
+TileData* GetTileStartPointer(void);
+long long GetNumberOfTiles(void);
 TileData** GetAllTiles(void);
 TileSet* GetAllTilesAsSet(void);
 void SetTileAsDirty(TileData* td);

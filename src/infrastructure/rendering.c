@@ -13,6 +13,8 @@
 #include  "../ui/choice.h"
 #include  "../ui/tile_choice.h"
 
+static bool renderingInitialized = false;
+
 static Vec2i windowDimensions;
 static Vec2i framebufferDimensions;
 static Vec2i orthoDimensions;
@@ -24,6 +26,13 @@ static gbMat4 projectionMatrix;
 static gbMat4 modelViewMatrix;
 static gbMat4 perspectiveMatrix;
 static gbMat4 orthoMatrix;
+
+static gbMat4 hexModelMatrix;
+static GLuint hexVAO;
+static GLuint hexVBO;
+static GLuint hexProgram;
+static GLuint vpLocation;
+static GLuint modelLocation;
 
 static Region** regions = NULL;
 
@@ -46,10 +55,10 @@ static const int defaultWindowHeight = 768;
             exit(EXIT_FAILURE);
         }
 
-        //    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-        //    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-        //    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GLFW_TRUE);
-        //    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+        glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GLFW_TRUE);
+        glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
         glfwWindowHint(GLFW_SAMPLES, 4);
         glfwWindowHint(GLFW_COCOA_RETINA_FRAMEBUFFER, GLFW_TRUE);
@@ -78,21 +87,20 @@ void InitializeRendering() {
     #if !(DUNGEN_MOBILE)
         _glfwSetup();
         glClearDepth(1.0f);
-        glPolygonMode(GL_FRONT, GL_FILL);
     #endif // !(DUNGEN_MOBILE)
 
-    glShadeModel(GL_FLAT);
-    glEnable(GL_CULL_FACE);
-    glFrontFace(GL_CCW);
-    glCullFace(GL_BACK);
-    glDepthFunc(GL_LEQUAL);
-    glEnableClientState(GL_VERTEX_ARRAY);
-    glActiveTexture(GL_TEXTURE0);
-    glDisable(GL_TEXTURE_2D);
-    glEnable(GL_DEPTH_TEST);
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    glClearStencil(0);
+//    glShadeModel(GL_FLAT);
+//    glEnable(GL_CULL_FACE);
+//    glFrontFace(GL_CCW);
+//    glCullFace(GL_BACK);
+//    glDepthFunc(GL_LEQUAL);
+//    glEnableClientState(GL_VERTEX_ARRAY);
+//    glActiveTexture(GL_TEXTURE0);
+//    glDisable(GL_TEXTURE_2D);
+//    glEnable(GL_DEPTH_TEST);
+//    glEnable(GL_BLEND);
+//    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+//    glClearStencil(0);
     glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 //    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
@@ -115,21 +123,66 @@ void InitializeRendering() {
     gb_mat4_perspective(&projectionMatrix, MainCamera.aperture, aspect, MainCamera.zNearClip, MainCamera.zFarClip);
     gb_mat4_look_at(&modelViewMatrix, MainCamera.position, MainCamera.view, MainCamera.up);
     gb_mat4_mul(&perspectiveMatrix, &projectionMatrix, &modelViewMatrix);
+    
+    gbVec3 scaleDims;
+    scaleDims.x = GetTileDimensions().y * 0.5f;
+    scaleDims.y = scaleDims.x;
+    scaleDims.z = 1.0f;
+    gb_mat4_scale(&hexModelMatrix, scaleDims);
 
     orthoDimensions.y = defaultWindowHeight;
     orthoDimensions.x = (int)((float)defaultWindowHeight * aspect);
     gb_mat4_ortho2d(&orthoMatrix, 0.0f, (float)orthoDimensions.x, (float)orthoDimensions.y, 0.0f);
 
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
-    glMultMatrixf(perspectiveMatrix.e);
+    glGenVertexArrays(1, &hexVAO);
+    glBindVertexArray(hexVAO);
+
+    glGenBuffers(1, &hexVBO);
+    glBindBuffer(GL_ARRAY_BUFFER, hexVBO);
+    glBufferData(
+        GL_ARRAY_BUFFER,
+        sizeof(TileDrawData) * GetNumberOfTiles(),
+        GetTileStartPointer()->draw,
+        GL_STATIC_DRAW
+    );
+    
+    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(TileDrawData), (void*)offsetof(TileDrawData, worldPos));
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(TileDrawData), (void*)offsetof(TileDrawData, color));
+    glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, sizeof(TileDrawData), (void*)offsetof(TileDrawData, overlayColor));
+
+    hexProgram = LoadProgram(
+        "shaders/gl/hex_vert.glsl",
+        "shaders/gl/hex_frag.glsl",
+        "shaders/gl/hex_geo.glsl"
+    );
+    vpLocation = glGetUniformLocation(hexProgram, "vp");
+    modelLocation = glGetUniformLocation(hexProgram, "model");
     handleGLErrors(__FILE__, __LINE__);
 
 //    glfwGetFramebufferSize(window, &frameW, &frameH);
 //    screenShotBuffer = malloc(sizeof(GLubyte) * frameW * frameH * 3);
 //    stbi_flip_vertically_on_write(1);
 
-    InitializeText();
+//    InitializeText();
+    
+    renderingInitialized = true;
+}
+
+void UpdateRenderBuffers(TileSet* ts) {
+    if (!renderingInitialized || hmlen(ts) == 0) {
+        return;
+    }
+    
+    glBindBuffer(GL_ARRAY_BUFFER, hexVBO);
+    for (int i=0; i < hmlen(ts); i++) {
+        TileData* td = ts[i].key;
+        glBufferSubData(
+            GL_ARRAY_BUFFER,
+            sizeof(TileDrawData) * td->meta->i,
+            sizeof(TileDrawData),
+            td->draw
+        );
+    }
 }
 
 void FinalizeRendering() {
@@ -263,55 +316,183 @@ gbVec2 ScreenToOrtho(gbVec2 screenCoordinates) {
     return ret;
 }
 
+GLuint LoadProgram(const char* vertexFile, const char* fragmentFile, const char* geometryFile) {
+    
+    const char* vertexSrc = NULL;
+    const char* geometrySrc = NULL;
+    const char* fragmentSrc = NULL;
+    if (vertexFile != NULL) {
+        vertexSrc = stringFromFile(vertexFile);
+        if (vertexSrc == NULL) {
+            fprintf(stderr, "ERROR: couldn't load %s:\n", vertexFile);
+            return 0;
+        }
+    }
+
+    if (geometryFile != NULL) {
+        geometrySrc = stringFromFile(geometryFile);
+        if (geometrySrc == NULL) {
+            fprintf(stderr, "ERROR: couldn't load %s:\n", geometryFile);
+            return 0;
+        }
+    }
+    
+    if (fragmentFile != NULL) {
+        fragmentSrc = stringFromFile(fragmentFile);
+        if (fragmentSrc == NULL) {
+            fprintf(stderr, "ERROR: couldn't load %s:\n", fragmentFile);
+            return 0;
+        }
+    }
+
+    
+    GLint success;
+    GLuint vs = 0, gs = 0, fs = 0;
+    
+    if (vertexSrc != NULL) {
+        vs = glCreateShader(GL_VERTEX_SHADER);
+        glShaderSource(vs, 1, &vertexSrc, NULL);
+        glCompileShader(vs);
+        glGetShaderiv(vs, GL_COMPILE_STATUS, &success);
+        if (success != GL_TRUE) {
+            fprintf(stderr, "ERROR: couldn't compile %s:\n", vertexFile);
+            char shader_log[4096];
+            GLsizei log_length;
+            glGetShaderInfoLog(vs, 4096, &log_length, shader_log);
+            fprintf(stderr, "\t%s\n", shader_log);
+        }
+    }
+    
+    if (geometrySrc != NULL) {
+        gs = glCreateShader(GL_GEOMETRY_SHADER);
+        glShaderSource(gs, 1, &geometrySrc, NULL);
+        glCompileShader(gs);
+        glGetShaderiv(gs, GL_COMPILE_STATUS, &success);
+        if (success != GL_TRUE) {
+            printf("ERROR: couldn't compile %s:\n", geometryFile);
+            char shader_log[4096];
+            GLsizei log_length;
+            glGetShaderInfoLog(gs, 4096, &log_length, shader_log);
+            fprintf(stderr, "\t%s\n", shader_log);
+        }
+    }
+    
+    if (fragmentSrc != NULL) {
+        fs = glCreateShader(GL_FRAGMENT_SHADER);
+        glShaderSource(fs, 1, &fragmentSrc, NULL);
+        glCompileShader(fs);
+        glGetShaderiv(fs, GL_COMPILE_STATUS, &success);
+        if (success != GL_TRUE) {
+            printf("ERROR: couldn't compile %s:\n", fragmentFile);
+            char shader_log[4096];
+            GLsizei log_length;
+            glGetShaderInfoLog(fs, 4096, &log_length, shader_log);
+            fprintf(stderr, "\t%s\n", shader_log);
+        }
+    }
+    
+    GLuint shaderIndex = glCreateProgram();
+    if (vertexSrc != NULL) {
+        glAttachShader(shaderIndex, vs);
+    }
+    if (geometrySrc != NULL) {
+        glAttachShader(shaderIndex, gs);
+    }
+    if (fragmentSrc != NULL) {
+        glAttachShader(shaderIndex, fs);
+    }
+    glLinkProgram(shaderIndex);
+    glGetProgramiv(shaderIndex, GL_LINK_STATUS, &success);
+    if (success != GL_TRUE) {
+        fprintf(stderr, "ERROR: couldn't link %s, %s, and %s:\n", vertexFile, geometryFile, fragmentFile);
+        char shader_log[4096];
+        GLsizei log_length;
+        glGetProgramInfoLog(shaderIndex, 4096, &log_length, shader_log);
+        fprintf(stderr, "\t%s\n", shader_log);
+        glDeleteProgram(shaderIndex);
+        shaderIndex = 0;
+    }
+    
+    if (vertexSrc != NULL) {
+        free((void*)vertexSrc);
+        glDeleteShader(vs);
+    }
+    if (geometrySrc != NULL) {
+        free((void*)geometrySrc);
+        glDeleteShader(gs);
+    }
+    if (fragmentSrc != NULL) {
+        free((void*)fragmentSrc);
+        glDeleteShader(fs);
+    }
+        
+    return shaderIndex;
+}
+
 int Render() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    
+    glUseProgram(hexProgram);
+    glUniformMatrix4fv(vpLocation, 1, GL_FALSE, perspectiveMatrix.e);
+    glUniformMatrix4fv(modelLocation, 1, GL_FALSE, hexModelMatrix.e);
+    
+    glBindVertexArray(hexVAO);
+    glEnableVertexAttribArray(0);
+    glEnableVertexAttribArray(1);
+    glEnableVertexAttribArray(2);
 
-    glMatrixMode(GL_MODELVIEW);
-    glPushMatrix();
-
-        RenderTiles();
-
-        for (long i = 0; i < arrlen(regions); i++) {
-            if (regions[i]->outline != NULL) {
-                RenderOutline(regions[i]->outline);
-            }
-        }
-    glPopMatrix();
-
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    glPushMatrix();
-        glMultMatrixf(orthoMatrix.e);
-        for (int i = 0; i < arrlen(regions); i++) {
-            if (regions[i]->label.scale >= 0.0f) {
-                glColor4f(
-                    regions[i]->label.color.r,
-                    regions[i]->label.color.g,
-                    regions[i]->label.color.b,
-                    regions[i]->label.color.a
-                );
-                DrawGameText(
-                    regions[i]->label.text,
-                    "fonts/04B_03__.TTF",
-                    regions[i]->label.scale,
-                    (int)regions[i]->label.pos.x,
-                    (int)regions[i]->label.pos.y,
-                    0.0f
-                );
-            }
-        }
-        RenderBanners();
-        if (GetChoiceStatus() >= 0) {
-            RenderChoices();
-        }
-        if (GetTileChoiceStatus() >= 0) {
-            RenderTileChoice();
-        }
-    glMatrixMode(GL_PROJECTION);
-    glPopMatrix();
-
-    handleGLErrors(__FILE__, __LINE__);
-
+    glDrawArrays(GL_POINTS, 0, (int)GetNumberOfTiles());
+    
+    glDisableVertexAttribArray(0);
+    glDisableVertexAttribArray(1);
+    glDisableVertexAttribArray(2);
+    
+//    glMatrixMode(GL_MODELVIEW);
+//    glPushMatrix();
+//
+//        RenderTiles();
+//
+//        for (long i = 0; i < arrlen(regions); i++) {
+//            if (regions[i]->outline != NULL) {
+//                RenderOutline(regions[i]->outline);
+//            }
+//        }
+//    glPopMatrix();
+//
+//    glMatrixMode(GL_PROJECTION);
+//    glLoadIdentity();
+//    glPushMatrix();
+//        glMultMatrixf(orthoMatrix.e);
+//        for (int i = 0; i < arrlen(regions); i++) {
+//            if (regions[i]->label.scale >= 0.0f) {
+//                glColor4f(
+//                    regions[i]->label.color.r,
+//                    regions[i]->label.color.g,
+//                    regions[i]->label.color.b,
+//                    regions[i]->label.color.a
+//                );
+//                DrawGameText(
+//                    regions[i]->label.text,
+//                    "fonts/04B_03__.TTF",
+//                    regions[i]->label.scale,
+//                    (int)regions[i]->label.pos.x,
+//                    (int)regions[i]->label.pos.y,
+//                    0.0f
+//                );
+//            }
+//        }
+//        RenderBanners();
+//        if (GetChoiceStatus() >= 0) {
+//            RenderChoices();
+//        }
+//        if (GetTileChoiceStatus() >= 0) {
+//            RenderTileChoice();
+//        }
+//    glMatrixMode(GL_PROJECTION);
+//    glPopMatrix();
+//
+//    handleGLErrors(__FILE__, __LINE__);
+//
     #if !(DUNGEN_MOBILE)
         glfwSwapBuffers(window);
         glfwPollEvents();

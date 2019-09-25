@@ -9,11 +9,11 @@
 
 void InitializeDunGen(const char* startupElement) {
     InitializePlatform();
-    InitializeRendering();
     InitializeLua();
     InitializeAttributes();
     
     InitializeGame(startupElement);
+    InitializeRendering();
 }
 
 void RunDunGen(void) {

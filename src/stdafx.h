@@ -11,6 +11,7 @@
 #include <lualib.h>
 
 #if !(DUNGEN_MOBILE)
+    #include <OpenGL/gl3.h>
     #ifdef __clang__
         #pragma clang diagnostic push
         #pragma clang diagnostic ignored "-Wdocumentation"

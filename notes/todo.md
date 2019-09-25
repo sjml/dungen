@@ -1,20 +1,27 @@
 ## TODO
-0. Rework river encounters to use centralized system
+0. Modern OpenGL
+    - region outlines
+    - individual tile outlines
+    - text rendering
+    - iOS build to ES2 or 3
+    - try WebGL again
+    - cleanup rendering.c
+1. Rework river encounters to use centralized system
     - rename central functions
     - rivers should only backflow within chambers, but within chambers, there should be no limit on backflow (flood the chamber until an egress is found, basically, but don't go back along the path or to previous chambers)
-1. Styler rework
+2. Styler rework
     - can it handle a region that is both water and plague?
     - rendering of sub-regions; does that work?
     - somewhat related: checking if tile is in region should check subregions
-2. Change treasure handling -- raw ore isn't treasure
+3. Change treasure handling -- raw ore isn't treasure
     - figure out a way for river to wash an actual treasure into a next chamber
     - change visualization of gold vein to something more ore-y
-    - 
-3. Finish agent implementation with river as test case
+4. Finish agent implementation with river as test case
     - add magma as other agent?
-4. Relaxable constraint sets
+5. Relaxable constraint sets
 
 ## Tech Debt
+* world.c could use a refactor
 * attributes.c is a mess of copypasta; think about making a single attribute-haver object that other things can point to
     - counterpoint: probably won't add any more data types, and it currently works, so ¯\\\_(ツ)\_/¯ 
 * RenderingRegions is a holdover from when they were bare TileSets; think about just making a permalist like Agents and TileData have (though TileData's is more by rendering necessity...)

@@ -17,7 +17,7 @@
 -- chamber:AddTag("plague")
 
 -- -- SeedRandomString("140734188874162///4364600400") -- chamber forming around gold vein, not washing
--- SeedRandomString("140734188878915///4375671888") -- chambers need to be able to merge
--- push("Primordial.UndergroundRiver")
+SeedRandomString("140734188878915///4375671888") -- chambers need to be able to merge
+push("Primordial.UndergroundRiver")
 -- -- push("Disaster.VolcanicEruption")
 
