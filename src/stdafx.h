@@ -29,10 +29,10 @@
 #include <stb_ds.h>
 
 #ifdef __clang__
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wshorten-64-to-32"
+    #pragma clang diagnostic push
+    #pragma clang diagnostic ignored "-Wshorten-64-to-32"
 #endif // __clang__
 #include <sds.h>
 #ifdef __clang__
-#pragma clang diagnostic pop
+    #pragma clang diagnostic pop
 #endif // __clang__
