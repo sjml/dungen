@@ -38,7 +38,7 @@ gbVec2 ScreenToOrtho(gbVec2 screenCoordinates);
 void ClearTextLabels(void);
 void AddTextLabel(const char* text, gbVec2 pos, float scale, gbVec4 color);
 
-GLuint LoadProgram(const char* vertexFile, const char* fragmentFile, const char* geometryFile);
+GLuint LoadProgram(const char* vertexFile, const char* fragmentFile);
 void UpdateRenderBuffers(TileSet* ts);
 
 int Render(void);

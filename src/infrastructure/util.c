@@ -20,7 +20,7 @@ char* stringFromFile(const char* filename) {
     if (!buffer) {
         return 0;
     }
-    size_t read_count = fread(buffer, 1, length, f);
+    /* size_t read_count = */ fread(buffer, 1, length, f);
     fclose(f);
     buffer[length] = '\0';
     return buffer;

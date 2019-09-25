@@ -1,7 +1,5 @@
 ## TODO
 0. Modern OpenGL
-    - GLES and WebGL don't support geo shaders, so change to instanced draw
-        - making a geo shader was fun, tho!
     - region outlines
     - individual tile outlines
     - text rendering

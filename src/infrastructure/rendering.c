@@ -27,12 +27,21 @@ static gbMat4 modelViewMatrix;
 static gbMat4 perspectiveMatrix;
 static gbMat4 orthoMatrix;
 
+static GLfloat hexVerts[] = {
+    -0.8660254f,  -0.5f,  // 1
+     0.0000000f,  -1.0f,  // 2
+    -0.8660254f,   0.5f,  // 0
+     0.8660254f,  -0.5f,  // 3
+     0.0f,         1.0f,  // 5
+     0.8660254f,   0.5f,  // 4
+};
+
 static gbMat4 hexModelMatrix;
 static GLuint hexVAO;
 static GLuint hexVBO;
+static GLuint attribVBO;
 static GLuint hexProgram;
 static GLuint vpLocation;
-static GLuint modelLocation;
 
 static Region** regions = NULL;
 
@@ -117,12 +126,16 @@ void InitializeRendering() {
     gb_mat4_perspective(&projectionMatrix, MainCamera.aperture, aspect, MainCamera.zNearClip, MainCamera.zFarClip);
     gb_mat4_look_at(&modelViewMatrix, MainCamera.position, MainCamera.view, MainCamera.up);
     gb_mat4_mul(&perspectiveMatrix, &projectionMatrix, &modelViewMatrix);
-    
-    gbVec3 scaleDims;
+
+    gbVec2 scaleDims;
     scaleDims.x = GetTileDimensions().y * 0.5f;
     scaleDims.y = scaleDims.x;
-    scaleDims.z = 1.0f;
-    gb_mat4_scale(&hexModelMatrix, scaleDims);
+    hexVerts[ 0] *= scaleDims.x; hexVerts[ 1] *= scaleDims.y;
+    hexVerts[ 2] *= scaleDims.x; hexVerts[ 3] *= scaleDims.y;
+    hexVerts[ 4] *= scaleDims.x; hexVerts[ 5] *= scaleDims.y;
+    hexVerts[ 6] *= scaleDims.x; hexVerts[ 7] *= scaleDims.y;
+    hexVerts[ 8] *= scaleDims.x; hexVerts[ 9] *= scaleDims.y;
+    hexVerts[10] *= scaleDims.x; hexVerts[11] *= scaleDims.y;
 
     orthoDimensions.y = defaultWindowHeight;
     orthoDimensions.x = (int)((float)defaultWindowHeight * aspect);
@@ -135,30 +148,36 @@ void InitializeRendering() {
     glBindBuffer(GL_ARRAY_BUFFER, hexVBO);
     glBufferData(
         GL_ARRAY_BUFFER,
-        sizeof(TileDrawData) * GetNumberOfTiles(),
-        GetTileStartPointer()->draw,
+        sizeof(hexVerts),
+        hexVerts,
         GL_STATIC_DRAW
     );
-    
-    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(TileDrawData), (void*)offsetof(TileDrawData, worldPos));
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(TileDrawData), (void*)offsetof(TileDrawData, color));
-    glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, sizeof(TileDrawData), (void*)offsetof(TileDrawData, overlayColor));
+    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(GL_FLOAT) * 2, (void*)0);
 
-    hexProgram = LoadProgram(
-        "shaders/gl/hex_vert.glsl",
-        "shaders/gl/hex_frag.glsl",
-        "shaders/gl/hex_geo.glsl"
+    glGenBuffers(1, &attribVBO);
+    glBindBuffer(GL_ARRAY_BUFFER, attribVBO);
+    glBufferData(
+        GL_ARRAY_BUFFER,
+        sizeof(TileDrawData) * GetNumberOfTiles(),
+        GetTileStartPointer()->draw,
+        GL_DYNAMIC_DRAW
     );
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(TileDrawData), (void*)offsetof(TileDrawData, worldPos));
+    glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(TileDrawData), (void*)offsetof(TileDrawData, color));
+    glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, sizeof(TileDrawData), (void*)offsetof(TileDrawData, overlayColor));
+    glVertexAttribDivisor(1, 1);
+    glVertexAttribDivisor(2, 1);
+    glVertexAttribDivisor(3, 1);
+
+    hexProgram = LoadProgram("shaders/gl/hex_vert.glsl", "shaders/gl/hex_frag.glsl");
     vpLocation = glGetUniformLocation(hexProgram, "vp");
-    modelLocation = glGetUniformLocation(hexProgram, "model");
-    handleGLErrors(__FILE__, __LINE__);
 
 //    glfwGetFramebufferSize(window, &frameW, &frameH);
 //    screenShotBuffer = malloc(sizeof(GLubyte) * frameW * frameH * 3);
 //    stbi_flip_vertically_on_write(1);
 
 //    InitializeText();
-    
+
     renderingInitialized = true;
 }
 
@@ -166,8 +185,8 @@ void UpdateRenderBuffers(TileSet* ts) {
     if (!renderingInitialized || hmlen(ts) == 0) {
         return;
     }
-    
-    glBindBuffer(GL_ARRAY_BUFFER, hexVBO);
+
+    glBindBuffer(GL_ARRAY_BUFFER, attribVBO);
     for (int i=0; i < hmlen(ts); i++) {
         TileData* td = ts[i].key;
         glBufferSubData(
@@ -302,7 +321,7 @@ gbVec2 ScreenToWorld(gbVec2 screenCoordinates) {
 gbVec2 ScreenToOrtho(gbVec2 screenCoordinates) {
     float xPerc = screenCoordinates.x / windowDimensions.x;
     float yPerc = screenCoordinates.y / windowDimensions.y;
-    
+
     gbVec2 ret = {
         xPerc * orthoDimensions.x,
         yPerc * orthoDimensions.y
@@ -310,10 +329,9 @@ gbVec2 ScreenToOrtho(gbVec2 screenCoordinates) {
     return ret;
 }
 
-GLuint LoadProgram(const char* vertexFile, const char* fragmentFile, const char* geometryFile) {
-    
+GLuint LoadProgram(const char* vertexFile, const char* fragmentFile) {
+
     const char* vertexSrc = NULL;
-    const char* geometrySrc = NULL;
     const char* fragmentSrc = NULL;
     if (vertexFile != NULL) {
         vertexSrc = stringFromFile(vertexFile);
@@ -323,14 +341,6 @@ GLuint LoadProgram(const char* vertexFile, const char* fragmentFile, const char*
         }
     }
 
-    if (geometryFile != NULL) {
-        geometrySrc = stringFromFile(geometryFile);
-        if (geometrySrc == NULL) {
-            fprintf(stderr, "ERROR: couldn't load %s:\n", geometryFile);
-            return 0;
-        }
-    }
-    
     if (fragmentFile != NULL) {
         fragmentSrc = stringFromFile(fragmentFile);
         if (fragmentSrc == NULL) {
@@ -339,10 +349,10 @@ GLuint LoadProgram(const char* vertexFile, const char* fragmentFile, const char*
         }
     }
 
-    
+
     GLint success;
     GLuint vs = 0, gs = 0, fs = 0;
-    
+
     if (vertexSrc != NULL) {
         vs = glCreateShader(GL_VERTEX_SHADER);
         glShaderSource(vs, 1, &vertexSrc, NULL);
@@ -356,21 +366,7 @@ GLuint LoadProgram(const char* vertexFile, const char* fragmentFile, const char*
             fprintf(stderr, "\t%s\n", shader_log);
         }
     }
-    
-    if (geometrySrc != NULL) {
-        gs = glCreateShader(GL_GEOMETRY_SHADER);
-        glShaderSource(gs, 1, &geometrySrc, NULL);
-        glCompileShader(gs);
-        glGetShaderiv(gs, GL_COMPILE_STATUS, &success);
-        if (success != GL_TRUE) {
-            printf("ERROR: couldn't compile %s:\n", geometryFile);
-            char shader_log[4096];
-            GLsizei log_length;
-            glGetShaderInfoLog(gs, 4096, &log_length, shader_log);
-            fprintf(stderr, "\t%s\n", shader_log);
-        }
-    }
-    
+
     if (fragmentSrc != NULL) {
         fs = glCreateShader(GL_FRAGMENT_SHADER);
         glShaderSource(fs, 1, &fragmentSrc, NULL);
@@ -384,13 +380,10 @@ GLuint LoadProgram(const char* vertexFile, const char* fragmentFile, const char*
             fprintf(stderr, "\t%s\n", shader_log);
         }
     }
-    
+
     GLuint shaderIndex = glCreateProgram();
     if (vertexSrc != NULL) {
         glAttachShader(shaderIndex, vs);
-    }
-    if (geometrySrc != NULL) {
-        glAttachShader(shaderIndex, gs);
     }
     if (fragmentSrc != NULL) {
         glAttachShader(shaderIndex, fs);
@@ -398,7 +391,7 @@ GLuint LoadProgram(const char* vertexFile, const char* fragmentFile, const char*
     glLinkProgram(shaderIndex);
     glGetProgramiv(shaderIndex, GL_LINK_STATUS, &success);
     if (success != GL_TRUE) {
-        fprintf(stderr, "ERROR: couldn't link %s, %s, and %s:\n", vertexFile, geometryFile, fragmentFile);
+        fprintf(stderr, "ERROR: couldn't link %s and %s:\n", vertexFile, fragmentFile);
         char shader_log[4096];
         GLsizei log_length;
         glGetProgramInfoLog(shaderIndex, 4096, &log_length, shader_log);
@@ -406,41 +399,38 @@ GLuint LoadProgram(const char* vertexFile, const char* fragmentFile, const char*
         glDeleteProgram(shaderIndex);
         shaderIndex = 0;
     }
-    
+
     if (vertexSrc != NULL) {
         free((void*)vertexSrc);
         glDeleteShader(vs);
-    }
-    if (geometrySrc != NULL) {
-        free((void*)geometrySrc);
-        glDeleteShader(gs);
     }
     if (fragmentSrc != NULL) {
         free((void*)fragmentSrc);
         glDeleteShader(fs);
     }
-        
+
     return shaderIndex;
 }
 
 int Render() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    
+
     glUseProgram(hexProgram);
     glUniformMatrix4fv(vpLocation, 1, GL_FALSE, perspectiveMatrix.e);
-    glUniformMatrix4fv(modelLocation, 1, GL_FALSE, hexModelMatrix.e);
-    
+
     glBindVertexArray(hexVAO);
     glEnableVertexAttribArray(0);
     glEnableVertexAttribArray(1);
     glEnableVertexAttribArray(2);
+    glEnableVertexAttribArray(3);
 
-    glDrawArrays(GL_POINTS, 0, (int)GetNumberOfTiles());
-    
+    glDrawArraysInstanced(GL_TRIANGLE_STRIP, 0, 6, (int)GetNumberOfTiles());
+
     glDisableVertexAttribArray(0);
     glDisableVertexAttribArray(1);
     glDisableVertexAttribArray(2);
-    
+    glDisableVertexAttribArray(3);
+
 //    glMatrixMode(GL_MODELVIEW);
 //    glPushMatrix();
 //
