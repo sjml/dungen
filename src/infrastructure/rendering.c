@@ -43,12 +43,6 @@ static const int defaultWindowHeight = 768;
     static GLFWwindow* window = NULL;
 
     void _glfwSetup() {
-        #if DEBUG
-            glfwInitHint(GLFW_COCOA_CHDIR_RESOURCES, GLFW_FALSE);
-        #else
-            glfwInitHint(GLFW_COCOA_CHDIR_RESOURCES, GLFW_TRUE);
-        #endif
-
         glfwInitHint(GLFW_COCOA_MENUBAR, GLFW_TRUE);
 
         if (!glfwInit()) {

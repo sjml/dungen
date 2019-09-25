@@ -12,7 +12,8 @@ void InitializePlatform() {
         fprintf(stderr, "Problem setting up working directory! Probably nothing will work!\n");
     }
     CFRelease(resourcesURL);
-    chdir(path);}
+    chdir(path);
+}
 
 void FinalizePlatform() {
 }
