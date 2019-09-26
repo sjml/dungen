@@ -1,7 +1,5 @@
 ## TODO
 0. Modern OpenGL
-    - region outlines
-    - individual tile outlines
     - text rendering
     - use UI testing node to check
     - iOS build to ES2 or 3

@@ -41,7 +41,11 @@ static GLuint hexVAO;
 static GLuint hexVBO;
 static GLuint attribVBO;
 static GLuint hexProgram;
-static GLuint vpLocation;
+static GLuint hexVPMatLocation;
+
+static GLuint outlineProgram;
+static GLuint outlineVPMatLocation;
+static GLuint outlineColorVecLocation;
 
 static Region** regions = NULL;
 
@@ -169,8 +173,12 @@ void InitializeRendering() {
     glVertexAttribDivisor(2, 1);
     glVertexAttribDivisor(3, 1);
 
-    hexProgram = LoadProgram("shaders/gl/hex_vert.glsl", "shaders/gl/hex_frag.glsl");
-    vpLocation = glGetUniformLocation(hexProgram, "vp");
+    hexProgram = LoadProgram("shaders/gl/hex_vert.glsl", "shaders/gl/basic_frag.glsl");
+    hexVPMatLocation = glGetUniformLocation(hexProgram, "vp");
+    
+    outlineProgram = LoadProgram("shaders/gl/basic_vert.glsl", "shaders/gl/basic_frag.glsl");
+    outlineVPMatLocation = glGetUniformLocation(outlineProgram, "vp");
+    outlineColorVecLocation = glGetUniformLocation(outlineProgram, "color");
 
 //    glfwGetFramebufferSize(window, &frameW, &frameH);
 //    screenShotBuffer = malloc(sizeof(GLubyte) * frameW * frameH * 3);
@@ -416,33 +424,33 @@ int Render() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     glUseProgram(hexProgram);
-    glUniformMatrix4fv(vpLocation, 1, GL_FALSE, perspectiveMatrix.e);
+    glUniformMatrix4fv(hexVPMatLocation, 1, GL_FALSE, perspectiveMatrix.e);
 
     glBindVertexArray(hexVAO);
     glEnableVertexAttribArray(0);
     glEnableVertexAttribArray(1);
     glEnableVertexAttribArray(2);
     glEnableVertexAttribArray(3);
-
-    glDrawArraysInstanced(GL_TRIANGLE_STRIP, 0, 6, (int)GetNumberOfTiles());
-
+        glDrawArraysInstanced(GL_TRIANGLE_STRIP, 0, 6, (int)GetNumberOfTiles());
     glDisableVertexAttribArray(0);
     glDisableVertexAttribArray(1);
     glDisableVertexAttribArray(2);
     glDisableVertexAttribArray(3);
+    
+    
+    glUseProgram(outlineProgram);
+    glUniformMatrix4fv(outlineVPMatLocation, 1, GL_FALSE, perspectiveMatrix.e);
+    
+    for (long ri=0; ri < arrlen(regions); ri++) {
+        if (regions[ri]->outline != NULL && regions[ri]->outline->vbo != 0) {
+            glUniform4fv(outlineColorVecLocation, 1, regions[ri]->outline->color.e);
+            glBindVertexArray(regions[ri]->outline->vao);
+            glEnableVertexAttribArray(0);
+                glDrawArrays(GL_TRIANGLE_STRIP, 0, regions[ri]->outline->numPoints);
+            glDisableVertexAttribArray(0);
+        }
+    }
 
-//    glMatrixMode(GL_MODELVIEW);
-//    glPushMatrix();
-//
-//        RenderTiles();
-//
-//        for (long i = 0; i < arrlen(regions); i++) {
-//            if (regions[i]->outline != NULL) {
-//                RenderOutline(regions[i]->outline);
-//            }
-//        }
-//    glPopMatrix();
-//
 //    glMatrixMode(GL_PROJECTION);
 //    glLoadIdentity();
 //    glPushMatrix();

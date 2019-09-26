@@ -105,8 +105,9 @@ Outline* CreateOutline(TileSet* ts, float thickness, int type) {
     o->color.g = 0.0f;
     o->color.b = 0.0f;
     o->color.a = 1.0f;
-    o->thickness = thickness;
-    o->pointLists = NULL;
+    o->numPoints = 0;
+    o->vbo = 0;
+    o->vao = 0;
 
     gbVec2** PL = GetWorldPointList();
 
@@ -161,6 +162,7 @@ Outline* CreateOutline(TileSet* ts, float thickness, int type) {
     }
     hmfree(outlineEdges);
 
+    float** pointLists = NULL;
     while (arrlen(edges) > 0) {
         float* points = NULL;
         Edge startingEdge = arrpop(edges);
@@ -174,7 +176,7 @@ Outline* CreateOutline(TileSet* ts, float thickness, int type) {
         Edge lastMatched = startingEdge;
         Vec2i checkVert;
         gbVec2 crossVector;
-        float halfThickness = GetWorldScale() * o->thickness;
+        float halfThickness = GetWorldScale() * thickness;
 
         while (arrlen(edges) > 0) {
             int currentSize = (int)arrlen(edges);
@@ -263,33 +265,48 @@ Outline* CreateOutline(TileSet* ts, float thickness, int type) {
             points[3] = cv->y;
         }
 
-        arrpush(o->pointLists, points);
+        arrpush(pointLists, points);
     }
+    
+    // there are probably better ways to fill this, but this is stapled
+    //   on to the end of some logic made when this was all using the
+    //   fixed-function pipeline.
+    float* bufferList = NULL;
+    for (long i=0; i < arrlen(pointLists); i++) {
+        long pi = 0;
+        for (; pi < arrlen(pointLists[i]); pi++) {
+            arrpush(bufferList, pointLists[i][pi]);
+        }
+        
+        if (i < arrlen(pointLists) - 1 && arrlen(pointLists[i+1]) > 0) {
+            // push degenerate triangle to connect to separated region
+            arrpush(bufferList, pointLists[i][pi-2]);
+            arrpush(bufferList, pointLists[i][pi-1]);
+            arrpush(bufferList, pointLists[i+1][0]);
+            arrpush(bufferList, pointLists[i+1][1]);
+        }
+    }
+    if (arrlen(bufferList) > 0) {
+        o->numPoints = (GLsizei)arrlen(bufferList) / 2;
+        glGenVertexArrays(1, &o->vao);
+        glBindVertexArray(o->vao);
+        glGenBuffers(1, &o->vbo);
+        glBindBuffer(GL_ARRAY_BUFFER, o->vbo);
+        glBufferData(GL_ARRAY_BUFFER, sizeof(float)*arrlen(bufferList), bufferList, GL_STATIC_DRAW);
+        glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(GL_FLOAT)*2, (void*)0);
+    }
+    arrfree(bufferList);
+    
+    for (int i = 0; i < arrlen(pointLists); i++) {
+        arrfree(pointLists[i]);
+    }
+    arrfree(pointLists);
 
     return o;
 }
 
 void DestroyOutline(Outline* o) {
-    for (int i = 0; i < arrlen(o->pointLists); i++) {
-        arrfree(o->pointLists[i]);
-    }
-    arrfree(o->pointLists);
+    glDeleteBuffers(1, &o->vbo);
+    glDeleteVertexArrays(1, &o->vao);
     free(o);
-}
-
-void RenderOutline(Outline* o) {
-    if (arrlen(o->pointLists) == 0) {
-        return;
-    }
-
-    glColor4f(o->color.r, o->color.g, o->color.b, o->color.a);
-
-    for (int i = 0; i < arrlen(o->pointLists); i++) {
-        if (arrlen(o->pointLists[0]) == 0) {
-            continue;
-        }
-
-        glVertexPointer(2, GL_FLOAT, 2 * sizeof(float), o->pointLists[i]);
-        glDrawArrays(GL_TRIANGLE_STRIP, 0, (int)arrlen(o->pointLists[i]) / 2);
-    }
 }

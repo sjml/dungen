@@ -83,12 +83,12 @@ void InitializeWorld(int width, int height, float scale) {
             td->meta->memberRegions = NULL;
             td->meta->hexPos.x = i;
             td->meta->hexPos.y = j;
-//            td->draw->color.r = RandomRangeFloat(0.0f, 1.0f);
-//            td->draw->color.g = RandomRangeFloat(0.0f, 1.0f);
-//            td->draw->color.b = RandomRangeFloat(0.0f, 1.0f);
-            td->draw->color.r = 0.0f;
-            td->draw->color.g = 1.0f;
-            td->draw->color.b = 1.0f;
+            td->draw->color.r = RandomRangeFloat(0.0f, 1.0f);
+            td->draw->color.g = RandomRangeFloat(0.0f, 1.0f);
+            td->draw->color.b = RandomRangeFloat(0.0f, 1.0f);
+//            td->draw->color.r = 0.0f;
+//            td->draw->color.g = 1.0f;
+//            td->draw->color.b = 1.0f;
             td->draw->overlayColor.r = 0.0f;
             td->draw->overlayColor.g = 0.0f;
             td->draw->overlayColor.b = 0.0f;
@@ -529,6 +529,9 @@ void DestroyTileSet(TileSet* ts) {
 }
 
 TileSet* AddTileToSet(TileSet* ts, TileData* t) {
+    if (t == NULL) {
+        return ts;
+    }
     hmput(ts, t, 1);
     return ts;
 }

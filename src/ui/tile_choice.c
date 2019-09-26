@@ -31,6 +31,7 @@ void PresentTileChoice(void) {
 
     hoveredSingle = CreateRegion();
 
+    TileSet* invalids = NULL;
     for (long i = 0; i < dims.x * dims.y; i++) {
         TileData* t = GetTileAtIndex(i);
         if (!IsTileInSet(valid, t)) {
@@ -38,8 +39,11 @@ void PresentTileChoice(void) {
             t->draw->overlayColor.g = 1.0f;
             t->draw->overlayColor.b = 1.0f;
             t->draw->overlayColor.a = 0.5f;
+            invalids = AddTileToSet(invalids, t);
         }
     }
+    UpdateRenderBuffers(invalids);
+    DestroyTileSet(invalids);
 }
 
 void RenderTileChoice(void) {
@@ -74,11 +78,22 @@ void TileChoiceProcessMouseMovement(gbVec2 position) {
     ClearRegionOutline(hoveredSingle);
     gbVec4 hoverColor = {1.0f, 0.0f, 0.0f, 1.0f};
     SetRegionOutline(hoveredSingle, hoverColor, 0.25f, -1);
+    
+    TileSet* updates = NULL;
+    updates = AddTileToSet(updates, hoveredTile);
+    updates = AddTileToSet(updates, pressedTile);
+    updates = AddTileToSet(updates, current);
+    UpdateRenderBuffers(updates);
+    DestroyTileSet(updates);
 
     hoveredTile = current;
 }
 
 void TileChoiceProcessMouseClick(bool down) {
+    TileSet* updates = NULL;
+    updates = AddTileToSet(updates, hoveredTile);
+    updates = AddTileToSet(updates, pressedTile);
+    
     if (down) {
         if (hoveredTile != NULL && IsTileInSet(valid, hoveredTile)) {
             pressedTile = hoveredTile;
@@ -104,6 +119,7 @@ void TileChoiceProcessMouseClick(bool down) {
                 t->draw->overlayColor.g = 0.0f;
                 t->draw->overlayColor.b = 0.0f;
                 t->draw->overlayColor.a = 0.0f;
+                updates = AddTileToSet(updates, t);
             }
         }
         pressedTile->draw->overlayColor.r = 0.0f;
@@ -116,4 +132,7 @@ void TileChoiceProcessMouseClick(bool down) {
             TileChoiceProcessMouseMovement(GetCursorPosition());
         }
     }
+    
+    UpdateRenderBuffers(updates);
+    DestroyTileSet(updates);
 }
