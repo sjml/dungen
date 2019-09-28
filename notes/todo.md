@@ -1,10 +1,10 @@
 ## TODO
 0. Modern OpenGL
-    - text rendering
-    - use UI testing node to check
     - iOS build to ES2 or 3
+        - will need to reimplement shaders >:(
     - try WebGL again
     - cleanup rendering.c
+    - reimplement screenshot
 1. Rework river encounters to use centralized system
     - rename central functions
     - rivers should only backflow within chambers, but within chambers, there should be no limit on backflow (flood the chamber until an egress is found, basically, but don't go back along the path or to previous chambers)

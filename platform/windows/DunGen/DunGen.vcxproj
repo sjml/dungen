@@ -74,9 +74,6 @@
     <None Include="..\..\..\src\scripting\interfaces\world.i" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\FreeType\FreeType.vcxproj">
-      <Project>{ff5877d3-bb64-4863-b8e8-19ec67a25797}</Project>
-    </ProjectReference>
     <ProjectReference Include="..\GLFW\GLFW.vcxproj">
       <Project>{97bba92d-f277-40af-8d19-d15924e68000}</Project>
     </ProjectReference>

@@ -21,6 +21,9 @@ This license available with a FAQ at: http://scripts.sil.org/OFL
 * [gb_math.h](https://github.com/gingerBill/gb/blob/master/gb_math.h)
 * [stb_ds.h](http://nothings.org/stb_ds/)
 * [stb_image.h](https://github.com/nothings/stb/blob/master/stb_image.h)
+* [stb_image_write.h](https://github.com/nothings/stb/blob/master/stb_image_write.h)
+* [stb_truetype.h](https://github.com/nothings/stb/blob/master/stb_truetype.h)
+* [stb_rect_pack.h](https://github.com/nothings/stb/blob/master/stb_rect_pack.h)
 
 ### [GLFW 3.30](https://www.glfw.org/)
 Copyright (c) 2002-2006 Marcus Geelnard
@@ -71,10 +74,6 @@ BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
 ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-
-### [FreeType 2.10.1](https://www.freetype.org)
-Portions of this software are copyright © 2019 The FreeType Project. 
-All rights reserved.
 
 ### [Simple Dynamic Strings](https://github.com/antirez/sds)
 Copyright (c) 2006-2014, Salvatore Sanfilippo [antirez at gmail dot com]

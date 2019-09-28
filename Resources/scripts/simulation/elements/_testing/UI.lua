@@ -1,4 +1,4 @@
-AddBanner("Choice Coming Up...", 72, {1.0, 1.0, 1.0, 1.0}, {0.2, 0.2, 0.2, 0.5}, 2)
+AddBanner("Choice Coming Up...", 3.0, {1.0, 1.0, 1.0, 1.0}, {0.2, 0.2, 0.2, 0.5}, 2)
 sir("WaitForUI", 1)
 push()
 
@@ -28,7 +28,7 @@ for x = dims.x // 2, dims.x - 1 do
 end
 
 stsr("TileChoiceValidSet", valids)
-AddBanner("Tile Choice Coming Up...", 72, {1.0, 1.0, 1.0, 1.0}, {0.2, 0.2, 0.2, 0.5}, 2)
+AddBanner("Tile Choice Coming Up...", 3.0, {1.0, 1.0, 1.0, 1.0}, {0.2, 0.2, 0.2, 0.5}, 2)
 sir("WaitForUI", 1)
 push()
 

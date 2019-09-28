@@ -68,7 +68,7 @@ void PresentChoiceSelection(const char* description) {
 
     Vec2i dims = GetOrthoDimensions();
 
-    float fontSize = 72.0f;
+    float fontScale = 2.25f;
     float margin = 15.0f;
     float btnW = dims.x * 0.48f;
     float btnH = dims.y * 0.15f;
@@ -111,7 +111,7 @@ void PresentChoiceSelection(const char* description) {
         if (numRows <= 5) {
             gbVec4 textColor = {0.3f, 0.3f, 0.7f, 1.0f};
             gbVec4 bgColor = {0.8f, 0.8f, 0.8f, 0.8f};
-            bannerHandle = AddBanner(description, 72.0f, textColor, bgColor, -1.0f);
+            bannerHandle = AddBanner(description, 2.0f, textColor, bgColor, -1.0f);
             PositionBanner(bannerHandle, 100.0f);
             start.y += 50.0f;
         }
@@ -128,7 +128,7 @@ void PresentChoiceSelection(const char* description) {
         b.bb.dim.x = btnW;
         b.bb.dim.y = btnH;
 
-        gbVec2 extents = MeasureTextExtents(choices[i], "fonts/04B_03__.TTF", fontSize);
+        gbVec2 extents = MeasureTextExtents(choices[i], "Pixel", fontScale);
         b.textBB.pos.x = center.x - (extents.x * 0.5f);
         b.textBB.pos.y = center.y + (extents.y * 0.5f);
         b.textBB.dim.x = extents.x;
@@ -157,39 +157,43 @@ void PresentChoiceSelection(const char* description) {
             current.x += 1;
         }
     }
-    
+
     ChoiceProcessMouseMovement(GetCursorPosition());
 }
 
-void RenderChoices() {
+void RenderChoices(gbMat4* matrix) {
+    if (arrlen(buttons) == 0) {
+        return;
+    }
+    
+    GLuint basic = GetBasicProgram();
+    glUseProgram(basic);
+    glUniformMatrix4fv(glGetUniformLocation(basic, "vp"), 1, GL_FALSE, (*matrix).e);
+    glBindVertexArray(GetSquareVAO());
     for (long i=0; i < arrlen(buttons); i++) {
         if (pressedChoice == i && hoveredChoice == i) {
-            glColor4f(btnColorPress.r, btnColorPress.g, btnColorPress.b, btnColorPress.a);
+            glUniform4fv(glGetUniformLocation(basic, "color"), 1, btnColorPress.e);
         }
         else if (hoveredChoice == i) {
-            glColor4f(btnColorHover.r, btnColorHover.g, btnColorHover.b, btnColorHover.a);
+            glUniform4fv(glGetUniformLocation(basic, "color"), 1, btnColorHover.e);
         }
         else {
-            glColor4f(btnColorBase.r, btnColorBase.g, btnColorBase.b, btnColorBase.a);
+            glUniform4fv(glGetUniformLocation(basic, "color"), 1, btnColorBase.e);
         }
-
-        glMatrixMode(GL_MODELVIEW);
-        glPushMatrix();
-        glLoadIdentity();
-        glVertexPointer(2, GL_FLOAT, 0, buttons[i].verts);
-        glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-        glPopMatrix();
-
-        glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-        DrawGameText(
-            choices[i],
-            "fonts/04B_03__.TTF",
-            72.0f,
-            (int)buttons[i].textBB.pos.x,
-            (int)buttons[i].textBB.pos.y,
-            0.0f
-        );
+        
+        glBindBuffer(GL_ARRAY_BUFFER, GetSquareVBO());
+        glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(buttons[i].verts), buttons[i].verts);
+        glEnableVertexAttribArray(0);
+            glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+        glDisableVertexAttribArray(0);
     }
+    glBindVertexArray(0);
+    
+    PrepDrawText(matrix);
+    for (long i=0; i < arrlen(buttons); i++) {
+        DrawText("Pixel", choices[i], buttons[i].textBB.pos, (gbVec4){1.0f, 1.0f, 1.0f, 1.0f}, 2.5f);
+    }
+    FinishDrawText();
 }
 
 void ChoiceProcessMouseMovement(gbVec2 position) {

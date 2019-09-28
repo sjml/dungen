@@ -74,7 +74,7 @@ void* AddBanner(const char* text, float scale, gbVec4 textColor, gbVec4 bgColor,
     bi.duration = duration;
     bi.manualY = -1.0f;
 
-    bi.extents = MeasureTextExtents(bi.ti.text, "fonts/04B_03__.TTF", bi.ti.scale);
+    bi.extents = MeasureTextExtents(bi.ti.text, "Pixel", bi.ti.scale);
 
     arrpush(banners, bi);
     _repositionBanners();
@@ -117,18 +117,29 @@ bool UpdateBanners(float dt) {
     return true;
 }
 
-void RenderBanners() {
-    for (long i=0; i < arrlen(banners); i++) {
-        glColor4f(banners[i].bgColor.r, banners[i].bgColor.g, banners[i].bgColor.b, banners[i].bgColor.a);
-
-        glMatrixMode(GL_MODELVIEW);
-        glPushMatrix();
-        glLoadIdentity();
-        glVertexPointer(2, GL_FLOAT, 0, banners[i].verts);
-        glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-        glPopMatrix();
-
-        glColor4f(banners[i].ti.color.r, banners[i].ti.color.g, banners[i].ti.color.b, banners[i].ti.color.a);
-        DrawGameText(banners[i].ti.text, "fonts/04B_03__.TTF", banners[i].ti.scale, (int)banners[i].ti.pos.x, (int)banners[i].ti.pos.y, 0.0f);
+void RenderBanners(gbMat4* matrix) {
+    if (arrlen(banners) == 0) {
+        return;
     }
+    
+    GLuint basic = GetBasicProgram();
+    glUseProgram(basic);
+    glUniformMatrix4fv(glGetUniformLocation(basic, "vp"), 1, GL_FALSE, (*matrix).e);
+    glBindVertexArray(GetSquareVAO());
+
+    for (long i=0; i < arrlen(banners); i++) {
+        glUniform4fv(glGetUniformLocation(basic, "color"), 1, banners[i].bgColor.e);
+        glBindBuffer(GL_ARRAY_BUFFER, GetSquareVBO());
+        glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(banners[i].verts), banners[i].verts);
+        glEnableVertexAttribArray(0);
+            glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+        glDisableVertexAttribArray(0);
+    }
+    glBindVertexArray(0);
+    
+    PrepDrawText(matrix);
+    for (long i=0; i < arrlen(banners); i++) {
+        DrawText("Pixel", banners[i].ti.text, banners[i].ti.pos, banners[i].ti.color, banners[i].ti.scale);
+    }
+    FinishDrawText();
 }

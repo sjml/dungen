@@ -5,4 +5,4 @@ void PositionBanner(void* bannerHandle, float yPos);
 void RemoveBanner(void* bannerHandle);
 
 bool UpdateBanners(float dt);
-void RenderBanners(void);
+void RenderBanners(gbMat4* matrix);

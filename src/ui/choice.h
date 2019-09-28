@@ -4,7 +4,7 @@ void AddChoice(const char* description);
 void PresentChoiceSelection(const char* description);
 void ClearChoices(void);
 
-void RenderChoices(void);
+void RenderChoices(gbMat4* matrix);
 int GetChoiceStatus(void);
 void ChoiceProcessMouseMovement(gbVec2 position);
 void ChoiceProcessMouseClick(bool down);

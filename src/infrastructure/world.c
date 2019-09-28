@@ -211,7 +211,7 @@ TileData** GetDirtyTiles(void) {
 
 void CleanAllTiles(void) {
     UpdateRenderBuffers(dirtyTiles);
-    
+
     hmfree(dirtyTiles);
     dirtyTiles = NULL;
 }
@@ -618,8 +618,10 @@ gbVec2 GetRegionCenterPoint(Region* r) {
 }
 
 void SetRegionLabel(Region* r, const char* text, float scale, gbVec4 color, gbVec2 tileOffset) {
-    r->label.text = malloc(sizeof(char) * (strlen(text) + 1));
-    strcpy(r->label.text, text);
+    if (r->label.text != NULL) {
+        free(r->label.text);
+    }
+    r->label.text = strdup(text);
     r->label.scale = scale;
     r->label.color.r = color.r;
     r->label.color.g = color.g;
@@ -634,7 +636,7 @@ void SetRegionLabel(Region* r, const char* text, float scale, gbVec4 color, gbVe
     gbVec2 screenPos = WorldToScreen(center);
     gbVec2 orthoPos = ScreenToOrtho(screenPos);
 
-    gbVec2 extents = MeasureTextExtents(text, "fonts/04B_03__.TTF", scale);
+    gbVec2 extents = MeasureTextExtents(text, "Pixel", scale);
     r->label.pos.x = orthoPos.x - (extents.x * 0.5f) + 1.0f;
     r->label.pos.y = orthoPos.y + (extents.y * 0.5f);
 }

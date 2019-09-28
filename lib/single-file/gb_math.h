@@ -1,4 +1,4 @@
-/* gb_math.h - v0.07c - public domain C math library - no warranty implied; use at your own risk
+/* gb_math.h - v0.07f - public domain C math library - no warranty implied; use at your own risk
    A C math library geared towards game development
    use '#define GB_MATH_IMPLEMENTATION' before including to create the implementation in _ONE_ file
 

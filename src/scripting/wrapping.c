@@ -4758,29 +4758,6 @@ fail:
 }
 
 
-static int _wrap_GetTextAscenderHeight(lua_State* L) {
-  int SWIG_arg = 0;
-  char *arg1 = (char *) 0 ;
-  float arg2 ;
-  float result;
-  
-  SWIG_check_num_args("GetTextAscenderHeight",2,2)
-  if(!SWIG_lua_isnilstring(L,1)) SWIG_fail_arg("GetTextAscenderHeight",1,"char const *");
-  if(!lua_isnumber(L,2)) SWIG_fail_arg("GetTextAscenderHeight",2,"float");
-  arg1 = (char *)lua_tostring(L, 1);
-  arg2 = (float)lua_tonumber(L, 2);
-  result = (float)GetTextAscenderHeight((char const *)arg1,arg2);
-  lua_pushnumber(L, (lua_Number) result); SWIG_arg++;
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
 static int _wrap_GetIntRegister(lua_State* L) {
   int SWIG_arg = 0;
   char *arg1 = (char *) 0 ;
@@ -9272,7 +9249,6 @@ static swig_lua_method swig_SwigModule_methods[]= {
     { "DumpScreenShot", _wrap_DumpScreenShot},
     { "WorldToScreen", _wrap_WorldToScreen},
     { "MeasureTextExtents", _wrap_MeasureTextExtents},
-    { "GetTextAscenderHeight", _wrap_GetTextAscenderHeight},
     { "GetIntRegister", _wrap_GetIntRegister},
     { "GetFloatRegister", _wrap_GetFloatRegister},
     { "GetStringRegister", _wrap_GetStringRegister},

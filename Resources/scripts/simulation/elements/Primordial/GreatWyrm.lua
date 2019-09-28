@@ -19,18 +19,7 @@ c = makeRoundChamber(base, 2)
 c:AddTag("GreatWyrm")
 
 for i=1,5 do
-  local t = nil
-  if RandomRangeInt(0,4) == 0 then
-    t = storeItemInChamber(c, "gems")
-    if t then
-      t:AddTag("gold")
-    end
-  else
-    t = storeItemInChamber(c, "gold")
-  end
-  -- if t ~= nil then
-  --   t:SetAttributeInt("treasure", 1 + t:GetAttributeInt("treasure"))
-  -- end
+  storeItemInChamber(c, "gold")
 end
 
 base:AddTag("monster")

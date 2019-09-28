@@ -11,249 +11,34 @@
 #include "text.h"
 
 #include "util.h"
+#include "rendering.h"
+
+#define STB_RECT_PACK_IMPLEMENTATION
+#include <stb_rect_pack.h>
 
 #ifdef __clang__
     #pragma clang diagnostic push
-    #pragma clang diagnostic ignored "-Wdocumentation"
+    #pragma clang diagnostic ignored "-Wcomma"
+    #pragma clang diagnostic ignored "-Wunused"
 #endif // __clang__
-#include <ft2build.h>
-#include FT_FREETYPE_H
+#define STBTT_STATIC
+#define STB_TRUETYPE_IMPLEMENTATION
+#include <stb_truetype.h>
 #ifdef __clang__
     #pragma clang diagnostic pop
 #endif // __clang__
 
+
 #define MAX_VERTS (4*128)
-#define TEXTURE_SIZE 512
+#define TEXT_ATLAS_SIZE 512
+#define TEXT_ATLAS_NUM_CHARS 256
 
-static FT_Library ftLib;
-static GLubyte* emptyTextureData = NULL;
+static GLuint textProgram;
+static GLint  textOrthoLocation;
+static GLint  textColorLocation;
+static GLuint textTexID;
+static GLuint textVAO, textVBO;
 
-typedef struct {
-    short x, y, h;
-} FontTextureRow;
-
-typedef struct {
-    GLuint id;
-    float vertices[MAX_VERTS];
-    int numVertices;
-    FontTextureRow* rows;
-} FontTexture;
-
-typedef struct {
-    FontTexture* fontTexture;
-    Vec2i topLeft;
-    Vec2i bottomRight;
-    gbVec2 offset;
-    float advance;
-} Glyph;
-
-typedef struct {
-    float key;
-    Glyph value;
-} sizeMap;
-
-typedef struct {
-    bool isValid;
-    FT_Face* ftFace;
-    // bool hasKerning;
-    bool isDrawing;
-
-    Vec2i textureDimensions;
-    gbVec2 inverseTextureDimensions;
-    FontTexture** fTextures;
-    struct { unsigned int key; sizeMap* value; }* glyphMap;
-} FontCacheEntry;
-
-static struct { const char* key; FontCacheEntry* value; }* fontCache;
-
-FontCacheEntry* _GetFontInfo(const char* fontPath) {
-    if (shgeti(fontCache, fontPath) < 0) {
-        FontCacheEntry* fce = calloc(1, sizeof(FontCacheEntry));
-        fce->ftFace = malloc(sizeof(FT_Face));
-        int error = FT_New_Face(ftLib, fontPath, 0, fce->ftFace);
-        if (error) {
-            free(fce->ftFace);
-            fce->isValid = false;
-        }
-        else {
-            // TODO: implement kerning
-            // fce->hasKerning = (FT_HAS_KERNING(*(fce->ftFace)) != 0);
-
-            fce->textureDimensions.x = fce->textureDimensions.y = TEXTURE_SIZE;
-            fce->inverseTextureDimensions.x = 1.0f / (float)fce->textureDimensions.x;
-            fce->inverseTextureDimensions.y = 1.0f / (float)fce->textureDimensions.y;
-
-            fce->isValid = true;
-        }
-
-        fce->isDrawing = false;
-        shput(fontCache, fontPath, fce);
-        return fce;
-    }
-    else {
-        return shget(fontCache, fontPath);
-    }
-}
-
-void _FlushDrawing(FontCacheEntry* fce) {
-    if (!fce->isValid) {
-        return;
-    }
-
-    for (int i = 0; i < arrlen(fce->fTextures); i++) {
-        if (fce->fTextures[i]->numVertices > 0) {
-            glBindTexture(GL_TEXTURE_2D, fce->fTextures[i]->id);
-            glVertexPointer(2, GL_FLOAT, sizeof(float)*4, &fce->fTextures[i]->vertices[0]);
-            glTexCoordPointer(2, GL_FLOAT, sizeof(float)*4, &fce->fTextures[i]->vertices[2]);
-            glDrawArrays(GL_TRIANGLES, 0, (GLsizei)fce->fTextures[i]->numVertices / 4);
-            fce->fTextures[i]->numVertices = 0;
-        }
-    }
-}
-
-void _StartDrawing(FontCacheEntry* fce) {
-    if (!fce->isValid) {
-        return;
-    }
-
-    if (fce->isDrawing) {
-        _FlushDrawing(fce);
-    }
-
-    fce->isDrawing = true;
-}
-
-void _EndDrawing(FontCacheEntry* fce) {
-    if (!fce->isValid) {
-        return;
-    }
-
-    if (!fce->isDrawing) {
-        return;
-    }
-
-    _FlushDrawing(fce);
-    fce->isDrawing = false;
-}
-
-Glyph _GetGlyph(FontCacheEntry* fce, float fontSize, unsigned int codepoint) {
-    if (hmgeti(fce->glyphMap, codepoint) >= 0) {
-        sizeMap* sm = hmget(fce->glyphMap, codepoint);
-        if (hmgeti(sm, fontSize) >= 0) {
-            return hmget(sm, fontSize);
-        }
-    }
-
-    // create and add glyph
-    Glyph ret;
-    ret.fontTexture = NULL;
-    ret.topLeft.x = 0;
-    ret.topLeft.y = 0;
-    ret.bottomRight.x = 0;
-    ret.bottomRight.y = 0;
-    ret.advance = 0.0f;
-    ret.offset.x = 0.0f;
-    ret.offset.y = 0.0f;
-
-    int error = 0;
-    error = FT_Set_Char_Size(*fce->ftFace, 0L, (FT_F26Dot6)(fontSize * 64.0f), 72, 72);
-    error = FT_Load_Glyph(*fce->ftFace, codepoint, FT_LOAD_NO_HINTING);
-    error = FT_Render_Glyph((*fce->ftFace)->glyph, FT_RENDER_MODE_NORMAL);
-
-    int glyphWidth  = (*fce->ftFace)->glyph->bitmap.width;
-    int glyphHeight = (*fce->ftFace)->glyph->bitmap.rows;
-    if (glyphWidth >= fce->textureDimensions.x || glyphHeight >= fce->textureDimensions.y) {
-        fprintf(stderr, "ERROR: Glyph too large for max texture size.\n");
-        return ret;
-    }
-
-    FontTexture* fontTex = NULL;
-    FontTextureRow* row = NULL;
-    int rowHeight = (glyphHeight+7) & ~7;
-
-    for (int texIndex = 0; texIndex < arrlen(fce->fTextures); texIndex++) {
-        fontTex = fce->fTextures[texIndex];
-        for (int rowIndex = 0; rowIndex < arrlen(fontTex->rows); rowIndex++) {
-            // can we fit in this row?
-            if (   rowHeight <= fontTex->rows[rowIndex].h
-                && fontTex->rows[rowIndex].x + glyphWidth + 1 < fce->textureDimensions.x) {
-                row = &fontTex->rows[rowIndex];
-                break;
-            }
-        }
-
-        if (row == NULL) {
-            // haven't found a good row in this texture; do we have room for a new one?
-            int filledY = fontTex->rows[arrlen(fontTex->rows)-1].y + fontTex->rows[arrlen(fontTex->rows)-1].h;
-            if (filledY + rowHeight < fce->textureDimensions.y) {
-                // put a row in
-                FontTextureRow newRow;
-                newRow.x = 0;
-                newRow.y = filledY;
-                newRow.h = rowHeight;
-                arrpush(fontTex->rows, newRow);
-                row = &fontTex->rows[arrlen(fontTex->rows)-1];
-            }
-        }
-        // still no row; maybe in the next texture
-    }
-
-    if (row == NULL) {
-        FontTexture* tex = calloc(1, sizeof(FontTexture));
-        glGenTextures(1, &tex->id);
-        glBindTexture(GL_TEXTURE_2D, tex->id);
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_ALPHA, fce->textureDimensions.x, fce->textureDimensions.y, 0, GL_ALPHA, GL_UNSIGNED_BYTE, emptyTextureData);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-        arrpush(fce->fTextures, tex);
-
-        fontTex = fce->fTextures[arrlen(fce->fTextures)-1];
-
-        // put a row in
-        FontTextureRow newRow;
-        newRow.x = 0;
-        newRow.y = 0;
-        newRow.h = rowHeight;
-        arrpush(fontTex->rows, newRow);
-        row = &fontTex->rows[arrlen(fontTex->rows)-1];
-    }
-
-    ret.fontTexture = fontTex;
-    ret.topLeft.x = row->x;
-    ret.topLeft.y = row->y;
-    ret.bottomRight.x = row->x + glyphWidth;
-    ret.bottomRight.y = row->y + glyphHeight;
-    ret.advance = (float)(*fce->ftFace)->glyph->advance.x / 64.0f;
-    ret.offset.x = (float)(*fce->ftFace)->glyph->bitmap_left;
-    ret.offset.y = (float)(*fce->ftFace)->glyph->bitmap_top;
-
-    row->x += glyphWidth + 1;
-
-    if (glyphWidth && glyphHeight) {
-        glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-        glBindTexture(GL_TEXTURE_2D, fontTex->id);
-        glTexSubImage2D(
-            GL_TEXTURE_2D,
-            0,
-            ret.topLeft.x,
-            ret.topLeft.y,
-            glyphWidth,
-            glyphHeight,
-            GL_ALPHA,
-            GL_UNSIGNED_BYTE,
-            (*fce->ftFace)->glyph->bitmap.buffer
-        );
-    }
-
-    if (hmgeti(fce->glyphMap, codepoint) < 0) {
-        hmput(fce->glyphMap, codepoint, NULL);
-    }
-    sizeMap* sm = hmget(fce->glyphMap, codepoint);
-    hmput(sm, fontSize, ret);
-    hmput(fce->glyphMap, codepoint, sm);
-
-    return ret;
-}
 
 ///////////////////////////////////////////////////////////////////////////////
 // Copyright (c) 2008-2009 Bjoern Hoehrmann <bjoern@hoehrmann.de>
@@ -293,161 +78,254 @@ decode_utf8(uint32_t* state, uint32_t* codep, uint32_t byte) {
 // END OF Bjoern Hoehrmann COPYRIGHTED CODE
 ///////////////////////////////////////////////////////////////////////////////
 
-float _DrawText(FontCacheEntry* fce, float fontSize, const char* text) {
-    float dx = 0.0f;
-    uint32_t state=0;
-    uint32_t codepoint = 0;
-    for (; *text; ++text) {
-        decode_utf8(&state, &codepoint, *(unsigned char*)text);
-        if (state != UTF8_ACCEPT) {
-            continue;
-        }
 
-        codepoint = FT_Get_Char_Index(*fce->ftFace, codepoint);
+typedef struct {
+    size_t atlasIndex;
+    stbtt_packedchar charData;
+} GlyphData;
 
-        Glyph g = _GetGlyph(fce, fontSize, codepoint);
-        FontTexture *t = g.fontTexture;
+typedef struct {
+    const char* filePath;
+    float scale;
+    bool isPixelFont;
+    struct { uint32_t key; GlyphData* value; } *glyphs;
+    GLuint* textAtlasIDs;
+} FontData;
 
-        if (t->numVertices + (4 * 6) >= MAX_VERTS) {
-            _FlushDrawing(fce);
-        }
+static struct { char* key; FontData *value; } *loadedFonts;
 
-        int rx, ry;
-        float x0, y0, x1, y1, s0, t0, s1, t1;
-
-        rx = (int)floorf((float)g.bottomRight.x - (float)g.topLeft.x);
-        ry = (int)floorf((float)g.bottomRight.y - (float)g.topLeft.y);
-        x0 = dx;
-        x1 = dx + rx;
-        y0 = -floorf(g.offset.y);
-        y1 = y0 + ry;
-
-        s0 = g.topLeft.x * fce->inverseTextureDimensions.x;
-        t0 = g.topLeft.y * fce->inverseTextureDimensions.y;
-        s1 = g.bottomRight.x * fce->inverseTextureDimensions.x;
-        t1 = g.bottomRight.y * fce->inverseTextureDimensions.y;
-
-        dx += g.advance;
-
-        t->vertices[t->numVertices++] = x0;
-        t->vertices[t->numVertices++] = y0;
-        t->vertices[t->numVertices++] = s0;
-        t->vertices[t->numVertices++] = t0;
-
-        t->vertices[t->numVertices++] = x0;
-        t->vertices[t->numVertices++] = y1;
-        t->vertices[t->numVertices++] = s0;
-        t->vertices[t->numVertices++] = t1;
-
-        t->vertices[t->numVertices++] = x1;
-        t->vertices[t->numVertices++] = y0;
-        t->vertices[t->numVertices++] = s1;
-        t->vertices[t->numVertices++] = t0;
-
-        t->vertices[t->numVertices++] = x0;
-        t->vertices[t->numVertices++] = y1;
-        t->vertices[t->numVertices++] = s0;
-        t->vertices[t->numVertices++] = t1;
-
-        t->vertices[t->numVertices++] = x1;
-        t->vertices[t->numVertices++] = y1;
-        t->vertices[t->numVertices++] = s1;
-        t->vertices[t->numVertices++] = t1;
-
-        t->vertices[t->numVertices++] = x1;
-        t->vertices[t->numVertices++] = y0;
-        t->vertices[t->numVertices++] = s1;
-        t->vertices[t->numVertices++] = t0;
-    }
-
-    return dx;
-}
-
-
-void InitializeText() {
-    FT_Init_FreeType(&ftLib);
-    if (ftLib == NULL) {
-        fprintf(stderr, "ERROR: Could not initialize FreeType.\n");
+void LoadFont(const char* refName, const char* filePath, float pointSize, bool isPixelFont) {
+    const unsigned char* fontBuffer = readBinaryFile(filePath);
+    if (fontBuffer == NULL) {
+        fprintf(stderr, "ERROR: Could not load font %s\n", filePath);
         return;
     }
-    emptyTextureData = (GLubyte*)calloc(TEXTURE_SIZE * TEXTURE_SIZE, sizeof(GLubyte));
+    
+    FontData* data = (FontData*)malloc(sizeof(FontData));
+    data->scale = pointSize;
+    data->isPixelFont = isPixelFont;
+    data->glyphs = NULL;
+    data->textAtlasIDs = NULL;
+    
+    shput(loadedFonts, refName, data);
+    
+    struct { uint32_t key; GlyphData value; } *leftovers = NULL;
+    bool donePacking = false;
+    
+    
+    
+    stbtt_pack_range charSet;
+    charSet.first_unicode_codepoint_in_range = 0;
+    charSet.array_of_unicode_codepoints = NULL;
+    charSet.num_chars                   = TEXT_ATLAS_NUM_CHARS;
+    charSet.font_size                   = pointSize;
+    
+    for (uint32_t i = 0; i < TEXT_ATLAS_NUM_CHARS; i++) {
+        arrpush(charSet.array_of_unicode_codepoints, i);
+    }
+    
+    while (!donePacking) {
+        GLubyte* localAtlas = calloc(TEXT_ATLAS_SIZE * TEXT_ATLAS_SIZE, sizeof(GLubyte));
+        charSet.chardata_for_range = malloc(sizeof(stbtt_packedchar) * charSet.num_chars);
+        
+        stbtt_pack_context packingContext;
+        stbtt_PackBegin(&packingContext, localAtlas, TEXT_ATLAS_SIZE, TEXT_ATLAS_SIZE, 0, 1, NULL);
+
+        for (int j=0; j < charSet.num_chars; ++j) {
+            charSet.chardata_for_range[j].x0 =
+            charSet.chardata_for_range[j].y0 =
+            charSet.chardata_for_range[j].x1 =
+            charSet.chardata_for_range[j].y1 = 0;
+        }
+        
+        stbrp_rect* rects = (stbrp_rect*) malloc(sizeof(*rects) * charSet.num_chars);
+
+        stbtt_fontinfo info;
+        stbtt_InitFont(&info, fontBuffer, 0);
+
+        int n = stbtt_PackFontRangesGatherRects(&packingContext, &info, &charSet, 1, rects);
+        stbtt_PackFontRangesPackRects(&packingContext, rects, n);
+        
+        donePacking = stbtt_PackFontRangesRenderIntoRects(&packingContext, &info, &charSet, 1, rects);
+        stbtt_PackEnd(&packingContext);
+        
+        GLuint textureID;
+        glGenTextures(1, &textureID);
+        glBindTexture(GL_TEXTURE_2D, textureID);
+        glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+        glTexImage2D(
+            GL_TEXTURE_2D,
+            0,
+            GL_RED,
+            TEXT_ATLAS_SIZE,
+            TEXT_ATLAS_SIZE,
+            0,
+            GL_RED,
+            GL_UNSIGNED_BYTE,
+            localAtlas
+        );
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+        if (isPixelFont) {
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+        }
+        else {
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        }
+        
+        arrpush(data->textAtlasIDs, textureID);
+        int texIdx = (int)arrlen(data->textAtlasIDs) - 1;
+        glBindTexture(GL_TEXTURE_2D, 0);
+        
+        for (int i=0; i < charSet.num_chars; i++) {
+            if (rects[i].was_packed) {
+                GlyphData* gd = malloc(sizeof(GlyphData));
+                gd->atlasIndex = texIdx;
+                gd->charData = charSet.chardata_for_range[i];
+                hmput(data->glyphs, charSet.array_of_unicode_codepoints[i], gd);
+            }
+        }
+        
+        if (!donePacking) {
+            int* leftovers = NULL;
+            for (int i=0; i < charSet.num_chars; i++) {
+                if (!rects[i].was_packed) {
+                    arrpush(leftovers, charSet.array_of_unicode_codepoints[i]);
+                }
+            }
+            arrfree(charSet.array_of_unicode_codepoints);
+            charSet.array_of_unicode_codepoints = leftovers;
+            charSet.num_chars = (int)arrlen(charSet.array_of_unicode_codepoints);
+            
+            free(charSet.chardata_for_range);
+            charSet.chardata_for_range = malloc(sizeof(stbtt_packedchar) * charSet.num_chars);
+        }
+        
+        free(rects);
+        free(localAtlas);
+    }
+    free(charSet.chardata_for_range);
+    arrfree(charSet.array_of_unicode_codepoints);
+
+    free((void*)fontBuffer);
+    return;
+}
+
+void InitializeText() {
+    textProgram = LoadProgram("shaders/gl/text.vert", "shaders/gl/text.frag");
+    textOrthoLocation = glGetUniformLocation(textProgram, "ortho");
+    textColorLocation = glGetUniformLocation(textProgram, "textColor");
+    
+    glGenVertexArrays(1, &textVAO);
+    glBindVertexArray(textVAO);
+
+    glGenBuffers(1, &textVBO);
+    glBindBuffer(GL_ARRAY_BUFFER, textVBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * 4 * 4, 0, GL_STATIC_DRAW);
+    glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), (void*)0);
 }
 
 void FinalizeText() {
-    for (int i = 0; i < shlen(fontCache); i++) {
-        for (int t = 0; t < arrlen(fontCache[i].value->fTextures); t++) {
-            glDeleteTextures(1, &fontCache[i].value->fTextures[t]->id);
-            arrfree(fontCache[i].value->fTextures[t]->rows);
-            free(fontCache[i].value->fTextures[t]);
-        }
-        arrfree(fontCache[i].value->fTextures);
-        FT_Done_Face(*fontCache[i].value->ftFace);
-        free(fontCache[i].value->ftFace);
-        free(fontCache[i].value);
-    }
-
-    free(emptyTextureData);
-    FT_Done_FreeType(ftLib);
-}
-
-bool LoadFont(const char* path) {
-    FontCacheEntry* fce = _GetFontInfo(path);
-    return fce->isValid;
+//    for (int i = 0; i < shlen(fontCache); i++) {
+//        for (int t = 0; t < arrlen(fontCache[i].value->fTextures); t++) {
+//            glDeleteTextures(1, &fontCache[i].value->fTextures[t]->id);
+//            arrfree(fontCache[i].value->fTextures[t]->rows);
+//            free(fontCache[i].value->fTextures[t]);
+//        }
+//        arrfree(fontCache[i].value->fTextures);
+//        FT_Done_Face(*fontCache[i].value->ftFace);
+//        free(fontCache[i].value->ftFace);
+//        free(fontCache[i].value);
+//    }
 }
 
 bool PurgeFont(const char* path) {
-    if (shgeti(fontCache, path) < 0) {
-        return false;
-    }
-
-    FontCacheEntry* fce = _GetFontInfo(path);
-    for (int t = 0; t < arrlen(fce->fTextures); t++) {
-        glDeleteTextures(1, &fce->fTextures[t]->id);
-        arrfree(fce->fTextures[t]->rows);
-        free(fce->fTextures[t]);
-    }
-    arrfree(fce->fTextures);
-    FT_Done_Face(*fce->ftFace);
-    free(fce->ftFace);
-    free(fce);
-
-    hmdel(fontCache, path);
+//    if (shgeti(fontCache, path) < 0) {
+//        return false;
+//    }
+//
+//    FontCacheEntry* fce = _GetFontInfo(path);
+//    for (int t = 0; t < arrlen(fce->fTextures); t++) {
+//        glDeleteTextures(1, &fce->fTextures[t]->id);
+//        arrfree(fce->fTextures[t]->rows);
+//        free(fce->fTextures[t]);
+//    }
+//    arrfree(fce->fTextures);
+//    FT_Done_Face(*fce->ftFace);
+//    free(fce->ftFace);
+//    free(fce);
+//
+//    hmdel(fontCache, path);
     return true;
 }
 
-float DrawGameText(const char* text, const char* fontPath, float size, int pixelX, int pixelY, float angle) {
-    FontCacheEntry* fce = _GetFontInfo(fontPath);
-    if (!fce->isValid) {
-        fprintf(stderr, "ERROR: Could not load font `%s`.\n", fontPath);
-        return 0.0f;
-    }
-
-    glMatrixMode(GL_MODELVIEW);
-    glPushMatrix();
-    glLoadIdentity();
-    glTranslatef((GLfloat)pixelX, (GLfloat)pixelY, 0.0f);
-    glRotatef(angle, 0.0f, 0.0f, 1.0f);
-    glEnable(GL_TEXTURE_2D);
-    glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-
-    _StartDrawing(fce);
-        float dx = _DrawText(fce, size, text);
-    _EndDrawing(fce);
-
-    glDisable(GL_TEXTURE_2D);
-    glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-    glPopMatrix();
-    glMatrixMode(GL_MODELVIEW);
-
-    return dx;
+void PrepDrawText(gbMat4* matrix) {
+    glUseProgram(textProgram);
+    glUniformMatrix4fv(textOrthoLocation, 1, GL_FALSE, (*matrix).e);
+    
+    glBindVertexArray(textVAO);
+    glBindBuffer(GL_ARRAY_BUFFER, textVBO);
+    glEnableVertexAttribArray(0);
 }
 
-gbVec2 MeasureTextExtents(const char* text, const char* fontPath, float size) {
-    gbVec2 ret = {0.0f, 0.0f};
+void FinishDrawText() {
+    glDisableVertexAttribArray(0);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glBindVertexArray(0);
+    
+    glBindTexture(GL_TEXTURE_2D, 0);
+}
 
-    FontCacheEntry* fce = _GetFontInfo(fontPath);
-    if (!fce->isValid) {
-        fprintf(stderr, "ERROR: Could not initialize font `%s`.\n", fontPath);
+void DrawText(const char* fontName, const char* textString, gbVec2 pos, gbVec4 color, float scale) {
+    FontData* fd = shget(loadedFonts, fontName);
+    if (fd == NULL) {
+        fprintf(stderr, "ERROR: No loaded font named %s\n", fontName);
+        return;
+    }
+    
+    glUniform4fv(textColorLocation, 1, color.e);
+
+    GLfloat x = pos.x;
+    GLfloat y = pos.y;
+
+    uint32_t state = 0;
+    uint32_t codepoint = 0;
+    for (; *textString; ++textString) {
+        decode_utf8(&state, &codepoint, *(unsigned char*)textString);
+        if (state != UTF8_ACCEPT) {
+            continue;
+        }
+        
+        GlyphData* gd = hmget(fd->glyphs, codepoint);
+
+        GLfloat xpos = x + (gd->charData.xoff * scale);
+        GLfloat ypos = y + (gd->charData.yoff * scale);
+        GLfloat w = (gd->charData.x1 - gd->charData.x0) * scale;
+        GLfloat h = (gd->charData.y1 - gd->charData.y0) * scale;
+
+        GLfloat squareVerts[4 * 4] = {
+            xpos    , ypos    , gd->charData.x0, gd->charData.y0,
+            xpos    , ypos + h, gd->charData.x0, gd->charData.y1,
+            xpos + w, ypos    , gd->charData.x1, gd->charData.y0,
+            xpos + w, ypos + h, gd->charData.x1, gd->charData.y1,
+        };
+
+        glBindTexture(GL_TEXTURE_2D, fd->textAtlasIDs[gd->atlasIndex]);
+        glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(squareVerts), squareVerts);
+        glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+
+        x += gd->charData.xadvance * scale;
+    }
+}
+
+gbVec2 MeasureTextExtents(const char* text, const char* fontName, float scale) {
+    gbVec2 ret = {0.0f, 0.0f};
+    
+    FontData* fd = shget(loadedFonts, fontName);
+    if (fd == NULL) {
+        fprintf(stderr, "ERROR: No loaded font named %s\n", fontName);
         return ret;
     }
 
@@ -458,34 +336,14 @@ gbVec2 MeasureTextExtents(const char* text, const char* fontPath, float size) {
         if (state != UTF8_ACCEPT) {
             continue;
         }
+        
+        GlyphData* gd = hmget(fd->glyphs, codepoint);
 
-        codepoint = FT_Get_Char_Index(*fce->ftFace, codepoint);
-
-        Glyph g = _GetGlyph(fce, size, codepoint);
-        ret.x += g.advance;
-        if (g.offset.y > ret.y) {
-            ret.y = g.offset.y;
+        ret.x += gd->charData.xadvance * scale;
+        float height = (gd->charData.y1 - gd->charData.y0) * scale;
+        if (height > ret.y) {
+            ret.y = height;
         }
     }
     return ret;
-}
-
-float GetTextAscenderHeight(const char* fontPath, float size) {
-    FontCacheEntry* fce = _GetFontInfo(fontPath);
-    if (!fce->isValid) {
-        return 0.0f;
-    }
-
-    FT_Set_Char_Size(*fce->ftFace, 0L, (FT_F26Dot6)(size * 64.0f), 72, 72);
-    return (*fce->ftFace)->size->metrics.ascender / 64.0f;
-}
-
-float GetTextDescenderHeight(const char* fontPath, float size) {
-    FontCacheEntry* fce = _GetFontInfo(fontPath);
-    if (!fce->isValid) {
-        return 0.0f;
-    }
-
-    FT_Set_Char_Size(*fce->ftFace, 0L, (FT_F26Dot6)(size * 64.0f), 72, 72);
-    return (*fce->ftFace)->size->metrics.descender / 64.0f;
 }

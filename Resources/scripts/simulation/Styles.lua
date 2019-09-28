@@ -52,7 +52,6 @@ mithralUP = {
     tags = "mithralUP"
   },
   labelText = "Mithral",
-  labelSize = 12.0,
   labelOffset = {0, -0.3},
 }
 
@@ -61,7 +60,6 @@ mithralDOWN = {
     tags = "mithralDOWN"
   },
   labelText = "Mithral",
-  labelSize = 12.0,
   labelOffset = {0, 0.3},
 }
 

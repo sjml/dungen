@@ -36,14 +36,24 @@ static GLfloat hexVerts[] = {
      0.8660254f,   0.5f,  // 4
 };
 
+static GLfloat squareVerts[] = {
+    -0.5f, -0.5f,
+    -0.5f,  0.5f,
+     0.5f,  0.5f,
+     0.5f, -0.5f,
+};
+
 static gbMat4 hexModelMatrix;
 static GLuint hexVAO;
 static GLuint hexVBO;
 static GLuint attribVBO;
 static GLuint hexProgram;
-static GLuint hexVPMatLocation;
+static GLint  hexVPMatLocation;
 
-static GLuint outlineProgram;
+static GLuint basicProgram;
+static GLuint squareVAO;
+static GLuint squareVBO;
+
 static GLuint outlineVPMatLocation;
 static GLuint outlineColorVecLocation;
 
@@ -93,21 +103,15 @@ static const int defaultWindowHeight = 768;
 void InitializeRendering() {
     #if !(DUNGEN_MOBILE)
         _glfwSetup();
-        glClearDepth(1.0f);
     #endif // !(DUNGEN_MOBILE)
 
-//    glShadeModel(GL_FLAT);
-//    glEnable(GL_CULL_FACE);
-//    glFrontFace(GL_CCW);
-//    glCullFace(GL_BACK);
-//    glDepthFunc(GL_LEQUAL);
-//    glEnableClientState(GL_VERTEX_ARRAY);
-//    glActiveTexture(GL_TEXTURE0);
-//    glDisable(GL_TEXTURE_2D);
-//    glEnable(GL_DEPTH_TEST);
-//    glEnable(GL_BLEND);
-//    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-//    glClearStencil(0);
+    glEnable(GL_CULL_FACE);
+    glFrontFace(GL_CCW);
+    glCullFace(GL_BACK);
+    glDepthFunc(GL_LEQUAL);
+    glEnable(GL_DEPTH_TEST);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 //    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
@@ -145,9 +149,20 @@ void InitializeRendering() {
     orthoDimensions.x = (int)((float)defaultWindowHeight * aspect);
     gb_mat4_ortho2d(&orthoMatrix, 0.0f, (float)orthoDimensions.x, (float)orthoDimensions.y, 0.0f);
 
+    glGenVertexArrays(1, &squareVAO);
+    glBindVertexArray(squareVAO);
+    glGenBuffers(1, &squareVBO);
+    glBindBuffer(GL_ARRAY_BUFFER, squareVBO);
+    glBufferData(
+        GL_ARRAY_BUFFER,
+        sizeof(squareVerts),
+        squareVerts,
+        GL_DYNAMIC_DRAW
+    );
+    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(GL_FLOAT) * 2, (void*)0);
+    
     glGenVertexArrays(1, &hexVAO);
     glBindVertexArray(hexVAO);
-
     glGenBuffers(1, &hexVBO);
     glBindBuffer(GL_ARRAY_BUFFER, hexVBO);
     glBufferData(
@@ -172,19 +187,23 @@ void InitializeRendering() {
     glVertexAttribDivisor(1, 1);
     glVertexAttribDivisor(2, 1);
     glVertexAttribDivisor(3, 1);
+    
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glBindVertexArray(0);
 
     hexProgram = LoadProgram("shaders/gl/hex_vert.glsl", "shaders/gl/basic_frag.glsl");
     hexVPMatLocation = glGetUniformLocation(hexProgram, "vp");
-    
-    outlineProgram = LoadProgram("shaders/gl/basic_vert.glsl", "shaders/gl/basic_frag.glsl");
-    outlineVPMatLocation = glGetUniformLocation(outlineProgram, "vp");
-    outlineColorVecLocation = glGetUniformLocation(outlineProgram, "color");
+
+    basicProgram = LoadProgram("shaders/gl/basic_vert.glsl", "shaders/gl/basic_frag.glsl");
+    outlineVPMatLocation = glGetUniformLocation(basicProgram, "vp");
+    outlineColorVecLocation = glGetUniformLocation(basicProgram, "color");
 
 //    glfwGetFramebufferSize(window, &frameW, &frameH);
 //    screenShotBuffer = malloc(sizeof(GLubyte) * frameW * frameH * 3);
 //    stbi_flip_vertically_on_write(1);
 
-//    InitializeText();
+    InitializeText();
+    LoadFont("Pixel", "fonts/04B_03__.TTF", 32.0, true);
 
     renderingInitialized = true;
 }
@@ -195,6 +214,8 @@ void UpdateRenderBuffers(TileSet* ts) {
     }
 
     glBindBuffer(GL_ARRAY_BUFFER, attribVBO);
+
+    // TODO: this might be a performance sink; could be more clever about batching these together
     for (int i=0; i < hmlen(ts); i++) {
         TileData* td = ts[i].key;
         glBufferSubData(
@@ -204,6 +225,8 @@ void UpdateRenderBuffers(TileSet* ts) {
             td->draw
         );
     }
+    
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
 void FinalizeRendering() {
@@ -337,26 +360,35 @@ gbVec2 ScreenToOrtho(gbVec2 screenCoordinates) {
     return ret;
 }
 
-GLuint LoadProgram(const char* vertexFile, const char* fragmentFile) {
+GLuint GetSquareVAO(void) {
+    return squareVAO;
+}
 
+GLuint GetSquareVBO(void) {
+    return squareVBO;
+}
+
+GLuint GetBasicProgram() {
+    return basicProgram;
+}
+
+GLuint LoadProgram(const char* vertexFile, const char* fragmentFile) {
     const char* vertexSrc = NULL;
     const char* fragmentSrc = NULL;
     if (vertexFile != NULL) {
-        vertexSrc = stringFromFile(vertexFile);
+        vertexSrc = readTextFile(vertexFile);
         if (vertexSrc == NULL) {
             fprintf(stderr, "ERROR: couldn't load %s:\n", vertexFile);
             return 0;
         }
     }
-
     if (fragmentFile != NULL) {
-        fragmentSrc = stringFromFile(fragmentFile);
+        fragmentSrc = readTextFile(fragmentFile);
         if (fragmentSrc == NULL) {
             fprintf(stderr, "ERROR: couldn't load %s:\n", fragmentFile);
             return 0;
         }
     }
-
 
     GLint success;
     GLuint vs = 0, gs = 0, fs = 0;
@@ -436,11 +468,12 @@ int Render() {
     glDisableVertexAttribArray(1);
     glDisableVertexAttribArray(2);
     glDisableVertexAttribArray(3);
-    
-    
-    glUseProgram(outlineProgram);
+    glBindVertexArray(0);
+
+
+    glUseProgram(basicProgram);
     glUniformMatrix4fv(outlineVPMatLocation, 1, GL_FALSE, perspectiveMatrix.e);
-    
+
     for (long ri=0; ri < arrlen(regions); ri++) {
         if (regions[ri]->outline != NULL && regions[ri]->outline->vbo != 0) {
             glUniform4fv(outlineColorVecLocation, 1, regions[ri]->outline->color.e);
@@ -450,40 +483,32 @@ int Render() {
             glDisableVertexAttribArray(0);
         }
     }
-
+    glBindVertexArray(0);
+    
+    PrepDrawText(&orthoMatrix);
+    for (int i=0; i < arrlen(regions); i++) {
+        if (regions[i]->label.scale >= 0.0f) {
+            DrawText("Pixel", regions[i]->label.text, regions[i]->label.pos, regions[i]->label.color, regions[i]->label.scale);
+        }
+    }
+    FinishDrawText();
+    
+    RenderBanners(&orthoMatrix);
+    if (GetChoiceStatus() >= 0) {
+        RenderChoices(&orthoMatrix);
+    }
+    
 //    glMatrixMode(GL_PROJECTION);
 //    glLoadIdentity();
 //    glPushMatrix();
 //        glMultMatrixf(orthoMatrix.e);
-//        for (int i = 0; i < arrlen(regions); i++) {
-//            if (regions[i]->label.scale >= 0.0f) {
-//                glColor4f(
-//                    regions[i]->label.color.r,
-//                    regions[i]->label.color.g,
-//                    regions[i]->label.color.b,
-//                    regions[i]->label.color.a
-//                );
-//                DrawGameText(
-//                    regions[i]->label.text,
-//                    "fonts/04B_03__.TTF",
-//                    regions[i]->label.scale,
-//                    (int)regions[i]->label.pos.x,
-//                    (int)regions[i]->label.pos.y,
-//                    0.0f
-//                );
-//            }
-//        }
-//        RenderBanners();
-//        if (GetChoiceStatus() >= 0) {
-//            RenderChoices();
-//        }
 //        if (GetTileChoiceStatus() >= 0) {
 //            RenderTileChoice();
 //        }
 //    glMatrixMode(GL_PROJECTION);
 //    glPopMatrix();
 //
-//    handleGLErrors(__FILE__, __LINE__);
+//    GL_CHECK();
 //
     #if !(DUNGEN_MOBILE)
         glfwSwapBuffers(window);

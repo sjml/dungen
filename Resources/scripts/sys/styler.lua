@@ -156,7 +156,7 @@ local function applyLabelStyle(styleTable, target)
     return
   end
   local text = styleTable.labelText or ""
-  local scale = styleTable.labelSize or 16.0
+  local scale = styleTable.labelScale or 0.5
   local color = styleTable.labelColor or {0.0, 0.0, 0.0}
   local offset = styleTable.labelOffset or {0, 0}
 

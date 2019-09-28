@@ -10,10 +10,11 @@ typedef struct {
 void InitializeText(void);
 void FinalizeText(void);
 
-bool LoadFont(const char* path);
+void LoadFont(const char* refName, const char* filePath, float pointSize, bool isPixelFont);
 bool PurgeFont(const char* path);
-float DrawGameText(const char* text, const char* fontPath, float size, int pixelX, int pixelY, float angle);
 
-gbVec2 MeasureTextExtents(const char* text, const char* fontPath, float size);
-float GetTextAscenderHeight(const char* fontPath, float size);
-float GetTextDescenderHeight(const char* fontPath, float size);
+void PrepDrawText(gbMat4* matrix);
+void FinishDrawText(void);
+void DrawText(const char* fontName, const char* textString, gbVec2 pos, gbVec4 color, float scale);
+
+gbVec2 MeasureTextExtents(const char* text, const char* fontName, float scale);

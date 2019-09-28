@@ -7,8 +7,7 @@
 #define GB_MATH_IMPLEMENTATION
 #include <gb_math.h>
 
-// quick and dirty; won't work on very large files; fine for reading in shaders to compile
-char* stringFromFile(const char* filename) {
+char* readTextFile(const char* filename) {
     FILE* f = fopen(filename, "r");
     if (f == NULL) {
         return 0;
@@ -23,6 +22,23 @@ char* stringFromFile(const char* filename) {
     /* size_t read_count = */ fread(buffer, 1, length, f);
     fclose(f);
     buffer[length] = '\0';
+    return buffer;
+}
+
+unsigned char* readBinaryFile(const char* filename) {
+    FILE* f = fopen(filename, "rb");
+    if (f == NULL) {
+        return 0;
+    }
+    fseek(f, 0, SEEK_END);
+    long length = ftell(f);
+    fseek(f, 0, SEEK_SET);
+    unsigned char* buffer = (unsigned char*)malloc(length);
+    if (!buffer) {
+        return 0;
+    }
+    /* size_t read_count = */ fread(buffer, 1, length, f);
+    fclose(f);
     return buffer;
 }
 

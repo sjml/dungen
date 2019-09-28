@@ -39,6 +39,10 @@ void ClearTextLabels(void);
 void AddTextLabel(const char* text, gbVec2 pos, float scale, gbVec4 color);
 
 GLuint LoadProgram(const char* vertexFile, const char* fragmentFile);
+GLuint GetBasicProgram(void);
+GLuint GetSquareVAO(void);
+GLuint GetSquareVBO(void);
+
 void UpdateRenderBuffers(TileSet* ts);
 
 int Render(void);
