@@ -110,11 +110,11 @@ static const int defaultWindowHeight = 768;
         glfwSetMouseButtonCallback(window, MouseClickCallback);
         glfwSetKeyCallback(window, KeyboardCallback);
 
-		#ifdef _WIN32
-			if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
-				fprintf(stderr, "ERROR: Couldn't initialize GLAD loader.\n");
-			}
-		#endif // WINDOWS
+        #ifdef _WIN32
+            if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
+                fprintf(stderr, "ERROR: Couldn't initialize GLAD loader.\n");
+            }
+        #endif // WINDOWS
     }
 #endif // DUNGEN_MOBILE
 
@@ -420,7 +420,7 @@ GLuint LoadProgram(const char* vertexFile, const char* fragmentFile) {
     }
 
     GLint success;
-    GLuint vs = 0, gs = 0, fs = 0;
+    GLuint vs = 0, fs = 0;
 
     if (vertexSrc != NULL) {
         vs = glCreateShader(GL_VERTEX_SHADER);
