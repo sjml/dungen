@@ -191,10 +191,10 @@ void InitializeRendering() {
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
 
-    hexProgram = LoadProgram("shaders/gl/hex_vert.glsl", "shaders/gl/basic_frag.glsl");
+    hexProgram = LoadProgram("hex_vert.glsl", "basic_frag.glsl");
     hexVPMatLocation = glGetUniformLocation(hexProgram, "vp");
 
-    basicProgram = LoadProgram("shaders/gl/basic_vert.glsl", "shaders/gl/basic_frag.glsl");
+    basicProgram = LoadProgram("basic_vert.glsl", "basic_frag.glsl");
     outlineVPMatLocation = glGetUniformLocation(basicProgram, "vp");
     outlineColorVecLocation = glGetUniformLocation(basicProgram, "color");
 
@@ -375,15 +375,26 @@ GLuint GetBasicProgram() {
 GLuint LoadProgram(const char* vertexFile, const char* fragmentFile) {
     const char* vertexSrc = NULL;
     const char* fragmentSrc = NULL;
+    #if DUNGEN_MOBILE
+        const char* base = "shaders/gles/";
+    #else
+        const char* base = "shaders/gl/";
+    #endif // DUNGEN_MOBILE
     if (vertexFile != NULL) {
-        vertexSrc = readTextFile(vertexFile);
+        sds fullVertexPath = sdscat(sdsempty(), base);
+        fullVertexPath = sdscat(fullVertexPath, vertexFile);
+        vertexSrc = readTextFile(fullVertexPath);
+        sdsfree(fullVertexPath);
         if (vertexSrc == NULL) {
             fprintf(stderr, "ERROR: couldn't load %s:\n", vertexFile);
             return 0;
         }
     }
     if (fragmentFile != NULL) {
-        fragmentSrc = readTextFile(fragmentFile);
+        sds fullFragmentPath = sdscat(sdsempty(), base);
+        fullFragmentPath = sdscat(fullFragmentPath, fragmentFile);
+        fragmentSrc = readTextFile(fullFragmentPath);
+        sdsfree(fullFragmentPath);
         if (fragmentSrc == NULL) {
             fprintf(stderr, "ERROR: couldn't load %s:\n", fragmentFile);
             return 0;
@@ -484,7 +495,7 @@ int Render() {
         }
     }
     glBindVertexArray(0);
-    
+
     PrepDrawText(&orthoMatrix);
     for (int i=0; i < arrlen(regions); i++) {
         if (regions[i]->label.scale >= 0.0f) {
@@ -492,24 +503,16 @@ int Render() {
         }
     }
     FinishDrawText();
-    
+
     RenderBanners(&orthoMatrix);
+    
     if (GetChoiceStatus() >= 0) {
         RenderChoices(&orthoMatrix);
     }
+    if (GetTileChoiceStatus() >= 0) {
+        RenderTileChoice();
+    }
     
-//    glMatrixMode(GL_PROJECTION);
-//    glLoadIdentity();
-//    glPushMatrix();
-//        glMultMatrixf(orthoMatrix.e);
-//        if (GetTileChoiceStatus() >= 0) {
-//            RenderTileChoice();
-//        }
-//    glMatrixMode(GL_PROJECTION);
-//    glPopMatrix();
-//
-//    GL_CHECK();
-//
     #if !(DUNGEN_MOBILE)
         glfwSwapBuffers(window);
         glfwPollEvents();

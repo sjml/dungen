@@ -1,9 +1,8 @@
 ## TODO
 0. Modern OpenGL
-    - iOS build to ES2 or 3
-        - will need to reimplement shaders >:(
     - try WebGL again
     - cleanup rendering.c
+    - purge font and finalize text
     - reimplement screenshot
 1. Rework river encounters to use centralized system
     - rename central functions

@@ -21,7 +21,7 @@
         #pragma clang diagnostic pop
     #endif // __clang__
 #else
-    #include <OpenGLES/ES1/gl.h>
+    #include <OpenGLES/ES3/gl.h>
 #endif // !(DUNGEN_MOBILE)
 
 #include <gb_math.h>

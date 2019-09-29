@@ -100,34 +100,34 @@ void LoadFont(const char* refName, const char* filePath, float pointSize, bool i
         fprintf(stderr, "ERROR: Could not load font %s\n", filePath);
         return;
     }
-    
+
     FontData* data = (FontData*)malloc(sizeof(FontData));
     data->scale = pointSize;
     data->isPixelFont = isPixelFont;
     data->glyphs = NULL;
     data->textAtlasIDs = NULL;
-    
+
     shput(loadedFonts, refName, data);
-    
+
     struct { uint32_t key; GlyphData value; } *leftovers = NULL;
     bool donePacking = false;
-    
-    
-    
+
+
+
     stbtt_pack_range charSet;
     charSet.first_unicode_codepoint_in_range = 0;
     charSet.array_of_unicode_codepoints = NULL;
     charSet.num_chars                   = TEXT_ATLAS_NUM_CHARS;
     charSet.font_size                   = pointSize;
-    
+
     for (uint32_t i = 0; i < TEXT_ATLAS_NUM_CHARS; i++) {
         arrpush(charSet.array_of_unicode_codepoints, i);
     }
-    
+
     while (!donePacking) {
         GLubyte* localAtlas = calloc(TEXT_ATLAS_SIZE * TEXT_ATLAS_SIZE, sizeof(GLubyte));
         charSet.chardata_for_range = malloc(sizeof(stbtt_packedchar) * charSet.num_chars);
-        
+
         stbtt_pack_context packingContext;
         stbtt_PackBegin(&packingContext, localAtlas, TEXT_ATLAS_SIZE, TEXT_ATLAS_SIZE, 0, 1, NULL);
 
@@ -137,7 +137,7 @@ void LoadFont(const char* refName, const char* filePath, float pointSize, bool i
             charSet.chardata_for_range[j].x1 =
             charSet.chardata_for_range[j].y1 = 0;
         }
-        
+
         stbrp_rect* rects = (stbrp_rect*) malloc(sizeof(*rects) * charSet.num_chars);
 
         stbtt_fontinfo info;
@@ -145,22 +145,27 @@ void LoadFont(const char* refName, const char* filePath, float pointSize, bool i
 
         int n = stbtt_PackFontRangesGatherRects(&packingContext, &info, &charSet, 1, rects);
         stbtt_PackFontRangesPackRects(&packingContext, rects, n);
-        
+
         donePacking = stbtt_PackFontRangesRenderIntoRects(&packingContext, &info, &charSet, 1, rects);
         stbtt_PackEnd(&packingContext);
-        
+
         GLuint textureID;
         glGenTextures(1, &textureID);
         glBindTexture(GL_TEXTURE_2D, textureID);
         glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+        #if DUNGEN_MOBILE
+            GLenum textureFormat = GL_ALPHA;
+        #else
+            GLenum textureFormat = GL_RED;
+        #endif
         glTexImage2D(
             GL_TEXTURE_2D,
             0,
-            GL_RED,
+            textureFormat,
             TEXT_ATLAS_SIZE,
             TEXT_ATLAS_SIZE,
             0,
-            GL_RED,
+            textureFormat,
             GL_UNSIGNED_BYTE,
             localAtlas
         );
@@ -174,11 +179,11 @@ void LoadFont(const char* refName, const char* filePath, float pointSize, bool i
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
         }
-        
+
         arrpush(data->textAtlasIDs, textureID);
         int texIdx = (int)arrlen(data->textAtlasIDs) - 1;
         glBindTexture(GL_TEXTURE_2D, 0);
-        
+
         for (int i=0; i < charSet.num_chars; i++) {
             if (rects[i].was_packed) {
                 GlyphData* gd = malloc(sizeof(GlyphData));
@@ -187,7 +192,7 @@ void LoadFont(const char* refName, const char* filePath, float pointSize, bool i
                 hmput(data->glyphs, charSet.array_of_unicode_codepoints[i], gd);
             }
         }
-        
+
         if (!donePacking) {
             int* leftovers = NULL;
             for (int i=0; i < charSet.num_chars; i++) {
@@ -198,11 +203,11 @@ void LoadFont(const char* refName, const char* filePath, float pointSize, bool i
             arrfree(charSet.array_of_unicode_codepoints);
             charSet.array_of_unicode_codepoints = leftovers;
             charSet.num_chars = (int)arrlen(charSet.array_of_unicode_codepoints);
-            
+
             free(charSet.chardata_for_range);
             charSet.chardata_for_range = malloc(sizeof(stbtt_packedchar) * charSet.num_chars);
         }
-        
+
         free(rects);
         free(localAtlas);
     }
@@ -214,10 +219,10 @@ void LoadFont(const char* refName, const char* filePath, float pointSize, bool i
 }
 
 void InitializeText() {
-    textProgram = LoadProgram("shaders/gl/text.vert", "shaders/gl/text.frag");
+    textProgram = LoadProgram("text.vert", "text.frag");
     textOrthoLocation = glGetUniformLocation(textProgram, "ortho");
     textColorLocation = glGetUniformLocation(textProgram, "textColor");
-    
+
     glGenVertexArrays(1, &textVAO);
     glBindVertexArray(textVAO);
 
@@ -264,7 +269,7 @@ bool PurgeFont(const char* path) {
 void PrepDrawText(gbMat4* matrix) {
     glUseProgram(textProgram);
     glUniformMatrix4fv(textOrthoLocation, 1, GL_FALSE, (*matrix).e);
-    
+
     glBindVertexArray(textVAO);
     glBindBuffer(GL_ARRAY_BUFFER, textVBO);
     glEnableVertexAttribArray(0);
@@ -274,7 +279,7 @@ void FinishDrawText() {
     glDisableVertexAttribArray(0);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
-    
+
     glBindTexture(GL_TEXTURE_2D, 0);
 }
 
@@ -284,7 +289,7 @@ void DrawText(const char* fontName, const char* textString, gbVec2 pos, gbVec4 c
         fprintf(stderr, "ERROR: No loaded font named %s\n", fontName);
         return;
     }
-    
+
     glUniform4fv(textColorLocation, 1, color.e);
 
     GLfloat x = pos.x;
@@ -297,7 +302,7 @@ void DrawText(const char* fontName, const char* textString, gbVec2 pos, gbVec4 c
         if (state != UTF8_ACCEPT) {
             continue;
         }
-        
+
         GlyphData* gd = hmget(fd->glyphs, codepoint);
 
         GLfloat xpos = x + (gd->charData.xoff * scale);
@@ -322,7 +327,7 @@ void DrawText(const char* fontName, const char* textString, gbVec2 pos, gbVec4 c
 
 gbVec2 MeasureTextExtents(const char* text, const char* fontName, float scale) {
     gbVec2 ret = {0.0f, 0.0f};
-    
+
     FontData* fd = shget(loadedFonts, fontName);
     if (fd == NULL) {
         fprintf(stderr, "ERROR: No loaded font named %s\n", fontName);
@@ -336,7 +341,7 @@ gbVec2 MeasureTextExtents(const char* text, const char* fontName, float scale) {
         if (state != UTF8_ACCEPT) {
             continue;
         }
-        
+
         GlyphData* gd = hmget(fd->glyphs, codepoint);
 
         ret.x += gd->charData.xadvance * scale;
