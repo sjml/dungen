@@ -1,9 +1,4 @@
 ## TODO
-0. Modern OpenGL
-    - try WebGL again
-    - cleanup rendering.c
-    - purge font and finalize text
-    - reimplement screenshot
 1. Rework river encounters to use centralized system
     - rename central functions
     - rivers should only backflow within chambers, but within chambers, there should be no limit on backflow (flood the chamber until an egress is found, basically, but don't go back along the path or to previous chambers)
@@ -19,6 +14,7 @@
 5. Relaxable constraint sets
 
 ## Tech Debt
+* reimplement screenshot
 * world.c could use a refactor
 * attributes.c is a mess of copypasta; think about making a single attribute-haver object that other things can point to
     - counterpoint: probably won't add any more data types, and it currently works, so ¯\\\_(ツ)\_/¯ 

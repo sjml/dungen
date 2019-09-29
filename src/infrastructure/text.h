@@ -11,7 +11,7 @@ void InitializeText(void);
 void FinalizeText(void);
 
 void LoadFont(const char* refName, const char* filePath, float pointSize, bool isPixelFont);
-bool PurgeFont(const char* path);
+bool PurgeFont(const char* fontName);
 
 void PrepDrawText(gbMat4* matrix);
 void FinishDrawText(void);

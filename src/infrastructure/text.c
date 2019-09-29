@@ -231,36 +231,26 @@ void InitializeText() {
 }
 
 void FinalizeText() {
-//    for (int i = 0; i < shlen(fontCache); i++) {
-//        for (int t = 0; t < arrlen(fontCache[i].value->fTextures); t++) {
-//            glDeleteTextures(1, &fontCache[i].value->fTextures[t]->id);
-//            arrfree(fontCache[i].value->fTextures[t]->rows);
-//            free(fontCache[i].value->fTextures[t]);
-//        }
-//        arrfree(fontCache[i].value->fTextures);
-//        FT_Done_Face(*fontCache[i].value->ftFace);
-//        free(fontCache[i].value->ftFace);
-//        free(fontCache[i].value);
-//    }
+    while (shlen(loadedFonts) > 0) {
+        const char* firstName = loadedFonts[0].key;
+        PurgeFont(firstName);
+    }
 }
 
-bool PurgeFont(const char* path) {
-//    if (shgeti(fontCache, path) < 0) {
-//        return false;
-//    }
-//
-//    FontCacheEntry* fce = _GetFontInfo(path);
-//    for (int t = 0; t < arrlen(fce->fTextures); t++) {
-//        glDeleteTextures(1, &fce->fTextures[t]->id);
-//        arrfree(fce->fTextures[t]->rows);
-//        free(fce->fTextures[t]);
-//    }
-//    arrfree(fce->fTextures);
-//    FT_Done_Face(*fce->ftFace);
-//    free(fce->ftFace);
-//    free(fce);
-//
-//    hmdel(fontCache, path);
+bool PurgeFont(const char* fontName) {
+    if (shgeti(loadedFonts, fontName) < 0) {
+        return false;
+    }
+
+    FontData* fd = shget(loadedFonts, fontName);
+    free((void*)fd->filePath);
+    hmfree(fd->glyphs);
+    for (int t=0; t < arrlen(fd->textAtlasIDs); t++) {
+        glDeleteTextures(1, &fd->textAtlasIDs[t]);
+    }
+    arrfree(fd->textAtlasIDs);
+
+    shdel(loadedFonts, fontName);
     return true;
 }
 
