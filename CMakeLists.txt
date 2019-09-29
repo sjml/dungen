@@ -100,7 +100,7 @@ if (DEFINED ENV{EMSCRIPTEN})
     target_sources(DunGen PUBLIC platform/WebAssembly/main.c)
     set_target_properties(DunGen
         PROPERTIES SUFFIX ".html"
-        LINK_FLAGS "--emrun -s ALLOW_MEMORY_GROWTH=1 -s USE_GLFW=3 -s USE_WEBGL2=1 -s WASM=1 -s --preload-file ../Resources"
+        LINK_FLAGS "--emrun -s ALLOW_MEMORY_GROWTH=1 --no-heap-copy -s USE_GLFW=3 -s USE_WEBGL2=1 -s WASM=1 -s --preload-file ../Resources"
     )
 
     target_link_libraries(DunGen

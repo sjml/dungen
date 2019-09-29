@@ -334,8 +334,9 @@ gbVec2 MeasureTextExtents(const char* text, const char* fontName, float scale) {
 
         GlyphData* gd = hmget(fd->glyphs, codepoint);
 
-        ret.x += gd->charData.xadvance * scale;
-        float height = (gd->charData.y1 - gd->charData.y0) * scale;
+        float width = gd->charData.xadvance * scale;
+        float height = fabs(gd->charData.yoff) * scale;
+        ret.x += width;
         if (height > ret.y) {
             ret.y = height;
         }

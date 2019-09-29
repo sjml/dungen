@@ -165,7 +165,7 @@ void RenderChoices(gbMat4* matrix) {
     if (arrlen(buttons) == 0) {
         return;
     }
-    
+
     GLuint basic = GetBasicProgram();
     glUseProgram(basic);
     glUniformMatrix4fv(glGetUniformLocation(basic, "vp"), 1, GL_FALSE, (*matrix).e);
@@ -180,7 +180,7 @@ void RenderChoices(gbMat4* matrix) {
         else {
             glUniform4fv(glGetUniformLocation(basic, "color"), 1, btnColorBase.e);
         }
-        
+
         glBindBuffer(GL_ARRAY_BUFFER, GetSquareVBO());
         glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(buttons[i].verts), buttons[i].verts);
         glEnableVertexAttribArray(0);
@@ -188,10 +188,10 @@ void RenderChoices(gbMat4* matrix) {
         glDisableVertexAttribArray(0);
     }
     glBindVertexArray(0);
-    
+
     PrepDrawText(matrix);
     for (long i=0; i < arrlen(buttons); i++) {
-        DrawText("Pixel", choices[i], buttons[i].textBB.pos, (gbVec4){1.0f, 1.0f, 1.0f, 1.0f}, 2.5f);
+        DrawText("Pixel", choices[i], buttons[i].textBB.pos, (gbVec4){1.0f, 1.0f, 1.0f, 1.0f}, 2.25f);
     }
     FinishDrawText();
 }
