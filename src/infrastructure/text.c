@@ -112,8 +112,6 @@ void LoadFont(const char* refName, const char* filePath, float pointSize, bool i
     struct { uint32_t key; GlyphData value; } *leftovers = NULL;
     bool donePacking = false;
 
-
-
     stbtt_pack_range charSet;
     charSet.first_unicode_codepoint_in_range = 0;
     charSet.array_of_unicode_codepoints = NULL;
@@ -153,7 +151,7 @@ void LoadFont(const char* refName, const char* filePath, float pointSize, bool i
         glGenTextures(1, &textureID);
         glBindTexture(GL_TEXTURE_2D, textureID);
         glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-        #if DUNGEN_MOBILE
+        #if DUNGEN_MOBILE || DUNGEN_WASM
             GLenum textureFormat = GL_ALPHA;
         #else
             GLenum textureFormat = GL_RED;

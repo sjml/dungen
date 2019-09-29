@@ -10,12 +10,14 @@ project (DunGen)
 
 set(CMAKE_C_STANDARD 11)
 
-set(GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE)
-set(GLFW_BUILD_TESTS OFF CACHE BOOL "" FORCE)
-set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
-set(OpenGL_GL_PREFERENCE GLVND)
-add_subdirectory(lib/glfw-3.3.0)
-find_package(OpenGL REQUIRED)
+if (NOT DEFINED ENV{EMSCRIPTEN})
+    set(GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE)
+    set(GLFW_BUILD_TESTS OFF CACHE BOOL "" FORCE)
+    set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
+    set(OpenGL_GL_PREFERENCE GLVND)
+    add_subdirectory(lib/glfw-3.3.0)
+    find_package(OpenGL REQUIRED)
+endif()
 
 add_library(lua
     lib/lua-5.3.5+system_patch/src/lapi.c
@@ -75,7 +77,6 @@ include_directories(lib/single-file)
 include_directories(src)
 add_compile_definitions(GL_SILENCE_DEPRECATION)
 add_executable (DunGen MACOSX_BUNDLE
-    src/main.c
     src/dungen.c
     src/constraints/pathfind.c
     src/hlvm/hlvm.c
@@ -94,38 +95,56 @@ add_executable (DunGen MACOSX_BUNDLE
     src/ui/tile_choice.c
 )
 
-if (${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
-    target_sources(DunGen PUBLIC src/platform/macOS.c)
-elseif (${CMAKE_SYSTEM_NAME} MATCHES "Windows")
-    target_sources(DunGen PUBLIC src/platform/windows.c)
-elseif (${CMAKE_SYSTEM_NAME} MATCHES "Linux")
-    target_sources(DunGen PUBLIC src/platform/linux.c)
+if (DEFINED ENV{EMSCRIPTEN})
+    target_sources(DunGen PUBLIC src/platform/wasm.c)
+    target_sources(DunGen PUBLIC platform/WebAssembly/main.c)
+    set_target_properties(DunGen
+        PROPERTIES SUFFIX ".html"
+        LINK_FLAGS "--emrun -s ALLOW_MEMORY_GROWTH=1 -s USE_GLFW=3 -s USE_WEBGL2=1 -s WASM=1 -s --preload-file ../Resources"
+    )
+
+    target_link_libraries(DunGen
+        # glfw OpenGL::GL
+        lua
+        sqlite
+        sds
+        pqueue
+        pcg
+    )
+
+else()
+    target_sources(DunGen PUBLIC src/main.c)
+
+    if (${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+        target_sources(DunGen PUBLIC src/platform/macOS.c)
+        set(ResourceDir "/../Resources")
+        set_target_properties(DunGen PROPERTIES MACOSX_BUNDLE_INFO_PLIST ${CMAKE_SOURCE_DIR}/platform/macOS/Info.plist)
+
+    elseif (${CMAKE_SYSTEM_NAME} MATCHES "Windows")
+        target_sources(DunGen PUBLIC src/platform/windows.c)
+        # ???
+
+    elseif (${CMAKE_SYSTEM_NAME} MATCHES "Linux")
+        target_sources(DunGen PUBLIC src/platform/linux.c)
+        set(ResourceDir "/Resources")
+    endif()
+
+    target_link_libraries(DunGen
+        glfw OpenGL::GL
+        lua
+        sqlite
+        sds
+        pqueue
+        pcg
+    )
 endif()
 
-set_target_properties(DunGen PROPERTIES MACOSX_BUNDLE_INFO_PLIST ${CMAKE_SOURCE_DIR}/platform/macOS/Info.plist)
-
-target_link_libraries(DunGen
-    glfw OpenGL::GL
-    lua
-    sqlite
-    sds
-    pqueue
-    pcg
-)
 
 find_program(SWIG_EXE "swig")
 if(SWIG_EXE)
     add_custom_command(TARGET DunGen PRE_BUILD
                        COMMAND ${SWIG_EXE} -lua -Werror -o ${CMAKE_SOURCE_DIR}/src/scripting/wrapping.c ${CMAKE_SOURCE_DIR}/src/scripting/interfaces/dungen.i
                       )
-endif()
-
-if (${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
-    set(ResourceDir "/../Resources")
-elseif (${CMAKE_SYSTEM_NAME} MATCHES "Windows")
-    # ???
-elseif (${CMAKE_SYSTEM_NAME} MATCHES "Linux")
-    set(ResourceDir "/Resources")
 endif()
 
 add_custom_command(TARGET DunGen POST_BUILD

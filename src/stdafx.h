@@ -10,8 +10,14 @@
 #include <lauxlib.h>
 #include <lualib.h>
 
+#ifdef __EMSCRIPTEN__
+    #include <emscripten/emscripten.h>
+    #define GLFW_INCLUDE_ES3
+#else
+    #define GLFW_INCLUDE_GLCOREARB
+#endif
+
 #if !(DUNGEN_MOBILE)
-    #include <OpenGL/gl3.h>
     #ifdef __clang__
         #pragma clang diagnostic push
         #pragma clang diagnostic ignored "-Wdocumentation"

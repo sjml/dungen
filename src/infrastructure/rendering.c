@@ -66,7 +66,15 @@ static const int defaultWindowHeight = 768;
     static GLFWwindow* window = NULL;
 
     void _glfwSetup() {
-        glfwInitHint(GLFW_COCOA_MENUBAR, GLFW_TRUE);
+        #if !(DUNGEN_WASM)
+            #if DEBUG
+                glfwInitHint(GLFW_COCOA_CHDIR_RESOURCES, GLFW_FALSE);
+            #else
+                glfwInitHint(GLFW_COCOA_CHDIR_RESOURCES, GLFW_TRUE);
+            #endif
+
+            glfwInitHint(GLFW_COCOA_MENUBAR, GLFW_TRUE);
+        #endif // DUNGEN_WASM
 
         if (!glfwInit()) {
             exit(EXIT_FAILURE);
@@ -78,7 +86,9 @@ static const int defaultWindowHeight = 768;
         glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
         glfwWindowHint(GLFW_SAMPLES, 4);
-        glfwWindowHint(GLFW_COCOA_RETINA_FRAMEBUFFER, GLFW_TRUE);
+        #if !(DUNGEN_WASM)
+            glfwWindowHint(GLFW_COCOA_RETINA_FRAMEBUFFER, GLFW_TRUE);
+        #endif // DUNGEN_WASM
         glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 
         window = glfwCreateWindow(defaultWindowWidth, defaultWindowHeight, "DunGen", NULL, NULL);
@@ -92,7 +102,9 @@ static const int defaultWindowHeight = 768;
 
         glfwMakeContextCurrent(window);
 
-        glfwSwapInterval(1);
+        #if !(DUNGEN_WASM)
+            glfwSwapInterval(1);
+        #endif
 
         glfwSetCursorPosCallback(window, MouseMoveCallback);
         glfwSetMouseButtonCallback(window, MouseClickCallback);
@@ -160,7 +172,7 @@ void InitializeRendering() {
         GL_DYNAMIC_DRAW
     );
     glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(GL_FLOAT) * 2, (void*)0);
-    
+
     glGenVertexArrays(1, &hexVAO);
     glBindVertexArray(hexVAO);
     glGenBuffers(1, &hexVBO);
@@ -187,7 +199,7 @@ void InitializeRendering() {
     glVertexAttribDivisor(1, 1);
     glVertexAttribDivisor(2, 1);
     glVertexAttribDivisor(3, 1);
-    
+
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
 
@@ -225,7 +237,7 @@ void UpdateRenderBuffers(TileSet* ts) {
             td->draw
         );
     }
-    
+
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
@@ -375,7 +387,7 @@ GLuint GetBasicProgram() {
 GLuint LoadProgram(const char* vertexFile, const char* fragmentFile) {
     const char* vertexSrc = NULL;
     const char* fragmentSrc = NULL;
-    #if DUNGEN_MOBILE
+    #if DUNGEN_MOBILE || DUNGEN_WASM
         const char* base = "shaders/gles/";
     #else
         const char* base = "shaders/gl/";
@@ -505,14 +517,14 @@ int Render() {
     FinishDrawText();
 
     RenderBanners(&orthoMatrix);
-    
+
     if (GetChoiceStatus() >= 0) {
         RenderChoices(&orthoMatrix);
     }
     if (GetTileChoiceStatus() >= 0) {
         RenderTileChoice();
     }
-    
+
     #if !(DUNGEN_MOBILE)
         glfwSwapBuffers(window);
         glfwPollEvents();
