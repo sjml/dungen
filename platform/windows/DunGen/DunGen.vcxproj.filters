@@ -50,6 +50,7 @@
     <ClInclude Include="resource.h">
       <Filter>resources</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\src\dungen.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\src\main.c" />
@@ -105,6 +106,9 @@
       <Filter>platform</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\dungen.c" />
+    <ClCompile Include="..\GL_headers\glad.c">
+      <Filter>platform</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="scripting">

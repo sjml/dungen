@@ -106,6 +106,7 @@ void LoadFont(const char* refName, const char* filePath, float pointSize, bool i
     data->isPixelFont = isPixelFont;
     data->glyphs = NULL;
     data->textAtlasIDs = NULL;
+	data->filePath = _strdup(filePath);
 
     shput(loadedFonts, refName, data);
 
@@ -249,6 +250,7 @@ bool PurgeFont(const char* fontName) {
         glDeleteTextures(1, &fd->textAtlasIDs[t]);
     }
     arrfree(fd->textAtlasIDs);
+	free(fd);
 
     shdel(loadedFonts, fontName);
     return true;

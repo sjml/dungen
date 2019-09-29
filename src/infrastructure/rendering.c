@@ -109,6 +109,12 @@ static const int defaultWindowHeight = 768;
         glfwSetCursorPosCallback(window, MouseMoveCallback);
         glfwSetMouseButtonCallback(window, MouseClickCallback);
         glfwSetKeyCallback(window, KeyboardCallback);
+
+		#ifdef _WIN32
+			if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
+				fprintf(stderr, "ERROR: Couldn't initialize GLAD loader.\n");
+			}
+		#endif // WINDOWS
     }
 #endif // DUNGEN_MOBILE
 
@@ -189,7 +195,7 @@ void InitializeRendering() {
     glBindBuffer(GL_ARRAY_BUFFER, attribVBO);
     glBufferData(
         GL_ARRAY_BUFFER,
-        sizeof(TileDrawData) * GetNumberOfTiles(),
+        sizeof(TileDrawData) * (GLintptr)GetNumberOfTiles(),
         GetTileStartPointer()->draw,
         GL_DYNAMIC_DRAW
     );
@@ -232,7 +238,7 @@ void UpdateRenderBuffers(TileSet* ts) {
         TileData* td = ts[i].key;
         glBufferSubData(
             GL_ARRAY_BUFFER,
-            sizeof(TileDrawData) * td->meta->i,
+            (GLintptr)sizeof(TileDrawData) * (GLintptr)td->meta->i,
             sizeof(TileDrawData),
             td->draw
         );

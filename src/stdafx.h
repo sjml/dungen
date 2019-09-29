@@ -14,8 +14,12 @@
     #include <emscripten/emscripten.h>
     #define GLFW_INCLUDE_ES3
 #else
-    #define GLFW_INCLUDE_GLCOREARB
-#endif
+	#if _WIN32
+		#include <glad/glad.h>
+	#else
+		#define GLFW_INCLUDE_GLCOREARB
+	#endif // _WIN32
+#endif // __EMSCRIPTEN__
 
 #if !(DUNGEN_MOBILE)
     #ifdef __clang__
