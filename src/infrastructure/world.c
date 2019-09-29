@@ -621,7 +621,7 @@ void SetRegionLabel(Region* r, const char* text, float scale, gbVec4 color, gbVe
     if (r->label.text != NULL) {
         free(r->label.text);
     }
-    r->label.text = _strdup(text);
+    r->label.text = strdup(text);
     r->label.scale = scale;
     r->label.color.r = color.r;
     r->label.color.g = color.g;

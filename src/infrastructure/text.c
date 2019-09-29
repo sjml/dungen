@@ -106,7 +106,7 @@ void LoadFont(const char* refName, const char* filePath, float pointSize, bool i
     data->isPixelFont = isPixelFont;
     data->glyphs = NULL;
     data->textAtlasIDs = NULL;
-	data->filePath = _strdup(filePath);
+	data->filePath = strdup(filePath);
 
     shput(loadedFonts, refName, data);
 
