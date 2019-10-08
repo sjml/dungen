@@ -15,8 +15,12 @@
 
 ## Near Term
 * reimplement screenshot
+* move from manual zip to pipelines task
+    - https://docs.microsoft.com/en-us/azure/devops/pipelines/tasks/utility/archive-files?view=azure-devops
+    - also maybe github actions? https://github.com/features/actions
 * set up proper webpage for emscripten environment
     - also add it to azure pipelines build
+    - make webpage explaining project, linking to releases, etc.
 * handle newlines in text rendering?
 
 ## Tech Debt
