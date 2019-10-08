@@ -1,3 +1,5 @@
+(NB: this project is kind of shelved for a bit. I started [a branch](https://github.com/sjml/dungen/tree/agent-work) to work on moving stuff over to agents so the various processes could interact, and the preliminary work is in there. I got distracted along the way and made it run on iOS and WebGL too. 😂 Agent stuff is almost done, and once it is, adding in the Age of Civilization shouldn't be too hard. Alas, that point of the semester has been reached where side projects get put away to wither, and odds are by the time I have free time again, I'll have another idea burning a hole in my text editor. It turns out, the real DunGen was the friends we made along the way.)
+
 <p align="center"><img src="https://github.com/sjml/dungen2/raw/master/art/DunGenLogo.png"></p>
 
 # DunGen
