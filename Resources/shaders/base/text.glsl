@@ -1,3 +1,6 @@
+@ctype mat4 gbMat4
+@ctype vec4 gbVec4
+
 @vs text_vert
 layout (location = 0) in vec4 vertex;
 
@@ -14,7 +17,7 @@ void main() {
 @fs text_frag
 uniform sampler2D textAtlas;
 
-uniform color_data {
+uniform text_frag_uniforms {
     vec4 textColor;
 };
 

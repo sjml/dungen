@@ -86,7 +86,7 @@ void InitializeRendering() {
         .vs.uniform_blocks[0] = {
             .size = sizeof(gbMat4),
             .uniforms = {
-                [0] = { .name = "vp", .type = SG_UNIFORMTYPE_MAT4},
+                [0] = { .name = "matrix", .type = SG_UNIFORMTYPE_MAT4},
             }
         },
         .vs.source = readTextFile(vsHex),

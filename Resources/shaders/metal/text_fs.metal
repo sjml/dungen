@@ -3,7 +3,7 @@
 
 using namespace metal;
 
-struct color_data
+struct text_frag_uniforms
 {
     float4 textColor;
 };
@@ -19,7 +19,7 @@ struct main0_in
 };
 
 #line 17 ""
-fragment main0_out main0(main0_in in [[stage_in]], constant color_data& _35 [[buffer(0)]], texture2d<float> textAtlas [[texture(0)]], sampler textAtlasSmplr [[sampler(0)]])
+fragment main0_out main0(main0_in in [[stage_in]], constant text_frag_uniforms& _35 [[buffer(0)]], texture2d<float> textAtlas [[texture(0)]], sampler textAtlasSmplr [[sampler(0)]])
 {
     main0_out out = {};
 #line 17 ""

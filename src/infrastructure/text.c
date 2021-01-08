@@ -234,7 +234,7 @@ void InitializeText() {
         .fs.uniform_blocks[0] = {
             .size = sizeof(gbVec4),
             .uniforms = {
-                [0] = { .name = "color_data", .type = SG_UNIFORMTYPE_FLOAT4, .array_count = 1 }
+                [0] = { .name = "text_frag_uniforms", .type = SG_UNIFORMTYPE_FLOAT4, .array_count = 1 }
             }
         }
     });
