@@ -8,5 +8,3 @@ typedef struct {
 char* readTextFile(const char* filename);
 unsigned char* readBinaryFile(const char* filename);
 
-int handleGLErrors(const char* f, const int line);
-#define GL_CHECK() handleGLErrors(__FILE__, __LINE__)

@@ -37,7 +37,7 @@ typedef struct sRegion {
     long long i;
     TileSet* tiles;
     Outline* outline;
-    TextInfo label;
+    TextInfo* label;
 
     Region** children;
     Region*  parent;

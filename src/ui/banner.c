@@ -5,10 +5,10 @@
 #include "../infrastructure/rendering.h"
 
 typedef struct {
-    TextInfo ti;
+    TextInfo* ti;
     gbVec2 extents;
     gbVec4 bgColor;
-    float verts[8];
+    sg_buffer vertBuffer;
     float manualY;
     float duration;
 } BannerInfo;
@@ -27,29 +27,36 @@ void _repositionBanners() {
     float y = (dims.y * 0.5f) + (height * -0.5f);
     float x = dims.x * 0.5f;
     for (long i = 0; i < arrlen(banners); i++) {
+        gbVec2 newPos;
         if (banners[i].manualY >= 0.0f) {
-            banners[i].ti.pos.x = x - (banners[i].extents.x * 0.5f);
-            banners[i].ti.pos.y = banners[i].manualY;
+            newPos.x = x - (banners[i].extents.x * 0.5f);
+            newPos.y = banners[i].manualY;
         }
         else {
-            banners[i].ti.pos.x = x - (banners[i].extents.x * 0.5f);
-            banners[i].ti.pos.y = y + (banners[i].extents.y);
+            newPos.x = x - (banners[i].extents.x * 0.5f);
+            newPos.y = y + (banners[i].extents.y);
             y += banners[i].extents.y + padding;
         }
+        RepositionTextInfo(banners[i].ti, newPos);
 
         float x0, y0, x1, y1;
         x0 = 0.0f;
         x1 = (float)dims.x;
-        y0 = banners[i].ti.pos.y + (padding * 0.5f);
-        y1 = banners[i].ti.pos.y - (banners[i].extents.y + (padding * 0.5f));
-        banners[i].verts[0] = x0;
-        banners[i].verts[1] = y0;
-        banners[i].verts[2] = x1;
-        banners[i].verts[3] = y0;
-        banners[i].verts[4] = x0;
-        banners[i].verts[5] = y1;
-        banners[i].verts[6] = x1;
-        banners[i].verts[7] = y1;
+        y0 = banners[i].ti->pos.y + (padding * 0.5f);
+        y1 = banners[i].ti->pos.y - (banners[i].extents.y + (padding * 0.5f));
+        float verts[8];
+        verts[0] = x0;
+        verts[1] = y0;
+        verts[2] = x1;
+        verts[3] = y0;
+        verts[4] = x0;
+        verts[5] = y1;
+        verts[6] = x1;
+        verts[7] = y1;
+        banners[i].vertBuffer = sg_make_buffer(&(sg_buffer_desc){
+            .content = verts,
+            .size = sizeof(verts)
+        });
     }
 }
 
@@ -60,13 +67,7 @@ void PositionBanner(void* bannerHandle, float yPos) {
 
 void* AddBanner(const char* text, float scale, gbVec4 textColor, gbVec4 bgColor, float duration) {
     BannerInfo bi;
-    bi.ti.text = malloc(sizeof(char) * (strlen(text) + 1));
-    strcpy(bi.ti.text, text);
-    bi.ti.scale = scale;
-    bi.ti.color.r = textColor.r;
-    bi.ti.color.g = textColor.g;
-    bi.ti.color.b = textColor.b;
-    bi.ti.color.a = textColor.a;
+    bi.ti = CreateTextInfo(text, "Pixel", (gbVec2){0.0f, 0.0f}, scale, textColor);
     bi.bgColor.r = bgColor.r;
     bi.bgColor.g = bgColor.g;
     bi.bgColor.b = bgColor.b;
@@ -74,7 +75,7 @@ void* AddBanner(const char* text, float scale, gbVec4 textColor, gbVec4 bgColor,
     bi.duration = duration;
     bi.manualY = -1.0f;
 
-    bi.extents = MeasureTextExtents(bi.ti.text, "Pixel", bi.ti.scale);
+    bi.extents = MeasureTextExtents(bi.ti->text, "Pixel", bi.ti->scale);
 
     arrpush(banners, bi);
     _repositionBanners();
@@ -85,6 +86,8 @@ void* AddBanner(const char* text, float scale, gbVec4 textColor, gbVec4 bgColor,
 void RemoveBanner(void* bannerHandle) {
     for (long i=0; i < arrlen(banners); i++) {
         if (&banners[i] == (BannerInfo*)bannerHandle) {
+            DestroyTextInfo(banners[i].ti);
+            sg_destroy_buffer(banners[i].vertBuffer);
             arrdel(banners, i);
             break;
         }
@@ -109,6 +112,8 @@ bool UpdateBanners(float dt) {
     }
     if (arrlen(deadIndices) > 0) {
         for (long i=arrlen(deadIndices)-1; i >=0; i--) {
+            DestroyTextInfo(banners[deadIndices[i]].ti);
+            sg_destroy_buffer(banners[deadIndices[i]].vertBuffer);
             arrdel(banners, deadIndices[i]);
         }
         _repositionBanners();
@@ -121,25 +126,14 @@ void RenderBanners(gbMat4* matrix) {
     if (arrlen(banners) == 0) {
         return;
     }
-    
-    GLuint basic = GetBasicProgram();
-    glUseProgram(basic);
-    glUniformMatrix4fv(glGetUniformLocation(basic, "vp"), 1, GL_FALSE, (*matrix).e);
-    glBindVertexArray(GetSquareVAO());
 
     for (long i=0; i < arrlen(banners); i++) {
-        glUniform4fv(glGetUniformLocation(basic, "color"), 1, banners[i].bgColor.e);
-        glBindBuffer(GL_ARRAY_BUFFER, GetSquareVBO());
-        glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(banners[i].verts), banners[i].verts);
-        glEnableVertexAttribArray(0);
-            glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-        glDisableVertexAttribArray(0);
+        DrawShapeBuffer(banners[i].vertBuffer, 4, banners[i].bgColor, matrix);
     }
-    glBindVertexArray(0);
-    
-    PrepDrawText(matrix);
-    for (long i=0; i < arrlen(banners); i++) {
-        DrawText("Pixel", banners[i].ti.text, banners[i].ti.pos, banners[i].ti.color, banners[i].ti.scale);
-    }
-    FinishDrawText();
+
+     PrepDrawText(matrix);
+     for (long i=0; i < arrlen(banners); i++) {
+         DrawText(banners[i].ti);
+     }
+     FinishDrawText();
 }

@@ -3,6 +3,7 @@
 
 #include "../infrastructure/world.h"
 #include "../infrastructure/rendering.h"
+#include "../infrastructure/game.h"
 #include "../hlvm/hlvm.h"
 
 static Region* hoveredSingle = NULL;
@@ -42,8 +43,10 @@ void PresentTileChoice(void) {
             invalids = AddTileToSet(invalids, t);
         }
     }
-    UpdateRenderBuffers(invalids);
+    RequestRenderBufferUpdate(invalids);
     DestroyTileSet(invalids);
+    
+    TileChoiceProcessMouseMovement(GetCursorPosition());
 }
 
 void RenderTileChoice(void) {
@@ -78,12 +81,12 @@ void TileChoiceProcessMouseMovement(gbVec2 position) {
     ClearRegionOutline(hoveredSingle);
     gbVec4 hoverColor = {1.0f, 0.0f, 0.0f, 1.0f};
     SetRegionOutline(hoveredSingle, hoverColor, 0.25f, -1);
-    
+
     TileSet* updates = NULL;
     updates = AddTileToSet(updates, hoveredTile);
     updates = AddTileToSet(updates, pressedTile);
     updates = AddTileToSet(updates, current);
-    UpdateRenderBuffers(updates);
+    RequestRenderBufferUpdate(updates);
     DestroyTileSet(updates);
 
     hoveredTile = current;
@@ -93,7 +96,7 @@ void TileChoiceProcessMouseClick(bool down) {
     TileSet* updates = NULL;
     updates = AddTileToSet(updates, hoveredTile);
     updates = AddTileToSet(updates, pressedTile);
-    
+
     if (down) {
         if (hoveredTile != NULL && IsTileInSet(valid, hoveredTile)) {
             pressedTile = hoveredTile;
@@ -132,7 +135,7 @@ void TileChoiceProcessMouseClick(bool down) {
             TileChoiceProcessMouseMovement(GetCursorPosition());
         }
     }
-    
-    UpdateRenderBuffers(updates);
+
+    RequestRenderBufferUpdate(updates);
     DestroyTileSet(updates);
 }

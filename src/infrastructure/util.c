@@ -41,37 +41,3 @@ unsigned char* readBinaryFile(const char* filename) {
     fclose(f);
     return buffer;
 }
-
-int handleGLErrors(const char* f, const int line) {
-    bool errorFound = false;
-    GLenum errorCode;
-    const char* errorString;
-    do
-    {
-        errorCode = glGetError();
-        if (errorCode != GL_NO_ERROR) {
-            errorFound = true;
-
-            switch (errorCode) {
-                case GL_INVALID_ENUM:
-                    errorString = "GL_INVALID_ENUM";
-                    break;
-                case GL_INVALID_VALUE:
-                    errorString = "GL_INVALID_VALUE";
-                    break;
-                case GL_INVALID_OPERATION:
-                    errorString = "GL_INVALID_OPERATION";
-                    break;
-                case GL_OUT_OF_MEMORY:
-                    errorString = "GL_OUT_OF_MEMORY";
-                    break;
-                default:
-                    errorString = "unknown error code";
-            }
-
-            printf("OpenGL Error in %s (%d): %s\n", f, line, errorString);
-        }
-    } while (errorCode != GL_NO_ERROR);
-
-    return errorFound;
-}

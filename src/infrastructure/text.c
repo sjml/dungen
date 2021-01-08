@@ -12,6 +12,7 @@
 
 #include "util.h"
 #include "rendering.h"
+#include "../platform/platform.h"
 
 #define STB_RECT_PACK_IMPLEMENTATION
 #include <stb_rect_pack.h>
@@ -33,12 +34,14 @@
 #define TEXT_ATLAS_SIZE 512
 #define TEXT_ATLAS_NUM_CHARS 256
 
-static GLuint textProgram;
-static GLint  textOrthoLocation;
-static GLint  textColorLocation;
-static GLuint textTexID;
-static GLuint textVAO, textVBO;
+static uint32_t textProgram;
+static int32_t  textOrthoLocation;
+static int32_t  textColorLocation;
+static uint32_t textTexID;
+static uint32_t textVAO, textVBO;
 
+static BasicUniforms bu;
+static DrawState ds;
 
 ///////////////////////////////////////////////////////////////////////////////
 // Copyright (c) 2008-2009 Bjoern Hoehrmann <bjoern@hoehrmann.de>
@@ -89,7 +92,8 @@ typedef struct {
     float scale;
     bool isPixelFont;
     struct { uint32_t key; GlyphData* value; } *glyphs;
-    GLuint* textAtlasIDs;
+    sg_bindings bindings;
+    int numTextures;
 } FontData;
 
 static struct { char* key; FontData *value; } *loadedFonts;
@@ -105,7 +109,7 @@ void LoadFont(const char* refName, const char* filePath, float pointSize, bool i
     data->scale = pointSize;
     data->isPixelFont = isPixelFont;
     data->glyphs = NULL;
-    data->textAtlasIDs = NULL;
+    data->numTextures = 0;
 	data->filePath = strdup(filePath);
 
     shput(loadedFonts, refName, data);
@@ -124,7 +128,7 @@ void LoadFont(const char* refName, const char* filePath, float pointSize, bool i
     }
 
     while (!donePacking) {
-        GLubyte* localAtlas = calloc(TEXT_ATLAS_SIZE * TEXT_ATLAS_SIZE, sizeof(GLubyte));
+        unsigned char* localAtlas = calloc(TEXT_ATLAS_SIZE * TEXT_ATLAS_SIZE, sizeof(unsigned char));
         charSet.chardata_for_range = malloc(sizeof(stbtt_packedchar) * charSet.num_chars);
 
         stbtt_pack_context packingContext;
@@ -148,51 +152,44 @@ void LoadFont(const char* refName, const char* filePath, float pointSize, bool i
         donePacking = stbtt_PackFontRangesRenderIntoRects(&packingContext, &info, &charSet, 1, rects);
         stbtt_PackEnd(&packingContext);
 
-        GLuint textureID;
-        glGenTextures(1, &textureID);
-        glBindTexture(GL_TEXTURE_2D, textureID);
-        glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-        #if DUNGEN_MOBILE || DUNGEN_WASM
-            GLenum textureFormat = GL_ALPHA;
-        #else
-            GLenum textureFormat = GL_RED;
-        #endif
-        glTexImage2D(
-            GL_TEXTURE_2D,
-            0,
-            textureFormat,
-            TEXT_ATLAS_SIZE,
-            TEXT_ATLAS_SIZE,
-            0,
-            textureFormat,
-            GL_UNSIGNED_BYTE,
-            localAtlas
-        );
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+        sg_image_desc desc = (sg_image_desc){
+            .width = TEXT_ATLAS_SIZE,
+            .height = TEXT_ATLAS_SIZE,
+            .content.subimage[0][0] = {
+                .ptr = localAtlas,
+                .size = sizeof(localAtlas)
+            },
+            .pixel_format = SG_PIXELFORMAT_R8,
+            .wrap_u = SG_WRAP_CLAMP_TO_EDGE,
+            .wrap_v = SG_WRAP_CLAMP_TO_EDGE,
+        };
         if (isPixelFont) {
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+            desc.min_filter = SG_FILTER_NEAREST;
+            desc.mag_filter = SG_FILTER_NEAREST;
         }
         else {
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+            desc.min_filter = SG_FILTER_LINEAR;
+            desc.mag_filter = SG_FILTER_LINEAR;
         }
 
-        arrpush(data->textAtlasIDs, textureID);
-        int texIdx = (int)arrlen(data->textAtlasIDs) - 1;
-        glBindTexture(GL_TEXTURE_2D, 0);
+        sg_image tex = sg_make_image(&desc);
+        data->bindings = (sg_bindings) {
+            .fs_images[0] = tex
+        };
+        data->numTextures += 1;
 
         for (int i=0; i < charSet.num_chars; i++) {
             if (rects[i].was_packed) {
                 GlyphData* gd = malloc(sizeof(GlyphData));
-                gd->atlasIndex = texIdx;
+                gd->atlasIndex = data->numTextures - 1;
                 gd->charData = charSet.chardata_for_range[i];
                 hmput(data->glyphs, charSet.array_of_unicode_codepoints[i], gd);
             }
         }
 
         if (!donePacking) {
+            assert(false); // haven't implemented multi-texture font rendering
+                           //    in the swap to sokol
             int* leftovers = NULL;
             for (int i=0; i < charSet.num_chars; i++) {
                 if (!rects[i].was_packed) {
@@ -218,17 +215,46 @@ void LoadFont(const char* refName, const char* filePath, float pointSize, bool i
 }
 
 void InitializeText() {
-    textProgram = LoadProgram("text.vert", "text.frag");
-    textOrthoLocation = glGetUniformLocation(textProgram, "ortho");
-    textColorLocation = glGetUniformLocation(textProgram, "textColor");
+    sds vsPath = GetShaderPath("text_vs");
+    sds fsPath = GetShaderPath("text_fs");
+    sg_shader textShader = sg_make_shader(&(sg_shader_desc){
+        .vs.source = readTextFile(vsPath),
+        .fs.source = readTextFile(fsPath),
+        #ifdef SOKOL_METAL
+            .vs.entry = "main0",
+            .fs.entry = "main0",
+        #endif
+        .vs.uniform_blocks[0] = {
+            .size = sizeof(gbMat4),
+            .uniforms = {
+                [0] = { .name = "ortho", .type = SG_UNIFORMTYPE_MAT4 }
+            }
+        },
+        .fs.images[0] = { .name="textAtlas", .type=SG_IMAGETYPE_2D },
+        .fs.uniform_blocks[0] = {
+            .size = sizeof(gbVec4),
+            .uniforms = {
+                [0] = { .name = "color_data", .type = SG_UNIFORMTYPE_FLOAT4, .array_count = 1 }
+            }
+        }
+    });
+    sdsfree(vsPath);
+    sdsfree(fsPath);
 
-    glGenVertexArrays(1, &textVAO);
-    glBindVertexArray(textVAO);
-
-    glGenBuffers(1, &textVBO);
-    glBindBuffer(GL_ARRAY_BUFFER, textVBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * 4 * 4, 0, GL_STATIC_DRAW);
-    glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), (void*)0);
+    ds.pipe = sg_make_pipeline(&(sg_pipeline_desc) {
+        .shader = textShader,
+        .layout = {
+            .attrs = {
+                [0].format = SG_VERTEXFORMAT_FLOAT4
+            }
+        },
+        .blend = {
+            .enabled = true,
+            .src_factor_rgb = SG_BLENDFACTOR_SRC_ALPHA,
+            .dst_factor_rgb = SG_BLENDFACTOR_ONE_MINUS_SRC_ALPHA
+        },
+        .primitive_type = SG_PRIMITIVETYPE_TRIANGLE_STRIP
+    });
 }
 
 void FinalizeText() {
@@ -246,73 +272,130 @@ bool PurgeFont(const char* fontName) {
     FontData* fd = shget(loadedFonts, fontName);
     free((void*)fd->filePath);
     hmfree(fd->glyphs);
-    for (int t=0; t < arrlen(fd->textAtlasIDs); t++) {
-        glDeleteTextures(1, &fd->textAtlasIDs[t]);
+    for (int t=0; t < fd->numTextures; t++) {
+        sg_destroy_image(fd->bindings.fs_images[t]);
     }
-    arrfree(fd->textAtlasIDs);
 	free(fd);
 
     shdel(loadedFonts, fontName);
     return true;
 }
 
-void PrepDrawText(gbMat4* matrix) {
-    glUseProgram(textProgram);
-    glUniformMatrix4fv(textOrthoLocation, 1, GL_FALSE, (*matrix).e);
-
-    glBindVertexArray(textVAO);
-    glBindBuffer(GL_ARRAY_BUFFER, textVBO);
-    glEnableVertexAttribArray(0);
-}
-
-void FinishDrawText() {
-    glDisableVertexAttribArray(0);
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-    glBindVertexArray(0);
-
-    glBindTexture(GL_TEXTURE_2D, 0);
-}
-
-void DrawText(const char* fontName, const char* textString, gbVec2 pos, gbVec4 color, float scale) {
+TextInfo* CreateTextInfo(const char* text, const char* fontName, gbVec2 pos, float scale, gbVec4 color) {
     FontData* fd = shget(loadedFonts, fontName);
     if (fd == NULL) {
         fprintf(stderr, "ERROR: No loaded font named %s\n", fontName);
-        return;
+        return NULL;
     }
 
-    glUniform4fv(textColorLocation, 1, color.e);
+    TextInfo* ti = malloc(sizeof(TextInfo));
 
-    GLfloat x = pos.x;
-    GLfloat y = pos.y;
+    ti->text = malloc(sizeof(char) * strlen(text) + 1);
+    strcpy(ti->text, text);
+    ti->fontName = malloc(sizeof(char) * strlen(fontName) + 1);
+    strcpy(ti->fontName, fontName);
 
+    ti->scale = scale;
+    ti->color = color;
+
+    RepositionTextInfo(ti, pos);
+
+    float x = 0;
+    float y = 0;
+
+    float* vertList = NULL;
+    ti->numGlyphs = 0;
     uint32_t state = 0;
     uint32_t codepoint = 0;
-    for (; *textString; ++textString) {
-        decode_utf8(&state, &codepoint, *(unsigned char*)textString);
+    int ci = 0;
+    unsigned long textLength = strlen(ti->text);
+    for (int ci=0; ci < textLength; ci++) {
+        char* textPtr = &ti->text[ci];
+        decode_utf8(&state, &codepoint, *(unsigned char*)textPtr);
         if (state != UTF8_ACCEPT) {
             continue;
         }
 
         GlyphData* gd = hmget(fd->glyphs, codepoint);
 
-        GLfloat xpos = x + (gd->charData.xoff * scale);
-        GLfloat ypos = y + (gd->charData.yoff * scale);
-        GLfloat w = (gd->charData.x1 - gd->charData.x0) * scale;
-        GLfloat h = (gd->charData.y1 - gd->charData.y0) * scale;
+        float xpos = x + (gd->charData.xoff * ti->scale);
+        float ypos = y + (gd->charData.yoff * ti->scale);
+        float w = (gd->charData.x1 - gd->charData.x0) * ti->scale;
+        float h = (gd->charData.y1 - gd->charData.y0) * ti->scale;
 
-        GLfloat squareVerts[4 * 4] = {
-            xpos    , ypos    , gd->charData.x0, gd->charData.y0,
-            xpos    , ypos + h, gd->charData.x0, gd->charData.y1,
-            xpos + w, ypos    , gd->charData.x1, gd->charData.y0,
-            xpos + w, ypos + h, gd->charData.x1, gd->charData.y1,
-        };
+        //degenerate triangle headers
+        if (ci == 0) {
+            arrpush(vertList, xpos);  arrpush(vertList, ypos);
+            arrpush(vertList, gd->charData.x0); arrpush(vertList, gd->charData.y0);
+        }
+        arrpush(vertList, xpos);  arrpush(vertList, ypos);
+        arrpush(vertList, gd->charData.x0); arrpush(vertList, gd->charData.y0);
 
-        glBindTexture(GL_TEXTURE_2D, fd->textAtlasIDs[gd->atlasIndex]);
-        glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(squareVerts), squareVerts);
-        glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+        arrpush(vertList, xpos);  arrpush(vertList, ypos);
+        arrpush(vertList, gd->charData.x0); arrpush(vertList, gd->charData.y0);
 
-        x += gd->charData.xadvance * scale;
+        arrpush(vertList, xpos);  arrpush(vertList, ypos + h);
+        arrpush(vertList, gd->charData.x0); arrpush(vertList, gd->charData.y1);
+
+        arrpush(vertList, xpos + w);  arrpush(vertList, ypos);
+        arrpush(vertList, gd->charData.x1); arrpush(vertList, gd->charData.y0);
+
+        arrpush(vertList, xpos + w);  arrpush(vertList, ypos + h);
+        arrpush(vertList, gd->charData.x1); arrpush(vertList, gd->charData.y1);
+
+        // add degenerate triangle to connect to next character
+        arrpush(vertList, xpos + w);  arrpush(vertList, ypos + h);
+        arrpush(vertList, gd->charData.x1); arrpush(vertList, gd->charData.y1);
+        if (ci == textLength-1) {
+            arrpush(vertList, xpos + w);  arrpush(vertList, ypos + h);
+            arrpush(vertList, gd->charData.x1); arrpush(vertList, gd->charData.y1);
+        }
+
+        x += gd->charData.xadvance * ti->scale;
+        ti->numGlyphs++;
     }
+    ti->bindings = (sg_bindings) {
+        .vertex_buffers[0] = sg_make_buffer(&(sg_buffer_desc){
+            .size = sizeof(float) * (int)arrlen(vertList),
+            .content = vertList,
+        }),
+        .fs_images[0] = fd->bindings.fs_images[0],
+    };
+    arrfree(vertList);
+
+    return ti;
+}
+
+void DestroyTextInfo(TextInfo* ti) {
+    free(ti->text);
+    free(ti->fontName);
+    sg_destroy_buffer(ti->bindings.vertex_buffers[0]);
+    free(ti);
+}
+
+void RepositionTextInfo(TextInfo* ti, gbVec2 newPos) {
+    ti->pos = newPos;
+    gb_mat4_translate(&ti->matrix, (gbVec3){newPos.x, newPos.y, 0.0f});
+}
+
+void PrepDrawText(gbMat4* matrix) {
+    sg_apply_pipeline(ds.pipe);
+    bu.matrix = *matrix;
+}
+
+void FinishDrawText() {
+    return;
+}
+
+void DrawText(TextInfo* ti) {
+     gbMat4 posMat;
+     memcpy(&posMat, &ti->matrix, sizeof(gbMat4));
+     gb_mat4_mul(&posMat, &bu.matrix, &posMat);
+     sg_apply_uniforms(SG_SHADERSTAGE_VS, 0, &posMat, sizeof(gbMat4));
+     sg_apply_uniforms(SG_SHADERSTAGE_FS, 0, &ti->color, sizeof(gbVec4));
+
+     sg_apply_bindings(&ti->bindings);
+     sg_draw(0, ti->numGlyphs * 6, 1);
 }
 
 gbVec2 MeasureTextExtents(const char* text, const char* fontName, float scale) {

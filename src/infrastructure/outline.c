@@ -106,8 +106,8 @@ Outline* CreateOutline(TileSet* ts, float thickness, int type) {
     o->color.b = 0.0f;
     o->color.a = 1.0f;
     o->numPoints = 0;
-    o->vbo = 0;
-    o->vao = 0;
+    o->buffer = (sg_buffer){0};
+    o->bindings = (sg_bindings){0};
 
     gbVec2** PL = GetWorldPointList();
 
@@ -267,7 +267,7 @@ Outline* CreateOutline(TileSet* ts, float thickness, int type) {
 
         arrpush(pointLists, points);
     }
-    
+
     // there are probably better ways to fill this, but this is stapled
     //   on to the end of some logic made when this was all using the
     //   fixed-function pipeline.
@@ -277,7 +277,7 @@ Outline* CreateOutline(TileSet* ts, float thickness, int type) {
         for (; pi < arrlen(pointLists[i]); pi++) {
             arrpush(bufferList, pointLists[i][pi]);
         }
-        
+
         if (i < arrlen(pointLists) - 1 && arrlen(pointLists[i+1]) > 0) {
             // push degenerate triangle to connect to separated region
             arrpush(bufferList, pointLists[i][pi-2]);
@@ -287,16 +287,17 @@ Outline* CreateOutline(TileSet* ts, float thickness, int type) {
         }
     }
     if (arrlen(bufferList) > 0) {
-        o->numPoints = (GLsizei)arrlen(bufferList) / 2;
-        glGenVertexArrays(1, &o->vao);
-        glBindVertexArray(o->vao);
-        glGenBuffers(1, &o->vbo);
-        glBindBuffer(GL_ARRAY_BUFFER, o->vbo);
-        glBufferData(GL_ARRAY_BUFFER, sizeof(float)*arrlen(bufferList), bufferList, GL_STATIC_DRAW);
-        glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(GL_FLOAT)*2, (void*)0);
+        o->numPoints = (size_t)arrlen(bufferList) / 2;
+        o->buffer = sg_make_buffer(&(sg_buffer_desc){
+            .size = sizeof(float)*(int)arrlen(bufferList),
+            .content = bufferList,
+        });
+        o->bindings = (sg_bindings) {
+            .vertex_buffers[0] = o->buffer
+        };
     }
     arrfree(bufferList);
-    
+
     for (int i = 0; i < arrlen(pointLists); i++) {
         arrfree(pointLists[i]);
     }
@@ -306,7 +307,6 @@ Outline* CreateOutline(TileSet* ts, float thickness, int type) {
 }
 
 void DestroyOutline(Outline* o) {
-    glDeleteBuffers(1, &o->vbo);
-    glDeleteVertexArrays(1, &o->vao);
+    sg_destroy_buffer(o->buffer);
     free(o);
 }

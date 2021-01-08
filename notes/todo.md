@@ -1,4 +1,10 @@
 ## TODO
+0. Switch rendering to something cross-platform
+    - switch to Metal/D3D/WebGL
+    - metal:
+        - text/UI rendering not working (something with how the pipelines get applied?)
+            - note: turning on/off whether banners render their rects seems to mess up something with the color attribute in the text pipeline?
+    - for now, keeping with GL backend
 1. Rework river encounters to use centralized system
     - rename central functions
     - rivers should only backflow within chambers, but within chambers, there should be no limit on backflow (flood the chamber until an egress is found, basically, but don't go back along the path or to previous chambers)
@@ -22,6 +28,8 @@
     - also add it to azure pipelines build
     - make webpage explaining project, linking to releases, etc.
 * handle newlines in text rendering?
+* outlines flip edge alignment when regions have disjoint sections
+* why is tile choice not using SetTileOutline?
 
 ## Tech Debt
 * world.c could use a refactor

@@ -210,7 +210,7 @@ TileData** GetDirtyTiles(void) {
 }
 
 void CleanAllTiles(void) {
-    UpdateRenderBuffers(dirtyTiles);
+    RequestRenderBufferUpdate(dirtyTiles);
 
     hmfree(dirtyTiles);
     dirtyTiles = NULL;
@@ -439,8 +439,7 @@ Region* CreateRegion() {
     Region* r = malloc(sizeof(Region));
     r->tiles = NULL;
     r->outline = NULL;
-    r->label.text = NULL;
-    r->label.scale = -1.0f;
+    r->label = NULL;
     r->children = NULL;
     r->parent = NULL;
     AddRegionToRendering(r);
@@ -473,7 +472,7 @@ void DestroyRegion(Region* r) {
     if (r->outline != NULL) {
         DestroyOutline(r->outline);
     }
-    if (r->label.scale >= 0.0f) {
+    if (r->label != NULL) {
         ClearRegionLabel(r);
     }
     for (int i = 0; i < hmlen(r->tiles); i++) {
@@ -584,11 +583,13 @@ void SetRegionOutline(Region* r, gbVec4 color, float thickness, int type) {
     if (r->outline != NULL) {
         ClearRegionOutline(r);
     }
-    r->outline = CreateOutline(r->tiles, thickness, type);
-    r->outline->color.r = color.r;
-    r->outline->color.g = color.g;
-    r->outline->color.b = color.b;
-    r->outline->color.a = color.a;
+    if (GetTileSetCount(r->tiles) > 0) {
+        r->outline = CreateOutline(r->tiles, thickness, type);
+        r->outline->color.r = color.r;
+        r->outline->color.g = color.g;
+        r->outline->color.b = color.b;
+        r->outline->color.a = color.a;
+    }
 }
 
 void ClearRegionOutline(Region* r) {
@@ -618,16 +619,9 @@ gbVec2 GetRegionCenterPoint(Region* r) {
 }
 
 void SetRegionLabel(Region* r, const char* text, float scale, gbVec4 color, gbVec2 tileOffset) {
-    if (r->label.text != NULL) {
-        free(r->label.text);
+    if (r->label != NULL) {
+        ClearRegionLabel(r);
     }
-    r->label.text = strdup(text);
-    r->label.scale = scale;
-    r->label.color.r = color.r;
-    r->label.color.g = color.g;
-    r->label.color.b = color.b;
-    r->label.color.a = color.a;
-
     gbVec2 center = GetRegionCenterPoint(r);
 
     center.x += tileDimensions.x * (float)tileOffset.x;
@@ -637,13 +631,18 @@ void SetRegionLabel(Region* r, const char* text, float scale, gbVec4 color, gbVe
     gbVec2 orthoPos = ScreenToOrtho(screenPos);
 
     gbVec2 extents = MeasureTextExtents(text, "Pixel", scale);
-    r->label.pos.x = orthoPos.x - (extents.x * 0.5f) + 1.0f;
-    r->label.pos.y = orthoPos.y + (extents.y * 0.5f);
+    gbVec2 pos;
+    pos.x = orthoPos.x - (extents.x * 0.5f) + 1.0f;
+    pos.y = orthoPos.y + (extents.y * 0.5f);
+    
+    r->label = CreateTextInfo(text, "Pixel", pos, scale, color);
 }
 
 void ClearRegionLabel(Region* r) {
-    free(r->label.text);
-    r->label.scale = -1.0f;
+    if (r->label != NULL) {
+        DestroyTextInfo(r->label);
+        r->label = NULL;
+    }
 }
 
 

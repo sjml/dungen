@@ -17,5 +17,6 @@
 
 
 void InitializeDunGen(const char* startupElement);
-void RunDunGen(void);
+void TickAndRender(void);
+void EventCallback(const sapp_event* event);
 void FinalizeDunGen(void);

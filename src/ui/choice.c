@@ -5,15 +5,17 @@
 #include "../hlvm/hlvm.h"
 #include "../infrastructure/text.h"
 #include "../infrastructure/rendering.h"
+#include "../infrastructure/game.h"
 
 static int hoveredChoice = -1;
 static int pressedChoice = -1;
 static char** choices = NULL;
+static TextInfo** choiceTexts = NULL;
 
 typedef struct {
     gbRect2 bb;
     gbRect2 textBB;
-    float verts[8];
+    sg_buffer vertBuff;
 } Button;
 static Button* buttons = NULL;
 
@@ -48,7 +50,17 @@ void ClearChoices(void) {
     }
     arrfree(choices);
     choices = NULL;
+
+    for (int i=0; i < arrlen(buttons); i++) {
+        sg_destroy_buffer(buttons[i].vertBuff);
+    }
     arrfree(buttons);
+
+    for (int i=0; i < arrlen(choiceTexts); i++) {
+        DestroyTextInfo(choiceTexts[i]);
+    }
+    arrfree(choiceTexts);
+
     buttons = NULL;
 }
 
@@ -140,14 +152,19 @@ void PresentChoiceSelection(const char* description) {
         x1 = b.bb.pos.x + b.bb.dim.x;
         y0 = b.bb.pos.y + b.bb.dim.y;
 
-        b.verts[0] = x0;
-        b.verts[1] = y0;
-        b.verts[2] = x1;
-        b.verts[3] = y0;
-        b.verts[4] = x0;
-        b.verts[5] = y1;
-        b.verts[6] = x1;
-        b.verts[7] = y1;
+        float verts[8];
+        verts[0] = x0;
+        verts[1] = y0;
+        verts[2] = x1;
+        verts[3] = y0;
+        verts[4] = x0;
+        verts[5] = y1;
+        verts[6] = x1;
+        verts[7] = y1;
+        b.vertBuff = sg_make_buffer(&(sg_buffer_desc){
+            .content = verts,
+            .size = sizeof(verts)
+        });
 
         arrpush(buttons, b);
 
@@ -156,6 +173,8 @@ void PresentChoiceSelection(const char* description) {
             current.y = 0;
             current.x += 1;
         }
+
+        arrpush(choiceTexts, CreateTextInfo(choices[i], "Pixel", b.textBB.pos, 2.25f, (gbVec4){1.0f, 1.0f, 1.0f, 1.0f}));
     }
 
     ChoiceProcessMouseMovement(GetCursorPosition());
@@ -166,34 +185,23 @@ void RenderChoices(gbMat4* matrix) {
         return;
     }
 
-    GLuint basic = GetBasicProgram();
-    glUseProgram(basic);
-    glUniformMatrix4fv(glGetUniformLocation(basic, "vp"), 1, GL_FALSE, (*matrix).e);
-    glBindVertexArray(GetSquareVAO());
     for (long i=0; i < arrlen(buttons); i++) {
         if (pressedChoice == i && hoveredChoice == i) {
-            glUniform4fv(glGetUniformLocation(basic, "color"), 1, btnColorPress.e);
+            DrawShapeBuffer(buttons[i].vertBuff, 4, btnColorPress, matrix);
         }
         else if (hoveredChoice == i) {
-            glUniform4fv(glGetUniformLocation(basic, "color"), 1, btnColorHover.e);
+            DrawShapeBuffer(buttons[i].vertBuff, 4, btnColorHover, matrix);
         }
         else {
-            glUniform4fv(glGetUniformLocation(basic, "color"), 1, btnColorBase.e);
+            DrawShapeBuffer(buttons[i].vertBuff, 4, btnColorBase, matrix);
         }
-
-        glBindBuffer(GL_ARRAY_BUFFER, GetSquareVBO());
-        glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(buttons[i].verts), buttons[i].verts);
-        glEnableVertexAttribArray(0);
-            glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-        glDisableVertexAttribArray(0);
     }
-    glBindVertexArray(0);
 
-    PrepDrawText(matrix);
-    for (long i=0; i < arrlen(buttons); i++) {
-        DrawText("Pixel", choices[i], buttons[i].textBB.pos, (gbVec4){1.0f, 1.0f, 1.0f, 1.0f}, 2.25f);
-    }
-    FinishDrawText();
+   PrepDrawText(matrix);
+   for (long i=0; i < arrlen(buttons); i++) {
+       DrawText(choiceTexts[i]);
+   }
+   FinishDrawText();
 }
 
 void ChoiceProcessMouseMovement(gbVec2 position) {

@@ -9,9 +9,10 @@
 #include "text.h"
 #include "outline.h"
 #include "game.h"
-#include  "../ui/banner.h"
-#include  "../ui/choice.h"
-#include  "../ui/tile_choice.h"
+#include "../ui/banner.h"
+#include "../ui/choice.h"
+#include "../ui/tile_choice.h"
+#include "../platform/platform.h"
 
 static bool renderingInitialized = false;
 
@@ -19,7 +20,7 @@ static Vec2i windowDimensions;
 static Vec2i framebufferDimensions;
 static Vec2i orthoDimensions;
 
-static GLubyte* screenShotBuffer;
+static unsigned char* screenShotBuffer;
 
 static CameraData MainCamera;
 static gbMat4 projectionMatrix;
@@ -27,7 +28,7 @@ static gbMat4 modelViewMatrix;
 static gbMat4 perspectiveMatrix;
 static gbMat4 orthoMatrix;
 
-static GLfloat hexVerts[] = {
+static float hexVerts[] = {
     -0.8660254f,  -0.5f,  // 1
      0.0000000f,  -1.0f,  // 2
     -0.8660254f,   0.5f,  // 0
@@ -36,102 +37,159 @@ static GLfloat hexVerts[] = {
      0.8660254f,   0.5f,  // 4
 };
 
-static GLfloat squareVerts[] = {
+static float squareVerts[] = {
     -0.5f, -0.5f,
     -0.5f,  0.5f,
      0.5f,  0.5f,
      0.5f, -0.5f,
 };
 
-static gbMat4 hexModelMatrix;
-static GLuint hexVAO;
-static GLuint hexVBO;
-static GLuint attribVBO;
-static GLuint hexProgram;
-static GLint  hexVPMatLocation;
+static DrawState hexDraw;
+static DrawState basicDraw;
+static sg_pass_action passAction;
 
-static GLuint basicProgram;
-static GLuint squareVAO;
-static GLuint squareVBO;
-
-static GLuint outlineVPMatLocation;
-static GLuint outlineColorVecLocation;
+static sg_buffer tileAttribBuff;
+static bool bufferUpRequested;
 
 static Region** regions = NULL;
 
 static const int defaultWindowWidth  = 1024;
 static const int defaultWindowHeight = 768;
 
-#if !(DUNGEN_MOBILE)
-    static GLFWwindow* window = NULL;
-
-    void _glfwSetup() {
-        #if !(DUNGEN_WASM)
-            #if DEBUG
-                glfwInitHint(GLFW_COCOA_CHDIR_RESOURCES, GLFW_FALSE);
-            #else
-                glfwInitHint(GLFW_COCOA_CHDIR_RESOURCES, GLFW_TRUE);
-            #endif
-
-            glfwInitHint(GLFW_COCOA_MENUBAR, GLFW_TRUE);
-        #endif // DUNGEN_WASM
-
-        if (!glfwInit()) {
-            exit(EXIT_FAILURE);
-        }
-
-        glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-        glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-        glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GLFW_TRUE);
-        glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-
-        glfwWindowHint(GLFW_SAMPLES, 4);
-        #if !(DUNGEN_WASM)
-            glfwWindowHint(GLFW_COCOA_RETINA_FRAMEBUFFER, GLFW_TRUE);
-        #endif // DUNGEN_WASM
-        glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
-
-        window = glfwCreateWindow(defaultWindowWidth, defaultWindowHeight, "DunGen", NULL, NULL);
-        if (!window) {
-            glfwTerminate();
-            exit(EXIT_FAILURE);
-        }
-
-        glfwGetFramebufferSize(window, &framebufferDimensions.x, &framebufferDimensions.y);
-        glfwGetWindowSize(window, &windowDimensions.x, &windowDimensions.y);
-
-        glfwMakeContextCurrent(window);
-
-        #if !(DUNGEN_WASM)
-            glfwSwapInterval(1);
-        #endif
-
-        glfwSetCursorPosCallback(window, MouseMoveCallback);
-        glfwSetMouseButtonCallback(window, MouseClickCallback);
-        glfwSetKeyCallback(window, KeyboardCallback);
-
-        #ifdef _WIN32
-            if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
-                fprintf(stderr, "ERROR: Couldn't initialize GLAD loader.\n");
-            }
-        #endif // WINDOWS
-    }
-#endif // DUNGEN_MOBILE
-
 void InitializeRendering() {
-    #if !(DUNGEN_MOBILE)
-        _glfwSetup();
-    #endif // !(DUNGEN_MOBILE)
+    sg_setup(&(sg_desc){
+        .context = sapp_sgcontext()
+    });
 
-    glEnable(GL_CULL_FACE);
-    glFrontFace(GL_CCW);
-    glCullFace(GL_BACK);
-    glDepthFunc(GL_LEQUAL);
-    glEnable(GL_DEPTH_TEST);
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
-//    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+    UpdateRenderingDimensions();
+
+    sg_buffer hexVertBuff = sg_make_buffer(&(sg_buffer_desc){
+        .size = sizeof(hexVerts),
+        .content = hexVerts,
+    });
+
+    bufferUpRequested = false;
+    tileAttribBuff = sg_make_buffer(&(sg_buffer_desc){
+        .size = sizeof(TileDrawData) * (int)GetNumberOfTiles(),
+        .usage = SG_USAGE_DYNAMIC
+    });
+    sg_update_buffer(tileAttribBuff, GetTileStartPointer()->draw, sizeof(TileDrawData) * (int)GetNumberOfTiles());
+
+    hexDraw.bind = (sg_bindings){
+        .vertex_buffers[0] = hexVertBuff,
+        .vertex_buffers[1] = tileAttribBuff,
+    };
+
+    sds vsHex = GetShaderPath("hex_vs");
+    sds fsHex = GetShaderPath("hex_fs");
+    sg_shader hexShader = sg_make_shader(&(sg_shader_desc){
+        .vs.uniform_blocks[0] = {
+            .size = sizeof(gbMat4),
+            .uniforms = {
+                [0] = { .name = "vp", .type = SG_UNIFORMTYPE_MAT4},
+            }
+        },
+        .vs.source = readTextFile(vsHex),
+        .fs.source = readTextFile(fsHex),
+        #ifdef SOKOL_METAL
+            .vs.entry = "main0",
+            .fs.entry = "main0",
+        #endif
+    });
+    sdsfree(vsHex);
+    sdsfree(fsHex);
+
+    hexDraw.pipe = sg_make_pipeline(&(sg_pipeline_desc){
+        .shader = hexShader,
+        .layout = {
+            .buffers = {
+                [0] = {.stride = 2 * sizeof(float)},
+                [1] = {.stride = sizeof(TileDrawData), .step_func = SG_VERTEXSTEP_PER_INSTANCE}
+            },
+            .attrs = {
+                [0] = {.buffer_index=0, .format=SG_VERTEXFORMAT_FLOAT2},
+                [1] = {.buffer_index=1, .format=SG_VERTEXFORMAT_FLOAT2},
+                [2] = {.buffer_index=1, .format=SG_VERTEXFORMAT_FLOAT3},
+                [3] = {.buffer_index=1, .format=SG_VERTEXFORMAT_FLOAT4},
+            }
+        },
+        .primitive_type = SG_PRIMITIVETYPE_TRIANGLE_STRIP
+    });
+
+    passAction = (sg_pass_action){
+//        .colors[0] = { .action=SG_ACTION_CLEAR, .val={0.0f, 0.0f, 0.0f, 1.0f} }
+        .colors[0] = { .action=SG_ACTION_CLEAR, .val={1.0f, 1.0f, 1.0f, 1.0f} }
+    };
+
+    sds vsBasic = GetShaderPath("basic_vs");
+    sds fsBasic = GetShaderPath("basic_fs");
+    sg_shader basicShader = sg_make_shader(&(sg_shader_desc){
+        .vs.uniform_blocks[0] = {
+            .size = sizeof(gbVec4) + sizeof(gbMat4),
+            .uniforms = {
+                [0] = { .name = "basic_uniforms", .type = SG_UNIFORMTYPE_FLOAT4, .array_count = 5 },
+            }
+        },
+        .vs.source = readTextFile(vsBasic),
+        .fs.source = readTextFile(fsBasic),
+        #ifdef SOKOL_METAL
+            .vs.entry = "main0",
+            .fs.entry = "main0",
+        #endif
+    });
+    sdsfree(vsBasic);
+    sdsfree(fsBasic);
+
+    basicDraw.pipe = sg_make_pipeline(&(sg_pipeline_desc) {
+        .shader = basicShader,
+        .layout = {
+            .attrs = {
+                [0].format = SG_VERTEXFORMAT_FLOAT2
+            }
+        },
+        .blend = {
+            .enabled = true,
+            .src_factor_rgb = SG_BLENDFACTOR_SRC_ALPHA,
+            .dst_factor_rgb = SG_BLENDFACTOR_ONE_MINUS_SRC_ALPHA
+        },
+        .primitive_type = SG_PRIMITIVETYPE_TRIANGLE_STRIP
+    });
+
+//    glfwGetFramebufferSize(window, &frameW, &frameH);
+//    screenShotBuffer = malloc(sizeof(GLubyte) * frameW * frameH * 3);
+//    stbi_flip_vertically_on_write(1);
+
+    InitializeText();
+    LoadFont("Pixel", "fonts/04B_03__.TTF", 32.0, true);
+
+    renderingInitialized = true;
+}
+
+void RequestRenderBufferUpdate(TileSet* ts) {
+    if (!renderingInitialized || hmlen(ts) == 0) {
+        return;
+    }
+
+    bufferUpRequested = true;
+}
+
+void FinalizeRendering() {
+    free(screenShotBuffer);
+
+    FinalizeText();
+
+    #if !(DUNGEN_MOBILE)
+        sg_shutdown();
+        // glfwDestroyWindow(window);
+        // glfwTerminate();
+    #endif // !(DUNGEN_MOBILE)
+}
+
+void UpdateRenderingDimensions() {
+    framebufferDimensions.x = sapp_width();
+    framebufferDimensions.y = sapp_height();
+    windowDimensions.x = framebufferDimensions.x / sapp_dpi_scale();
+    windowDimensions.y = framebufferDimensions.y / sapp_dpi_scale();
 
     MainCamera.aperture = GB_MATH_PI / 2;
     MainCamera.position.x = 0.0f;
@@ -166,96 +224,6 @@ void InitializeRendering() {
     orthoDimensions.y = defaultWindowHeight;
     orthoDimensions.x = (int)((float)defaultWindowHeight * aspect);
     gb_mat4_ortho2d(&orthoMatrix, 0.0f, (float)orthoDimensions.x, (float)orthoDimensions.y, 0.0f);
-
-    glGenVertexArrays(1, &squareVAO);
-    glBindVertexArray(squareVAO);
-    glGenBuffers(1, &squareVBO);
-    glBindBuffer(GL_ARRAY_BUFFER, squareVBO);
-    glBufferData(
-        GL_ARRAY_BUFFER,
-        sizeof(squareVerts),
-        squareVerts,
-        GL_DYNAMIC_DRAW
-    );
-    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(GL_FLOAT) * 2, (void*)0);
-
-    glGenVertexArrays(1, &hexVAO);
-    glBindVertexArray(hexVAO);
-    glGenBuffers(1, &hexVBO);
-    glBindBuffer(GL_ARRAY_BUFFER, hexVBO);
-    glBufferData(
-        GL_ARRAY_BUFFER,
-        sizeof(hexVerts),
-        hexVerts,
-        GL_STATIC_DRAW
-    );
-    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(GL_FLOAT) * 2, (void*)0);
-
-    glGenBuffers(1, &attribVBO);
-    glBindBuffer(GL_ARRAY_BUFFER, attribVBO);
-    glBufferData(
-        GL_ARRAY_BUFFER,
-        sizeof(TileDrawData) * (GLintptr)GetNumberOfTiles(),
-        GetTileStartPointer()->draw,
-        GL_DYNAMIC_DRAW
-    );
-    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(TileDrawData), (void*)offsetof(TileDrawData, worldPos));
-    glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(TileDrawData), (void*)offsetof(TileDrawData, color));
-    glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, sizeof(TileDrawData), (void*)offsetof(TileDrawData, overlayColor));
-    glVertexAttribDivisor(1, 1);
-    glVertexAttribDivisor(2, 1);
-    glVertexAttribDivisor(3, 1);
-
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-    glBindVertexArray(0);
-
-    hexProgram = LoadProgram("hex_vert.glsl", "basic_frag.glsl");
-    hexVPMatLocation = glGetUniformLocation(hexProgram, "vp");
-
-    basicProgram = LoadProgram("basic_vert.glsl", "basic_frag.glsl");
-    outlineVPMatLocation = glGetUniformLocation(basicProgram, "vp");
-    outlineColorVecLocation = glGetUniformLocation(basicProgram, "color");
-
-//    glfwGetFramebufferSize(window, &frameW, &frameH);
-//    screenShotBuffer = malloc(sizeof(GLubyte) * frameW * frameH * 3);
-//    stbi_flip_vertically_on_write(1);
-
-    InitializeText();
-    LoadFont("Pixel", "fonts/04B_03__.TTF", 32.0, true);
-
-    renderingInitialized = true;
-}
-
-void UpdateRenderBuffers(TileSet* ts) {
-    if (!renderingInitialized || hmlen(ts) == 0) {
-        return;
-    }
-
-    glBindBuffer(GL_ARRAY_BUFFER, attribVBO);
-
-    // TODO: this might be a performance sink; could be more clever about batching these together
-    for (int i=0; i < hmlen(ts); i++) {
-        TileData* td = ts[i].key;
-        glBufferSubData(
-            GL_ARRAY_BUFFER,
-            (GLintptr)sizeof(TileDrawData) * (GLintptr)td->meta->i,
-            sizeof(TileDrawData),
-            td->draw
-        );
-    }
-
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-}
-
-void FinalizeRendering() {
-    free(screenShotBuffer);
-
-    FinalizeText();
-
-    #if !(DUNGEN_MOBILE)
-        glfwDestroyWindow(window);
-        glfwTerminate();
-    #endif // !(DUNGEN_MOBILE)
 }
 
 Vec2i GetWindowDimensions(void) {
@@ -268,16 +236,6 @@ Vec2i GetFramebufferDimensions(void) {
 
 Vec2i GetOrthoDimensions(void) {
     return orthoDimensions;
-}
-
-void SetWindowDimensions(Vec2i dims) {
-    windowDimensions.x = dims.x;
-    windowDimensions.y = dims.y;
-}
-
-void SetFramebufferDimensions(Vec2i dims) {
-    framebufferDimensions.x = dims.x;
-    framebufferDimensions.y = dims.y;
 }
 
 void DumpScreenShot(const char* fileName) {
@@ -302,20 +260,6 @@ void RemoveRegionFromRendering(Region* r) {
 Region** GetRenderingRegions() {
     return regions;
 }
-
-#if !(DUNGEN_MOBILE)
-    gbVec2 GetCursorPosition(void) {
-        double x, y;
-        glfwGetCursorPos(window, &x, &y);
-        gbVec2 pos = {(float)x, (float)y};
-        return pos;
-    }
-#else
-    gbVec2 GetCursorPosition(void) {
-        gbVec2 pos = {-1.0f, -1.0f};
-        return pos;
-    }
-#endif // !(DUNGEN_MOBILE)
 
 gbVec2 WorldToScreen(gbVec2 worldCoordinates) {
     gbVec4 wc = {worldCoordinates.x, worldCoordinates.y, 0.0f, 1.0f};
@@ -378,146 +322,48 @@ gbVec2 ScreenToOrtho(gbVec2 screenCoordinates) {
     return ret;
 }
 
-GLuint GetSquareVAO(void) {
-    return squareVAO;
-}
-
-GLuint GetSquareVBO(void) {
-    return squareVBO;
-}
-
-GLuint GetBasicProgram() {
-    return basicProgram;
-}
-
-GLuint LoadProgram(const char* vertexFile, const char* fragmentFile) {
-    const char* vertexSrc = NULL;
-    const char* fragmentSrc = NULL;
-    #if DUNGEN_MOBILE || DUNGEN_WASM
-        const char* base = "shaders/gles/";
-    #else
-        const char* base = "shaders/gl/";
-    #endif // DUNGEN_MOBILE
-    if (vertexFile != NULL) {
-        sds fullVertexPath = sdscat(sdsempty(), base);
-        fullVertexPath = sdscat(fullVertexPath, vertexFile);
-        vertexSrc = readTextFile(fullVertexPath);
-        sdsfree(fullVertexPath);
-        if (vertexSrc == NULL) {
-            fprintf(stderr, "ERROR: couldn't load %s:\n", vertexFile);
-            return 0;
-        }
-    }
-    if (fragmentFile != NULL) {
-        sds fullFragmentPath = sdscat(sdsempty(), base);
-        fullFragmentPath = sdscat(fullFragmentPath, fragmentFile);
-        fragmentSrc = readTextFile(fullFragmentPath);
-        sdsfree(fullFragmentPath);
-        if (fragmentSrc == NULL) {
-            fprintf(stderr, "ERROR: couldn't load %s:\n", fragmentFile);
-            return 0;
-        }
-    }
-
-    GLint success;
-    GLuint vs = 0, fs = 0;
-
-    if (vertexSrc != NULL) {
-        vs = glCreateShader(GL_VERTEX_SHADER);
-        glShaderSource(vs, 1, &vertexSrc, NULL);
-        glCompileShader(vs);
-        glGetShaderiv(vs, GL_COMPILE_STATUS, &success);
-        if (success != GL_TRUE) {
-            fprintf(stderr, "ERROR: couldn't compile %s:\n", vertexFile);
-            char shader_log[4096];
-            GLsizei log_length;
-            glGetShaderInfoLog(vs, 4096, &log_length, shader_log);
-            fprintf(stderr, "\t%s\n", shader_log);
-        }
-    }
-
-    if (fragmentSrc != NULL) {
-        fs = glCreateShader(GL_FRAGMENT_SHADER);
-        glShaderSource(fs, 1, &fragmentSrc, NULL);
-        glCompileShader(fs);
-        glGetShaderiv(fs, GL_COMPILE_STATUS, &success);
-        if (success != GL_TRUE) {
-            printf("ERROR: couldn't compile %s:\n", fragmentFile);
-            char shader_log[4096];
-            GLsizei log_length;
-            glGetShaderInfoLog(fs, 4096, &log_length, shader_log);
-            fprintf(stderr, "\t%s\n", shader_log);
-        }
-    }
-
-    GLuint shaderIndex = glCreateProgram();
-    if (vertexSrc != NULL) {
-        glAttachShader(shaderIndex, vs);
-    }
-    if (fragmentSrc != NULL) {
-        glAttachShader(shaderIndex, fs);
-    }
-    glLinkProgram(shaderIndex);
-    glGetProgramiv(shaderIndex, GL_LINK_STATUS, &success);
-    if (success != GL_TRUE) {
-        fprintf(stderr, "ERROR: couldn't link %s and %s:\n", vertexFile, fragmentFile);
-        char shader_log[4096];
-        GLsizei log_length;
-        glGetProgramInfoLog(shaderIndex, 4096, &log_length, shader_log);
-        fprintf(stderr, "\t%s\n", shader_log);
-        glDeleteProgram(shaderIndex);
-        shaderIndex = 0;
-    }
-
-    if (vertexSrc != NULL) {
-        free((void*)vertexSrc);
-        glDeleteShader(vs);
-    }
-    if (fragmentSrc != NULL) {
-        free((void*)fragmentSrc);
-        glDeleteShader(fs);
-    }
-
-    return shaderIndex;
+void DrawShapeBuffer(sg_buffer buff, int numPoints, gbVec4 color, gbMat4 *matrix) {
+    sg_apply_pipeline(basicDraw.pipe);
+    BasicUniforms bu;
+    bu.matrix = *matrix;
+    bu.color = color;
+    sg_apply_uniforms(SG_SHADERSTAGE_VS, 0, &bu, sizeof(BasicUniforms));
+    sg_apply_bindings(&(sg_bindings){
+        .vertex_buffers[0] = buff,
+    });
+    sg_draw(0, numPoints, 1);
 }
 
 int Render() {
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    if (bufferUpRequested) {
+        // SOKOL TODO: figure out how to do partial updates of a buffer
+        sg_update_buffer(tileAttribBuff, GetTileStartPointer()->draw, sizeof(TileDrawData) * (int)GetNumberOfTiles());
+        bufferUpRequested = false;
+    }
 
-    glUseProgram(hexProgram);
-    glUniformMatrix4fv(hexVPMatLocation, 1, GL_FALSE, perspectiveMatrix.e);
+    sg_begin_default_pass(&passAction, framebufferDimensions.x, framebufferDimensions.y);
 
-    glBindVertexArray(hexVAO);
-    glEnableVertexAttribArray(0);
-    glEnableVertexAttribArray(1);
-    glEnableVertexAttribArray(2);
-    glEnableVertexAttribArray(3);
-        glDrawArraysInstanced(GL_TRIANGLE_STRIP, 0, 6, (int)GetNumberOfTiles());
-    glDisableVertexAttribArray(0);
-    glDisableVertexAttribArray(1);
-    glDisableVertexAttribArray(2);
-    glDisableVertexAttribArray(3);
-    glBindVertexArray(0);
+    sg_apply_pipeline(hexDraw.pipe);
+    sg_apply_bindings(&hexDraw.bind);
+    sg_apply_uniforms(SG_SHADERSTAGE_VS, 0, &perspectiveMatrix, sizeof(gbMat4));
+    sg_draw(0, 6, (int)GetNumberOfTiles());
 
-
-    glUseProgram(basicProgram);
-    glUniformMatrix4fv(outlineVPMatLocation, 1, GL_FALSE, perspectiveMatrix.e);
-
+    sg_apply_pipeline(basicDraw.pipe);
+    BasicUniforms bu;
+    bu.matrix = perspectiveMatrix;
     for (long ri=0; ri < arrlen(regions); ri++) {
-        if (regions[ri]->outline != NULL && regions[ri]->outline->vbo != 0) {
-            glUniform4fv(outlineColorVecLocation, 1, regions[ri]->outline->color.e);
-            glBindVertexArray(regions[ri]->outline->vao);
-            glEnableVertexAttribArray(0);
-                glDrawArrays(GL_TRIANGLE_STRIP, 0, regions[ri]->outline->numPoints);
-            glDisableVertexAttribArray(0);
+        if (regions[ri]->outline != NULL) {
+            sg_apply_bindings(&(regions[ri]->outline->bindings));
+            bu.color = regions[ri]->outline->color;
+            sg_apply_uniforms(SG_SHADERSTAGE_VS, 0, &bu, sizeof(BasicUniforms));
+            sg_draw(0, (int)regions[ri]->outline->numPoints, 1);
         }
     }
-    glBindVertexArray(0);
 
     PrepDrawText(&orthoMatrix);
     for (int i=0; i < arrlen(regions); i++) {
-        if (regions[i]->label.scale >= 0.0f) {
-            DrawText("Pixel", regions[i]->label.text, regions[i]->label.pos, regions[i]->label.color, regions[i]->label.scale);
+        if (regions[i]->label != NULL) {
+            DrawText(regions[i]->label);
         }
     }
     FinishDrawText();
@@ -531,14 +377,9 @@ int Render() {
         RenderTileChoice();
     }
 
-    #if !(DUNGEN_MOBILE)
-        glfwSwapBuffers(window);
-        glfwPollEvents();
 
-        if (glfwWindowShouldClose(window)) {
-            return 1;
-        }
-    #endif // !(DUNGEN_MOBILE)
+    sg_end_pass();
+    sg_commit();
 
-    return 0;
+     return 0;
 }
