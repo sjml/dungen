@@ -158,6 +158,48 @@ void _RunEvents() {
         else if (event->type == SAPP_EVENTTYPE_RESIZED) {
             UpdateRenderingDimensions();
         }
+        else if (event->type == SAPP_EVENTTYPE_TOUCHES_BEGAN) {
+            // only deal with the first touch; treat like mouse
+            sapp_touchpoint tp = event->touches[0];
+            gbVec2 pos = (gbVec2){tp.pos_x / sapp_dpi_scale(), tp.pos_y / sapp_dpi_scale()};
+            gbVec2 orthoPos = ScreenToOrtho(pos);
+            if (GetChoiceStatus() >= 0) {
+                ChoiceProcessMouseMovement(orthoPos);
+                ChoiceProcessMouseClick(true);
+            }
+            if (GetTileChoiceStatus() >= 0) {
+                TileChoiceProcessMouseMovement(pos);
+                TileChoiceProcessMouseClick(true);
+            }
+        }
+        else if (event->type == SAPP_EVENTTYPE_TOUCHES_MOVED) {
+            // only deal with the first touch; treat like mouse
+            sapp_touchpoint tp = event->touches[0];
+            gbVec2 pos = (gbVec2){tp.pos_x / sapp_dpi_scale(), tp.pos_y / sapp_dpi_scale()};
+            gbVec2 orthoPos = ScreenToOrtho(pos);
+            if (GetChoiceStatus() >= 0) {
+                ChoiceProcessMouseMovement(orthoPos);
+            }
+            if (GetTileChoiceStatus() >= 0) {
+                TileChoiceProcessMouseMovement(pos);
+            }
+        }
+        else if (event->type == SAPP_EVENTTYPE_TOUCHES_ENDED) {
+            sapp_touchpoint tp = event->touches[0];
+            gbVec2 pos = (gbVec2){tp.pos_x / sapp_dpi_scale(), tp.pos_y / sapp_dpi_scale()};
+            gbVec2 orthoPos = ScreenToOrtho(pos);
+            if (GetChoiceStatus() >= 0) {
+                ChoiceProcessMouseMovement(orthoPos);
+                ChoiceProcessMouseClick(false);
+            }
+            if (GetTileChoiceStatus() >= 0) {
+                TileChoiceProcessMouseMovement(pos);
+                TileChoiceProcessMouseClick(false);
+            }
+        }
+        else if (event->type == SAPP_EVENTTYPE_TOUCHES_CANCELLED) {
+            // no-op
+        }
         #if DEBUG
         else {
             printf("Unprocessed event!\n");

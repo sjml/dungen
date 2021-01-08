@@ -17,3 +17,15 @@ void InitializePlatform() {
 
 void FinalizePlatform() {
 }
+
+sds GetShaderPath(const char* shaderName) {
+    #if defined(SOKOL_GLCORE33)
+        char* path = "shaders/glsl330/";
+        char* suffix = ".glsl";
+    #elif defined(SOKOL_METAL)
+        char* path = "shaders/metal/";
+        char* suffix = ".metal";
+    #endif // defined(SOKOL_GLCORE33)
+
+    return sdscatfmt(sdsempty(), "%s%s%s", path, shaderName, suffix);;
+}
