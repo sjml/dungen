@@ -8788,6 +8788,25 @@ fail:
 }
 
 
+static int _wrap_QuitGame(lua_State* L) {
+  int SWIG_arg = 0;
+  char *arg1 = (char *) 0 ;
+  
+  SWIG_check_num_args("QuitGame",1,1)
+  if(!SWIG_lua_isnilstring(L,1)) SWIG_fail_arg("QuitGame",1,"char const *");
+  arg1 = (char *)lua_tostring(L, 1);
+  QuitGame((char const *)arg1);
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
 static int _wrap_GetTime(lua_State* L) {
   int SWIG_arg = 0;
   double result;
@@ -9345,6 +9364,7 @@ static swig_lua_method swig_SwigModule_methods[]= {
     { "GetAgentTags", _wrap_GetAgentTags},
     { "GetAgentsByAttribute", _wrap_GetAgentsByAttribute},
     { "CheckAgentAttribute", _wrap_CheckAgentAttribute},
+    { "QuitGame", _wrap_QuitGame},
     { "GetTime", _wrap_GetTime},
     { "SeedRandomString", _wrap_SeedRandomString},
     { "SeedRandom", _wrap_SeedRandom},

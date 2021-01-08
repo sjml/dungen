@@ -1,3 +1,7 @@
+function quit(message)
+  QuitGame(message)
+end
+
 function gsr(key)
   return GetStringRegister(key)
 end

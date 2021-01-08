@@ -26,8 +26,8 @@
     #pragma clang diagnostic ignored "-Wstrict-prototypes"
 #endif // __clang__
 
-#define SOKOL_GLCORE33
-//#define SOKOL_METAL
+//#define SOKOL_GLCORE33
+#define SOKOL_METAL
 #include <sokol_app.h>
 #include <sokol_gfx.h>
 #include <sokol_glue.h>

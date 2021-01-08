@@ -3,6 +3,8 @@
     #include "../infrastructure/game.h"
 %}
 
+void QuitGame(const char* message);
+
 double GetTime(void);
 
 void SeedRandomString(const char* seedString);

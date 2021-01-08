@@ -103,6 +103,12 @@ void FinalizeGame(void) {
     sdsfree(randomSeedString);
 }
 
+void QuitGame(const char* message) {
+    if (message != NULL) {
+        printf("Quitting: %s\n", message);
+    }
+    sapp_request_quit();
+}
 
 void ProcessEvent(const sapp_event* event) {
     sapp_event ev_cpy = *event;

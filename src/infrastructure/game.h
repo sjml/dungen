@@ -2,6 +2,7 @@
 
 void InitializeGame(const char* startupElement);
 void FinalizeGame(void);
+void QuitGame(const char* message);
 
 int GameTick(void);
 double GetTime(void);
