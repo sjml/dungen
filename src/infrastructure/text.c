@@ -299,6 +299,10 @@ TextInfo* CreateTextInfo(const char* text, const char* fontName, gbVec2 pos, flo
     ti->color = color;
 
     RepositionTextInfo(ti, pos);
+    
+    if (strlen(ti->text) == 0) {
+        return ti;
+    }
 
     float x = 0;
     float y = 0;
@@ -367,9 +371,11 @@ TextInfo* CreateTextInfo(const char* text, const char* fontName, gbVec2 pos, flo
 }
 
 void DestroyTextInfo(TextInfo* ti) {
+    if (strlen(ti->text) > 0) {
+        sg_destroy_buffer(ti->bindings.vertex_buffers[0]);
+    }
     free(ti->text);
     free(ti->fontName);
-    sg_destroy_buffer(ti->bindings.vertex_buffers[0]);
     free(ti);
 }
 
@@ -388,14 +394,17 @@ void FinishDrawText() {
 }
 
 void DrawText(TextInfo* ti) {
-     gbMat4 posMat;
-     memcpy(&posMat, &ti->matrix, sizeof(gbMat4));
-     gb_mat4_mul(&posMat, &bu.matrix, &posMat);
-     sg_apply_uniforms(SG_SHADERSTAGE_VS, 0, &posMat, sizeof(gbMat4));
-     sg_apply_uniforms(SG_SHADERSTAGE_FS, 0, &ti->color, sizeof(gbVec4));
+    if (strlen(ti->text) == 0) {
+        return;
+    }
+    gbMat4 posMat;
+    memcpy(&posMat, &ti->matrix, sizeof(gbMat4));
+    gb_mat4_mul(&posMat, &bu.matrix, &posMat);
+    sg_apply_uniforms(SG_SHADERSTAGE_VS, 0, &posMat, sizeof(gbMat4));
+    sg_apply_uniforms(SG_SHADERSTAGE_FS, 0, &ti->color, sizeof(gbVec4));
 
-     sg_apply_bindings(&ti->bindings);
-     sg_draw(0, ti->numGlyphs * 6, 1);
+    sg_apply_bindings(&ti->bindings);
+    sg_draw(0, ti->numGlyphs * 6, 1);
 }
 
 gbVec2 MeasureTextExtents(const char* text, const char* fontName, float scale) {
