@@ -206,3 +206,4 @@ collectgarbage() -- just to make sure this doesn't trigger segfaults
 
 
 reportErrors(errCount)
+quit(nil)

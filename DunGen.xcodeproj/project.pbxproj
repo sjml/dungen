@@ -1341,8 +1341,8 @@
 				VALIDATE_WORKSPACE_SKIPPED_SDK_FRAMEWORKS = OpenGL;
 				VALID_ARCHS = "";
 				"VALID_ARCHS[sdk=iphoneos*]" = arm64;
-				"VALID_ARCHS[sdk=iphonesimulator*]" = x86_64;
-				"VALID_ARCHS[sdk=macosx*]" = x86_64;
+				"VALID_ARCHS[sdk=iphonesimulator*]" = "x86_64 arm64";
+				"VALID_ARCHS[sdk=macosx*]" = "x86_64 arm64";
 			};
 			name = Debug;
 		};
@@ -1394,8 +1394,8 @@
 				VALIDATE_WORKSPACE_SKIPPED_SDK_FRAMEWORKS = OpenGL;
 				VALID_ARCHS = "";
 				"VALID_ARCHS[sdk=iphoneos*]" = arm64;
-				"VALID_ARCHS[sdk=iphonesimulator*]" = x86_64;
-				"VALID_ARCHS[sdk=macosx*]" = x86_64;
+				"VALID_ARCHS[sdk=iphonesimulator*]" = "x86_64 arm64";
+				"VALID_ARCHS[sdk=macosx*]" = "x86_64 arm64";
 			};
 			name = Release;
 		};

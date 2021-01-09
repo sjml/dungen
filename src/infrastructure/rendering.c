@@ -335,7 +335,7 @@ void DrawShapeBuffer(sg_buffer buff, int numPoints, gbVec4 color, gbMat4 *matrix
 }
 
 int Render() {
-    if (bufferUpRequested) {
+    if (sapp_frame_count() > 0 && bufferUpRequested) {
         // SOKOL TODO: figure out how to do partial updates of a buffer
         sg_update_buffer(tileAttribBuff, GetTileStartPointer()->draw, sizeof(TileDrawData) * (int)GetNumberOfTiles());
         bufferUpRequested = false;
