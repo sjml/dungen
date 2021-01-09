@@ -8,17 +8,12 @@
 #include <lauxlib.h>
 #include <lualib.h>
 
-#ifdef __EMSCRIPTEN__
-    #include <emscripten/emscripten.h>
-    #define GLFW_INCLUDE_ES3
+#if _WIN32
+    #include <glad/glad.h>
 #else
-    #if _WIN32
-        #include <glad/glad.h>
-    #else
-//        #define GL_GLEXT_PROTOTYPES
-//        #define GLFW_INCLUDE_GLCOREARB
-    #endif // _WIN32
-#endif // __EMSCRIPTEN__
+//    #define GL_GLEXT_PROTOTYPES
+//    #define GLFW_INCLUDE_GLCOREARB
+#endif // _WIN32
 
 
 #ifdef __clang__
@@ -26,8 +21,17 @@
     #pragma clang diagnostic ignored "-Wstrict-prototypes"
 #endif // __clang__
 
-//#define SOKOL_GLCORE33
-#define SOKOL_METAL
+#ifdef __EMSCRIPTEN__
+    #define SOKOL_GLES3
+#else
+    #ifdef __APPLE__
+        #define SOKOL_GLCORE33
+        // #define SOKOL_METAL
+    #else
+        #define SOKOL_GLCORE33
+    #endif
+#endif // __EMSCRIPTEN__
+
 #include <sokol_app.h>
 #include <sokol_gfx.h>
 #include <sokol_glue.h>

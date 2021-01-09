@@ -1,5 +1,4 @@
 ## This CMake file is a test. It's pretty thrown together and may not work well.
-##   In fact, it just exits right now to make sure you don't think it'll do stuff.
 
 cmake_minimum_required (VERSION 3.1)
 if(POLICY CMP0076)
@@ -9,15 +8,6 @@ endif()
 project (DunGen)
 
 set(CMAKE_C_STANDARD 11)
-
-if (NOT DEFINED ENV{EMSCRIPTEN})
-    set(GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE)
-    set(GLFW_BUILD_TESTS OFF CACHE BOOL "" FORCE)
-    set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
-    set(OpenGL_GL_PREFERENCE GLVND)
-    add_subdirectory(lib/glfw-3.3.0)
-    find_package(OpenGL REQUIRED)
-endif()
 
 add_library(lua
     lib/lua-5.3.5+system_patch/src/lapi.c
@@ -72,11 +62,12 @@ include_directories(lib/libpqueue-f319ea0/src)
 add_library(pcg lib/pcg-c-basic-0.9/pcg_basic.c)
 include_directories(lib/pcg-c-basic-0.9)
 
+include_directories(lib/sokol-5894182d)
 include_directories(lib/single-file)
 
 include_directories(src)
-add_compile_definitions(GL_SILENCE_DEPRECATION)
 add_executable (DunGen MACOSX_BUNDLE
+    src/main.c
     src/dungen.c
     src/constraints/pathfind.c
     src/hlvm/hlvm.c
@@ -85,6 +76,7 @@ add_executable (DunGen MACOSX_BUNDLE
     src/infrastructure/images.c
     src/infrastructure/outline.c
     src/infrastructure/rendering.c
+    src/infrastructure/sokol_impl.c
     src/infrastructure/text.c
     src/infrastructure/util.c
     src/infrastructure/world.c
@@ -94,17 +86,27 @@ add_executable (DunGen MACOSX_BUNDLE
     src/ui/choice.c
     src/ui/tile_choice.c
 )
+if (${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+    set_source_files_properties(
+        src/infrastructure/sokol_impl.c
+        PROPERTY COMPILE_FLAGS "-x objective-c"
+        PROPERTY COMPILE_DEFINITIONS "-DSOKOL_GLES3"
+    )
+endif()
 
 if (DEFINED ENV{EMSCRIPTEN})
     target_sources(DunGen PUBLIC src/platform/wasm.c)
-    target_sources(DunGen PUBLIC platform/WebAssembly/main.c)
     set_target_properties(DunGen
-        PROPERTIES SUFFIX ".html"
-        LINK_FLAGS "--emrun -s ALLOW_MEMORY_GROWTH=1 --no-heap-copy -s USE_GLFW=3 -s USE_WEBGL2=1 -s WASM=1 -s --preload-file ../Resources"
+        PROPERTIES
+            SUFFIX ".html"
+            LINK_FLAGS "-s WASM=1 -s --preload-file ../Resources -s MIN_WEBGL_VERSION=2 -s MAX_WEBGL_VERSION=2 -s ASSERTIONS=0 -s ALLOW_MEMORY_GROWTH=1 -s MALLOC=emmalloc --closure=1"
+    )
+
+    target_link_options(DunGen
+        PRIVATE --shell-file ../platform/WebAssembly/DunGen.html.template
     )
 
     target_link_libraries(DunGen
-        # glfw OpenGL::GL
         lua
         sqlite
         sds
@@ -113,12 +115,17 @@ if (DEFINED ENV{EMSCRIPTEN})
     )
 
 else()
-    target_sources(DunGen PUBLIC src/main.c)
-
     if (${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
         target_sources(DunGen PUBLIC src/platform/macOS.c)
         set(ResourceDir "/../Resources")
         set_target_properties(DunGen PROPERTIES MACOSX_BUNDLE_INFO_PLIST ${CMAKE_SOURCE_DIR}/platform/macOS/Info.plist)
+
+        target_link_libraries(DunGen
+            "-framework Cocoa"
+            "-framework QuartzCore"
+            "-framework Metal"
+            "-framework MetalKit"
+        )
 
     elseif (${CMAKE_SYSTEM_NAME} MATCHES "Windows")
         target_sources(DunGen PUBLIC src/platform/windows.c)
@@ -130,7 +137,6 @@ else()
     endif()
 
     target_link_libraries(DunGen
-        glfw OpenGL::GL
         lua
         sqlite
         sds

@@ -1,4 +1,4 @@
-#version 330
+#version 300 es
 
 uniform vec4 text_vert_uniforms[4];
 layout(location = 0) in vec4 vertex;

@@ -1,4 +1,4 @@
-// Includes edits to compile on Windows. 
+// Includes edits to compile on Windows.
 
 /* SDSLib 2.0 -- A C dynamic strings library
  *
@@ -36,7 +36,7 @@
 #define __SDS_H
 
 #define SDS_MAX_PREALLOC (1024*1024)
-const char *SDS_NOINIT;
+extern const char *SDS_NOINIT;
 
 #include <sys/types.h>
 #include <stdarg.h>

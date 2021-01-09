@@ -4,7 +4,9 @@
 @vs text_vert
 layout (location = 0) in vec4 vertex;
 
-uniform mat4 ortho;
+uniform text_vert_uniforms {
+    mat4 ortho;
+};
 
 out vec2 TexCoords;
 

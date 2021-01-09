@@ -227,7 +227,7 @@ void InitializeText() {
         .vs.uniform_blocks[0] = {
             .size = sizeof(gbMat4),
             .uniforms = {
-                [0] = { .name = "ortho", .type = SG_UNIFORMTYPE_MAT4 }
+                [0] = { .name = "text_vert_uniforms", .type = SG_UNIFORMTYPE_FLOAT4, .array_count = 4 }
             }
         },
         .fs.images[0] = { .name="textAtlas", .type=SG_IMAGETYPE_2D },

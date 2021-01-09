@@ -5,7 +5,8 @@ cd "$(dirname "$0")"
 SHDC=../../sokol-tools-bin/bin/osx/sokol-shdc
 SHADER_DIR=../Resources/shaders
 
-formats=(glsl330 metal_macos)
+# all formats: glsl330 glsl100 glsl300es hlsl4 hlsl5 metal_macos metal_ios metal_sim wgpu
+formats=(glsl330 glsl300es metal_macos)
 fs=${formats[@]}
 fs=${fs// /:}
 
