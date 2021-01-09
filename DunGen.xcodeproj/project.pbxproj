@@ -1451,7 +1451,6 @@
 				);
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				HEADER_SEARCH_PATHS = (
-					"lib/glfw-3.3.0/include",
 					"lib/lua-5.3.5+system_patch/src",
 					"lib/sqlite-amalgamation-3290000",
 					"lib/sds-0bb446e",
@@ -1485,7 +1484,6 @@
 				);
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				HEADER_SEARCH_PATHS = (
-					"lib/glfw-3.3.0/include",
 					"lib/lua-5.3.5+system_patch/src",
 					"lib/sqlite-amalgamation-3290000",
 					"lib/sds-0bb446e",

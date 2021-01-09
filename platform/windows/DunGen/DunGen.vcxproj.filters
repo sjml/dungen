@@ -109,6 +109,9 @@
     <ClCompile Include="..\GL_headers\glad.c">
       <Filter>platform</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\infrastructure\sokol_impl.c">
+      <Filter>infrastructure</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="scripting">

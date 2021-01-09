@@ -188,8 +188,8 @@ void FinalizeRendering() {
 void UpdateRenderingDimensions() {
     framebufferDimensions.x = sapp_width();
     framebufferDimensions.y = sapp_height();
-    windowDimensions.x = framebufferDimensions.x / sapp_dpi_scale();
-    windowDimensions.y = framebufferDimensions.y / sapp_dpi_scale();
+    windowDimensions.x = (int)(framebufferDimensions.x / sapp_dpi_scale());
+    windowDimensions.y = (int)(framebufferDimensions.y / sapp_dpi_scale());
 
     MainCamera.aperture = GB_MATH_PI / 2;
     MainCamera.position.x = 0.0f;

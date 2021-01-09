@@ -6,7 +6,7 @@
 #include "dungen.h"
 
 static const char* startupElement;
-void InitShim() {
+void InitShim(void) {
     InitializeDunGen(startupElement);
 }
 

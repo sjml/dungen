@@ -309,7 +309,7 @@ TextInfo* CreateTextInfo(const char* text, const char* fontName, gbVec2 pos, flo
     uint32_t codepoint = 0;
     int ci = 0;
     unsigned long textLength = strlen(ti->text);
-    for (int ci=0; ci < textLength; ci++) {
+    for (unsigned int ci=0; ci < textLength; ci++) {
         char* textPtr = &ti->text[ci];
         decode_utf8(&state, &codepoint, *(unsigned char*)textPtr);
         if (state != UTF8_ACCEPT) {
@@ -418,7 +418,7 @@ gbVec2 MeasureTextExtents(const char* text, const char* fontName, float scale) {
         GlyphData* gd = hmget(fd->glyphs, codepoint);
 
         float width = gd->charData.xadvance * scale;
-        float height = fabs(gd->charData.yoff) * scale;
+        float height = (float)fabs(gd->charData.yoff) * scale;
         ret.x += width;
         if (height > ret.y) {
             ret.y = height;

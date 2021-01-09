@@ -5,8 +5,6 @@ VisualStudioVersion = 16.0.29215.179
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DunGen", "platform\windows\DunGen\DunGen.vcxproj", "{B7C520BA-61BC-4D9D-A339-80C2BD7E828C}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GLFW", "platform\windows\GLFW\GLFW.vcxproj", "{97BBA92D-F277-40AF-8D19-D15924E68000}"
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Lua", "platform\windows\Lua\Lua.vcxproj", "{A55E59B7-5F60-47C1-BF22-C666DB4FEE67}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SQLite", "platform\windows\SQLite\SQLite.vcxproj", "{5B94C021-85B0-4B0D-A6BB-B421E00B0FD9}"
@@ -27,10 +25,6 @@ Global
 		{B7C520BA-61BC-4D9D-A339-80C2BD7E828C}.Debug|x86.Build.0 = Debug|Win32
 		{B7C520BA-61BC-4D9D-A339-80C2BD7E828C}.Release|x86.ActiveCfg = Release|Win32
 		{B7C520BA-61BC-4D9D-A339-80C2BD7E828C}.Release|x86.Build.0 = Release|Win32
-		{97BBA92D-F277-40AF-8D19-D15924E68000}.Debug|x86.ActiveCfg = Debug|Win32
-		{97BBA92D-F277-40AF-8D19-D15924E68000}.Debug|x86.Build.0 = Debug|Win32
-		{97BBA92D-F277-40AF-8D19-D15924E68000}.Release|x86.ActiveCfg = Release|Win32
-		{97BBA92D-F277-40AF-8D19-D15924E68000}.Release|x86.Build.0 = Release|Win32
 		{A55E59B7-5F60-47C1-BF22-C666DB4FEE67}.Debug|x86.ActiveCfg = Debug|Win32
 		{A55E59B7-5F60-47C1-BF22-C666DB4FEE67}.Debug|x86.Build.0 = Debug|Win32
 		{A55E59B7-5F60-47C1-BF22-C666DB4FEE67}.Release|x86.ActiveCfg = Release|Win32

@@ -16,3 +16,10 @@ void InitializePlatform() {
 
 void FinalizePlatform() {
 }
+
+sds GetShaderPath(const char* shaderName) {
+    char* path = "shaders/glsl330/";
+    char* suffix = ".glsl";
+
+    return sdscatfmt(sdsempty(), "%s%s%s", path, shaderName, suffix);;
+}
