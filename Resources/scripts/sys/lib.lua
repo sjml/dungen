@@ -69,7 +69,7 @@ function rmTableDupes(t)
   local n = #t
   for i=1, n do
     local test = t[i]
-    -- TODO: oh my this is quite a hackhack
+    -- HACKHACK
     -- if type(test) == "userdata" and getmetatable(test)[".type"] == "TileData" then
     --   test = t[i].i
     -- end

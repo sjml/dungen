@@ -24,6 +24,7 @@ aft.GetAttributeString = function(a, name)
 end
 
 aft.CheckAttribute = function(a, name, comp, value)
+  -- cf: note on rft.CheckAttribute in region.lua
   return false -- TODO: CheckAgentAttribute(a, name, comp, value)
 end
 

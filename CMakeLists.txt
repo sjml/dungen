@@ -1,4 +1,7 @@
-## This CMake file is a test. It's pretty thrown together and may not work well.
+## This CMake file is pretty thrown together and may not work well.
+##    Only *used* for Linux and Emscripten builds; other platforms are
+##    in here only to verify the build process, but no guarantee
+##    they actually work.
 
 cmake_minimum_required (VERSION 3.1)
 if(POLICY CMP0076)

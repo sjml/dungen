@@ -1,9 +1,6 @@
 #include "stdafx.h"
 #include "rendering.h"
 
-#define STB_IMAGE_WRITE_IMPLEMENTATION
-#include <stb_image_write.h>
-
 #include "util.h"
 #include "world.h"
 #include "text.h"
@@ -238,11 +235,6 @@ Vec2i GetOrthoDimensions(void) {
     return orthoDimensions;
 }
 
-void DumpScreenShot(const char* fileName) {
-//    glReadPixels(0, 0, frameW, frameH, GL_RGB, GL_UNSIGNED_BYTE, screenShotBuffer);
-//    stbi_write_png(fileName, frameW, frameH, 3, screenShotBuffer, frameW * 3);
-}
-
 void AddRegionToRendering(Region* r) {
     arrpush(regions, r);
 }
@@ -283,34 +275,6 @@ gbVec2 WorldToScreen(gbVec2 worldCoordinates) {
     return spos;
 }
 
-gbVec2 ScreenToWorld(gbVec2 screenCoordinates) {
-    gbMat4 persp, final;
-    gb_mat4_mul(&persp, &projectionMatrix, &modelViewMatrix);
-    gb_mat4_inverse(&final, &persp);
-    gbVec4 in = {
-        screenCoordinates.x, screenCoordinates.y, 0.0f, 1.0f
-    };
-
-    gbVec2 viewOffset = { 0.0f, 0.0f };
-
-    in.x = (in.x - viewOffset.x) / windowDimensions.x;
-    in.y = (in.y - viewOffset.y) / windowDimensions.y;
-
-    in.x = in.x * 2 - 1;
-    in.y = in.y * 2 - 1;
-    in.z = in.z * 2 - 1;
-
-    gbVec4 out;
-    gb_mat4_mul_vec4(&out, &final, in);
-    out.x /= out.w;
-    out.y /= out.w;
-    out.z /= out.w;
-
-    float multFactor = 10.0f; // TODO: this shouldn't be necessary :-/
-    gbVec2 ret = {out.x * -multFactor, out.y * multFactor};
-    return ret;
-}
-
 gbVec2 ScreenToOrtho(gbVec2 screenCoordinates) {
     float xPerc = screenCoordinates.x / windowDimensions.x;
     float yPerc = screenCoordinates.y / windowDimensions.y;
@@ -336,7 +300,7 @@ void DrawShapeBuffer(sg_buffer buff, int numPoints, gbVec4 color, gbMat4 *matrix
 
 int Render() {
     if (sapp_frame_count() > 0 && bufferUpRequested) {
-        // SOKOL TODO: figure out how to do partial updates of a buffer
+        // sokol can't currently do partial updates of a buffer
         sg_update_buffer(tileAttribBuff, GetTileStartPointer()->draw, sizeof(TileDrawData) * (int)GetNumberOfTiles());
         bufferUpRequested = false;
     }
@@ -381,5 +345,5 @@ int Render() {
     sg_end_pass();
     sg_commit();
 
-     return 0;
+    return 0;
 }

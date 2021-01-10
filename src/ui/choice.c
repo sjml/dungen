@@ -49,7 +49,6 @@ void ClearChoices(void) {
         free(choices[i]);
     }
     arrfree(choices);
-    choices = NULL;
 
     for (int i=0; i < arrlen(buttons); i++) {
         sg_destroy_buffer(buttons[i].vertBuff);

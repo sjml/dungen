@@ -28,8 +28,6 @@ typedef struct {
 void InitializeRendering(void);
 void FinalizeRendering(void);
 
-void DumpScreenShot(const char* fileName);
-
 void AddRegionToRendering(Region* r);
 void RemoveRegionFromRendering(Region* r);
 Region** GetRenderingRegions(void);
@@ -40,7 +38,6 @@ Vec2i GetFramebufferDimensions(void);
 Vec2i GetOrthoDimensions(void);
 
 gbVec2 WorldToScreen(gbVec2 worldCoordinates);
-gbVec2 ScreenToWorld(gbVec2 screenCoordinates);
 gbVec2 ScreenToOrtho(gbVec2 screenCoordinates);
 
 void ClearTextLabels(void);

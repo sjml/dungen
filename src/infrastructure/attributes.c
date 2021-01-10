@@ -1,3 +1,15 @@
+// This if a huge mess of copypasta :(
+// Could be drastically simplified by having a single data type
+//  that handles something having attributes instead of having to
+//  treat Tiles, Regions, etc. separately.
+// *However*, it currently works and ain't broke and there aren't
+//  plans for any more data types, so probably not worth changing.
+// IF, however, more data types get added, I should buckle down
+//  and actually make the changes.
+// OR, if performance issues require the SQLite usage to be more
+//  clever (caching results until they're dirty or something),
+//  that would also justify a refactoring.
+
 #include "stdafx.h"
 #include "attributes.h"
 

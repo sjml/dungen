@@ -19,8 +19,9 @@ for s in $(ls $SHADER_DIR/base/*.glsl); do
     mkdir -p $SHADER_DIR/$out
     $SHDC -i $s -l $f -f bare -o $SHADER_DIR/$out/
   done
-  mkdir -p $SHADER_DIR/headers
-  $SHDC -i $s -l $fs -f sokol -o $SHADER_DIR/headers/$(basename $s).h
+
+  # mkdir -p $SHADER_DIR/headers
+  # $SHDC -i $s -l $fs -f sokol -o $SHADER_DIR/headers/$(basename $s).h
   # $SHDC -i $s -l $fs --bytecode -f sokol -o $SHADER_DIR/headers/$(basename $s).bytecode.h
   # rm -rf $SHADER_DIR/headers/*.{air,dia,metal,metallib}
 done

@@ -10,24 +10,17 @@ Copyright © 1998-2001 Yuji Oshimoto.
 * 非営利目的での配付、譲渡、転載は自由ですが、作者の許可なく販売したり、営利目的の製品に添付する事は固く禁じさせて頂きます。
 * なお、これらのフォントを使用してのいかなる損害についても作者は責任を負わないものとします。
 
-### [Inconsolata](http://www.levien.com/type/myfonts/inconsolata.html)
-Copyright © 2006-2007 Raph Levien with Reserved Font Name Inconsolata.
-This Font Software is licensed under the SIL Open Font License, Version 1.1.
-This license available with a FAQ at: http://scripts.sil.org/OFL
-
 ## Software
 ### Public Domain
 * [SQLite 3.29.0](https://sqlite.org/index.html)
 * [gb_math.h](https://github.com/gingerBill/gb/blob/master/gb_math.h)
 * [stb_ds.h](http://nothings.org/stb_ds/)
 * [stb_image.h](https://github.com/nothings/stb/blob/master/stb_image.h)
-* [stb_image_write.h](https://github.com/nothings/stb/blob/master/stb_image_write.h)
 * [stb_truetype.h](https://github.com/nothings/stb/blob/master/stb_truetype.h)
 * [stb_rect_pack.h](https://github.com/nothings/stb/blob/master/stb_rect_pack.h)
 
-### [GLFW 3.30](https://www.glfw.org/)
-Copyright (c) 2002-2006 Marcus Geelnard
-Copyright (c) 2006-2016 Camilla Löwy <elmindreda@glfw.org>
+### [Sokol](https://github.com/floooh/sokol)
+Copyright (c) 2018 Andre Weissflog
 
 ### [Lua 5.3.5](http://http://www.lua.org)
 Copyright © 1994–2019 Lua.org, PUC-Rio.

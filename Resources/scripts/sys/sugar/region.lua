@@ -24,6 +24,9 @@ rft.GetAttributeString = function(r, name)
 end
 
 rft.CheckAttribute = function(r, name, comp, value)
+  -- <sigh> in the future, always put notes when doing something like
+  --    this... why was this made false, past me? something with
+  --    styling probably? what is the "DO" that I am "TO"?
   return false -- TODO: CheckRegionAttribute(r, name, comp, value)
 end
 

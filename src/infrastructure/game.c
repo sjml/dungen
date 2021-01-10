@@ -207,7 +207,6 @@ void _RunEvents() {
         #endif // DEBUG
     }
     arrfree(frameEvents);
-    frameEvents = NULL;
 }
 
 double GetTime(void) {
