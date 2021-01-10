@@ -1,4 +1,4 @@
-<p align="center"><img src="https://github.com/sjml/dungen2/raw/master/art/DunGenLogo.png"></p>
+<p align="center"><img src="https://github.com/sjml/dungen/raw/master/art/DunGenLogo.png"></p>
 
 # DunGen
 
@@ -16,10 +16,9 @@ I've structured it something like a computer operating on the hex grid like a se
 
 The simulation scripts are located in the `Resources/scripts/simulation` directory on Windows, and on the Mac they are in the .app directory's `Contents/Resources/scripts/simulation` (right-click --> "Show Package Contents").
 
-## Downloading
-Whatever latest version I've tagged is viewable in the [releases tab](https://github.com/sjml/dungen2/releases). Downloadable versions for Mac and Windows, along with source. It builds and makes GitHub releases via [Azure Pipelines](https://azure.microsoft.com/en-us/services/devops/pipelines/) which was [kind of a pain](https://github.com/sjml/dungen2/blob/master/azure-pipelines.yml) to get working, but I kinda like devops stuff and build pipelines, so ¯\\\_(ツ)\_/¯. 
-
 ## Building
 I mostly develop on a Mac, but spend a non-trivial amount of time in Windows, too, so it gets checked there periodically. There's an Xcode project and a Visual Studio solution, and I try to keep them in sync. 
 
-There's also a CMake configuration that I really only use to build it on Linux on those occasions when I do so. It might be out of sync with the other build systems. (Yes, I could just use CMake for everything but it makes some UGLY projects, so I kind of treat it as just a more readable [to me] Makefile.)
+There's also a CMake configuration that I really only use to build it for Emscripted and on Linux for those occasions when I do so. It might be out of sync with the other build systems. (Yes, I could just use CMake for everything but it makes some UGLY projects, so I kind of treat it as just a more readable [to me] Makefile.)
+
+To build on Ubuntu (the only Linux I test on), you need to first use apt to install: `build-essential cmake xorg-dev libx11-dev mesa-common-dev libglu1-mesa-dev libglew1.5 libglew1.5-dev libglu1-mesa libglu1-mesa-dev libgl1-mesa-glx libgl1-mesa-dev`. This list could maybe be trimmed down a bit, it works. 

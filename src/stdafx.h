@@ -10,11 +10,7 @@
 
 #if _WIN32
     #include <glad/glad.h>
-#else
-//    #define GL_GLEXT_PROTOTYPES
-//    #define GLFW_INCLUDE_GLCOREARB
 #endif // _WIN32
-
 
 #ifdef __clang__
     #pragma clang diagnostic push

@@ -11,6 +11,9 @@ endif()
 project (DunGen)
 
 set(CMAKE_C_STANDARD 11)
+if (${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -arch arm64 -arch x86_64")
+endif()
 
 add_library(lua
     lib/lua-5.3.5+system_patch/src/lapi.c
@@ -92,10 +95,18 @@ add_executable (DunGen MACOSX_BUNDLE
 if (${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
     set_source_files_properties(
         src/infrastructure/sokol_impl.c
-        PROPERTY COMPILE_FLAGS "-x objective-c"
-        PROPERTY COMPILE_DEFINITIONS "-DSOKOL_GLES3"
+        PROPERTIES
+            COMPILE_FLAGS "-x objective-c"
     )
 endif()
+
+target_link_libraries(DunGen
+    lua
+    sqlite
+    sds
+    pqueue
+    pcg
+)
 
 if (DEFINED ENV{EMSCRIPTEN})
     target_sources(DunGen PUBLIC src/platform/wasm.c)
@@ -109,25 +120,21 @@ if (DEFINED ENV{EMSCRIPTEN})
         PRIVATE --shell-file ../platform/WebAssembly/DunGen.html.template
     )
 
-    target_link_libraries(DunGen
-        lua
-        sqlite
-        sds
-        pqueue
-        pcg
-    )
-
 else()
     if (${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
         target_sources(DunGen PUBLIC src/platform/macOS.c)
         set(ResourceDir "/../Resources")
-        set_target_properties(DunGen PROPERTIES MACOSX_BUNDLE_INFO_PLIST ${CMAKE_SOURCE_DIR}/platform/macOS/Info.plist)
+        set_target_properties(DunGen
+            PROPERTIES
+                MACOSX_BUNDLE_INFO_PLIST ${CMAKE_SOURCE_DIR}/platform/macOS/Info.plist
+        )
 
         target_link_libraries(DunGen
             "-framework Cocoa"
             "-framework QuartzCore"
             "-framework Metal"
             "-framework MetalKit"
+            "-framework OpenGL"
         )
 
     elseif (${CMAKE_SYSTEM_NAME} MATCHES "Windows")
@@ -137,15 +144,19 @@ else()
     elseif (${CMAKE_SYSTEM_NAME} MATCHES "Linux")
         target_sources(DunGen PUBLIC src/platform/linux.c)
         set(ResourceDir "/Resources")
-    endif()
 
-    target_link_libraries(DunGen
-        lua
-        sqlite
-        sds
-        pqueue
-        pcg
-    )
+        find_package(OpenGL REQUIRED)
+        find_package(X11 REQUIRED)
+        target_link_libraries(DunGen
+            OpenGL::GL
+            X11
+            Xi
+            Xcursor
+            m
+            dl
+            pthread
+        )
+    endif()
 endif()
 
 
