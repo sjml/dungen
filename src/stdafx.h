@@ -21,8 +21,14 @@
     #define SOKOL_GLES3
 #else
     #ifdef __APPLE__
-        #define SOKOL_GLCORE33
-        // #define SOKOL_METAL
+        #include "TargetConditionals.h"
+        #if TARGET_OS_OSX
+            #define SOKOL_GLCORE33
+            // #define SOKOL_METAL
+        #else
+            #define SOKOL_GLES3
+            // #define SOKOL_METAL
+        #endif // TARGET_OS_MAC
     #else
         #define SOKOL_GLCORE33
     #endif

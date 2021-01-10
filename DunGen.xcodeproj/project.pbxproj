@@ -300,6 +300,7 @@
 		34F2D99A25A5E45700645C55 /* metal */ = {isa = PBXFileReference; lastKnownFileType = folder; name = metal; path = Resources/shaders/metal; sourceTree = "<group>"; };
 		34F3478123129A93008B19FB /* tile_choice.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = tile_choice.h; sourceTree = "<group>"; };
 		34F3478223129A93008B19FB /* tile_choice.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = tile_choice.c; sourceTree = "<group>"; };
+		34F656E825AB3841006059E7 /* glsl300es */ = {isa = PBXFileReference; lastKnownFileType = folder; name = glsl300es; path = Resources/shaders/glsl300es; sourceTree = "<group>"; };
 		34FE0B6522E30AEC007A1271 /* game.i */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c.preprocessed; path = game.i; sourceTree = "<group>"; };
 		34FEFE6422ECF6AF00266420 /* util.i */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c.preprocessed; path = util.i; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -675,6 +676,7 @@
 			isa = PBXGroup;
 			children = (
 				34F2D99825A5E43800645C55 /* glsl330 */,
+				34F656E825AB3841006059E7 /* glsl300es */,
 				34F2D99A25A5E45700645C55 /* metal */,
 			);
 			name = shaders;
@@ -1333,12 +1335,13 @@
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
 				SUPPORTED_PLATFORMS = "macosx iphonesimulator iphoneos";
-				VALIDATE_WORKSPACE_SKIPPED_SDK_FRAMEWORKS = OpenGL;
+				VALIDATE_WORKSPACE_SKIPPED_SDK_FRAMEWORKS = "OpenGL OpenGLES GLKit";
 				VALID_ARCHS = "";
 				"VALID_ARCHS[sdk=iphoneos*]" = arm64;
 				"VALID_ARCHS[sdk=iphonesimulator*]" = "x86_64 arm64";
@@ -1387,11 +1390,12 @@
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = macosx;
 				SUPPORTED_PLATFORMS = "macosx iphonesimulator iphoneos";
-				VALIDATE_WORKSPACE_SKIPPED_SDK_FRAMEWORKS = OpenGL;
+				VALIDATE_WORKSPACE_SKIPPED_SDK_FRAMEWORKS = "OpenGL OpenGLES GLKit";
 				VALID_ARCHS = "";
 				"VALID_ARCHS[sdk=iphoneos*]" = arm64;
 				"VALID_ARCHS[sdk=iphonesimulator*]" = "x86_64 arm64";
@@ -1529,7 +1533,7 @@
 					src,
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/platform/iOS/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -1569,7 +1573,7 @@
 					src,
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/platform/iOS/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.shaneliesegang.DunGen-iOS";
