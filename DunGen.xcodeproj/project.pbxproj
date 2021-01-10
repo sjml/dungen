@@ -806,7 +806,7 @@
 				34A9631F231B004600A9464F /* Sources */,
 				34A96320231B004600A9464F /* Frameworks */,
 				34A96321231B004600A9464F /* Resources */,
-				3403E6D0231C95CB0030C3B3 /* ShellScript */,
+				3403E6D0231C95CB0030C3B3 /* Copy Resources */,
 			);
 			buildRules = (
 			);
@@ -945,7 +945,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		3403E6D0231C95CB0030C3B3 /* ShellScript */ = {
+		3403E6D0231C95CB0030C3B3 /* Copy Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -954,13 +954,14 @@
 			);
 			inputPaths = (
 			);
+			name = "Copy Resources";
 			outputFileListPaths = (
 			);
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "cp -R ${PROJECT_DIR}/Resources/* ${CONFIGURATION_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}\n";
+			shellScript = "cp -R ${PROJECT_DIR}/Resources/* \"${CONFIGURATION_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}\"\n";
 		};
 		340B5D0D22D2138700E53DCA /* Copy Resources */ = {
 			isa = PBXShellScriptBuildPhase;

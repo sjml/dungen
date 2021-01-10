@@ -6,7 +6,7 @@
       {
         "label": "Run",
         "type": "shell",
-        "command": "${workspaceFolder}/build/Debug/DunGen.app/Contents/MacOS/DunGen",
+        "command": "${workspaceFolder}/build/Release/DunGen.app/Contents/MacOS/DunGen",
         "options": {
           "cwd": "${workspaceFolder}/build"
         },
@@ -58,7 +58,7 @@
         "command": "xcodebuild",
         "args": [
           "-sdk", "macosx",
-          "-scheme", "DunGen (Debug)",
+          "-scheme", "DunGen (Release)",
           "-project", "DunGen.xcodeproj",
           "build"
         ],
