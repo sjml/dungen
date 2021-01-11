@@ -6,7 +6,7 @@
       {
         "label": "Run",
         "type": "shell",
-        "command": "${workspaceFolder}/build/Release/DunGen.app/Contents/MacOS/DunGen",
+        "command": "${workspaceFolder}/build/Debug/DunGen.app/Contents/MacOS/DunGen",
         "options": {
           "cwd": "${workspaceFolder}/build"
         },
@@ -34,7 +34,7 @@
         "label": "Run Unit Tests",
         "type": "shell",
         "command": "${workspaceFolder}/build/Debug/DunGen.app/Contents/MacOS/DunGen",
-        "args": ["--startup", "_testing.UnitTest"],
+        "args": ["startup=_testing.UnitTest"],
         "options": {
           "cwd": "${workspaceFolder}/build"
         },
@@ -58,7 +58,7 @@
         "command": "xcodebuild",
         "args": [
           "-sdk", "macosx",
-          "-scheme", "DunGen (Release)",
+          "-scheme", "DunGen (Debug)",
           "-project", "DunGen.xcodeproj",
           "build"
         ],

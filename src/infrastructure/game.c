@@ -1,6 +1,10 @@
 #include "stdafx.h"
 #include "game.h"
 
+#ifdef __EMSCRIPTEN__
+    #include <emscripten.h>
+#endif // __EMSCRIPTEN__
+
 #include <time.h>
 #include <pcg_basic.h>
 
@@ -113,6 +117,9 @@ void QuitGame(const char* message) {
 void ProcessEvent(const sapp_event* event) {
     sapp_event ev_cpy = *event;
     arrpush(frameEvents, ev_cpy);
+    if (event->type == SAPP_EVENTTYPE_QUIT_REQUESTED) {
+        sapp_cancel_quit(); // save it for one frame until we get to the event handler
+    }
 }
 
 void _RunEvents() {
@@ -122,6 +129,17 @@ void _RunEvents() {
             if (event->key_code == SAPP_KEYCODE_ESCAPE) {
                 sapp_request_quit();
             }
+        }
+        else if (event->type == SAPP_EVENTTYPE_KEY_UP) {
+            // no-op
+        }
+        else if (event->type == SAPP_EVENTTYPE_QUIT_REQUESTED) {
+            #ifdef __EMSCRIPTEN__
+                emscripten_run_script("quitApp();");
+                // sapp_quit();
+            #else
+                sapp_quit();
+            #endif // __EMSCRIPTEN__
         }
         else if (event->type == SAPP_EVENTTYPE_CHAR) {
             // no-op
@@ -202,7 +220,7 @@ void _RunEvents() {
         }
         #if DEBUG
         else {
-            printf("Unprocessed event!\n");
+            printf("Unprocessed event! (%d)\n", event->type);
         }
         #endif // DEBUG
     }
@@ -262,67 +280,3 @@ int GameTick(void) {
 gbVec2 GetCursorPosition(void) {
     return mousePos;
 }
-//
-//#if !(DUNGEN_MOBILE)
-//    double GetTime() {
-//        return glfwGetTime();
-//    }
-//
-//    void MouseMoveCallback(GLFWwindow* window, double xpos, double ypos) {
-//        gbVec2 pos = {(float)xpos, (float)ypos};
-//        gbVec2 orthoPos = ScreenToOrtho(pos);
-//        if (GetChoiceStatus() > 0) {
-//            ChoiceProcessMouseMovement(orthoPos);
-//        }
-//        if (GetTileChoiceStatus() > 0) {
-//            TileChoiceProcessMouseMovement(pos);
-//        }
-//    }
-//
-//    void MouseClickCallback(GLFWwindow* window, int button, int action, int mods) {
-//        if (GetChoiceStatus() >= 0 && button == GLFW_MOUSE_BUTTON_LEFT) {
-//            ChoiceProcessMouseClick(action == GLFW_PRESS);
-//        }
-//        if (GetTileChoiceStatus() >= 0 && button == GLFW_MOUSE_BUTTON_LEFT) {
-//            TileChoiceProcessMouseClick(action == GLFW_PRESS);
-//        }
-//    }
-//
-//    void KeyboardCallback(GLFWwindow* window, int key, int scancode, int action, int mode) {
-//        if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
-//            shouldStopGame = true;
-//        }
-//    }
-//#else
-//    double _gameTime;
-//    void SetTime(double gameTime) {
-//        _gameTime = gameTime;
-//    }
-//    double GetTime() {
-//        return _gameTime;
-//    }
-//
-//    void TouchCallback(double xpos, double ypos, int isDown) {
-//        gbVec2 pos = {(float)xpos, (float)ypos};
-//        gbVec2 orthoPos = ScreenToOrtho(pos);
-//        if (GetChoiceStatus() >= 0) {
-//            ChoiceProcessMouseMovement(orthoPos);
-//            ChoiceProcessMouseClick(isDown);
-//        }
-//        if (GetTileChoiceStatus() >= 0) {
-//            TileChoiceProcessMouseMovement(pos);
-//            TileChoiceProcessMouseClick(isDown);
-//        }
-//    }
-//
-//    void TouchMoveCallback(double xpos, double ypos) {
-//        gbVec2 pos = {(float)xpos, (float)ypos};
-//        pos = ScreenToOrtho(pos);
-//        if (GetChoiceStatus() > 0) {
-//            ChoiceProcessMouseMovement(pos);
-//        }
-//        if (GetTileChoiceStatus() > 0) {
-//            TileChoiceProcessMouseMovement(pos);
-//        }
-//    }
-//#endif // !(DUNGEN_MOBILE)

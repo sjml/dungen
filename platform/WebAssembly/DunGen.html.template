@@ -30,6 +30,18 @@
   <body>
     <canvas class="game" id="canvas" oncontextmenu="event.preventDefault()"></canvas>
     <script type='text/javascript'>
+      function quitApp() {
+        /*
+            Responds to quit event from the app -- doing nothing for now, but
+            may eventually want to remove the canvas, pop a button to refresh,
+            something like that.
+            reference: http://stack.gl/packages/#stackgl/gl-reset
+         */
+        // var canvas = document.getElementById('canvas');
+        // canvas.remove();
+      }
+    </script>
+    <script type='text/javascript'>
       var Module = {
         preRun: [],
         postRun: [],
@@ -49,14 +61,14 @@
             return canvas;
         })(),
         setStatus: function(text) {
-            console.log("status: " + text);
+            // console.log("status: " + text);
         },
         monitorRunDependencies: function(left) {
             // console.log("monitor run deps: " + left);
         }
       };
       window.onerror = function() {
-        console.log("onerror: " + event.message);
+        console.error("onerror: " + event.message);
       };
     </script>
     {{{ SCRIPT }}}

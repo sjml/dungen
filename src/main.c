@@ -1,8 +1,5 @@
 #include "stdafx.h"
 
-#define KGFLAGS_IMPLEMENTATION
-#include <kgflags.h>
-
 #include "dungen.h"
 
 static const char* startupElement;
@@ -11,12 +8,16 @@ void InitShim(void) {
 }
 
 sapp_desc sokol_main(int argc, char * argv[]) {
-    kgflags_string("startup", "_Root", "The first element to push on to the HLVM stack.", false, &startupElement);
-
-    if (!kgflags_parse(argc, argv)) {
-        kgflags_print_errors();
-        kgflags_print_usage();
-        return (sapp_desc){0};
+    sargs_setup(&(sargs_desc){
+        .argc = argc,
+        .argv = argv
+    });
+    
+    if (sargs_exists("startup")) {
+        startupElement = sargs_value("startup");
+    }
+    else {
+        startupElement = "_Root";
     }
 
     return (sapp_desc){

@@ -20,6 +20,9 @@
 #define SOKOL_TIME_IMPL
 #include <sokol_time.h>
 
+#define SOKOL_ARGS_IMPL
+#include <sokol_args.h>
+
 #ifdef __clang__
     #pragma clang diagnostic pop
 #endif // __clang__

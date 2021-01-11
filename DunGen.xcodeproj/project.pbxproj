@@ -186,7 +186,6 @@
 		340B5D0F22D21CB700E53DCA /* stb_ds.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = stb_ds.h; path = "lib/single-file/stb_ds.h"; sourceTree = "<group>"; };
 		340E1ECE22E3A4D2004443D1 /* rendering.i */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c.preprocessed; path = rendering.i; sourceTree = "<group>"; };
 		340E1ECF22E3A535004443D1 /* typemaps.i */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c.preprocessed; path = typemaps.i; sourceTree = "<group>"; };
-		3412AF922317EC1000EB2D84 /* stb_image_write.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = stb_image_write.h; path = "lib/single-file/stb_image_write.h"; sourceTree = "<group>"; };
 		3415722822D3873D00FB77F2 /* stb_image.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = stb_image.h; path = "lib/single-file/stb_image.h"; sourceTree = "<group>"; };
 		3417E22322D1486100762C69 /* liblua.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = liblua.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		341F128F22D1FCA9009C844F /* lopcodes.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = lopcodes.c; path = "lib/lua-5.3.5+system_patch/src/lopcodes.c"; sourceTree = "<group>"; };
@@ -284,7 +283,6 @@
 		34A96323231B004600A9464F /* DunGen.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DunGen.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		34A9632E231B004800A9464F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		34A96333231B004800A9464F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		34B88943231A96EC00D790C9 /* kgflags.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = kgflags.h; path = "lib/single-file/kgflags.h"; sourceTree = "<group>"; };
 		34C5B3EE22DB2128007F0A79 /* sds.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = sds.c; path = "lib/sds-0bb446e/sds.c"; sourceTree = "<group>"; };
 		34C5B3F522DB2753007F0A79 /* libsds.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libsds.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		34CD649122D9DD2F00C33190 /* libsqlite.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libsqlite.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -380,12 +378,10 @@
 			isa = PBXGroup;
 			children = (
 				3415722822D3873D00FB77F2 /* stb_image.h */,
-				3412AF922317EC1000EB2D84 /* stb_image_write.h */,
 				340B5D0F22D21CB700E53DCA /* stb_ds.h */,
 				34EBC810233F03C700DA6AD5 /* stb_rect_pack.h */,
 				34EBC80F233F03C700DA6AD5 /* stb_truetype.h */,
 				3466A4B722D4EDEB00ED6CAA /* gb_math.h */,
-				34B88943231A96EC00D790C9 /* kgflags.h */,
 			);
 			name = "single-file";
 			sourceTree = "<group>";
