@@ -28,6 +28,7 @@ xcuserdata/
 art/tmp/*
 build/*
 tmp/*
+buildscripts/deployWebVersion.sh
 
 # Overrides
 !.gitkeep

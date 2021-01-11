@@ -137,10 +137,6 @@ else()
             "-framework OpenGL"
         )
 
-    elseif (${CMAKE_SYSTEM_NAME} MATCHES "Windows")
-        target_sources(DunGen PUBLIC src/platform/windows.c)
-        # ???
-
     elseif (${CMAKE_SYSTEM_NAME} MATCHES "Linux")
         target_sources(DunGen PUBLIC src/platform/linux.c)
         set(ResourceDir "/Resources")
@@ -167,8 +163,10 @@ if(SWIG_EXE)
                       )
 endif()
 
-add_custom_command(TARGET DunGen POST_BUILD
+if (${CMAKE_SYSTEM_NAME} MATCHES "Linux")
+    add_custom_command(TARGET DunGen POST_BUILD
                    COMMAND ${CMAKE_COMMAND} -E copy_directory
                    ${CMAKE_SOURCE_DIR}/Resources $<TARGET_FILE_DIR:DunGen>/${ResourceDir}
                   )
+endif()
 
