@@ -4,3 +4,4 @@
 %}
 
 gbVec2 WorldToScreen(gbVec2 worldCoordinates);
+void TakeScreenshot(const char* fileName);

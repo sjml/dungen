@@ -1,6 +1,11 @@
 #include "stdafx.h"
 #include "rendering.h"
 
+#define STB_IMAGE_WRITE_IMPLEMENTATION
+#include <stb_image_write.h>
+
+#include "sokol_ext.h"
+
 #include "util.h"
 #include "world.h"
 #include "text.h"
@@ -17,7 +22,8 @@ static Vec2i windowDimensions;
 static Vec2i framebufferDimensions;
 static Vec2i orthoDimensions;
 
-static unsigned char* screenShotBuffer;
+static unsigned char* screenShotBuffer = NULL;
+static char** screenShotRequests = NULL;
 
 static CameraData MainCamera;
 static gbMat4 projectionMatrix;
@@ -152,9 +158,9 @@ void InitializeRendering() {
         .primitive_type = SG_PRIMITIVETYPE_TRIANGLE_STRIP
     });
 
-//    glfwGetFramebufferSize(window, &frameW, &frameH);
-//    screenShotBuffer = malloc(sizeof(GLubyte) * frameW * frameH * 3);
-//    stbi_flip_vertically_on_write(1);
+    #if defined(SOKOL_GLCORE33) || defined(SOKOL_GLES3) || defined(SOKOL_GLES2)
+        stbi_flip_vertically_on_write(1);
+    #endif
 
     InitializeText();
     LoadFont("Pixel", "fonts/04B_03__.TTF", 32.0, true);
@@ -168,6 +174,11 @@ void RequestRenderBufferUpdate(TileSet* ts) {
     }
 
     bufferUpRequested = true;
+}
+
+void TakeScreenshot(const char* fileName) {
+    char* fndup = strdup(fileName);
+    arrpush(screenShotRequests, fndup);
 }
 
 void FinalizeRendering() {
@@ -187,6 +198,11 @@ void UpdateRenderingDimensions() {
     framebufferDimensions.y = sapp_height();
     windowDimensions.x = (int)(framebufferDimensions.x / sapp_dpi_scale());
     windowDimensions.y = (int)(framebufferDimensions.y / sapp_dpi_scale());
+
+    if (screenShotBuffer != NULL) {
+        free(screenShotBuffer);
+    }
+    screenShotBuffer = malloc(sizeof(unsigned char) * framebufferDimensions.x * framebufferDimensions.y * 3);
 
     MainCamera.aperture = GB_MATH_PI / 2;
     MainCamera.position.x = 0.0f;
@@ -341,6 +357,27 @@ int Render() {
         RenderTileChoice();
     }
 
+    if (arrlen(screenShotRequests) > 0) {
+        #if defined(SOKOL_GLCORE33) || defined(SOKOL_GLES3) || defined(SOKOL_GLES2)
+            sgext_read_framebuffer(0, 0, framebufferDimensions.x, framebufferDimensions.y, screenShotBuffer);
+        #else
+            fprintf(stderr, "WARNING: Screenshots not available with non-GL backends.\n");
+        #endif
+    }
+    for (int i=0; i < arrlen(screenShotRequests); i++) {
+        #if defined(SOKOL_GLCORE33) || defined(SOKOL_GLES3) || defined(SOKOL_GLES2)
+            stbi_write_png(
+                screenShotRequests[i],
+                framebufferDimensions.x,
+                framebufferDimensions.y,
+                3,
+                screenShotBuffer,
+                framebufferDimensions.x * 3
+            );
+        #endif
+        free(screenShotRequests[i]);
+    }
+    arrfree(screenShotRequests);
 
     sg_end_pass();
     sg_commit();

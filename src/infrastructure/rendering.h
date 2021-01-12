@@ -46,5 +46,6 @@ void AddTextLabel(const char* text, gbVec2 pos, float scale, gbVec4 color);
 void DrawShapeBuffer(sg_buffer buff, int numPoints, gbVec4 color, gbMat4 *matrix);
 
 void RequestRenderBufferUpdate(TileSet* ts);
+void TakeScreenshot(const char* fileName);
 
 int Render(void);

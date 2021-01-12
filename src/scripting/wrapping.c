@@ -4713,6 +4713,25 @@ fail:
 }
 
 
+static int _wrap_TakeScreenshot(lua_State* L) {
+  int SWIG_arg = 0;
+  char *arg1 = (char *) 0 ;
+  
+  SWIG_check_num_args("TakeScreenshot",1,1)
+  if(!SWIG_lua_isnilstring(L,1)) SWIG_fail_arg("TakeScreenshot",1,"char const *");
+  arg1 = (char *)lua_tostring(L, 1);
+  TakeScreenshot((char const *)arg1);
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
 static int _wrap_MeasureTextExtents(lua_State* L) {
   int SWIG_arg = 0;
   char *arg1 = (char *) 0 ;
@@ -9252,6 +9271,7 @@ static swig_lua_method swig_SwigModule_methods[]= {
     { "GetColorByIndex", _wrap_GetColorByIndex},
     { "GetColorByPercent", _wrap_GetColorByPercent},
     { "WorldToScreen", _wrap_WorldToScreen},
+    { "TakeScreenshot", _wrap_TakeScreenshot},
     { "MeasureTextExtents", _wrap_MeasureTextExtents},
     { "GetIntRegister", _wrap_GetIntRegister},
     { "GetFloatRegister", _wrap_GetFloatRegister},

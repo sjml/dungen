@@ -23,6 +23,9 @@
 #define SOKOL_ARGS_IMPL
 #include <sokol_args.h>
 
+#define SOKOL_EXT_IMPL
+#include "sokol_ext.h"
+
 #ifdef __clang__
     #pragma clang diagnostic pop
 #endif // __clang__
