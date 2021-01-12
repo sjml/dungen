@@ -1,4 +1,11 @@
 ## TODO
+0. to resume actual work
+    - refresh on chamber progress (merging, moving contents, etc.)
+        - complete test setup and execution
+        - what is happening with the storage? 
+        - maybe distinguish between things that take up space (like flowing water/magma) and things that only have a visual representation of a tag (like population)
+    - refresh on river flowing and exploration
+        - might junk and remake -- have leveled up as a programmer since last go at it
 1. Rework river encounters to use centralized system
     - rename central functions
     - rivers should only backflow within chambers, but within chambers, there should be no limit on backflow (flood the chamber until an egress is found, basically, but don't go back along the path or to previous chambers)
@@ -14,6 +21,7 @@
 5. Relaxable constraint sets
 
 ## Near Term
+* fix text shader to use `texture` instead of `texelFetch` so we can do WebGL 1 instead of 2?
 * make webpage explaining project, linking to releases, etc.
 * handle newlines in text rendering? (and fix Great Wyrm label)
 * outlines flip edge alignment when regions have disjoint sections
