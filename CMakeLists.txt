@@ -68,7 +68,7 @@ include_directories(lib/libpqueue-f319ea0/src)
 add_library(pcg lib/pcg-c-basic-0.9/pcg_basic.c)
 include_directories(lib/pcg-c-basic-0.9)
 
-include_directories(lib/sokol-5894182d)
+include_directories(lib/sokol-5fbb6a2)
 include_directories(lib/single-file)
 
 include_directories(src)

@@ -1458,7 +1458,7 @@
 					"lib/libpqueue-f319ea0/src",
 					"lib/freetype-2.10.1/include",
 					"lib/pcg-c-basic-0.9",
-					"lib/sokol-5894182d",
+					"lib/sokol-5fbb6a2",
 					"lib/single-file",
 					src,
 				);
@@ -1491,7 +1491,7 @@
 					"lib/libpqueue-f319ea0/src",
 					"lib/freetype-2.10.1/include",
 					"lib/pcg-c-basic-0.9",
-					"lib/sokol-5894182d",
+					"lib/sokol-5fbb6a2",
 					"lib/single-file",
 					src,
 				);
@@ -1525,7 +1525,7 @@
 					"lib/libpqueue-f319ea0/src",
 					"lib/freetype-2.10.1/include",
 					"lib/pcg-c-basic-0.9",
-					"lib/sokol-5894182d",
+					"lib/sokol-5fbb6a2",
 					"lib/single-file",
 					src,
 				);
@@ -1565,7 +1565,7 @@
 					"lib/libpqueue-f319ea0/src",
 					"lib/freetype-2.10.1/include",
 					"lib/pcg-c-basic-0.9",
-					"lib/sokol-5894182d",
+					"lib/sokol-5fbb6a2",
 					"lib/single-file",
 					src,
 				);

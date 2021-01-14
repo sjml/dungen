@@ -147,7 +147,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\..\..\lib\lua-5.3.5+system_patch\src;$(ProjectDir)..\..\..\lib\sqlite-amalgamation-3290000;$(ProjectDir)..\..\..\lib\sds-0bb446e;$(ProjectDir)..\..\..\lib\libpqueue-f319ea0\src;$(ProjectDir)..\..\..\lib\freetype-2.10.1\include;$(ProjectDir)..\..\..\lib\pcg-c-basic-0.9;$(ProjectDir)..\..\..\lib\sokol-5894182d;$(ProjectDir)..\..\..\lib\single-file;$(ProjectDir)..\..\..\src;$(ProjectDir)..\GL_headers</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\..\..\lib\lua-5.3.5+system_patch\src;$(ProjectDir)..\..\..\lib\sqlite-amalgamation-3290000;$(ProjectDir)..\..\..\lib\sds-0bb446e;$(ProjectDir)..\..\..\lib\libpqueue-f319ea0\src;$(ProjectDir)..\..\..\lib\freetype-2.10.1\include;$(ProjectDir)..\..\..\lib\pcg-c-basic-0.9;$(ProjectDir)..\..\..\lib\sokol-5fbb6a2;$(ProjectDir)..\..\..\lib\single-file;$(ProjectDir)..\..\..\src;$(ProjectDir)..\GL_headers</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_MBCS;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_DEPRECATE</PreprocessorDefinitions>
       <AdditionalOptions>/experimental:external /external:anglebrackets /external:W0 %(AdditionalOptions)</AdditionalOptions>
       <TreatWarningAsError>true</TreatWarningAsError>
@@ -169,7 +169,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\..\..\lib\lua-5.3.5+system_patch\src;$(ProjectDir)..\..\..\lib\sqlite-amalgamation-3290000;$(ProjectDir)..\..\..\lib\sds-0bb446e;$(ProjectDir)..\..\..\lib\libpqueue-f319ea0\src;$(ProjectDir)..\..\..\lib\freetype-2.10.1\include;$(ProjectDir)..\..\..\lib\pcg-c-basic-0.9;$(ProjectDir)..\..\..\lib\sokol-5894182d;$(ProjectDir)..\..\..\lib\single-file;$(ProjectDir)..\..\..\src;$(ProjectDir)..\GL_headers</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\..\..\lib\lua-5.3.5+system_patch\src;$(ProjectDir)..\..\..\lib\sqlite-amalgamation-3290000;$(ProjectDir)..\..\..\lib\sds-0bb446e;$(ProjectDir)..\..\..\lib\libpqueue-f319ea0\src;$(ProjectDir)..\..\..\lib\freetype-2.10.1\include;$(ProjectDir)..\..\..\lib\pcg-c-basic-0.9;$(ProjectDir)..\..\..\lib\sokol-5fbb6a2;$(ProjectDir)..\..\..\lib\single-file;$(ProjectDir)..\..\..\src;$(ProjectDir)..\GL_headers</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_MBCS;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_DEPRECATE</PreprocessorDefinitions>
       <AdditionalOptions>/experimental:external /external:anglebrackets /external:W0 %(AdditionalOptions)</AdditionalOptions>
       <TreatWarningAsError>true</TreatWarningAsError>
