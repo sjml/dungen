@@ -1,9 +1,8 @@
 # TODO:
-#   - Swig pre-run
-#   - iOS build?
-#   - Windows build
 #   - Linux build
+#   - Windows build
 #   - WASM build
+#   - iOS build?
 
 project('DunGen', 'c',
     default_options: ['c_std=c11']
@@ -157,9 +156,9 @@ executable('DunGen',
     include_directories: dungen_inc_dirs,
     link_with: dungen_libs,
     dependencies: dungen_deps,
-
     install: true
 )
+
 if build_machine.system() == 'darwin'
     install_data('platform/macOS/Info.plist', install_dir: 'Contents')
     install_subdir('Resources', install_dir: 'Contents')
