@@ -6,10 +6,8 @@
 	<string>en</string>
 	<key>CFBundleExecutable</key>
 	<string>DunGen</string>
-	<key>CFBundleIconFile</key>
-	<string></string>
 	<key>CFBundleIdentifier</key>
-	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+	<string>com.shaneliesegang.DunGen</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>

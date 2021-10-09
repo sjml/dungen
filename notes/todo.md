@@ -21,6 +21,8 @@
 5. Relaxable constraint sets
 
 ## Near Term
+* eliminate warnings from meson/ninja build
+* reposition text, banners, buttons when resolution changes 
 * fix text shader to use `texture` instead of `texelFetch` so we can do WebGL 1 instead of 2?
 * make webpage explaining project, linking to releases, etc.
 * handle newlines in text rendering? (and fix Great Wyrm label)
