@@ -1,7 +1,7 @@
 [binaries]
-c = '/Users/shane/emsdk/upstream/emscripten/emcc'
-cpp = '/Users/shane/emsdk/upstream/emscripten/em++'
-ar = '/Users/shane/emsdk/upstream/emscripten/emar'
+c = EMSDK_BASE + '/emcc'
+cpp = EMSDK_BASE + '/em++'
+ar = EMSDK_BASE + '/emar'
 
 [built-in options]
 c_args = []

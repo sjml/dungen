@@ -29,6 +29,7 @@ art/tmp/*
 build/*
 tmp/*
 buildscripts/deployWebVersion.sh
+local/*
 
 # Overrides
 !.gitkeep
