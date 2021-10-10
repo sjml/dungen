@@ -11,7 +11,7 @@ if host_machine.system() == 'darwin' and not get_option('debug')
 endif
 
 if get_option('debug')
-    add_global_arguments('-D_DEBUG', language: 'c')
+    add_global_arguments(['-D_DEBUG', '-DDEBUG'], language: 'c')
 endif
 
 
@@ -125,7 +125,7 @@ elif host_machine.system() == 'emscripten'
 endif
 
 
-sokol_inc_dirs = ['src', 'lib/sokol-5fbb6a2']
+sokol_inc_dirs = ['src', 'lib/sokol-3825314']
 dungen_inc_dirs += sokol_inc_dirs
 dungen_inc_dirs += [
     'lib/single-file'

@@ -5,7 +5,10 @@
 
 void InitializePlatform() {
     #if DEBUG
-        chdir("../Resources");
+        if (chdir("./Resources") != 0) {
+            fprintf(stderr, "ERROR: Could not find Resources directory. Exiting.\n");
+            exit(EXIT_FAILURE);
+        }
     #else
         CFBundleRef mainBundle = CFBundleGetMainBundle();
         CFURLRef resourcesURL = CFBundleCopyResourcesDirectoryURL(mainBundle);

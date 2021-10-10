@@ -12,7 +12,7 @@ sapp_desc sokol_main(int argc, char * argv[]) {
         .argc = argc,
         .argv = argv
     });
-    
+
     if (sargs_exists("startup")) {
         startupElement = sargs_value("startup");
     }

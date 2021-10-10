@@ -289,8 +289,10 @@ Outline* CreateOutline(TileSet* ts, float thickness, int type) {
     if (arrlen(bufferList) > 0) {
         o->numPoints = (size_t)arrlen(bufferList) / 2;
         o->buffer = sg_make_buffer(&(sg_buffer_desc){
-            .size = sizeof(float)*(int)arrlen(bufferList),
-            .content = bufferList,
+            .data = {
+                .ptr = bufferList,
+                .size = sizeof(float)*(int)arrlen(bufferList)
+            }
         });
         o->bindings = (sg_bindings) {
             .vertex_buffers[0] = o->buffer

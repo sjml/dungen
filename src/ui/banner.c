@@ -54,8 +54,7 @@ void _repositionBanners() {
         verts[6] = x1;
         verts[7] = y1;
         banners[i].vertBuffer = sg_make_buffer(&(sg_buffer_desc){
-            .content = verts,
-            .size = sizeof(verts)
+            .data = SG_RANGE(verts),
         });
     }
 }

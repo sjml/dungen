@@ -1,8 +1,9 @@
 ## TODO
 0. to resume actual work
     - build system cleanups
-        - update to latest sokol headers (and set icon on Windows [and Linux?])
+        - set icon on Windows (and Linux?)
         - figure out if iOS build is still possible? 
+            - https://betterprogramming.pub/writing-ios-apps-without-xcode-89450d0de21a
         - pin emscripten version
         - make debug/setup scripts too
         - setup run/launch stuff for VSCode -- also running release builds with dev scripts

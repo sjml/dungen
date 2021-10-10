@@ -67,8 +67,7 @@ void InitializeRendering() {
     UpdateRenderingDimensions();
 
     sg_buffer hexVertBuff = sg_make_buffer(&(sg_buffer_desc){
-        .size = sizeof(hexVerts),
-        .content = hexVerts,
+        .data = SG_RANGE(hexVerts),
     });
 
     bufferUpRequested = false;
@@ -76,7 +75,7 @@ void InitializeRendering() {
         .size = sizeof(TileDrawData) * (int)GetNumberOfTiles(),
         .usage = SG_USAGE_DYNAMIC
     });
-    sg_update_buffer(tileAttribBuff, GetTileStartPointer()->draw, sizeof(TileDrawData) * (int)GetNumberOfTiles());
+    sg_update_buffer(tileAttribBuff, &(sg_range){ GetTileStartPointer()->draw, sizeof(TileDrawData) * (int)GetNumberOfTiles() });
 
     hexDraw.bind = (sg_bindings){
         .vertex_buffers[0] = hexVertBuff,
@@ -120,8 +119,8 @@ void InitializeRendering() {
     });
 
     passAction = (sg_pass_action){
-        .colors[0] = { .action=SG_ACTION_CLEAR, .val={0.0f, 0.0f, 0.0f, 1.0f} }
-        // .colors[0] = { .action=SG_ACTION_CLEAR, .val={1.0f, 1.0f, 1.0f, 1.0f} }
+        .colors[0] = { .action=SG_ACTION_CLEAR, .value={0.0f, 0.0f, 0.0f, 1.0f} }
+        // .colors[0] = { .action=SG_ACTION_CLEAR, .value={1.0f, 1.0f, 1.0f, 1.0f} }
     };
 
     sds vsBasic = GetShaderPath("basic_vs");
@@ -150,10 +149,12 @@ void InitializeRendering() {
                 [0].format = SG_VERTEXFORMAT_FLOAT2
             }
         },
-        .blend = {
-            .enabled = true,
-            .src_factor_rgb = SG_BLENDFACTOR_SRC_ALPHA,
-            .dst_factor_rgb = SG_BLENDFACTOR_ONE_MINUS_SRC_ALPHA
+        .colors[0] = {
+            .blend = {
+                .enabled = true,
+                .src_factor_rgb = SG_BLENDFACTOR_SRC_ALPHA,
+                .dst_factor_rgb = SG_BLENDFACTOR_ONE_MINUS_SRC_ALPHA
+            }
         },
         .primitive_type = SG_PRIMITIVETYPE_TRIANGLE_STRIP
     });
@@ -307,7 +308,7 @@ void DrawShapeBuffer(sg_buffer buff, int numPoints, gbVec4 color, gbMat4 *matrix
     BasicUniforms bu;
     bu.matrix = *matrix;
     bu.color = color;
-    sg_apply_uniforms(SG_SHADERSTAGE_VS, 0, &bu, sizeof(BasicUniforms));
+    sg_apply_uniforms(SG_SHADERSTAGE_VS, 0, &SG_RANGE(bu));
     sg_apply_bindings(&(sg_bindings){
         .vertex_buffers[0] = buff,
     });
@@ -317,7 +318,7 @@ void DrawShapeBuffer(sg_buffer buff, int numPoints, gbVec4 color, gbMat4 *matrix
 int Render() {
     if (sapp_frame_count() > 0 && bufferUpRequested) {
         // sokol can't currently do partial updates of a buffer
-        sg_update_buffer(tileAttribBuff, GetTileStartPointer()->draw, sizeof(TileDrawData) * (int)GetNumberOfTiles());
+        sg_update_buffer(tileAttribBuff, &(sg_range){ GetTileStartPointer()->draw, sizeof(TileDrawData) * (int)GetNumberOfTiles() });
         bufferUpRequested = false;
     }
 
@@ -325,7 +326,7 @@ int Render() {
 
     sg_apply_pipeline(hexDraw.pipe);
     sg_apply_bindings(&hexDraw.bind);
-    sg_apply_uniforms(SG_SHADERSTAGE_VS, 0, &perspectiveMatrix, sizeof(gbMat4));
+    sg_apply_uniforms(SG_SHADERSTAGE_VS, 0, &SG_RANGE(perspectiveMatrix));
     sg_draw(0, 6, (int)GetNumberOfTiles());
 
     sg_apply_pipeline(basicDraw.pipe);
@@ -335,7 +336,7 @@ int Render() {
         if (regions[ri]->outline != NULL) {
             sg_apply_bindings(&(regions[ri]->outline->bindings));
             bu.color = regions[ri]->outline->color;
-            sg_apply_uniforms(SG_SHADERSTAGE_VS, 0, &bu, sizeof(BasicUniforms));
+            sg_apply_uniforms(SG_SHADERSTAGE_VS, 0, &SG_RANGE(bu));
             sg_draw(0, (int)regions[ri]->outline->numPoints, 1);
         }
     }

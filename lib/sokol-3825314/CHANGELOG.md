@@ -1,6 +1,145 @@
 ## Updates
 
-> NOTE: this list will usually only be updated with changes that affect the public APIs
+- **08-Oct-2021**: texture compression support in sokol_gfx.h has been revisited:
+    - tighter validation checks on texture creation:
+        - content data validation now also happens in ```sg_make_image()``` (previously only in ```sg_update_image()```)
+        - validate that compressed textures are immutable
+        - separate "no data" validation checks for immutable vs dynamic/stream textures
+        - provided data size for creating or updating textures must match the expected surface sizes exactly
+    - fix PVRTC row and surface pitch computation according to the GL PVRTC extension spec
+    - better adhere to Metal documentation for the ```MTLTexture.replaceRegion``` parameters (when bytesPerImage is expected to be zero or not)
+
+- **02-Sep-2021**: some minor non-breaking additions:
+    - sokol_app.h: new events FOCUSED and UNFOCUSED to indicate that the
+      window has gained or lost the focused state (Win32: WM_SETFOCUS/WM_KILLFOCUS,
+      macOS: windowDidBecomeKey/windowDidResignKey, X11: FocusIn/FocusOut,
+      HTML5: focus/blur).
+    - sokol_app.h Emscripten backend: the input event keycode is now extracted
+      from the HTML5 code string which yields the actual unmapped virtual key code.
+
+- **21-Aug-2021**: some minor API tweaks in sokol_gl.h and sokol_debugtext.h,
+  one of them breaking (still minor though):
+    - sokol_gl.h has a new function ```sgl_default_context()``` which returns the
+      default context handle, it's the same as the global constant SGL_DEFAULT_CONTEXT,
+      but wrapping this in a function is better for language bindings
+    - ...and a similar function in sokol_debugtext.h: ```sdtx_default_context()```
+    - The sokol_gl.h function ```sgl_default_pipeline()``` has been renamed to
+      ```sgl_load_default_pipeline()```. This fits better with the related
+      function ```sgl_load_pipeline()``` and doesn't 'semantically clash'
+      with the new function sgl_default_context(). The sgl_default_pipeline()
+      function is rarely used, so it's quite unlikely that this change breaks
+      your code.
+
+- **19-Aug-2021**: sokol_gl.h gained rendering context support, this allows
+  sokol-gl to render into different sokol-gfx render passes. No changes are
+  needed for existing sokol-gl code. Check the updated
+  [header documentation](https://github.com/floooh/sokol/blob/master/util/sokol_gl.h)
+  and the new sample
+  [sgl-context-sapp](https://floooh.github.io/sokol-html5/sgl-context-sapp.html)
+  for details!
+
+- **21-Jun-2021**: A new utility header sokol_color.h has been added, which adds
+  sokol_gfx.h-compatible named color constants and a handful initial utility
+  functions. See the [header documentation](https://github.com/floooh/sokol/blob/master/util/sokol_color.h)
+  for details. Many thanks to Stuart Adams (@nyalloc) for contributing the header!
+
+- **12-Apr-2021**: Minor new feature in sokol_app.h: mouse buttons are now
+  also reported as modifier flags in most input events (similar to the
+  Ctrl-, Alt-, Shift- and Super-key modifiers). This lets you quickly check
+  what mouse buttons are currently pressed in any input event without having
+  to keep track of pressed mouse buttons yourself. This is implemented in the following
+  sokol_app.h backends: Win32, UWP, Emscripten, X11 and macOS. Example
+  code is in the [events-sapp.cc](https://floooh.github.io/sokol-html5/events-sapp.html) sample
+
+- **10-Apr-2021**: followup fixes from yesterday: custom icon support on macOS
+  has been added (since macOS has no regular window icons, the dock icon is
+  updated instead), and a bugfix in the internal helper which select the
+  best matching candidate image (this actually always selected the first
+  candidate image)
+
+- **09-Apr-2021**: sokol_app.h now allows to programmatically set the window
+  icon in the Win32, X11 and HTML5 backends. Search for "WINDOW ICON SUPPORT"
+  in sokol_app.h for documentation, and see the new
+  [icon sample](https://floooh.github.io/sokol-html5/icon-sapp.html) for example code.
+
+- **01-Apr-2021**: some fixes in sokol_app.h's iOS backend:
+    - In the iOS Metal backend, high-dpi vs low-dpi works again. Some time
+    ago (around iOS 12.x) MTKView started to ignore the contentScaleFactor
+    property, which lead to sokol_app.h always setting up a HighDPI
+    framebuffer even when sapp_desc.high_dpi wasn't set. The fix is to set
+    the MTKView's drawableSize explicitely now.
+    - The iOS GL backend didn't support MSAA multisampling so far, this has
+    been fixed now, but only one MSAA mode (4x) is available, which will be
+    selected when sapp_desc.sample_count is greater than 1.
+
+- **31-Mar-2021**: sokol_audio.h on macOS no longer includes system framework
+  headers (AudioToolbox/AudioToolbox.h), instead the necessary declarations
+  are embedded directly in sokol_audio.h (to get the old behaviour and
+  force inclusion of AudioToolbox/AudioToolbox.h, define
+  ```SAUDIO_OSX_USE_SYSTEM_HEADERS``` before including the sokol_audio.h
+  implementation). This "fix" is both an experiment and an immediate workaround
+  for a current issue in Zig's HEAD version (what will eventually become
+  zig 0.8.0). See this issue for details: https://github.com/ziglang/zig/issues/8360).
+  The experiment is basically to see whether this approach generally makes sense
+  (replacing system headers with embedded declarations, so that the sokol headers
+  only depend on C standard library headers). This approach might
+  simplify cross-compilation and integration with other languages than C and C++.
+
+- **20-Mar-2021**: The Windows-specific OpenGL loader, and the platform-specific
+GL header includes have been moved from sokol_app.h to sokol_gfx.h. This means:
+  - In general, the sokol_gfx.h implementation can now simply be included
+    without having to include other headers which provide the GL API declarations
+    first (e.g. when sokol_gfx.h is used without sokol_app.h, you don't need to
+    use a GL loader, or include the system-specific GL headers yourself).
+  - When sokol_gfx.h is used together with sokol_app.h, the include order
+    for the implementations doesn't matter anymore (until now, the sokol_app.h
+    implementation had to be included before the sokol_gfx.h implementation).
+  - The only "downside" (not really a downside) is that sokol_gfx.h now has
+    platform detection ifdefs to include the correct GL headers for a given
+    platform. Until now this problem was "delegated" to the library user.
+  - The old macro **SOKOL_WIN32_NO_GL_LOADER** has been removed, and replaced
+    with a more general **SOKOL_EXTERNAL_GL_LOADER**. Define this before
+    including the sokol_gfx.h implementation if you are using your own GL
+    loader or provide the GL API declarations in any other way. In this case,
+    sokol_gfx.h will not include any platform GL headers, and the embedded
+    Win32 GL loader will be disabled.
+
+- **22-Feb-2021**: Mouse input latency in sokol_app.h's macOS backend has been
+  quite significantly reduced, please see the detailed explanation [in this
+  PR](https://github.com/floooh/sokol/pull/483). Many thanks to @randrew for
+  the PR!
+
+- **19-Feb-2021**: sokol_app.h learned some Windows-specific config options
+to redirect stdout/stderr to the parent terminal or a separate console
+window, and allow outputting UTF-8 encoded text. For details, search for
+"WINDOWS CONSOLE OUTPUT" in
+[sokol_app.h](https://github.com/floooh/sokol/blob/master/sokol_app.h). Many
+thanks to @garettbass for the initial PR!
+
+- **17-Feb-2021**: When compiled for iOS, the sokol_audio.h CoreAudio backend now
+uses the **AVAudioSession** class to activate and deactivate audio output as needed.
+This fixes sokol_audio.h for iPhones (so far, sokol_audio.h accidentally only worked
+for iPads). Please see [this issue](https://github.com/floooh/sokol/issues/431) for details.
+A somewhat unfortunate side effect of this fix is that sokol_audio.h must now be compiled
+as Objective-C when targetting iOS, also note that a new framework must be linked: ```AVFoundation```.
+Many thanks to @oviano for providing the PR!
+
+- **14-Feb-2021**: The Dear ImGui rendering backend in [sokol_imgui.h](https://github.com/floooh/sokol/blob/master/util/sokol_imgui.h) has been rewritten to only do a single
+buffer-update per frame each for vertex- and index-data. This addresses performance-problems
+with sg_append_buffer() in the GL backend on some platforms (see [this issue](https://github.com/floooh/sokol/issues/399) for details.
+
+- **13-Feb-2021**: A new utility header [sokol_nuklear.h](https://github.com/floooh/sokol/blob/master/util/sokol_nuklear.h)
+has been added which implements a rendering backend for [Nuklear](https://github.com/Immediate-Mode-UI/Nuklear)
+on top of sokol_gfx.h. Also see the new sample [nuklear-sapp](https://floooh.github.io/sokol-html5/nuklear-sapp.html).
+Many thanks to **@wmerrifield** for the PR!
+
+- **10-Feb-2021**: The breaking API-update has been merged (mainly sokol_gfx.h).
+Please see [this blogpost](https://floooh.github.io/2021/02/07/sokol-api-overhaul.html)
+and the updates [sokol samples](https://floooh.github.io/sokol-html5/) for details.
+I also created a git tag named 'pre-feb2021-api-changes' which captures the previous
+state in all related projects. Please also update the [sokol-tools-bin](https://github.com/floooh/sokol-tools-bin) if you're using the sokol-shdc shader compiler.
+
+- **07-Feb-2021**: A PSA about upcoming breaking changes in (mainly) sokol_gfx.h: https://floooh.github.io/2021/02/07/sokol-api-overhaul.html
 
 - **20-Dec-2020**: A couple of minor breaking changes in the sokol_gfx.h and
 sokol_app.h APIs as preparation for the upcoming automatic language binding

@@ -155,9 +155,9 @@ void LoadFont(const char* refName, const char* filePath, float pointSize, bool i
         sg_image_desc desc = (sg_image_desc){
             .width = TEXT_ATLAS_SIZE,
             .height = TEXT_ATLAS_SIZE,
-            .content.subimage[0][0] = {
+            .data.subimage[0][0] = {
                 .ptr = localAtlas,
-                .size = sizeof(localAtlas)
+                .size = TEXT_ATLAS_SIZE * TEXT_ATLAS_SIZE * sizeof(unsigned char)
             },
             .pixel_format = SG_PIXELFORMAT_R8,
             .wrap_u = SG_WRAP_CLAMP_TO_EDGE,
@@ -230,7 +230,7 @@ void InitializeText() {
                 [0] = { .name = "text_vert_uniforms", .type = SG_UNIFORMTYPE_FLOAT4, .array_count = 4 }
             }
         },
-        .fs.images[0] = { .name="textAtlas", .type=SG_IMAGETYPE_2D },
+        .fs.images[0] = { .name="textAtlas", .image_type = SG_IMAGETYPE_2D },
         .fs.uniform_blocks[0] = {
             .size = sizeof(gbVec4),
             .uniforms = {
@@ -248,10 +248,12 @@ void InitializeText() {
                 [0].format = SG_VERTEXFORMAT_FLOAT4
             }
         },
-        .blend = {
-            .enabled = true,
-            .src_factor_rgb = SG_BLENDFACTOR_SRC_ALPHA,
-            .dst_factor_rgb = SG_BLENDFACTOR_ONE_MINUS_SRC_ALPHA
+        .colors[0] = {
+            .blend = {
+                .enabled = true,
+                .src_factor_rgb = SG_BLENDFACTOR_SRC_ALPHA,
+                .dst_factor_rgb = SG_BLENDFACTOR_ONE_MINUS_SRC_ALPHA
+            }
         },
         .primitive_type = SG_PRIMITIVETYPE_TRIANGLE_STRIP
     });
@@ -299,7 +301,7 @@ TextInfo* CreateTextInfo(const char* text, const char* fontName, gbVec2 pos, flo
     ti->color = color;
 
     RepositionTextInfo(ti, pos);
-    
+
     if (strlen(ti->text) == 0) {
         return ti;
     }
@@ -360,8 +362,10 @@ TextInfo* CreateTextInfo(const char* text, const char* fontName, gbVec2 pos, flo
     }
     ti->bindings = (sg_bindings) {
         .vertex_buffers[0] = sg_make_buffer(&(sg_buffer_desc){
-            .size = sizeof(float) * (int)arrlen(vertList),
-            .content = vertList,
+            .data = {
+                .ptr = vertList,
+                .size = sizeof(float) * (int)arrlen(vertList)
+            }
         }),
         .fs_images[0] = fd->bindings.fs_images[0],
     };
@@ -400,8 +404,8 @@ void DrawText(TextInfo* ti) {
     gbMat4 posMat;
     memcpy(&posMat, &ti->matrix, sizeof(gbMat4));
     gb_mat4_mul(&posMat, &bu.matrix, &posMat);
-    sg_apply_uniforms(SG_SHADERSTAGE_VS, 0, &posMat, sizeof(gbMat4));
-    sg_apply_uniforms(SG_SHADERSTAGE_FS, 0, &ti->color, sizeof(gbVec4));
+    sg_apply_uniforms(SG_SHADERSTAGE_VS, 0, &SG_RANGE(posMat));
+    sg_apply_uniforms(SG_SHADERSTAGE_FS, 0, &SG_RANGE(ti->color));
 
     sg_apply_bindings(&ti->bindings);
     sg_draw(0, ti->numGlyphs * 6, 1);
