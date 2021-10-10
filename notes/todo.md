@@ -1,6 +1,6 @@
 ## TODO
 0. to resume actual work
-    - update to latest sokol headers (and set icon on Windows)
+    - update to latest sokol headers (and set icon on Windows [and Linux?])
     - refresh on chamber progress (merging, moving contents, etc.)
         - complete test setup and execution
         - what is happening with the storage? 
@@ -32,6 +32,7 @@
 
 ## Tech Debt
 * more graceful failure (at least on Windows) if can't find resources directory
+* figure out why Lua struggles compiling with C11 but only on Ubuntu
 * world.c could use a refactor
 * note at the top of attributes.c about simplifying it
 * RenderingRegions is a holdover from when they were bare TileSets; think about just making a permalist like Agents and TileData have (though TileData's is more by rendering necessity...)

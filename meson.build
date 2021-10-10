@@ -1,5 +1,4 @@
 # TODO:
-#   - Linux build
 #   - WASM build
 #   - iOS build?
 
@@ -61,7 +60,11 @@ lua_inc_dirs = [
     'lib/luafilesystem-1.7.0-2/src'
 ]
 dungen_inc_dirs += lua_inc_dirs
-lua = static_library('lua', sources: lua_srcs, include_directories: lua_inc_dirs)
+lua = static_library('lua',
+    sources: lua_srcs,
+    include_directories: lua_inc_dirs,
+    override_options : ['c_std=none'] # I don't like this, but Ubuntu doesn't like compiling Lua with C11?
+)
 
 sds_inc_dirs = ['lib/sds-0bb446e']
 dungen_inc_dirs += sds_inc_dirs
@@ -141,6 +144,10 @@ elif build_machine.system() == 'windows'
         'src/infrastructure/sokol_impl.c',
         'platform/windows/GL_headers/glad.c'
     ]
+elif build_machine.system() == 'linux'
+    dungen_srcs += [
+        'src/infrastructure/sokol_impl.c'
+    ]
 endif
 
 
@@ -159,6 +166,17 @@ if build_machine.system() == 'darwin'
 elif build_machine.system() == 'windows'
     dungen_deps = dependency('gl')
     dungen_srcs += import('windows').compile_resources('platform/windows/DunGen/DunGen.rc')
+elif build_machine.system() == 'linux'
+    cc = meson.get_compiler('c')
+    dungen_deps = [
+        dependency('threads'),
+        dependency('gl'),
+        cc.find_library('m', required : false),
+        cc.find_library('dl'),
+        cc.find_library('X11'),
+        cc.find_library('Xi'),
+        cc.find_library('Xcursor')
+    ]
 endif
 
 executable('DunGen',
@@ -173,6 +191,6 @@ if build_machine.system() == 'darwin'
     install_data('platform/macOS/Info.plist', install_dir: 'Contents')
     install_subdir('Resources', install_dir: 'Contents')
     meson.add_install_script('buildscripts/compileIconsMac.sh')
-elif build_machine.system() == 'windows'
+elif build_machine.system() == 'windows' or build_machine.system() == 'linux'
     install_subdir('Resources', install_dir: '')
 endif
