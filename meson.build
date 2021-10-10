@@ -1,7 +1,5 @@
-# TODO:
-#   - iOS build?
-
 project('DunGen', 'c',
+    license: 'MIT',
     default_options: ['c_std=c11']
 )
 

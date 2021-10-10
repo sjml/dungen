@@ -10,7 +10,6 @@
         "request": "launch",
         "program": "${workspaceFolder}/build/DunGen",
         "args": [],
-        "preLaunchTask": ,
         "stopAtEntry": false,
         "cwd": "${workspaceFolder}",
         "environment": [],
