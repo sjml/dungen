@@ -1,12 +1,11 @@
 # TODO:
-#   - WASM build
 #   - iOS build?
 
 project('DunGen', 'c',
     default_options: ['c_std=c11']
 )
 
-if build_machine.system() == 'darwin' and not get_option('debug')
+if host_machine.system() == 'darwin' and not get_option('debug')
     add_global_arguments(['-arch', 'arm64', '-arch', 'x86_64'], language: 'c')
     add_global_link_arguments(['-arch', 'arm64', '-arch', 'x86_64'], language: 'c')
 endif
@@ -114,13 +113,15 @@ dungen_srcs = [
     'src/ui/tile_choice.c'
 ]
 
-if build_machine.system() == 'darwin'
+if host_machine.system() == 'darwin'
     dungen_srcs += 'src/platform/macOS.c'
-elif build_machine.system() == 'linux'
+elif host_machine.system() == 'linux'
     dungen_srcs += 'src/platform/linux.c'
-elif build_machine.system() == 'windows'
+elif host_machine.system() == 'windows'
     dungen_srcs += 'src/platform/windows.c'
     dungen_inc_dirs += ['platform/windows/GL_headers']
+elif host_machine.system() == 'emscripten'
+    dungen_srcs += 'src/platform/wasm.c'
 endif
 
 
@@ -132,19 +133,23 @@ dungen_inc_dirs += [
 
 
 dungen_libs = [lua, sqlite, sds, pqueue, pcg]
-if build_machine.system() == 'darwin'
+if host_machine.system() == 'darwin'
     sokol = static_library('sokol',
         'src/infrastructure/sokol_impl.c',
         include_directories: dungen_inc_dirs,
         c_args: ['-x', 'objective-c']
     )
     dungen_libs += sokol
-elif build_machine.system() == 'windows'
+elif host_machine.system() == 'windows'
     dungen_srcs += [
         'src/infrastructure/sokol_impl.c',
         'platform/windows/GL_headers/glad.c'
     ]
-elif build_machine.system() == 'linux'
+elif host_machine.system() == 'linux'
+    dungen_srcs += [
+        'src/infrastructure/sokol_impl.c'
+    ]
+elif host_machine.system() == 'emscripten'
     dungen_srcs += [
         'src/infrastructure/sokol_impl.c'
     ]
@@ -152,7 +157,7 @@ endif
 
 
 dungen_deps = []
-if build_machine.system() == 'darwin'
+if host_machine.system() == 'darwin'
     dungen_deps = dependency(
         'appleframeworks',
         modules: [
@@ -163,10 +168,10 @@ if build_machine.system() == 'darwin'
             'opengl'
         ]
     )
-elif build_machine.system() == 'windows'
+elif host_machine.system() == 'windows'
     dungen_deps = dependency('gl')
     dungen_srcs += import('windows').compile_resources('platform/windows/DunGen/DunGen.rc')
-elif build_machine.system() == 'linux'
+elif host_machine.system() == 'linux'
     cc = meson.get_compiler('c')
     dungen_deps = [
         dependency('threads'),
@@ -177,6 +182,8 @@ elif build_machine.system() == 'linux'
         cc.find_library('Xi'),
         cc.find_library('Xcursor')
     ]
+elif host_machine.system() == 'emscripten'
+
 endif
 
 executable('DunGen',
@@ -187,10 +194,17 @@ executable('DunGen',
     install: true
 )
 
-if build_machine.system() == 'darwin'
+if host_machine.system() == 'darwin'
     install_data('platform/macOS/Info.plist', install_dir: 'Contents')
     install_subdir('Resources', install_dir: 'Contents')
     meson.add_install_script('buildscripts/compileIconsMac.sh')
-elif build_machine.system() == 'windows' or build_machine.system() == 'linux'
+elif host_machine.system() == 'windows' or host_machine.system() == 'linux'
     install_subdir('Resources', install_dir: '')
+elif host_machine.system() == 'emscripten'
+    # this if statement is so the configuration can run before the files
+    #   exist; we'll do a reconfigure before install
+    if import('fs').exists(meson.current_build_dir() + '/DunGen.data')
+        install_data(meson.current_build_dir() + '/DunGen.data', install_dir: '.')
+        install_data(meson.current_build_dir() + '/DunGen.html', install_dir: '.')
+    endif
 endif

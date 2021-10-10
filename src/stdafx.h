@@ -19,6 +19,7 @@
 
 #ifdef __EMSCRIPTEN__
     #define SOKOL_GLES3
+    extern char* strdup(const char*);
 #else
     #ifdef __APPLE__
         #include "TargetConditionals.h"

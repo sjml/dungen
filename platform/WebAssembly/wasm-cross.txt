@@ -1,0 +1,16 @@
+[binaries]
+c = '/Users/shane/emsdk/upstream/emscripten/emcc'
+cpp = '/Users/shane/emsdk/upstream/emscripten/em++'
+ar = '/Users/shane/emsdk/upstream/emscripten/emar'
+
+[built-in options]
+c_args = []
+c_link_args = ['-s', 'WASM=1', '-s', '--preload-file', '../Resources', '-s', 'MIN_WEBGL_VERSION=2', '-s', 'MAX_WEBGL_VERSION=2', '-s', 'ASSERTIONS=0', '-s', 'ALLOW_MEMORY_GROWTH=1', '-s', 'MALLOC=emmalloc', '--closure=1', '--shell-file', '../platform/WebAssembly/DunGen.html.template', '-o', 'DunGen.html']
+cpp_args = []
+cpp_link_args = ['-s', 'WASM=1', '-s', '--preload-file', '../Resources', '-s', 'MIN_WEBGL_VERSION=2', '-s', 'MAX_WEBGL_VERSION=2', '-s', 'ASSERTIONS=0', '-s', 'ALLOW_MEMORY_GROWTH=1', '-s', 'MALLOC=emmalloc', '--closure=1', '--shell-file', '../platform/WebAssembly/DunGen.html.template', '-o', 'DunGen.html']
+
+[host_machine]
+system = 'emscripten'
+cpu_family = 'wasm32'
+cpu = 'wasm32'
+endian = 'little'

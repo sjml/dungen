@@ -5,7 +5,7 @@ set -e
 cd "$(dirname "$0")"
 cd ../..
 
-meson --buildtype=release --prefix=$(pwd)/build/DunGen.app --bindir=Contents/MacOS build
+meson --buildtype=release --prefix=$(pwd)/build/Dungen.dist/DunGen.app --bindir=Contents/MacOS build
 meson compile -C build
 cd build
 meson install

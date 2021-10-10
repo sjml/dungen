@@ -1,5 +1,11 @@
 {
     "files.associations": {
-        "*.i": "swig"
+        "Brewfile": "ruby",
+        ".pylintrc": "ini",
+        "*.html": "html",
+        "*.babylon": "json",
+        "*.i": "swig",
+        "stdafx.h": "c",
+        "stdlib.h": "c"
     }
 }
