@@ -43,7 +43,6 @@
 * world.c could use a refactor
 * note at the top of attributes.c about simplifying it
 * RenderingRegions is a holdover from when they were bare TileSets; think about just making a permalist like Agents and TileData have (though TileData's is more by rendering necessity...)
-* windows x64 doesn't build because I am a lazy programmer and my use of integers (esp. pointers) is not rigorously careful. macos is cool with it; windows less so. eventually this should get fixed, but for now, keeping Windows to 32-bit is fine
 * typemaps should reject inputs that are not tables
 * add way to modify attributes instead of having to get/set round-trip through SQLite
 * overusing the stretchy buffer right now; look for more chances to just use a static array
