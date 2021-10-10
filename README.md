@@ -17,13 +17,6 @@ I've structured it something like a computer operating on the hex grid like a se
 The simulation scripts are located in the `Resources/scripts/simulation` directory on Windows, and on the Mac they are in the .app directory's `Contents/Resources/scripts/simulation` (right-click --> "Show Package Contents").
 
 ## Building
-Meson 4 lyfe
+Meson
 
-~~I mostly develop on a Mac, but spend a non-trivial amount of time in Windows, too, so it gets checked there periodically. There's an Xcode project and a Visual Studio solution, and I try to keep them in sync.~~ 
-
-~~There's also a CMake configuration that I really only use to build it for Emscripten and on Linux for those occasions when I do so. It might be out of sync with the other build systems. (Yes, I could just use CMake for everything but it makes some UGLY projects, so I kind of treat it as just a more readable [to me] Makefile.)~~
-
-To build on Ubuntu (the only Linux I test on), you need to first use apt to install: `build-essential meson clang libx11-dev libxi-dev libxcursor-dev libgl-dev`. This list could maybe be trimmed down a bit, but it works. 
-
-- libpthread-stubs0-dev?
-- note clang only
+(TODO: expand and explain)
