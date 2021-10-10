@@ -1,6 +1,11 @@
 ## TODO
 0. to resume actual work
-    - update to latest sokol headers (and set icon on Windows [and Linux?])
+    - build system cleanups
+        - update to latest sokol headers (and set icon on Windows [and Linux?])
+        - figure out if iOS build is still possible? 
+        - pin emscripten version
+        - make debug/setup scripts too
+        - setup run/launch stuff for VSCode -- also running release builds with dev scripts
     - refresh on chamber progress (merging, moving contents, etc.)
         - complete test setup and execution
         - what is happening with the storage? 
