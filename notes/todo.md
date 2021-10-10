@@ -1,12 +1,12 @@
 ## TODO
 0. to resume actual work
     - build system cleanups
-        - set icon on Windows (and Linux?)
         - figure out if iOS build is still possible? 
             - https://betterprogramming.pub/writing-ios-apps-without-xcode-89450d0de21a
         - pin emscripten version
         - make debug/setup scripts too
         - setup run/launch stuff for VSCode -- also running release builds with dev scripts
+        - trim out the warnings on all platforms :(
     - refresh on chamber progress (merging, moving contents, etc.)
         - complete test setup and execution
         - what is happening with the storage? 
@@ -35,6 +35,7 @@
 * handle newlines in text rendering? (and fix Great Wyrm label)
 * outlines flip edge alignment when regions have disjoint sections
 * why is tile choice not using SetTileOutline?
+* Linux snap package or whatever the kids are doing now?
 
 ## Tech Debt
 * more graceful failure (at least on Windows) if can't find resources directory
