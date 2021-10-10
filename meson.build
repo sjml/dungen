@@ -1,6 +1,5 @@
 # TODO:
 #   - Linux build
-#   - Windows build
 #   - WASM build
 #   - iOS build?
 
@@ -11,6 +10,10 @@ project('DunGen', 'c',
 if build_machine.system() == 'darwin'
     add_global_arguments(['-arch', 'arm64', '-arch', 'x86_64'], language: 'c')
     add_global_link_arguments(['-arch', 'arm64', '-arch', 'x86_64'], language: 'c')
+endif
+
+if get_option('debug')
+    add_global_arguments('-D_DEBUG', language: 'c')
 endif
 
 
@@ -114,6 +117,7 @@ elif build_machine.system() == 'linux'
     dungen_srcs += 'src/platform/linux.c'
 elif build_machine.system() == 'windows'
     dungen_srcs += 'src/platform/windows.c'
+    dungen_inc_dirs += ['platform/windows/GL_headers']
 endif
 
 
@@ -132,8 +136,11 @@ if build_machine.system() == 'darwin'
         c_args: ['-x', 'objective-c']
     )
     dungen_libs += sokol
-else
-    dungen_srcs += 'src/infrastructure/sokol_impl.c'
+elif build_machine.system() == 'windows'
+    dungen_srcs += [
+        'src/infrastructure/sokol_impl.c',
+        'platform/windows/GL_headers/glad.c'
+    ]
 endif
 
 
@@ -149,6 +156,9 @@ if build_machine.system() == 'darwin'
             'opengl'
         ]
     )
+elif build_machine.system() == 'windows'
+    dungen_deps = dependency('gl')
+    dungen_srcs += import('windows').compile_resources('platform/windows/DunGen/DunGen.rc')
 endif
 
 executable('DunGen',
@@ -163,4 +173,6 @@ if build_machine.system() == 'darwin'
     install_data('platform/macOS/Info.plist', install_dir: 'Contents')
     install_subdir('Resources', install_dir: 'Contents')
     meson.add_install_script('buildscripts/compileIconsMac.sh')
+elif build_machine.system() == 'windows'
+    install_subdir('Resources', install_dir: '')
 endif

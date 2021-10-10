@@ -15,13 +15,13 @@ char* readTextFile(const char* filename) {
     fseek(f, 0, SEEK_END);
     long length = ftell(f);
     fseek(f, 0, SEEK_SET);
-    char* buffer = (char*)malloc(length + 1);
+    char* buffer = (char*)malloc((length + 1) * sizeof(char));
     if (!buffer) {
         return 0;
     }
-    /* size_t read_count = */ fread(buffer, 1, length, f);
+    size_t read_count = fread(buffer, sizeof(char), length, f);
     fclose(f);
-    buffer[length] = '\0';
+    buffer[read_count * sizeof(char)] = '\0';
     return buffer;
 }
 
