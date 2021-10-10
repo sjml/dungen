@@ -6,7 +6,7 @@ project('DunGen', 'c',
     default_options: ['c_std=c11']
 )
 
-if build_machine.system() == 'darwin'
+if build_machine.system() == 'darwin' and not get_option('debug')
     add_global_arguments(['-arch', 'arm64', '-arch', 'x86_64'], language: 'c')
     add_global_link_arguments(['-arch', 'arm64', '-arch', 'x86_64'], language: 'c')
 endif
