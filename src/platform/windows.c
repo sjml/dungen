@@ -16,11 +16,14 @@ void InitializePlatform() {
         }
     #endif
 
-    unsigned int smallDataLength, smallImageWidth, smallImageHeight;
+    unsigned int smallDataLength;
+    int smallImageWidth, smallImageHeight;
     const unsigned char* small = GetRawImageData("images/appicons/128.png", &smallDataLength, &smallImageWidth, &smallImageHeight);
-    unsigned int mediumDataLength, mediumImageWidth, mediumImageHeight;
+    unsigned int mediumDataLength;
+    int mediumImageWidth, mediumImageHeight;
     const unsigned char* medium = GetRawImageData("images/appicons/256.png", &mediumDataLength, &mediumImageWidth, &mediumImageHeight);
-    unsigned int largeDataLength, largeImageWidth, largeImageHeight;
+    unsigned int largeDataLength;
+    int largeImageWidth, largeImageHeight;
     const unsigned char* large = GetRawImageData("images/appicons/512.png", &largeDataLength, &largeImageWidth, &largeImageHeight);
 
     const sapp_icon_desc icon_desc = {

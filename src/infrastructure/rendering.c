@@ -190,8 +190,6 @@ void FinalizeRendering() {
 
     #if !(DUNGEN_MOBILE)
         sg_shutdown();
-        // glfwDestroyWindow(window);
-        // glfwTerminate();
     #endif // !(DUNGEN_MOBILE)
 }
 

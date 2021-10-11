@@ -33,6 +33,12 @@ else
 endif
 
 
+if build_machine.system() == 'linux'
+    exe_args += ['-D_GNU_SOURCE']
+endif
+
+
+
 dungen_inc_dirs = []
 
 lua_srcs = [

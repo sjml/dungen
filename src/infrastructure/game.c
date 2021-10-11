@@ -57,7 +57,7 @@ void SeedRandom(uint64_t seed, uint64_t seq) {
         sdsfree(randomSeedString);
     }
     randomSeedString = sdsempty();
-    randomSeedString = sdscatprintf(randomSeedString, "%llu///%llu", seed, seq);
+    randomSeedString = sdscatprintf(randomSeedString, "%" PRIu64 "///%" PRIu64, seed, seq);
     printf("Random Seed: %s\n\n", randomSeedString);
     pcg32_srandom_r(&randomState, seed, seq);
 }
