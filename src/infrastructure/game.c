@@ -171,7 +171,7 @@ void _RunEvents() {
             // no-op
         }
         else if (event->type == SAPP_EVENTTYPE_QUIT_REQUESTED) {
-            // no-op
+            // no-op; already dealt with in immediate handler
         }
         else if (event->type == SAPP_EVENTTYPE_RESIZED) {
             UpdateRenderingDimensions();
@@ -216,6 +216,12 @@ void _RunEvents() {
             }
         }
         else if (event->type == SAPP_EVENTTYPE_TOUCHES_CANCELLED) {
+            // no-op
+        }
+        else if (event->type == SAPP_EVENTTYPE_FOCUSED) {
+            // no-op
+        }
+        else if (event->type == SAPP_EVENTTYPE_UNFOCUSED) {
             // no-op
         }
         #if DEBUG
