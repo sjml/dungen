@@ -17,11 +17,11 @@ endif
 lib_args = []
 exe_args = []
 if build_machine.system() == 'windows'
-    lib_args += '/w' # no warnings
+    lib_args += '/W0' # no warnings
 
     exe_args += [
-        '/Wall', '/WX', # all warnings, and treat as errors
-        '/external:anglebrackets', '/external:w', # don't warn for any files imported with angle brackets (external)
+        '/W4', '/WX', # all warnings, and treat as errors
+        '/external:anglebrackets', '/external:W0', # don't warn for any files imported with angle brackets (external)
     ]
 else
     lib_args += '-w' # no warnings
