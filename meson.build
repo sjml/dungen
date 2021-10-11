@@ -12,6 +12,18 @@ if get_option('debug')
     add_global_arguments(['-D_DEBUG', '-DDEBUG'], language: 'c')
 endif
 
+# By default, don't show any warnings; we'll enable them for our client code.
+#   (If there are warnings in library code, that's not something we're gonna fix.)
+lib_args = []
+dungen_args = []
+if build_machine.system() == 'windows'
+    lib_args += '/W0'
+    dungen_args += ['/W4', '/external:anglebrackets', '/external:W0']
+else
+    lib_args += '-w'
+    dungen_args += '-Wall'
+endif
+
 
 dungen_inc_dirs = []
 
@@ -60,35 +72,40 @@ dungen_inc_dirs += lua_inc_dirs
 lua = static_library('lua',
     sources: lua_srcs,
     include_directories: lua_inc_dirs,
-    override_options : ['c_std=none'] # I don't like this, but Ubuntu doesn't like compiling Lua with C11?
+    override_options: ['c_std=none'], # I don't like this, but Ubuntu doesn't like compiling Lua with C11?
+    c_args: lib_args
 )
 
 sds_inc_dirs = ['lib/sds-0bb446e']
 dungen_inc_dirs += sds_inc_dirs
 sds = static_library('sds',
     sources: 'lib/sds-0bb446e/sds.c',
-    include_directories: sds_inc_dirs
+    include_directories: sds_inc_dirs,
+    c_args: lib_args
 )
 
 sqlite_inc_dirs = ['lib/sqlite-amalgamation-3290000']
 dungen_inc_dirs += sqlite_inc_dirs
 sqlite = static_library('sqlite',
     sources: 'lib/sqlite-amalgamation-3290000/sqlite3.c',
-    include_directories: sqlite_inc_dirs
+    include_directories: sqlite_inc_dirs,
+    c_args: lib_args
 )
 
 pqueue_inc_dirs = ['lib/libpqueue-f319ea0/src']
 dungen_inc_dirs += pqueue_inc_dirs
 pqueue = static_library('pqueue',
     sources: 'lib/libpqueue-f319ea0/src/pqueue.c',
-    include_directories: pqueue_inc_dirs
+    include_directories: pqueue_inc_dirs,
+    c_args: lib_args
 )
 
 pcg_inc_dirs = ['lib/pcg-c-basic-0.9']
 dungen_inc_dirs += pcg_inc_dirs
 pcg = static_library('pcg',
     sources: 'lib/pcg-c-basic-0.9/pcg_basic.c',
-    include_directories: pcg_inc_dirs
+    include_directories: pcg_inc_dirs,
+    c_args: lib_args
 )
 
 dungen_srcs = [
@@ -189,7 +206,8 @@ executable('DunGen',
     include_directories: dungen_inc_dirs,
     link_with: dungen_libs,
     dependencies: dungen_deps,
-    install: true
+    install: true,
+    c_args: dungen_args
 )
 
 if host_machine.system() == 'darwin'
