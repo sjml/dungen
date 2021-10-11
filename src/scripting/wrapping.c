@@ -5684,7 +5684,7 @@ static int _wrap_TileMetaData_memberRegions_get(lua_State* L) {
   {
     lua_newtable(L);
     if (arrlen(result) > 0) {
-      for (unsigned int i=1; i <= arrlen(result); i++) {
+      for (ptrdiff_t i=1; i <= arrlen(result); i++) {
         lua_pushnumber(L, i);
         SWIG_NewPointerObj(L, result[i-1], SWIGTYPE_p_sRegion, 0);
         lua_settable(L, -3);
@@ -6414,7 +6414,7 @@ static int _wrap_GetAllTiles(lua_State* L) {
   {
     lua_newtable(L);
     if (arrlen(result) > 0) {
-      for (unsigned int i=1; i <= arrlen(result); i++) {
+      for (ptrdiff_t i=1; i <= arrlen(result); i++) {
         lua_pushnumber(L, i);
         SWIG_NewPointerObj(L, result[i-1], SWIGTYPE_p_TileData, 1);
         lua_settable(L, -3);
@@ -6468,7 +6468,7 @@ static int _wrap_GetDirtyTiles(lua_State* L) {
   {
     lua_newtable(L);
     if (arrlen(result) > 0) {
-      for (unsigned int i=1; i <= arrlen(result); i++) {
+      for (ptrdiff_t i=1; i <= arrlen(result); i++) {
         lua_pushnumber(L, i);
         SWIG_NewPointerObj(L, result[i-1], SWIGTYPE_p_TileData, 1);
         lua_settable(L, -3);
@@ -6608,7 +6608,7 @@ static int _wrap_GetTileNeighbors(lua_State* L) {
   {
     lua_newtable(L);
     if (arrlen(result) > 0) {
-      for (unsigned int i=1; i <= arrlen(result); i++) {
+      for (ptrdiff_t i=1; i <= arrlen(result); i++) {
         lua_pushnumber(L, i);
         SWIG_NewPointerObj(L, result[i-1], SWIGTYPE_p_TileData, 1);
         lua_settable(L, -3);
@@ -6649,7 +6649,7 @@ static int _wrap_GetTileCircle(lua_State* L) {
   {
     lua_newtable(L);
     if (arrlen(result) > 0) {
-      for (unsigned int i=1; i <= arrlen(result); i++) {
+      for (ptrdiff_t i=1; i <= arrlen(result); i++) {
         lua_pushnumber(L, i);
         SWIG_NewPointerObj(L, result[i-1], SWIGTYPE_p_TileData, 1);
         lua_settable(L, -3);
@@ -6942,7 +6942,7 @@ static int _wrap_GetTilesFromSet(lua_State* L) {
   {
     lua_newtable(L);
     if (arrlen(result) > 0) {
-      for (unsigned int i=1; i <= arrlen(result); i++) {
+      for (ptrdiff_t i=1; i <= arrlen(result); i++) {
         lua_pushnumber(L, i);
         SWIG_NewPointerObj(L, result[i-1], SWIGTYPE_p_TileData, 1);
         lua_settable(L, -3);
@@ -7382,7 +7382,7 @@ static int _wrap_GetDirtyRegions(lua_State* L) {
   {
     lua_newtable(L);
     if (arrlen(result) > 0) {
-      for (unsigned int i=1; i <= arrlen(result); i++) {
+      for (ptrdiff_t i=1; i <= arrlen(result); i++) {
         lua_pushnumber(L, i);
         SWIG_NewPointerObj(L, result[i-1], SWIGTYPE_p_sRegion, 0);
         lua_settable(L, -3);
@@ -7490,7 +7490,7 @@ static int _wrap_GetRegionChildren(lua_State* L) {
   {
     lua_newtable(L);
     if (arrlen(result) > 0) {
-      for (unsigned int i=1; i <= arrlen(result); i++) {
+      for (ptrdiff_t i=1; i <= arrlen(result); i++) {
         lua_pushnumber(L, i);
         SWIG_NewPointerObj(L, result[i-1], SWIGTYPE_p_sRegion, 0);
         lua_settable(L, -3);
@@ -7558,7 +7558,7 @@ static int _wrap_GetAllAgents(lua_State* L) {
   {
     lua_newtable(L);
     if (arrlen(result) > 0) {
-      for (unsigned int i=1; i <= arrlen(result); i++) {
+      for (ptrdiff_t i=1; i <= arrlen(result); i++) {
         lua_pushnumber(L, i);
         SWIG_NewPointerObj(L, result[i-1], SWIGTYPE_p_Agent, 0);
         lua_settable(L, -3);
@@ -7814,7 +7814,7 @@ static int _wrap_GetTilesTagged(lua_State* L) {
   {
     lua_newtable(L);
     if (arrlen(result) > 0) {
-      for (unsigned int i=1; i <= arrlen(result); i++) {
+      for (ptrdiff_t i=1; i <= arrlen(result); i++) {
         lua_pushnumber(L, i);
         SWIG_NewPointerObj(L, result[i-1], SWIGTYPE_p_TileData, 1);
         lua_settable(L, -3);
@@ -7879,7 +7879,7 @@ static int _wrap_GetTileTags(lua_State* L) {
   {
     lua_newtable(L);
     if (arrlen(result) > 0) {
-      for (unsigned int i=1; i <= arrlen(result); i++) {
+      for (ptrdiff_t i=1; i <= arrlen(result); i++) {
         lua_pushnumber(L, i);
         lua_pushstring(L, result[i-1]);
         lua_settable(L, -3);
@@ -7922,7 +7922,7 @@ static int _wrap_GetTilesByAttribute(lua_State* L) {
   {
     lua_newtable(L);
     if (arrlen(result) > 0) {
-      for (unsigned int i=1; i <= arrlen(result); i++) {
+      for (ptrdiff_t i=1; i <= arrlen(result); i++) {
         lua_pushnumber(L, i);
         SWIG_NewPointerObj(L, result[i-1], SWIGTYPE_p_TileData, 1);
         lua_settable(L, -3);
@@ -8211,7 +8211,7 @@ static int _wrap_GetRegionsTagged(lua_State* L) {
   {
     lua_newtable(L);
     if (arrlen(result) > 0) {
-      for (unsigned int i=1; i <= arrlen(result); i++) {
+      for (ptrdiff_t i=1; i <= arrlen(result); i++) {
         lua_pushnumber(L, i);
         SWIG_NewPointerObj(L, result[i-1], SWIGTYPE_p_sRegion, 0);
         lua_settable(L, -3);
@@ -8276,7 +8276,7 @@ static int _wrap_GetRegionTags(lua_State* L) {
   {
     lua_newtable(L);
     if (arrlen(result) > 0) {
-      for (unsigned int i=1; i <= arrlen(result); i++) {
+      for (ptrdiff_t i=1; i <= arrlen(result); i++) {
         lua_pushnumber(L, i);
         lua_pushstring(L, result[i-1]);
         lua_settable(L, -3);
@@ -8319,7 +8319,7 @@ static int _wrap_GetRegionsByAttribute(lua_State* L) {
   {
     lua_newtable(L);
     if (arrlen(result) > 0) {
-      for (unsigned int i=1; i <= arrlen(result); i++) {
+      for (ptrdiff_t i=1; i <= arrlen(result); i++) {
         lua_pushnumber(L, i);
         SWIG_NewPointerObj(L, result[i-1], SWIGTYPE_p_sRegion, 0);
         lua_settable(L, -3);
@@ -8632,7 +8632,7 @@ static int _wrap_GetAgentsTagged(lua_State* L) {
   {
     lua_newtable(L);
     if (arrlen(result) > 0) {
-      for (unsigned int i=1; i <= arrlen(result); i++) {
+      for (ptrdiff_t i=1; i <= arrlen(result); i++) {
         lua_pushnumber(L, i);
         SWIG_NewPointerObj(L, result[i-1], SWIGTYPE_p_Agent, 0);
         lua_settable(L, -3);
@@ -8697,7 +8697,7 @@ static int _wrap_GetAgentTags(lua_State* L) {
   {
     lua_newtable(L);
     if (arrlen(result) > 0) {
-      for (unsigned int i=1; i <= arrlen(result); i++) {
+      for (ptrdiff_t i=1; i <= arrlen(result); i++) {
         lua_pushnumber(L, i);
         lua_pushstring(L, result[i-1]);
         lua_settable(L, -3);
@@ -8740,7 +8740,7 @@ static int _wrap_GetAgentsByAttribute(lua_State* L) {
   {
     lua_newtable(L);
     if (arrlen(result) > 0) {
-      for (unsigned int i=1; i <= arrlen(result); i++) {
+      for (ptrdiff_t i=1; i <= arrlen(result); i++) {
         lua_pushnumber(L, i);
         SWIG_NewPointerObj(L, result[i-1], SWIGTYPE_p_Agent, 0);
         lua_settable(L, -3);
@@ -8970,7 +8970,7 @@ static int _wrap_FindSimplePath(lua_State* L) {
   {
     lua_newtable(L);
     if (arrlen(result) > 0) {
-      for (unsigned int i=1; i <= arrlen(result); i++) {
+      for (ptrdiff_t i=1; i <= arrlen(result); i++) {
         lua_pushnumber(L, i);
         SWIG_NewPointerObj(L, result[i-1], SWIGTYPE_p_TileData, 1);
         lua_settable(L, -3);
@@ -9024,7 +9024,7 @@ static int _wrap_FindPathThroughAttribute(lua_State* L) {
   {
     lua_newtable(L);
     if (arrlen(result) > 0) {
-      for (unsigned int i=1; i <= arrlen(result); i++) {
+      for (ptrdiff_t i=1; i <= arrlen(result); i++) {
         lua_pushnumber(L, i);
         SWIG_NewPointerObj(L, result[i-1], SWIGTYPE_p_TileData, 1);
         lua_settable(L, -3);

@@ -6,7 +6,7 @@
     {
         lua_newtable(L);
         if (arrlen($1) > 0) {
-            for (unsigned int i=1; i <= arrlen($1); i++) {
+            for (ptrdiff_t i=1; i <= arrlen($1); i++) {
                 lua_pushnumber(L, i);
                 lua_pushstring(L, $1[i-1]);
                 lua_settable(L, -3);
@@ -26,7 +26,7 @@
     {
         lua_newtable(L);
         if (arrlen($1) > 0) {
-            for (unsigned int i=1; i <= arrlen($1); i++) {
+            for (ptrdiff_t i=1; i <= arrlen($1); i++) {
                 lua_pushnumber(L, i);
                 SWIG_NewPointerObj(L, $1[i-1], SWIGTYPE_p_TileData, 1);
                 lua_settable(L, -3);
@@ -43,7 +43,7 @@
     {
         lua_newtable(L);
         if (arrlen($1) > 0) {
-            for (unsigned int i=1; i <= arrlen($1); i++) {
+            for (ptrdiff_t i=1; i <= arrlen($1); i++) {
                 lua_pushnumber(L, i);
                 SWIG_NewPointerObj(L, $1[i-1], SWIGTYPE_p_sRegion, 0);
                 lua_settable(L, -3);
@@ -61,7 +61,7 @@
     {
         lua_newtable(L);
         if (arrlen($1) > 0) {
-            for (unsigned int i=1; i <= arrlen($1); i++) {
+            for (ptrdiff_t i=1; i <= arrlen($1); i++) {
                 lua_pushnumber(L, i);
                 SWIG_NewPointerObj(L, $1[i-1], SWIGTYPE_p_sRegion, 0);
                 lua_settable(L, -3);
@@ -79,7 +79,7 @@
     {
         lua_newtable(L);
         if (arrlen($1) > 0) {
-            for (unsigned int i=1; i <= arrlen($1); i++) {
+            for (ptrdiff_t i=1; i <= arrlen($1); i++) {
                 lua_pushnumber(L, i);
                 SWIG_NewPointerObj(L, $1[i-1], SWIGTYPE_p_Agent, 0);
                 lua_settable(L, -3);
@@ -96,7 +96,7 @@
     {
         lua_newtable(L);
         if (arrlen($1) > 0) {
-            for (unsigned int i=1; i <= arrlen($1); i++) {
+            for (ptrdiff_t i=1; i <= arrlen($1); i++) {
                 lua_pushnumber(L, i);
                 SWIG_NewPointerObj(L, $1[i-1], SWIGTYPE_p_Agent, 0);
                 lua_settable(L, -3);
