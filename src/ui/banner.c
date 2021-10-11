@@ -110,7 +110,7 @@ bool UpdateBanners(float dt) {
         }
     }
     if (arrlen(deadIndices) > 0) {
-        for (long i=arrlen(deadIndices)-1; i >=0; i--) {
+        for (ptrdiff_t i=arrlen(deadIndices)-1; i >=0; i--) {
             DestroyTextInfo(banners[deadIndices[i]].ti);
             sg_destroy_buffer(banners[deadIndices[i]].vertBuffer);
             arrdel(banners, deadIndices[i]);

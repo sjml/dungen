@@ -483,7 +483,7 @@ void DestroyRegion(Region* r) {
 }
 
 void AddTileToRegion(Region* r, TileData* t) {
-    long len = hmlen(r->tiles);
+    ptrdiff_t len = hmlen(r->tiles);
     r->tiles = AddTileToSet(r->tiles, t);
     if (len != hmlen(r->tiles)) {
         arrpush(t->meta->memberRegions, r);
@@ -545,7 +545,7 @@ bool IsTileInSet(TileSet* ts, TileData* t) {
 }
 
 long GetTileSetCount(TileSet* ts) {
-    return hmlen(ts);
+    return (long)hmlen(ts);
 }
 
 TileData** GetTilesFromSet(TileSet* ts) {

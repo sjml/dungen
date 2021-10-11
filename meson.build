@@ -33,7 +33,9 @@ else
 endif
 
 
-if build_machine.system() == 'linux'
+if build_machine.system() == 'windows'
+    exe_args += ['-D_CRT_SECURE_NO_WARNINGS']
+elif build_machine.system() == 'linux'
     exe_args += ['-D_GNU_SOURCE']
 endif
 

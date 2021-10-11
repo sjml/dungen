@@ -115,6 +115,7 @@ void LoadFont(const char* refName, const char* filePath, float pointSize, bool i
     charSet.array_of_unicode_codepoints = NULL;
     charSet.num_chars                   = TEXT_ATLAS_NUM_CHARS;
     charSet.font_size                   = pointSize;
+    charSet.chardata_for_range          = NULL;
 
     for (uint32_t i = 0; i < TEXT_ATLAS_NUM_CHARS; i++) {
         arrpush(charSet.array_of_unicode_codepoints, i);
@@ -175,7 +176,15 @@ void LoadFont(const char* refName, const char* filePath, float pointSize, bool i
             if (rects[i].was_packed) {
                 GlyphData* gd = malloc(sizeof(GlyphData));
                 gd->atlasIndex = data->numTextures - 1;
-                gd->charData = charSet.chardata_for_range[i];
+                gd->charData.x0 = charSet.chardata_for_range[i].x0;
+                gd->charData.x1 = charSet.chardata_for_range[i].x1;
+                gd->charData.xadvance = charSet.chardata_for_range[i].xadvance;
+                gd->charData.xoff = charSet.chardata_for_range[i].xoff;
+                gd->charData.xoff2 = charSet.chardata_for_range[i].xoff2;
+                gd->charData.y0 = charSet.chardata_for_range[i].y0;
+                gd->charData.y1 = charSet.chardata_for_range[i].y1;
+                gd->charData.yoff = charSet.chardata_for_range[i].yoff;
+                gd->charData.yoff2 = charSet.chardata_for_range[i].yoff2;
                 hmput(data->glyphs, charSet.array_of_unicode_codepoints[i], gd);
             }
         }
@@ -200,7 +209,9 @@ void LoadFont(const char* refName, const char* filePath, float pointSize, bool i
         free(rects);
         free(localAtlas);
     }
-    free(charSet.chardata_for_range);
+    if (charSet.chardata_for_range != NULL) {
+        free(charSet.chardata_for_range);
+    }
     arrfree(charSet.array_of_unicode_codepoints);
 
     free((void*)fontBuffer);
@@ -306,7 +317,7 @@ TextInfo* CreateTextInfo(const char* text, const char* fontName, gbVec2 pos, flo
     ti->numGlyphs = 0;
     uint32_t state = 0;
     uint32_t codepoint = 0;
-    unsigned long textLength = strlen(ti->text);
+    size_t textLength = strlen(ti->text);
     for (unsigned int ci=0; ci < textLength; ci++) {
         char* textPtr = &ti->text[ci];
         decode_utf8(&state, &codepoint, *(unsigned char*)textPtr);

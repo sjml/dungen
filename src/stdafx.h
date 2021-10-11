@@ -17,6 +17,10 @@
     #pragma clang diagnostic ignored "-Wstrict-prototypes"
 #endif // __clang__
 
+#ifdef _MSC_VER
+    #define strdup _strdup
+#endif // _MSC_VER
+
 #ifdef __EMSCRIPTEN__
     #define SOKOL_GLES3
     extern char* strdup(const char*);

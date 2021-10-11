@@ -87,7 +87,7 @@ TileData** FindPathThroughValids(TileData* start, TileData* end, TileSet* validT
         next = hmget(parents, next);
     }
     TileData** path = NULL;
-    for (long i = arrlen(pathRev) - 1; i >= 0; i--) {
+    for (ptrdiff_t i = arrlen(pathRev) - 1; i >= 0; i--) {
         arrpush(path, pathRev[i]);
     }
     arrfree(pathRev);

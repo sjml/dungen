@@ -1,8 +1,17 @@
 #include "stdafx.h"
 #include "util.h"
 
-#define STB_DS_IMPLEMENTATION
-#include <stb_ds.h>
+// this should be getting disabled anyway by the /external flags... hrm.
+#ifdef _MSC_VER
+    #pragma warning( disable : 4702 )
+#endif // _MSC_VER
+
+    #define STB_DS_IMPLEMENTATION
+    #include <stb_ds.h>
+
+#ifdef _MSC_VER
+    #pragma warning ( default : 4702 )
+#endif // _MSC_VER
 
 #define GB_MATH_IMPLEMENTATION
 #include <gb_math.h>
