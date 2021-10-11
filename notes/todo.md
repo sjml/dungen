@@ -3,7 +3,6 @@
     - build system cleanups
         - figure out if iOS build is still possible? 
             - https://betterprogramming.pub/writing-ios-apps-without-xcode-89450d0de21a
-        - pin emscripten version
     - refresh on chamber progress (merging, moving contents, etc.)
         - complete test setup and execution
         - what is happening with the storage? 
