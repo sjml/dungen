@@ -2,6 +2,12 @@
 
 %{
     #include "stdafx.h"
+
+    // disabling specific warnings in generated file
+    #ifdef _MSC_VER
+        // C4244: "possible loss of data" when converting between numeric types
+        #pragma warning( disable : 4244 )
+    #endif // _MSC_VER
 %}
 
 #if SWIG_VERSION < 0x040001

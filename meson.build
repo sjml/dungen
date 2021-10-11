@@ -1,6 +1,6 @@
 project('DunGen', 'c',
     license: 'MIT',
-    default_options: ['c_std=c11']
+    default_options: ['c_std=c11', 'warning_level=0']
 )
 
 if host_machine.system() == 'darwin' and not get_option('debug')

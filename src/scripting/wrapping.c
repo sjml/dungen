@@ -2703,6 +2703,12 @@ static swig_module_info swig_module = {swig_types, 15, 0, 0, 0, 0};
 
     #include "stdafx.h"
 
+    // disabling specific warnings in generated file
+    #ifdef _MSC_VER
+        // C4244: "possible loss of data" when converting between numeric types
+        #pragma warning( disable : 4244 )
+    #endif // _MSC_VER
+
 
     #include "../infrastructure/util.h"
 
