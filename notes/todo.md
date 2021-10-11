@@ -6,7 +6,6 @@
         - pin emscripten version
         - make debug/setup scripts too
         - setup run/launch stuff for VSCode -- also running release builds with dev scripts
-        - trim out the warnings on all platforms :(
     - refresh on chamber progress (merging, moving contents, etc.)
         - complete test setup and execution
         - what is happening with the storage? 

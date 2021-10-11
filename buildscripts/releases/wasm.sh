@@ -9,7 +9,7 @@ meson \
   --cross-file local/wasm-cross-constants.txt \
   --cross-file platform/WebAssembly/wasm-cross.txt \
   --buildtype=release \
-  --prefix=$(pwd)/build/DunGen.dist \
+  --prefix=$(pwd)/build/DunGen_dist \
   --bindir='' \
   build
 
@@ -21,7 +21,7 @@ meson \
   --cross-file local/wasm-cross-constants.txt \
   --cross-file platform/WebAssembly/wasm-cross.txt \
   --buildtype=release \
-  --prefix=$(pwd)/build/DunGen.dist \
+  --prefix=$(pwd)/build/DunGen_dist \
   --bindir='' \
   --reconfigure \
   build
