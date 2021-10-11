@@ -15,13 +15,21 @@ endif
 # By default, don't show any warnings; we'll enable them for our client code.
 #   (If there are warnings in library code, that's not something we're gonna fix.)
 lib_args = []
-dungen_args = []
+exe_args = []
 if build_machine.system() == 'windows'
-    lib_args += '/W0'
-    dungen_args += ['/W4', '/external:anglebrackets', '/external:W0']
+    lib_args += '/w' # no warnings
+
+    exe_args += [
+        '/Wall', '/WX', # all warnings, and treat as errors
+        '/external:anglebrackets', '/external:w', # don't warn for any files imported with angle brackets (external)
+    ]
 else
-    lib_args += '-w'
-    dungen_args += '-Wall'
+    lib_args += '-w' # no warnings
+
+    exe_args += [
+        '-Wall', '-Wextra', '-Wpedantic', '-Werror', # all warnings, and treat as errors
+        '-Wno-missing-braces', # turn off missing braces warning; missing initializers catches real problems
+    ]
 endif
 
 
@@ -203,11 +211,12 @@ endif
 
 executable('DunGen',
     sources: dungen_srcs,
-    include_directories: dungen_inc_dirs,
+    include_directories: include_directories(dungen_inc_dirs, is_system: true),
+    # include_directories: dungen_inc_dirs,
     link_with: dungen_libs,
     dependencies: dungen_deps,
     install: true,
-    c_args: dungen_args
+    c_args: exe_args
 )
 
 if host_machine.system() == 'darwin'

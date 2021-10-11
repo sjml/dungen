@@ -40,12 +40,13 @@ static float hexVerts[] = {
      0.8660254f,   0.5f,  // 4
 };
 
-static float squareVerts[] = {
-    -0.5f, -0.5f,
-    -0.5f,  0.5f,
-     0.5f,  0.5f,
-     0.5f, -0.5f,
-};
+/* unused */
+// static float squareVerts[] = {
+//     -0.5f, -0.5f,
+//     -0.5f,  0.5f,
+//      0.5f,  0.5f,
+//      0.5f, -0.5f,
+// };
 
 static DrawState hexDraw;
 static DrawState basicDraw;
@@ -56,7 +57,7 @@ static bool bufferUpRequested;
 
 static Region** regions = NULL;
 
-static const int defaultWindowWidth  = 1024;
+/* unused */ // static const int defaultWindowWidth  = 1024;
 static const int defaultWindowHeight = 768;
 
 void InitializeRendering() {

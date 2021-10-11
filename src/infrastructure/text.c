@@ -34,12 +34,6 @@
 #define TEXT_ATLAS_SIZE 512
 #define TEXT_ATLAS_NUM_CHARS 256
 
-static uint32_t textProgram;
-static int32_t  textOrthoLocation;
-static int32_t  textColorLocation;
-static uint32_t textTexID;
-static uint32_t textVAO, textVBO;
-
 static BasicUniforms bu;
 static DrawState ds;
 
@@ -114,7 +108,6 @@ void LoadFont(const char* refName, const char* filePath, float pointSize, bool i
 
     shput(loadedFonts, refName, data);
 
-    struct { uint32_t key; GlyphData value; } *leftovers = NULL;
     bool donePacking = false;
 
     stbtt_pack_range charSet;
@@ -313,7 +306,6 @@ TextInfo* CreateTextInfo(const char* text, const char* fontName, gbVec2 pos, flo
     ti->numGlyphs = 0;
     uint32_t state = 0;
     uint32_t codepoint = 0;
-    int ci = 0;
     unsigned long textLength = strlen(ti->text);
     for (unsigned int ci=0; ci < textLength; ci++) {
         char* textPtr = &ti->text[ci];
