@@ -31,6 +31,11 @@ sapp_desc sokol_main(int argc, char * argv[]) {
         .window_title = "DunGen",
         .swap_interval = 1,
         .sample_count = 4,
-        .high_dpi = true
+        .high_dpi = true,
+
+        #if _WIN32
+            .win32_console_utf8 = true,
+            .win32_console_attach = true,
+        #endif // _WIN32
     };
 }

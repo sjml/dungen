@@ -6,15 +6,12 @@
       {
         "label": "Run",
         "type": "shell",
-        "command": "${workspaceFolder}/build/Debug/DunGen.app/Contents/MacOS/DunGen",
+        "command": "${workspaceFolder}/build/DunGen",
         "options": {
-          "cwd": "${workspaceFolder}/build"
+          "cwd": "${workspaceFolder}"
         },
         "windows": {
-          "command": "${workspaceFolder}/build/Release/DunGen.exe",
-          "options": {
-            "cwd": "${workspaceFolder}/build/Release"
-          },
+          "command": "${workspaceFolder}/build/DunGen.exe",
         },
         "presentation": {
           "echo": false,
@@ -33,13 +30,16 @@
       {
         "label": "Run Unit Tests",
         "type": "shell",
-        "command": "${workspaceFolder}/build/Debug/DunGen.app/Contents/MacOS/DunGen",
+        "command": "${workspaceFolder}/build/DunGen",
+        "windows": {
+          "command": "${workspaceFolder}/build/DunGen.exe",
+        },
         "args": ["startup=_testing.UnitTest"],
         "options": {
-          "cwd": "${workspaceFolder}/build"
+          "cwd": "${workspaceFolder}"
         },
         "presentation": {
-          "echo": false,
+          "echo": true,
           "reveal": "always",
           "focus": false,
           "panel": "shared",
@@ -55,15 +55,20 @@
       {
         "label": "Build Compiled Project",
         "type": "shell",
-        "command": "xcodebuild",
+        "command": "meson",
         "args": [
-          "-sdk", "macosx",
-          "-scheme", "DunGen (Debug)",
-          "-project", "DunGen.xcodeproj",
-          "build"
+          "compile", 
+          "-C", "build"
         ],
         "options": {
           "cwd": "${workspaceFolder}",
+        },
+        "linux": {
+          "command": "ninja",
+          "args": [],
+          "options": {
+            "cwd": "${workspaceFolder}/build"
+          }
         },
         "presentation": {
           "echo": false,
@@ -73,20 +78,7 @@
           "showReuseMessage": false,
           "clear": true
         },
-        "problemMatcher": [
-          {
-            "owner": "Xcode",
-            "fileLocation": "absolute",
-            "pattern": {
-              "regexp": "^(.*):(\\d+):(\\d+):\\s+(warning|error):\\s+(.*)$",
-              "file": 1,
-              "line": 2,
-              "column": 3,
-              "severity": 4,
-              "message": 5
-            }
-          }
-        ]
+        "problemMatcher": []
       }
     ]
 }
