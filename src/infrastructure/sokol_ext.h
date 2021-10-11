@@ -40,7 +40,7 @@ SOKOL_EXT_API_DECL void sgext_read_framebuffer(int startx, int starty, int width
 
 SOKOL_EXT_API_DECL void sgext_read_framebuffer(int startx, int starty, int width, int height, unsigned char* pixels) {
 #if defined(_SOKOL_ANY_GL)
-    glReadPixels(startx, startx, width, height, GL_RGB, GL_UNSIGNED_BYTE, pixels);
+    glReadPixels(startx, starty, width, height, GL_RGB, GL_UNSIGNED_BYTE, pixels);
 #endif // defined(_SOKOL_ANY_GL)
 }
 
