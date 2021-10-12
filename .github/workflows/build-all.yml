@@ -12,9 +12,10 @@ jobs:
       - name: Build release version
         run: |
           buildscripts/releases/macOS.sh
-      - name: Run unit tests
-        run: |
-          build/DunGen_dist/DunGen.app/Contents/MacOS/DunGen startup=_testing.UnitTest
+      # no unit tests on macOS since there's no good way to swap out the rendering backend
+      # - name: Run unit tests
+      #   run: |
+      #     build/DunGen_dist/DunGen.app/Contents/MacOS/DunGen startup=_testing.UnitTest
 
   build-linux:
     runs-on: ubuntu-20.04
