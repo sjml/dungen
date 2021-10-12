@@ -1,0 +1,2 @@
+option('dummy_backend', type: 'boolean', value: false, description: 'Whether to use Sokol\'s dummy backend instead of a real renderer.')
+

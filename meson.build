@@ -33,6 +33,10 @@ else
 endif
 
 
+if get_option('dummy_backend')
+  exe_args += ['-DSOKOL_DUMMY_BACKEND']
+endif
+
 if build_machine.system() == 'windows'
     exe_args += ['-D_CRT_SECURE_NO_WARNINGS']
 elif build_machine.system() == 'linux'

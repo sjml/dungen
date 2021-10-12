@@ -25,7 +25,7 @@ void FinalizePlatform() {
 }
 
 sds GetShaderPath(const char* shaderName) {
-    #if defined(SOKOL_GLCORE33)
+    #if defined(SOKOL_GLCORE33) || defined(SOKOL_DUMMY_BACKEND)
         char* path = "shaders/glsl330/";
         char* suffix = ".glsl";
     #elif defined(SOKOL_METAL)
