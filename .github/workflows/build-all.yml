@@ -2,16 +2,13 @@ name: Build DunGen (all platforms)
 on: [push]
 jobs:
   build-mac:
-    runs-on: macos-10.15
+    runs-on: macos-11
     steps:
       - name: Check out repository
         uses: actions/checkout@v2
       - name: Install dependencies
         run: |
           brew install meson
-      - name: Set up Xcode
-        run: |
-          sudo xcode-select -s /Applications/Xcode_12.5.1.app/Contents/Developer
       - name: Build release version
         run: |
           buildscripts/releases/macOS.sh
