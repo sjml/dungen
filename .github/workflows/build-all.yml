@@ -33,7 +33,10 @@ jobs:
           architecture: x64
       - name: Build release version
         run: |
-          buildscripts/releases/windows.ps1          
+          buildscripts/releases/windows.ps1
+      - name: Run unit tests
+        run: |
+          build/DunGen_dist/DunGen.exe startup=_testing.UnitTest
 
   build-linux:
     runs-on: ubuntu-20.04
