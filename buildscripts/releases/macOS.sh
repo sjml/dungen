@@ -8,10 +8,6 @@ cd ../..
 rm -rf build
 
 meson --buildtype=release --prefix=$(pwd)/build/DunGen_dist/DunGen.app --bindir=Contents/MacOS build
-if [[ $CI -eq "true" ]]; then
-  echo "Running in CI"
-  meson configure -Ddummy_backend=true build
-fi
 meson compile -C build
 cd build
 meson install
