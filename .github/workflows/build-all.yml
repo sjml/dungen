@@ -17,6 +17,20 @@ jobs:
       #   run: |
       #     build/DunGen_dist/DunGen.app/Contents/MacOS/DunGen startup=_testing.UnitTest
 
+  build-windows:
+    runs-on: windows-2019
+    steps:
+      - name: Check out respository
+        uses: actions/checkout@v2
+      - name: Install dependencies
+        shell: powershell
+        run: |
+          python -m pip install meson
+          python -m pip install ninja
+      - name: Build release version
+        run: |
+          buildscripts/releases/windows.ps1          
+
   build-linux:
     runs-on: ubuntu-20.04
     steps:
