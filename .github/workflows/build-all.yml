@@ -62,9 +62,12 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v2
+      - uses: actions/setup-python@v1
+        with:
+          python-version: '3.x'
       - name: Install dependencies
         run: |
-          sudo apt install meson build-essential
+          pip install meson ninja
           git clone https://github.com/emscripten-core/emsdk.git ../emsdk
           ../emsdk/emsdk install $(cat platform/WebAssembly/EMSDK_VERSION.txt)
           ../emsdk/emsdk activate $(cat platform/WebAssembly/EMSDK_VERSION.txt)
