@@ -1,0 +1,17 @@
+name: Build DunGen (all platforms)
+on: [push]
+jobs:
+  build-linux:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v2
+      - name: Install dependencies
+        run: |
+          sudo apt install meson build-essential clang libx11-dev libxi-dev libxcursor-dev libgl-dev
+      - name: Build release version
+        run: |
+          buildscripts/releases/linux.sh
+      - name: Run unit tests
+        run: |
+          build/DunGen startup=_testing.UnitTest
