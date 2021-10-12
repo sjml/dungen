@@ -13,5 +13,7 @@ jobs:
         run: |
           buildscripts/releases/linux.sh
       - name: Run unit tests
-        run: |
-          build/DunGen startup=_testing.UnitTest
+        uses: GabrielBB/xvfb-action@v1
+        with:
+          run: |
+            build/DunGen startup=_testing.UnitTest
