@@ -17,6 +17,10 @@ I've structured it something like a computer operating on the hex grid like a se
 The simulation scripts are located in the `Resources/scripts/simulation` directory on Windows, and on the Mac they are in the .app directory's `Contents/Resources/scripts/simulation` (right-click --> "Show Package Contents").
 
 ## Building
-Meson
+The project builds for various platforms using [Meson](https://mesonbuild.com/). In the `buildscripts/setups` folder there are shell scripts that will configure Meson and build an initial debug version of the app. There is also a [Visual Studio Code](https://code.visualstudio.com) setup for building, debugging, and running. 
 
-(TODO: expand and explain)
+On Ubuntu (the only Linux distribution I regularly test on), in addition to `meson` you'll need to install: `build-essential clang libx11-dev libxi-dev libxcursor-dev libgl-dev`. On other platforms, everything you need should already be there or in this repo. 
+
+To make a distributable version, look at the scripts the `buildscripts/releases` folder. After running one of those scripts, a runnable set of files ready for zipping/deploying will end up in the `build/DunGen_dist` directory on all platforms.
+
+Note there is code in the project related to building for iOS, but not currently a functional iOS build. My Mac is more or less out of commission at the moment and so that will have to wait. Alack. 
