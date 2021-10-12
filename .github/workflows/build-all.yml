@@ -1,4 +1,4 @@
-name: Build DunGen (all platforms)
+name: Build DunGen - all platforms
 on: [push]
 jobs:
   build-mac:

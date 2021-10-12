@@ -1,8 +1,7 @@
 <p align="center"><img src="https://github.com/sjml/dungen/raw/master/art/DunGenLogo.png"></p>
 
 # DunGen
-
-[![Build Status](https://optimistpanda.visualstudio.com/DunGen/_apis/build/status/sjml.dungen2?branchName=master)](https://optimistpanda.visualstudio.com/DunGen/_build/latest?definitionId=1&branchName=master)
+![Build Status](https://img.shields.io/github/workflow/status/sjml/dungen/Build%20DunGen%20-%20all%20platforms/agent-work?label=build%20and%20tests&style=for-the-badge)
 
 It seems like every summer I fall down a rabbit hole making some procedural generator system. This one is from summer of 2019, when I was otherwise busy doing refugee aid work and studying macroeconomics in South Africa. It was a welcome respite from the stress of the days.
 
