@@ -9,12 +9,15 @@ jobs:
       - name: Install dependencies
         run: |
           brew install meson
+      - name: Set up Xcode
+        run: |
+          sudo xcode-select -s /Applications/Xcode_12.5.1.app/Contents/Developer
       - name: Build release version
         run: |
           buildscripts/releases/macOS.sh
       - name: Run unit tests
         run: |
-          build/DunGen_dist/DunGen startup=_testing.UnitTest
+          build/DunGen_dist/DunGen.app/Contents/MacOS/DunGen startup=_testing.UnitTest
 
   build-linux:
     runs-on: ubuntu-20.04
