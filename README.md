@@ -1,4 +1,4 @@
-<p align="center"><img src="https://github.com/sjml/dungen/raw/master/art/DunGenLogo.png"></p>
+<p align="center"><img src="https://github.com/sjml/dungen/raw/main/art/DunGenLogo.png"></p>
 
 # DunGen
 ![Build Status](https://img.shields.io/github/workflow/status/sjml/dungen/Build%20DunGen%20-%20all%20platforms/agent-work?label=build%20and%20tests&style=for-the-badge)

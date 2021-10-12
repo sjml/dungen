@@ -1,7 +1,5 @@
 ## TODO
 0. to resume actual work
-    - buildwank
-        - GitHub actions
     - refresh on chamber progress (merging, moving contents, etc.)
         - complete test setup and execution
         - what is happening with the storage? 
