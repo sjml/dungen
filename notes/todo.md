@@ -1,9 +1,7 @@
 ## TODO
 0. to resume actual work
-    - build system cleanups
-        - figure out if iOS build is still possible? 
-            - https://betterprogramming.pub/writing-ios-apps-without-xcode-89450d0de21a
-        - pin emscripten version
+    - buildwank
+        - GitHub actions
     - refresh on chamber progress (merging, moving contents, etc.)
         - complete test setup and execution
         - what is happening with the storage? 
@@ -25,14 +23,24 @@
 5. Relaxable constraint sets
 
 ## Near Term
-* eliminate warnings from meson/ninja build
 * reposition text, banners, buttons when resolution changes 
 * fix text shader to use `texture` instead of `texelFetch` so we can do WebGL 1 instead of 2?
 * make webpage explaining project, linking to releases, etc.
 * handle newlines in text rendering? (and fix Great Wyrm label)
 * outlines flip edge alignment when regions have disjoint sections
 * why is tile choice not using SetTileOutline?
-* Linux snap package or whatever the kids are doing now?
+* Linux snap package or flatpak or whatever the kids are doing now?
+* set up Meson build for iOS 
+    - building, some combination of: 
+        - https://betterprogramming.pub/writing-ios-apps-without-xcode-89450d0de21a
+        - https://github.com/mesonbuild/meson/blob/master/cross/iphone.txt
+    - for putting on simulator: 
+        - https://medium.com/xcblog/simctl-control-ios-simulators-from-command-line-78b9006a20dc
+    - a way to copy to device? probably no avoiding Xcode for that one...
+        - Meson can generate an Xcode project... :-/ 
+        - or maybe just make a stub Xcode target that invokes Meson and then sees the app as a product? 
+        - TestFlight something something? (could get it to the device, but not useful for attaching a debugger...)
+
 
 ## Tech Debt
 * more graceful failure (at least on Windows) if can't find resources directory
@@ -43,7 +51,6 @@
 * typemaps should reject inputs that are not tables
 * add way to modify attributes instead of having to get/set round-trip through SQLite
 * overusing the stretchy buffer right now; look for more chances to just use a static array
-    - also the type of the *len calls is ptrdiff_t, not necessarily long
 
 ## Horizon
 * in-game console

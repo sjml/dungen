@@ -5,6 +5,8 @@ set -e
 cd "$(dirname "$0")"
 cd ../..
 
+rm -rf build
+
 meson \
   --cross-file local/wasm-cross-constants.txt \
   --cross-file platform/WebAssembly/wasm-cross.txt \
@@ -15,8 +17,9 @@ meson \
 
 meson compile -C build
 
-# reconfigure step is silly, but Meson is a bit over-opinionated and it's the
-#   only way to get it to see the extra files emitted by Emscripten (the html and data)
+# The reconfigure step is silly, but Meson is a bit over-opinionated and it's the
+#   only way to get it to see the extra files emitted by Emscripten (the html and data).
+# Why not just copy them manually here? Why indeed. 
 meson \
   --cross-file local/wasm-cross-constants.txt \
   --cross-file platform/WebAssembly/wasm-cross.txt \
@@ -28,3 +31,6 @@ meson \
 
 cd build
 meson install
+cd ..
+
+cp docs/acknowledgements.md build/DunGen_dist
