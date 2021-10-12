@@ -16,4 +16,4 @@ jobs:
         uses: GabrielBB/xvfb-action@v1
         with:
           run: |
-            build/DunGen startup=_testing.UnitTest
+            build/DunGen_dist/DunGen startup=_testing.UnitTest
