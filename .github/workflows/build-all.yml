@@ -119,12 +119,13 @@ jobs:
         run: |
           chmod +x DunGen-Mac/DunGen.app/Contents/MacOS/DunGen
           chmod +x DunGen-Linux/DunGen
-      - name: Codesign macOS build
+      - name: Codesign and notarize macOS build
         env:
           MACOS_CERTIFICATE: ${{ secrets.MACOS_CERTIFICATE }}
           MACOS_CERTIFICATE_PWD: ${{ secrets.MACOS_CERTIFICATE_PWD }}
           APPLE_ID_NAME: ${{ secrets.APPLE_ID_NAME }}
           APPLE_ID_PWD: ${{ secrets.APPLE_ID_PWD }}
+          APPLE_ID_PROVIDER: ${{ secrets.APPLE_ID_PROVIDER }}
         run: |
           echo $MACOS_CERTIFICATE | base64 --decode > certificate.p12
           security create-keychain -p "" temp.keychain

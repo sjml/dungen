@@ -7,6 +7,7 @@
 
   "apple_id": {
      "username": "@env:APPLE_ID_NAME",
-     "password": "@env:APPLE_ID_PWD"
+     "password": "@env:APPLE_ID_PWD",
+     "provider": "@env:APPLE_ID_PROVIDER"
   }
 }
