@@ -97,7 +97,7 @@ jobs:
   #   prep a draft release and add artifacts to it
   generate-release:
     runs-on: macos-11
-    if: startsWith(github.ref, 'refs/tags/v')
+    # if: startsWith(github.ref, 'refs/tags/v')
     needs: [build-mac, build-windows, build-linux, build-wasm]
     steps:
       - name: Check out repository
@@ -134,13 +134,13 @@ jobs:
           APPLE_ID_PWD: ${{ secrets.APPLE_ID_PWD }}
         run: |
           sudo xcode-select -s "/Applications/Xcode_13.0.app"
-          xcrun notarytool store-credentials TempProfile --apple-id "$APPLE_ID_EMAIL" --team-id "CFJYV723M9" --password "$APPLE_ID_PWD" --keychain ~/Library/Keychains/login.keychain-db
+          credentials="--apple-id $APPLE_ID_EMAIL --team-id CFJYV723M9 --password $APPLE_ID_PWD"
           zip -r DunGen.zip DunGen.app
-          xcrun notarytool submit DunGen.zip --keychain-profile "TempProfile" --keychain ~/Library/Keychains/login.keychain-db --wait
-          xcrun notarytool history --keychain-profile "TempProfile" --keychain ~/Library/Keychains/login.keychain-db --output-format json > ~/notary-history.json
+          xcrun notarytool submit DunGen.zip $credentials --wait
+          xcrun notarytool history $credentials --output-format json > ~/notary-history.json
           status=$(cat ~/notary-history.json | jq --raw-output .history[0].status)
           submission_id=$(cat ~/notary-history.json | jq --raw-output .history[0].id)
-          xcrun notarytool log $submission_id --keychain-profile "TempProfile" --keychain ~/Library/Keychains/login.keychain-db ~/notary-log.json
+          xcrun notarytool log $submission_id $credentials ~/notary-log.json
           cat ~/notary-log.json
           if [[ $status != 'Accepted' ]]; then
             echo "Notarization was not accepted. :("
