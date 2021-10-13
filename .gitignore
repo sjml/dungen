@@ -3,6 +3,7 @@ build/*
 tmp/*
 buildscripts/deployWebVersion.sh
 local/*
+build_artifacts
 
 # Overrides
 !.gitkeep
