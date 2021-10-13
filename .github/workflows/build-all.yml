@@ -127,18 +127,14 @@ jobs:
           security import certificate.p12 -k temp.keychain -P $MACOS_CERTIFICATE_PWD -T /usr/bin/codesign
           security find-identity -v
           security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "" temp.keychain
-          /usr/bin/codesign --force -sign CFJYV723M9 --entitlements ../../platform/macOS/entitlements.plist --options runtime --timestamp -v build_artifacts/DunGen-Mac/DunGen.app
+          /usr/bin/codesign --force --sign CFJYV723M9 --entitlements ../../platform/macOS/entitlements.plist --options runtime --timestamp -v build_artifacts/DunGen-Mac/DunGen.app
       - name: Create archives
         working-directory: build_artifacts
         run: |
-          mv DunGen-Mac DunGen-Mac-${{ env.DUNGEN_VERSION }}
-          mv DunGen-Windows DunGen-Windows-${{ env.DUNGEN_VERSION }}
-          mv DunGen-Linux DunGen-Linux-${{ env.DUNGEN_VERSION }}
-          mv DunGen-Web DunGen-Web-${{ env.DUNGEN_VERSION }}
-          tar -czf DunGen-Mac-${{ env.DUNGEN_VERSION }}.tar.gz DunGen-Mac-${{ env.DUNGEN_VERSION }}
-          zip -r -9 DunGen-Windows-${{ env.DUNGEN_VERSION }}.zip DunGen-Windows-${{ env.DUNGEN_VERSION }}
-          tar -czf DunGen-Linux-${{ env.DUNGEN_VERSION }}.tar.gz DunGen-Linux-${{ env.DUNGEN_VERSION }}
-          tar -czf DunGen-Web-${{ env.DUNGEN_VERSION }}.tar.gz DunGen-Web-${{ env.DUNGEN_VERSION }}
+          tar -czf DunGen-Mac-${{ env.DUNGEN_VERSION }}.tar.gz DunGen-Mac
+          zip -r -9 DunGen-Windows-${{ env.DUNGEN_VERSION }}.zip DunGen-Windows
+          tar -czf DunGen-Linux-${{ env.DUNGEN_VERSION }}.tar.gz DunGen-Linux
+          tar -czf DunGen-Web-${{ env.DUNGEN_VERSION }}.tar.gz DunGen-Web
       - name: Make draft release
         uses: softprops/action-gh-release@v1
         with:
