@@ -1,13 +1,12 @@
 {
   "notarize": [{
-    "path": "build_artifacts/DunGen-Mac/DunGen.app",
-    "bundle_id": "com.shaneliesegang.DunGen",
-    "staple": true
+    "path": "build_artifacts/DunGen-Mac/DunGen.zip",
+    "bundle_id": "com.shaneliesegang.DunGen"
   }],
 
   "apple_id": {
-     "username": "@env:APPLE_ID_NAME",
+     "username": "liesegang@gmail.com",
      "password": "@env:APPLE_ID_PWD",
-     "provider": "@env:APPLE_ID_PROVIDER"
+     "provider": "ShaneLiesegang10664085"
   }
 }

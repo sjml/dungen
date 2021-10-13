@@ -119,13 +119,10 @@ jobs:
         run: |
           chmod +x DunGen-Mac/DunGen.app/Contents/MacOS/DunGen
           chmod +x DunGen-Linux/DunGen
-      - name: Codesign and notarize macOS build
+      - name: Codesign macOS build
         env:
           MACOS_CERTIFICATE: ${{ secrets.MACOS_CERTIFICATE }}
           MACOS_CERTIFICATE_PWD: ${{ secrets.MACOS_CERTIFICATE_PWD }}
-          APPLE_ID_NAME: ${{ secrets.APPLE_ID_NAME }}
-          APPLE_ID_PWD: ${{ secrets.APPLE_ID_PWD }}
-          APPLE_ID_PROVIDER: ${{ secrets.APPLE_ID_PROVIDER }}
         run: |
           echo $MACOS_CERTIFICATE | base64 --decode > certificate.p12
           security create-keychain -p "" temp.keychain
@@ -135,7 +132,15 @@ jobs:
           security find-identity -v
           security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "" temp.keychain
           /usr/bin/codesign --force --sign CFJYV723M9 --entitlements platform/macOS/entitlements.plist --options runtime --timestamp -v build_artifacts/DunGen-Mac/DunGen.app
-          gon platform/macOS/gon-notarization-config.json
+      - name: Notarize macOS build
+        working-directory: build_artifacts/DunGen-Mac
+        env:
+          APPLE_ID_PWD: ${{ secrets.APPLE_ID_PWD }}
+        run: |
+          zip -r DunGen.zip DunGen.app
+          gon ../../platform/macOS/gon-notarization-config.json
+          xcrun stapler staple DunGen.app
+          rm DunGen.zip
       - name: Create archives
         working-directory: build_artifacts
         run: |
