@@ -120,7 +120,7 @@ jobs:
         working-directory: build_artifacts
         run: |
           tar -czf DunGen-Mac.tar.gz DunGen-Mac
-          zip -r -9 DunGen-Windows.tar.gz DunGen-Windows
+          zip -r -9 DunGen-Windows.zip DunGen-Windows
           tar -czf DunGen-Linux.tar.gz DunGen-Linux
           tar -czf DunGen-Web.tar.gz DunGen-Web
       - name: Make draft release
