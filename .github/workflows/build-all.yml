@@ -16,7 +16,7 @@ jobs:
         run: |
           buildscripts/releases/macOS.sh
       - name: Upload built artifacts
-        uses: actions/checkout@v2
+        uses: actions/upload-artifact@v2
         with:
           name: DunGen-Mac
           path: build/DunGen_dist
@@ -41,7 +41,7 @@ jobs:
         run: |
           build/DunGen_dist/DunGen.exe startup=_testing.UnitTest
       - name: Upload built artifacts
-        uses: actions/checkout@v2
+        uses: actions/upload-artifact@v2
         with:
           name: DunGen-Windows
           path: build/DunGen_dist
@@ -63,7 +63,7 @@ jobs:
           run: |
             build/DunGen_dist/DunGen startup=_testing.UnitTest
       - name: Upload built artifacts
-        uses: actions/checkout@v2
+        uses: actions/upload-artifact@v2
         with:
           name: DunGen-Linux
           path: build/DunGen_dist
@@ -88,7 +88,7 @@ jobs:
         run: |
           buildscripts/releases/wasm.sh
       - name: Upload built artifacts
-        uses: actions/checkout@v2
+        uses: actions/upload-artifact@v2
         with:
           name: DunGen-Web
           path: build/DunGen_dist
