@@ -3,7 +3,7 @@ name: Build DunGen - all platforms
 on: [push]
 
 jobs:
-  
+
   build-mac:
     runs-on: macos-11
     steps:
@@ -67,7 +67,7 @@ jobs:
         with:
           name: DunGen-Linux
           path: build/DunGen_dist
-  
+
   build-wasm:
     runs-on: ubuntu-20.04
     steps:
@@ -96,16 +96,13 @@ jobs:
   # if a release tag (starting with "v" as in "v1.0.2", has been made,
   #   prep a draft release and add artifacts to it
   generate-release:
-    runs-on: ubuntu-20.04
+    runs-on: macos-11
     # commenting out conditional to see if this works ::fingers-crossed::
     # if: startsWith(github.ref, 'refs/tags/v')
     needs: [build-mac, build-windows, build-linux, build-wasm]
     steps:
       - name: Check out repository
         uses: actions/checkout@v2
-      - name: Install dependencies
-        run: |
-          sudo apt install zip
       - name: Get version tag
         run: |
           echo "DUNGEN_VERSION=$(./buildscripts/getTag.sh)" >> $GITHUB_ENV
@@ -118,6 +115,19 @@ jobs:
         run: |
           chmod +x DunGen-Mac/DunGen.app/Contents/MacOS/DunGen
           chmod +x DunGen-Linux/DunGen
+      - name: Codesign macOS build
+        env:
+          MACOS_CERTIFICATE: ${{ secrets.MACOS_CERTIFICATE }}
+          MACOS_CERTIFICATE_PWD: ${{ secrets.MACOS_CERTIFICATE_PWD }}
+        run: |
+          echo $MACOS_CERTIFICATE | base64 --decode > certificate.p12
+          security create-keychain -p "" temp.keychain
+          security default-keychain -s temp.keychain
+          security unlock-keychain -p "" temp.keychain
+          security import certificate.p12 -k temp.keychain -P $MACOS_CERTIFICATE_PWD -T /usr/bin/codesign
+          security find-identity -v
+          security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "" temp.keychain
+          /usr/bin/codesign --force -sign CFJYV723M9 --entitlements ../../platform/macOS/entitlements.plist --options runtime --timestamp -v build_artifacts/DunGen-Mac/DunGen.app
       - name: Create archives
         working-directory: build_artifacts
         run: |

@@ -12,13 +12,8 @@ meson compile -C build
 cd build
 meson install
 cd DunGen_dist
-# codesign \
-#   --sign CFJYV723M9 \
-#   --entitlements ../../platform/macOS/entitlements.plist \
-#   --options runtime \
-#   --timestamp \
-#   DunGen.app
-# TODO: notarize
+# codesigning / notarization happens in the GitHub Action
+
 cd ../..
 
 cp docs/acknowledgements.md build/DunGen_dist
