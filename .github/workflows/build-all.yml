@@ -95,7 +95,6 @@ jobs:
 
   # if a release tag (starting with "v" as in "v1.0.2", has been made,
   #   prep a draft release and add artifacts to it
-  # TODO: rename the archives with the version string
   generate-release:
     runs-on: ubuntu-20.04
     # commenting out conditional to see if this works ::fingers-crossed::
@@ -107,6 +106,9 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt install zip
+      - name: Get version tag
+        run: |
+          echo "DUNGEN_VERSION=$(./buildscripts/getTag.sh)" >> $GITHUB_ENV
       - name: Download builds
         uses: actions/download-artifact@v2
         with:
@@ -119,10 +121,14 @@ jobs:
       - name: Create archives
         working-directory: build_artifacts
         run: |
-          tar -czf DunGen-Mac.tar.gz DunGen-Mac
-          zip -r -9 DunGen-Windows.zip DunGen-Windows
-          tar -czf DunGen-Linux.tar.gz DunGen-Linux
-          tar -czf DunGen-Web.tar.gz DunGen-Web
+          mv DunGen-Mac DunGen-Mac-${{ env.DUNGEN_VERSION }}
+          mv DunGen-Windows DunGen-Windows-${{ env.DUNGEN_VERSION }}
+          mv DunGen-Linux DunGen-Linux-${{ env.DUNGEN_VERSION }}
+          mv DunGen-Web DunGen-Web-${{ env.DUNGEN_VERSION }}
+          tar -czf DunGen-Mac-${{ env.DUNGEN_VERSION }}.tar.gz DunGen-Mac-${{ env.DUNGEN_VERSION }}
+          zip -r -9 DunGen-Windows-${{ env.DUNGEN_VERSION }}.zip DunGen-Windows-${{ env.DUNGEN_VERSION }}
+          tar -czf DunGen-Linux-${{ env.DUNGEN_VERSION }}.tar.gz DunGen-Linux-${{ env.DUNGEN_VERSION }}
+          tar -czf DunGen-Web-${{ env.DUNGEN_VERSION }}.tar.gz DunGen-Web-${{ env.DUNGEN_VERSION }}
       - name: Make draft release
         uses: softprops/action-gh-release@v1
         with:
