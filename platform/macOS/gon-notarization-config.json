@@ -1,0 +1,12 @@
+{
+  "notarize": [{
+    "path": "build_artifacts/DunGen-Mac/DunGen.app",
+    "bundle_id": "com.shaneliesegang.DunGen",
+    "staple": true
+  }],
+
+  "apple_id": {
+     "username": "@env:APPLE_ID_NAME",
+     "password": "@env:APPLE_ID_PWD"
+  }
+}

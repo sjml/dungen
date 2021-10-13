@@ -103,6 +103,10 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v2
+      - name: Install dependencies
+        run: |
+          brew tap mitchellh/gon
+          brew install mitchellh/gon/gon
       - name: Get version tag
         run: |
           echo "DUNGEN_VERSION=$(./buildscripts/getTag.sh)" >> $GITHUB_ENV
@@ -119,6 +123,8 @@ jobs:
         env:
           MACOS_CERTIFICATE: ${{ secrets.MACOS_CERTIFICATE }}
           MACOS_CERTIFICATE_PWD: ${{ secrets.MACOS_CERTIFICATE_PWD }}
+          APPLE_ID_NAME: ${{ secrets.APPLE_ID_NAME }}
+          APPLE_ID_PWD: ${{ secrets.APPLE_ID_PWD }}
         run: |
           echo $MACOS_CERTIFICATE | base64 --decode > certificate.p12
           security create-keychain -p "" temp.keychain
@@ -128,6 +134,7 @@ jobs:
           security find-identity -v
           security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "" temp.keychain
           /usr/bin/codesign --force --sign CFJYV723M9 --entitlements platform/macOS/entitlements.plist --options runtime --timestamp -v build_artifacts/DunGen-Mac/DunGen.app
+          gon platform/macOS/gon-notarization-config.json
       - name: Create archives
         working-directory: build_artifacts
         run: |
