@@ -15,10 +15,11 @@ jobs:
       - name: Build release version
         run: |
           buildscripts/releases/macOS.sh
-      # no unit tests on macOS since there's no good way to swap out the rendering backend
-      # - name: Run unit tests
-      #   run: |
-      #     build/DunGen_dist/DunGen.app/Contents/MacOS/DunGen startup=_testing.UnitTest
+      - name: Upload built artifacts
+        uses: actions/checkout@v2
+        with:
+          name: DunGen-Mac
+          path: build/DunGen_dist
 
   build-windows:
     runs-on: windows-2019
@@ -39,6 +40,11 @@ jobs:
       - name: Run unit tests
         run: |
           build/DunGen_dist/DunGen.exe startup=_testing.UnitTest
+      - name: Upload built artifacts
+        uses: actions/checkout@v2
+        with:
+          name: DunGen-Windows
+          path: build/DunGen_dist
 
   build-linux:
     runs-on: ubuntu-20.04
@@ -56,6 +62,11 @@ jobs:
         with:
           run: |
             build/DunGen_dist/DunGen startup=_testing.UnitTest
+      - name: Upload built artifacts
+        uses: actions/checkout@v2
+        with:
+          name: DunGen-Linux
+          path: build/DunGen_dist
   
   build-wasm:
     runs-on: ubuntu-20.04
@@ -76,4 +87,9 @@ jobs:
       - name: Build release version
         run: |
           buildscripts/releases/wasm.sh
+      - name: Upload built artifacts
+        uses: actions/checkout@v2
+        with:
+          name: DunGen-Web
+          path: build/DunGen_dist
 
