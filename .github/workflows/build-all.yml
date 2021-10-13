@@ -93,3 +93,41 @@ jobs:
           name: DunGen-Web
           path: build/DunGen_dist
 
+  # if a release tag (starting with "v" as in "v1.0.2", has been made,
+  #   prep a draft release and add artifacts to it
+  # TODO: rename the archives with the version string
+  generate-release:
+    runs-on: ubuntu-20.04
+    # commenting out conditional to see if this works ::fingers-crossed::
+    # if: startsWith(github.ref, 'refs/tags/v')
+    needs: [build-mac, build-windows, build-linux, build-wasm]
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v2
+      - name: Install dependencies
+        run: |
+          sudo apt install zip
+      - name: Download builds
+        uses: actions/download-artifact@v2
+        with:
+          path: build_artifacts
+      - name: Fix permissions
+        working-directory: build_artifacts
+        run: |
+          chmod +x DunGen-Mac/DunGen.app/Contents/MacOS/DunGen
+          chmod +x DunGen-Linux/DunGen
+      - name: Create archives
+        working-directory: build_artifacts
+        run: |
+          tar -czf DunGen-Mac.tar.gz DunGen-Mac
+          zip -r -9 DunGen-Windows.tar.gz DunGen-Windows
+          tar -czf DunGen-Linux.tar.gz DunGen-Linux
+          tar -czf DunGen-Web.tar.gz DunGen-Web
+      - name: Make draft release
+        uses: softprops/action-gh-release@v1
+        with:
+          draft: true
+          body: <insert release notes here>
+          files: |
+            build_artifacts/*.tar.gz
+            build_artifacts/*.zip
