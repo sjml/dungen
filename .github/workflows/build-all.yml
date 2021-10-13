@@ -127,7 +127,7 @@ jobs:
           security import certificate.p12 -k temp.keychain -P $MACOS_CERTIFICATE_PWD -T /usr/bin/codesign
           security find-identity -v
           security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "" temp.keychain
-          /usr/bin/codesign --force --sign CFJYV723M9 --entitlements ../../platform/macOS/entitlements.plist --options runtime --timestamp -v build_artifacts/DunGen-Mac/DunGen.app
+          /usr/bin/codesign --force --sign CFJYV723M9 --entitlements platform/macOS/entitlements.plist --options runtime --timestamp -v build_artifacts/DunGen-Mac/DunGen.app
       - name: Create archives
         working-directory: build_artifacts
         run: |
