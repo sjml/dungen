@@ -97,7 +97,7 @@ jobs:
   #   prep a draft release and add artifacts to it
   generate-release:
     runs-on: macos-11
-    # if: startsWith(github.ref, 'refs/tags/v')
+    if: startsWith(github.ref, 'refs/tags/v')
     needs: [build-mac, build-windows, build-linux, build-wasm]
     steps:
       - name: Check out repository
