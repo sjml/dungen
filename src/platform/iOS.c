@@ -13,6 +13,7 @@ void InitializePlatform() {
     }
     CFRelease(resourcesURL);
     chdir(path);
+    chdir("DunGenResources");
 }
 
 void FinalizePlatform() {
