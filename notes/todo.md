@@ -29,11 +29,9 @@
 * why is tile choice not using SetTileOutline?
 * Linux snap package or flatpak or whatever the kids are doing now?
 * set up Meson build for iOS 
-    - building, some combination of: 
-        - https://betterprogramming.pub/writing-ios-apps-without-xcode-89450d0de21a
-        - https://github.com/mesonbuild/meson/blob/master/cross/iphone.txt
-    - for putting on simulator: 
-        - https://medium.com/xcblog/simctl-control-ios-simulators-from-command-line-78b9006a20dc
+    - kinda works, but something goes weird if the display scale is 3x
+        - sokol bug or my bug? need to investigate (probably my bug; let's be honest)
+        - works fine at 1x or 2x though
     - a way to copy to device? probably no avoiding Xcode for that one...
         - Meson can generate an Xcode project... :-/ 
         - or maybe just make a stub Xcode target that invokes Meson and then sees the app as a product? 

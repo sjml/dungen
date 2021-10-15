@@ -4,7 +4,7 @@
 
 void InitializePlatform() {
     // recall: iOS gets weird if you call a directory "Resources" in the base of the .app,
-    //   so the stuff is just copied in directly
+    //   so the stuff is copied to a directory called DunGenResources
     CFBundleRef mainBundle = CFBundleGetMainBundle();
     CFURLRef resourcesURL = CFBundleCopyResourcesDirectoryURL(mainBundle);
     char path[PATH_MAX];

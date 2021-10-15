@@ -27,6 +27,15 @@
         "stopAtEntry": false,
         "cwd": "${workspaceFolder}",
         "environment": []
+      },
+      {
+        // requires the nisargjhaveri.ios-debug and vadimcn.vscode-lldb extensions
+        "name": "(iOS) Launch",
+        "type": "lldb",
+        "request": "launch",
+        "program": "${workspaceFolder}/build/DunGen_dist/DunGen.app",
+        "iosBundleId": "com.shaneliesegang.DunGen-iOS",
+        "iosTarget": "select"
       }
     ]
 }

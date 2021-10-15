@@ -7,12 +7,12 @@ ar = 'ar'
 strip = 'strip'
 
 [built-in options]
-c_args = ['-arch', 'arm64', '-arch', 'x86_64', '-miphoneos-version-min=11.0', '-isysroot', '/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator.sdk']
-cpp_args = ['-arch', 'arm64', '-arch', 'x86_64', '-miphoneos-version-min=11.0', '-isysroot', '/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator.sdk']
-c_link_args = ['-arch', 'arm64', '-arch', 'x86_64', '-miphoneos-version-min=11.0', '-isysroot', '/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator.sdk']
-cpp_link_args = ['-arch', 'arm64', '-arch', 'x86_64', '-miphoneos-version-min=11.0', '-isysroot', '/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator.sdk']
-objc_args = ['-arch', 'arm64', '-arch', 'x86_64', '-miphoneos-version-min=11.0', '-isysroot', '/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator.sdk']
-objcpp_args = ['-arch', 'arm64', '-arch', 'x86_64', '-miphoneos-version-min=11.0', '-isysroot', '/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator.sdk']
+c_args = ['-miphoneos-version-min=11.0', '-isysroot', '/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator.sdk']
+cpp_args = ['-miphoneos-version-min=11.0', '-isysroot', '/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator.sdk']
+c_link_args = ['-miphoneos-version-min=11.0', '-isysroot', '/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator.sdk']
+cpp_link_args = ['-miphoneos-version-min=11.0', '-isysroot', '/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator.sdk']
+objc_args = ['-miphoneos-version-min=11.0', '-isysroot', '/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator.sdk']
+objcpp_args = ['-miphoneos-version-min=11.0', '-isysroot', '/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator.sdk']
 
 [properties]
 root = '/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer'

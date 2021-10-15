@@ -93,6 +93,22 @@ jobs:
           name: DunGen-Web
           path: build/DunGen_dist
 
+  # signing path is not set and downloadable artifact wouldn't
+  #   be useful anyway, so just running this to make sure it's
+  #   not *more* broken
+  build-ios:
+    runs-on: macos-11
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v2
+      - name: Install dependencies
+        run: |
+          brew install meson
+      - name: Build release version
+        run: |
+          buildscripts/setups/iOS-Simulator.sh
+
+
   # if a release tag (starting with "v" as in "v1.0.2", has been made,
   #   prep a draft release and add artifacts to it
   generate-release:
