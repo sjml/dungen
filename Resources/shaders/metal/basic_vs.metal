@@ -20,14 +20,14 @@ struct main0_in
     float2 pos [[attribute(0)]];
 };
 
-#line 16 ""
-vertex main0_out main0(main0_in in [[stage_in]], constant basic_uniforms& _20 [[buffer(0)]])
+#line 16 "../Resources/shaders/base/basic.glsl"
+vertex main0_out main0(main0_in in [[stage_in]], constant basic_uniforms& _21 [[buffer(0)]])
 {
     main0_out out = {};
-#line 16 ""
-    out.gl_Position = _20.matrix * float4(in.pos, 0.0, 1.0);
-#line 17 ""
-    out.col = _20.color;
+#line 16 "../Resources/shaders/base/basic.glsl"
+    out.gl_Position = _21.matrix * float4(in.pos, 0.0, 1.0);
+#line 17 "../Resources/shaders/base/basic.glsl"
+    out.col = _21.color;
     return out;
 }
 

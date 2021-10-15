@@ -19,12 +19,12 @@ struct main0_in
     float4 vertex0 [[attribute(0)]];
 };
 
-#line 15 ""
-vertex main0_out main0(main0_in in [[stage_in]], constant text_vert_uniforms& _20 [[buffer(0)]])
+#line 15 "../Resources/shaders/base/text.glsl"
+vertex main0_out main0(main0_in in [[stage_in]], constant text_vert_uniforms& _21 [[buffer(0)]])
 {
     main0_out out = {};
-#line 15 ""
-    out.gl_Position = _20.ortho * float4(in.vertex0.xy, 0.0, 1.0);
+#line 15 "../Resources/shaders/base/text.glsl"
+    out.gl_Position = _21.ortho * float4(in.vertex0.xy, 0.0, 1.0);
     out.TexCoords = in.vertex0.zw;
     return out;
 }
