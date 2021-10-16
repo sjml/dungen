@@ -57,7 +57,7 @@
         "type": "shell",
         "command": "meson",
         "args": [
-          "compile", 
+          "compile",
           "-C", "build"
         ],
         "options": {
@@ -69,6 +69,27 @@
           "options": {
             "cwd": "${workspaceFolder}/build"
           }
+        },
+        "presentation": {
+          "echo": false,
+          "reveal": "always",
+          "focus": false,
+          "panel": "shared",
+          "showReuseMessage": false,
+          "clear": true
+        },
+        "problemMatcher": []
+      },
+      {
+        "label": "Install Compiled Project",
+        "type": "shell",
+        "dependsOn": ["Build Compiled Project"],
+        "command": "meson",
+        "args": [
+          "install"
+        ],
+        "options": {
+          "cwd": "${workspaceFolder}/build",
         },
         "presentation": {
           "echo": false,

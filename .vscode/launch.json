@@ -33,6 +33,7 @@
         "name": "(iOS) Launch",
         "type": "lldb",
         "request": "launch",
+        "preLaunchTask": "Install Compiled Project",
         "program": "${workspaceFolder}/build/DunGen_dist/DunGen.app",
         "iosBundleId": "com.shaneliesegang.DunGen-iOS",
         "iosTarget": "select"
