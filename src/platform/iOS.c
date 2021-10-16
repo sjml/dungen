@@ -24,8 +24,13 @@ sds GetShaderPath(const char* shaderName) {
         char* path = "shaders/glsl300es/";
         char* suffix = ".glsl";
     #elif defined(SOKOL_METAL)
-        char* path = "shaders/metal/";
-        char* suffix = ".metal";
+        #if TARGET_OS_SIMULATOR
+            char* path = "shaders/metal_sim/";
+            char* suffix = "metal";
+        #else
+            char* path = "shaders/metal_ios/";
+            char* suffix = ".metallib";
+        #endif // TARGET_OS_SIMULATOR
     #endif // defined(SOKOL_GLES3)
 
     return sdscatfmt(sdsempty(), "%s%s%s", path, shaderName, suffix);;

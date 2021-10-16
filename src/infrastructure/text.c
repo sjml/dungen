@@ -13,6 +13,7 @@
 #include "util.h"
 #include "rendering.h"
 #include "../platform/platform.h"
+#include "../shaders/text_bytecode.h"
 
 #define STB_RECT_PACK_IMPLEMENTATION
 #include <stb_rect_pack.h>
@@ -219,31 +220,7 @@ void LoadFont(const char* refName, const char* filePath, float pointSize, bool i
 }
 
 void InitializeText() {
-    sds vsPath = GetShaderPath("text_vs");
-    sds fsPath = GetShaderPath("text_fs");
-    sg_shader textShader = sg_make_shader(&(sg_shader_desc){
-        .vs.source = readTextFile(vsPath),
-        .fs.source = readTextFile(fsPath),
-        #ifdef SOKOL_METAL
-            .vs.entry = "main0",
-            .fs.entry = "main0",
-        #endif
-        .vs.uniform_blocks[0] = {
-            .size = sizeof(gbMat4),
-            .uniforms = {
-                [0] = { .name = "text_vert_uniforms", .type = SG_UNIFORMTYPE_FLOAT4, .array_count = 4 }
-            }
-        },
-        .fs.images[0] = { .name="textAtlas", .image_type = SG_IMAGETYPE_2D },
-        .fs.uniform_blocks[0] = {
-            .size = sizeof(gbVec4),
-            .uniforms = {
-                [0] = { .name = "text_frag_uniforms", .type = SG_UNIFORMTYPE_FLOAT4, .array_count = 1 }
-            }
-        }
-    });
-    sdsfree(vsPath);
-    sdsfree(fsPath);
+    sg_shader textShader = sg_make_shader(text_shader_desc(sg_query_backend()));
 
     ds.pipe = sg_make_pipeline(&(sg_pipeline_desc) {
         .shader = textShader,

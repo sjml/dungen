@@ -15,6 +15,8 @@
 #include "../ui/choice.h"
 #include "../ui/tile_choice.h"
 #include "../platform/platform.h"
+#include "../shaders/hex_bytecode.h"
+#include "../shaders/basic_bytecode.h"
 
 static bool renderingInitialized = false;
 
@@ -83,24 +85,7 @@ void InitializeRendering() {
         .vertex_buffers[1] = tileAttribBuff,
     };
 
-    sds vsHex = GetShaderPath("hex_vs");
-    sds fsHex = GetShaderPath("hex_fs");
-    sg_shader hexShader = sg_make_shader(&(sg_shader_desc){
-        .vs.uniform_blocks[0] = {
-            .size = sizeof(gbMat4),
-            .uniforms = {
-                [0] = { .name = "hex_vert_uniforms", .type = SG_UNIFORMTYPE_FLOAT4, .array_count = 4 },
-            }
-        },
-        .vs.source = readTextFile(vsHex),
-        .fs.source = readTextFile(fsHex),
-        #ifdef SOKOL_METAL
-            .vs.entry = "main0",
-            .fs.entry = "main0",
-        #endif
-    });
-    sdsfree(vsHex);
-    sdsfree(fsHex);
+    sg_shader hexShader = sg_make_shader(hex_shader_desc(sg_query_backend()));
 
     hexDraw.pipe = sg_make_pipeline(&(sg_pipeline_desc){
         .shader = hexShader,
@@ -124,24 +109,7 @@ void InitializeRendering() {
         // .colors[0] = { .action=SG_ACTION_CLEAR, .value={1.0f, 1.0f, 1.0f, 1.0f} }
     };
 
-    sds vsBasic = GetShaderPath("basic_vs");
-    sds fsBasic = GetShaderPath("basic_fs");
-    sg_shader basicShader = sg_make_shader(&(sg_shader_desc){
-        .vs.uniform_blocks[0] = {
-            .size = sizeof(gbVec4) + sizeof(gbMat4),
-            .uniforms = {
-                [0] = { .name = "basic_uniforms", .type = SG_UNIFORMTYPE_FLOAT4, .array_count = 5 },
-            }
-        },
-        .vs.source = readTextFile(vsBasic),
-        .fs.source = readTextFile(fsBasic),
-        #ifdef SOKOL_METAL
-            .vs.entry = "main0",
-            .fs.entry = "main0",
-        #endif
-    });
-    sdsfree(vsBasic);
-    sdsfree(fsBasic);
+    sg_shader basicShader = sg_make_shader(basic_shader_desc(sg_query_backend()));
 
     basicDraw.pipe = sg_make_pipeline(&(sg_pipeline_desc) {
         .shader = basicShader,

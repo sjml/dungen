@@ -1,0 +1,7 @@
+These annotated glsl files are all processed into headers by sokol-shdc for consumption
+by sokol_gfx. They aren't used directly, but the generated headers rather are compiled
+into the executable.
+
+Relevant script: ./buildscripts/regenerateShaders.sh
+Relevant readme: https://github.com/floooh/sokol-tools/blob/master/docs/sokol-shdc.md
+Generated headers: ./src/shaders/*.h

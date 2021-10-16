@@ -28,14 +28,11 @@
     #ifdef __APPLE__
         #include "TargetConditionals.h"
         #if TARGET_OS_OSX
-            // check if we're running headless (for CI)
-            #ifndef SOKOL_DUMMY_BACKEND
-                #define SOKOL_GLCORE33
-                // #define SOKOL_METAL
-            #endif // SOKOL_DUMMY_BACKEND
-        #else
-            #define SOKOL_GLES3
+            #define SOKOL_GLCORE33
             // #define SOKOL_METAL
+        #else
+            // #define SOKOL_GLES3
+            #define SOKOL_METAL
         #endif // TARGET_OS_MAC
     #else
         #define SOKOL_GLCORE33

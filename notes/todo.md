@@ -28,15 +28,6 @@
 * outlines flip edge alignment when regions have disjoint sections
 * why is tile choice not using SetTileOutline?
 * Linux snap package or flatpak or whatever the kids are doing now?
-* set up Meson build for iOS 
-    - kinda works, but something goes weird if the display scale is 3x
-        - sokol bug or my bug? need to investigate (probably my bug; let's be honest)
-        - works fine at 1x or 2x though
-    - a way to copy to device? probably no avoiding Xcode for that one...
-        - Meson can generate an Xcode project... :-/ 
-        - or maybe just make a stub Xcode target that invokes Meson and then sees the app as a product? 
-        - TestFlight something something? (could get it to the device, but not useful for attaching a debugger...)
-
 
 ## Tech Debt
 * more graceful failure (at least on Windows) if can't find resources directory
