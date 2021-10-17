@@ -27,7 +27,6 @@
 * handle newlines in text rendering? (and fix Great Wyrm label)
 * outlines flip edge alignment when regions have disjoint sections
 * why is tile choice not using SetTileOutline?
-* Linux snap package or flatpak or whatever the kids are doing now?
 
 ## Tech Debt
 * more graceful failure (at least on Windows) if can't find resources directory
