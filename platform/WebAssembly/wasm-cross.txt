@@ -1,13 +1,11 @@
 [binaries]
-c = EMSDK_BASE + '/emcc'
-cpp = EMSDK_BASE + '/em++'
-ar = EMSDK_BASE + '/emar'
+c = EMSDK_BASE / 'emcc'
+cpp = EMSDK_BASE / 'em++'
+ar = EMSDK_BASE / 'emar'
 
 [built-in options]
-c_args = []
+c_args = ['-Oz']
 c_link_args = ['-s', 'WASM=1', '-s', '--preload-file', '../Resources', '-s', 'MIN_WEBGL_VERSION=2', '-s', 'MAX_WEBGL_VERSION=2', '-s', 'ASSERTIONS=0', '-s', 'ALLOW_MEMORY_GROWTH=1', '-s', 'MALLOC=emmalloc', '--closure=1', '--shell-file', '../platform/WebAssembly/DunGen.html.template', '-o', 'DunGen.html']
-cpp_args = []
-cpp_link_args = ['-s', 'WASM=1', '-s', '--preload-file', '../Resources', '-s', 'MIN_WEBGL_VERSION=2', '-s', 'MAX_WEBGL_VERSION=2', '-s', 'ASSERTIONS=0', '-s', 'ALLOW_MEMORY_GROWTH=1', '-s', 'MALLOC=emmalloc', '--closure=1', '--shell-file', '../platform/WebAssembly/DunGen.html.template', '-o', 'DunGen.html']
 
 [host_machine]
 system = 'emscripten'
