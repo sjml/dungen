@@ -1,0 +1,67 @@
+## This snap configuration is in progress. It builds, but:
+##   1. Takes forever
+##   2. Creates a 36 megabyte snap?
+##   3. Will only install with the --dangerous flag
+##   4. Doesn't run, missing a libc connection
+##
+## Building a snap from existing software is woefully 
+##   under-documented. Seems to constantly assume that I
+##   want to  distribute through the centralized snap 
+##   repository, but no good way to run from a direct download?
+##   I'll revisit this some day, but woof, what a lousy system.
+
+name: dungen
+version: '0.0.1'
+license: MIT
+summary: narrative-driven procedural dungeon generator/simulator
+description: |
+  DunGen is a narrative-driven procedural dungeon 
+  generator/simulator, inspired by the pen-and-paper game 
+  "How to Host a Dungeon" by Tony Dowler.
+
+base: core18
+grade: devel
+confinement: strict
+
+apps:
+  dungen:
+    command: DunGen
+    plugs:
+      - opengl
+      - x11
+
+parts:
+  desktop-glib-only:
+    source: https://github.com/ubuntu/snapcraft-desktop-helpers.git
+    source-type: git
+    source-subdir: glib-only
+    plugin: make
+    build-packages:
+      - libglib2.0-dev
+    stage-packages:
+      - libglib2.0-bin
+  dungen:
+    plugin: dump
+    source: .
+    source-type: local
+    after:
+      - desktop-glib-only
+    stage-packages:
+      - libx11-dev
+      - libxi-dev
+      - libxcursor-dev
+      - libgl-dev
+
+    # plugin: meson
+    # meson-parameters:
+    #   - --buildtype=release
+    # build-environment:
+    #   - CC: "clang"
+    # source-type: local
+    # source: ../../
+    # build-packages:
+    #   - clang
+    #   - libx11-dev 
+    #   - libxi-dev 
+    #   - libxcursor-dev 
+    #   - libgl-dev
