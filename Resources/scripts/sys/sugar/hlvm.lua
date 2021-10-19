@@ -1,5 +1,5 @@
-function quit(message)
-  QuitGame(message)
+function quit(message, exitCode)
+  QuitGame(message, exitCode)
 end
 
 function gsr(key)
