@@ -129,7 +129,7 @@ jobs:
         working-directory: build_artifacts
         run: |
           chmod +x DunGen-Mac/DunGen.app/Contents/MacOS/DunGen
-          chmod +x DunGen-Linux/DunGen
+          chmod +x DunGen-Linux/DunGen.AppImage
       - name: Codesign macOS build
         env:
           MACOS_CERTIFICATE: ${{ secrets.MACOS_CERTIFICATE }}
@@ -189,6 +189,7 @@ jobs:
           unzip butler.zip -d butler
           butler/butler push build_artifacts/DunGen-Mac sjml/dungen:mac --user-version ${{ env.DUNGEN_VERSION }}
           butler/butler push build_artifacts/DunGen-Windows sjml/dungen:windows --user-version ${{ env.DUNGEN_VERSION }}
+          butler/butler push build_artifacts/DunGen-Linux sjml/dungen:linux --user-version ${{ env.DUNGEN_VERSION }}
           mv build_artifacts/DunGen-Web/DunGen.html build_artifacts/DunGen-Web/index.html
           butler/butler push build_artifacts/DunGen-Web sjml/dungen:web --user-version ${{ env.DUNGEN_VERSION }}
 
