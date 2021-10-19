@@ -136,7 +136,7 @@ static time_t l_checktime (lua_State *L, int arg) {
 /* }================================================================== */
 
 
-// /* BEGIN +system_patch */
+// /* BEGIN +dungen_patch */
 // iOS doesn't allow system calls; stub it out. (Android is similar, I guess?)
 // http://lua-users.org/lists/lua-l/2017-09/msg00240.html
 #if defined(__APPLE__)
@@ -147,7 +147,7 @@ static time_t l_checktime (lua_State *L, int arg) {
 #elif defined(__ANDROID__)
     #define system(s) ((s)==NULL ? 0 : -1)
 #endif
-// /* END +system_patch */
+// /* END +dungen_patch */
 
 static int os_execute (lua_State *L) {
   const char *cmd = luaL_optstring(L, 1, NULL);

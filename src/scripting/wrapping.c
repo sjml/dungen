@@ -8797,11 +8797,14 @@ fail:
 static int _wrap_QuitGame(lua_State* L) {
   int SWIG_arg = 0;
   char *arg1 = (char *) 0 ;
+  int arg2 ;
   
-  SWIG_check_num_args("QuitGame",1,1)
+  SWIG_check_num_args("QuitGame",2,2)
   if(!SWIG_lua_isnilstring(L,1)) SWIG_fail_arg("QuitGame",1,"char const *");
+  if(!lua_isnumber(L,2)) SWIG_fail_arg("QuitGame",2,"int");
   arg1 = (char *)lua_tostring(L, 1);
-  QuitGame((char const *)arg1);
+  arg2 = (int)lua_tonumber(L, 2);
+  QuitGame((char const *)arg1,arg2);
   
   return SWIG_arg;
   

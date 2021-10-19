@@ -47,13 +47,18 @@ jobs:
           path: build/DunGen_dist
 
   build-linux:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-18.04
     steps:
       - name: Check out repository
         uses: actions/checkout@v2
+      - name: Set up Python
+        uses: actions/setup-python@v1
+        with:
+          python-version: '3.x'
       - name: Install dependencies
         run: |
-          sudo apt install meson build-essential clang libx11-dev libxi-dev libxcursor-dev libgl-dev
+          pip install meson ninja
+          sudo apt install build-essential pkg-config clang libx11-dev libxi-dev libxcursor-dev libgl-dev
       - name: Build release version
         run: |
           buildscripts/releases/linux.sh
@@ -61,7 +66,7 @@ jobs:
         uses: GabrielBB/xvfb-action@v1
         with:
           run: |
-            build/DunGen_dist/DunGen startup=_testing.UnitTest
+            build/DunGen_dist/DunGen.AppImage startup=_testing.UnitTest
       - name: Upload built artifacts
         uses: actions/upload-artifact@v2
         with:
@@ -73,7 +78,8 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v2
-      - uses: actions/setup-python@v1
+      - name: Set up Python
+        uses: actions/setup-python@v1
         with:
           python-version: '3.x'
       - name: Install dependencies

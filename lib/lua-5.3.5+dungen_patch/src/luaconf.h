@@ -179,37 +179,47 @@
 ** non-conventional directories.
 */
 #define LUA_VDIR	LUA_VERSION_MAJOR "." LUA_VERSION_MINOR
-#if defined(_WIN32)	/* { */
-/*
-** In Windows, any exclamation mark ('!') in the path is replaced by the
-** path of the directory of the executable file of the current process.
-*/
-#define LUA_LDIR	"!\\lua\\"
-#define LUA_CDIR	"!\\"
-#define LUA_SHRDIR	"!\\..\\share\\lua\\" LUA_VDIR "\\"
-#define LUA_PATH_DEFAULT  \
-		LUA_LDIR"?.lua;"  LUA_LDIR"?\\init.lua;" \
-		LUA_CDIR"?.lua;"  LUA_CDIR"?\\init.lua;" \
-		LUA_SHRDIR"?.lua;" LUA_SHRDIR"?\\init.lua;" \
-		".\\?.lua;" ".\\?\\init.lua"
-#define LUA_CPATH_DEFAULT \
-		LUA_CDIR"?.dll;" \
-		LUA_CDIR"..\\lib\\lua\\" LUA_VDIR "\\?.dll;" \
-		LUA_CDIR"loadall.dll;" ".\\?.dll"
 
-#else			/* }{ */
+// /* BEGIN +dungen_patch */
+#if defined(_WIN32)
+	#define LUA_PATH_DEFAULT ".\\?.lua;" ".\\?\\init.lua"
+	#define LUA_CPATH_DEFAULT ".\\?.dll"
+#else
+	#define LUA_PATH_DEFAULT "./?.lua;" "./?/init.lua"
+	#define LUA_CPATH_DEFAULT "./?.so"
+#endif // defined(_WIN32)
 
-#define LUA_ROOT	"/usr/local/"
-#define LUA_LDIR	LUA_ROOT "share/lua/" LUA_VDIR "/"
-#define LUA_CDIR	LUA_ROOT "lib/lua/" LUA_VDIR "/"
-#define LUA_PATH_DEFAULT  \
-		LUA_LDIR"?.lua;"  LUA_LDIR"?/init.lua;" \
-		LUA_CDIR"?.lua;"  LUA_CDIR"?/init.lua;" \
-		"./?.lua;" "./?/init.lua"
-#define LUA_CPATH_DEFAULT \
-		LUA_CDIR"?.so;" LUA_CDIR"loadall.so;" "./?.so"
-#endif			/* } */
+// #if defined(_WIN32)	/* { */
+// /*
+// ** In Windows, any exclamation mark ('!') in the path is replaced by the
+// ** path of the directory of the executable file of the current process.
+// */
+// #define LUA_LDIR	"!\\lua\\"
+// #define LUA_CDIR	"!\\"
+// #define LUA_SHRDIR	"!\\..\\share\\lua\\" LUA_VDIR "\\"
+// #define LUA_PATH_DEFAULT  \
+// 		LUA_LDIR"?.lua;"  LUA_LDIR"?\\init.lua;" \
+// 		LUA_CDIR"?.lua;"  LUA_CDIR"?\\init.lua;" \
+// 		LUA_SHRDIR"?.lua;" LUA_SHRDIR"?\\init.lua;" \
+// 		".\\?.lua;" ".\\?\\init.lua"
+// #define LUA_CPATH_DEFAULT \
+// 		LUA_CDIR"?.dll;" \
+// 		LUA_CDIR"..\\lib\\lua\\" LUA_VDIR "\\?.dll;" \
+// 		LUA_CDIR"loadall.dll;" ".\\?.dll"
 
+// #else			/* }{ */
+
+// #define LUA_ROOT	"/usr/local/"
+// #define LUA_LDIR	LUA_ROOT "share/lua/" LUA_VDIR "/"
+// #define LUA_CDIR	LUA_ROOT "lib/lua/" LUA_VDIR "/"
+// #define LUA_PATH_DEFAULT  \
+// 		LUA_LDIR"?.lua;"  LUA_LDIR"?/init.lua;" \
+// 		LUA_CDIR"?.lua;"  LUA_CDIR"?/init.lua;" \
+// 		"./?.lua;" "./?/init.lua"
+// #define LUA_CPATH_DEFAULT \
+// 		LUA_CDIR"?.so;" LUA_CDIR"loadall.so;" "./?.so"
+// #endif			/* } */
+// /* END +dungen_patch */
 
 /*
 @@ LUA_DIRSEP is the directory separator (for submodules).

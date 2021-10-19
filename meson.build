@@ -61,44 +61,44 @@ endif
 dungen_inc_dirs = []
 
 lua_srcs = [
-    'lib/lua-5.3.5+system_patch/src/lapi.c',
-    'lib/lua-5.3.5+system_patch/src/lauxlib.c',
-    'lib/lua-5.3.5+system_patch/src/lbaselib.c',
-    'lib/lua-5.3.5+system_patch/src/lbitlib.c',
-    'lib/lua-5.3.5+system_patch/src/lcode.c',
-    'lib/lua-5.3.5+system_patch/src/lcorolib.c',
-    'lib/lua-5.3.5+system_patch/src/lctype.c',
-    'lib/lua-5.3.5+system_patch/src/ldblib.c',
-    'lib/lua-5.3.5+system_patch/src/ldebug.c',
-    'lib/lua-5.3.5+system_patch/src/ldo.c',
-    'lib/lua-5.3.5+system_patch/src/ldump.c',
-    'lib/lua-5.3.5+system_patch/src/lfunc.c',
-    'lib/lua-5.3.5+system_patch/src/lgc.c',
-    'lib/lua-5.3.5+system_patch/src/linit.c',
-    'lib/lua-5.3.5+system_patch/src/liolib.c',
-    'lib/lua-5.3.5+system_patch/src/llex.c',
-    'lib/lua-5.3.5+system_patch/src/lmathlib.c',
-    'lib/lua-5.3.5+system_patch/src/lmem.c',
-    'lib/lua-5.3.5+system_patch/src/loadlib.c',
-    'lib/lua-5.3.5+system_patch/src/lobject.c',
-    'lib/lua-5.3.5+system_patch/src/lopcodes.c',
-    'lib/lua-5.3.5+system_patch/src/loslib.c',
-    'lib/lua-5.3.5+system_patch/src/lparser.c',
-    'lib/lua-5.3.5+system_patch/src/lstate.c',
-    'lib/lua-5.3.5+system_patch/src/lstring.c',
-    'lib/lua-5.3.5+system_patch/src/lstrlib.c',
-    'lib/lua-5.3.5+system_patch/src/ltable.c',
-    'lib/lua-5.3.5+system_patch/src/ltablib.c',
-    'lib/lua-5.3.5+system_patch/src/ltm.c',
-    'lib/lua-5.3.5+system_patch/src/lundump.c',
-    'lib/lua-5.3.5+system_patch/src/lutf8lib.c',
-    'lib/lua-5.3.5+system_patch/src/lvm.c',
-    'lib/lua-5.3.5+system_patch/src/lzio.c',
+    'lib/lua-5.3.5+dungen_patch/src/lapi.c',
+    'lib/lua-5.3.5+dungen_patch/src/lauxlib.c',
+    'lib/lua-5.3.5+dungen_patch/src/lbaselib.c',
+    'lib/lua-5.3.5+dungen_patch/src/lbitlib.c',
+    'lib/lua-5.3.5+dungen_patch/src/lcode.c',
+    'lib/lua-5.3.5+dungen_patch/src/lcorolib.c',
+    'lib/lua-5.3.5+dungen_patch/src/lctype.c',
+    'lib/lua-5.3.5+dungen_patch/src/ldblib.c',
+    'lib/lua-5.3.5+dungen_patch/src/ldebug.c',
+    'lib/lua-5.3.5+dungen_patch/src/ldo.c',
+    'lib/lua-5.3.5+dungen_patch/src/ldump.c',
+    'lib/lua-5.3.5+dungen_patch/src/lfunc.c',
+    'lib/lua-5.3.5+dungen_patch/src/lgc.c',
+    'lib/lua-5.3.5+dungen_patch/src/linit.c',
+    'lib/lua-5.3.5+dungen_patch/src/liolib.c',
+    'lib/lua-5.3.5+dungen_patch/src/llex.c',
+    'lib/lua-5.3.5+dungen_patch/src/lmathlib.c',
+    'lib/lua-5.3.5+dungen_patch/src/lmem.c',
+    'lib/lua-5.3.5+dungen_patch/src/loadlib.c',
+    'lib/lua-5.3.5+dungen_patch/src/lobject.c',
+    'lib/lua-5.3.5+dungen_patch/src/lopcodes.c',
+    'lib/lua-5.3.5+dungen_patch/src/loslib.c',
+    'lib/lua-5.3.5+dungen_patch/src/lparser.c',
+    'lib/lua-5.3.5+dungen_patch/src/lstate.c',
+    'lib/lua-5.3.5+dungen_patch/src/lstring.c',
+    'lib/lua-5.3.5+dungen_patch/src/lstrlib.c',
+    'lib/lua-5.3.5+dungen_patch/src/ltable.c',
+    'lib/lua-5.3.5+dungen_patch/src/ltablib.c',
+    'lib/lua-5.3.5+dungen_patch/src/ltm.c',
+    'lib/lua-5.3.5+dungen_patch/src/lundump.c',
+    'lib/lua-5.3.5+dungen_patch/src/lutf8lib.c',
+    'lib/lua-5.3.5+dungen_patch/src/lvm.c',
+    'lib/lua-5.3.5+dungen_patch/src/lzio.c',
 
     'lib/luafilesystem-1.7.0-2/src/lfs.c'
 ]
 lua_inc_dirs = [
-    'lib/lua-5.3.5+system_patch/src',
+    'lib/lua-5.3.5+dungen_patch/src',
     'lib/luafilesystem-1.7.0-2/src'
 ]
 dungen_inc_dirs += lua_inc_dirs
@@ -264,8 +264,16 @@ elif host_machine_system == 'ios'
     install_data('platform/iOS/Info.plist', install_dir: './')
     install_subdir('Resources', install_dir: 'DunGenResources', strip_directory: true)
     meson.add_install_script('buildscripts/compileIcons.sh', ['ios'])
-elif host_machine_system == 'windows' or host_machine_system == 'linux'
+elif host_machine_system == 'windows'
     install_subdir('Resources', install_dir: '')
+elif host_machine_system == 'linux'
+    install_subdir('Resources', install_dir: '')
+    install_data(
+        [
+            'platform/linux/DunGen.desktop', 
+            'platform/linux/AppRun', 
+            'Resources/images/appicons/256.png'
+        ], install_dir: './')
 elif host_machine_system == 'emscripten'
     # this if statement is so the configuration can run before the files
     #   exist; we'll do a reconfigure before install

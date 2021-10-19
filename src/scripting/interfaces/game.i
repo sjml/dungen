@@ -3,7 +3,7 @@
     #include "../infrastructure/game.h"
 %}
 
-void QuitGame(const char* message);
+void QuitGame(const char* message, int exitCode);
 
 double GetTime(void);
 
