@@ -3,10 +3,12 @@ project('DunGen', 'c',
     default_options: ['c_std=c11', 'warning_level=0']
 )
 
-iphone_check = '''#include <TargetConditionals.h>
+iphone_check = '''
+#include <TargetConditionals.h>
 #if !TARGET_OS_IPHONE
 #error not iphone
-#endif'''
+#endif
+'''
 
 cc = meson.get_compiler('c')
 host_machine_system = host_machine.system()
@@ -270,8 +272,8 @@ elif host_machine_system == 'linux'
     install_subdir('Resources', install_dir: '')
     install_data(
         [
-            'platform/linux/DunGen.desktop', 
-            'platform/linux/AppRun', 
+            'platform/linux/DunGen.desktop',
+            'platform/linux/AppRun',
             'Resources/images/appicons/256.png'
         ], install_dir: './')
 elif host_machine_system == 'emscripten'

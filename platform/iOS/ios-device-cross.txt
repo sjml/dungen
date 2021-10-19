@@ -1,0 +1,5 @@
+[constants]
+IOS_SDK_ROOT = '/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer'
+IOS_SDK_PATH = IOS_SDK_ROOT / 'SDKs/iPhoneOS.sdk'
+IOS_CPU = 'aarch64'
+IOS_ARGS = ['-arch', 'arm64']

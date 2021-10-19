@@ -110,9 +110,13 @@ jobs:
       - name: Install dependencies
         run: |
           brew install meson
-      - name: Build release version
+      - name: Build release version for simulator
         run: |
-          buildscripts/setups/iOS-Simulator.sh
+          buildscripts/releases/iOS-Simulator.sh
+      - name: Build release version for device
+        run: |
+          rm -rf build
+          buildscripts/releases/iOS-Device.sh
 
 
   # if a release tag (starting with "v" as in "v1.0.2", has been made,
@@ -188,7 +192,7 @@ jobs:
             build_artifacts/*.tar.gz
             build_artifacts/*.zip
       - name: Push to itch.io
-        env: 
+        env:
           BUTLER_API_KEY: ${{ secrets.BUTLER_API_KEY }}
         run: |
           curl -L -o butler.zip https://broth.itch.ovh/butler/darwin-amd64/LATEST/archive/default

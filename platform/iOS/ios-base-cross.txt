@@ -1,0 +1,27 @@
+[binaries]
+c = 'clang'
+cpp = 'clang++'
+objc = 'clang'
+objcpp = 'clang++'
+ar = 'ar'
+strip = 'strip'
+
+[built-in options]
+c_args        = IOS_ARGS + ['-miphoneos-version-min=11.0', '-isysroot', IOS_SDK_PATH]
+cpp_args      = IOS_ARGS + ['-miphoneos-version-min=11.0', '-isysroot', IOS_SDK_PATH]
+c_link_args   = IOS_ARGS + ['-miphoneos-version-min=11.0', '-isysroot', IOS_SDK_PATH]
+cpp_link_args = IOS_ARGS + ['-miphoneos-version-min=11.0', '-isysroot', IOS_SDK_PATH]
+objc_args     = IOS_ARGS + ['-miphoneos-version-min=11.0', '-isysroot', IOS_SDK_PATH]
+objcpp_args   = IOS_ARGS + ['-miphoneos-version-min=11.0', '-isysroot', IOS_SDK_PATH]
+
+[properties]
+root = IOS_SDK_ROOT
+has_function_printf = true
+has_function_hfkerhisadf = false
+
+[host_machine]
+system = 'darwin'
+cpu_family = IOS_CPU
+cpu = IOS_CPU
+endian = 'little'
+needs_exe_wrapper = true

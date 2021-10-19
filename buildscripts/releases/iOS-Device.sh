@@ -6,9 +6,10 @@ cd "$(dirname "$0")"
 cd ../..
 
 meson \
+  --buildtype=release \
   --prefix=$(pwd)/build/DunGen_dist/DunGen.app \
   --bindir='' \
-  --cross-file platform/iOS/ios-simulator-cross.txt \
+  --cross-file platform/iOS/ios-device-cross.txt \
   --cross-file platform/iOS/ios-base-cross.txt \
   build
 
