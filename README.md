@@ -3,11 +3,11 @@
 # DunGen
 [![Build Status](https://img.shields.io/github/workflow/status/sjml/dungen/Build%20DunGen%20-%20all%20platforms/agent-work?label=build%20and%20tests&style=for-the-badge)](https://github.com/sjml/dungen/actions/workflows/build-all.yml)
 
-It seems like every summer I fall down a rabbit hole making some procedural generator system. This one is from summer of 2019, when I was otherwise busy doing refugee aid work and studying macroeconomics in South Africa. It was a welcome respite from the stress of the days.
+DunGen is a narrative-driven procedural dungeon generator/simulator, inspired by the pen-and-paper game ["How to Host a Dungeon"](https://store.tonydowler.com/listing/591021523/how-to-host-a-dungeon-pdf) by Tony Dowler. I first started work on a version of this, with Tony's permission, around 2012, but got caught up with life and some technical challenges and it withered. The first time, I used a somewhat heavy C++ prototyping framework. In 2019, I was in South Africa and went on a caving trip, which inspired me to pull this out of the mothballs. That time I rebuilt it from scratch using just plain C and OpenGL. In 2021, I was living in Lebanon and went on another caving trip, and again was inspired. Instead of a full rebuild, I started using this project as my testbed for trying new build systems, new rendering layers, etc. So now it uses sokol headers which can make it run on Mac, Windows, Linux, iOS, and the web. Fun! 
 
-DunGen is a narrative-driven procedural dungeon generator/simulator, inspired by the pen-and-paper game ["How to Host a Dungeon"](https://store.tonydowler.com/listing/591021523/how-to-host-a-dungeon-pdf) by Tony Dowler. I first started work on a version of this, with Tony's permission, about 7 years ago, but got caught up with life and some technical challenges and it withered. Recently, after a caving trip, I was inspired to start it up again. Before I used a somewhat heavy C++ prototyping framework; this time I rebuilt it from scratch using just plain C. 
+All of that's to say that I still haven't really made any progress on the actual content of it, but I also have fun figuring out build systems and stuff. As I write this, though, I think I'm done faffing about with the technical infrastructure and ready to get back to actually making the thing itself. 
 
-Currently it simulates all of the Primordial Age and the Great Disaster. Implementing agents and civilizations is a bit trickier, and honestly, I might wander away as the semester gets going. But this was fun to make. 
+Currently it simulates all of the Primordial Age and the Great Disaster. Implementing agents and civilizations is a bit trickier...
 
 It's more of a programmer's toy than a friendly simulation presentation, so the handles for playing with it can be a little archaic.
 
@@ -20,4 +20,4 @@ The project builds for various platforms using [Meson](https://mesonbuild.com/).
 
 On Ubuntu (the only Linux distribution I regularly test on), in addition to `meson` you'll need to install: `build-essential pkg-config clang libx11-dev libxi-dev libxcursor-dev libgl-dev`. On other platforms, everything you need should already be there or in this repo. 
 
-To make a distributable version, look at the scripts the `buildscripts/releases` folder. After running one of those scripts, a runnable set of files ready for zipping/deploying will end up in the `build/DunGen_dist` directory on all platforms.
+To make a distributable version, look at the scripts the `buildscripts/releases` folder. After running one of those scripts, a runnable set of files ready for zipping/deploying will end up in the `build/DunGen_dist` directory on all platforms. The scripts in the `buildscripts/setups` folder are similar, but make debug builds for development and don't do the final distribution packaging.
