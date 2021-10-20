@@ -47,7 +47,20 @@ cd ..
 cp docs/acknowledgements.md build/DunGen_dist
 
 
+## set up cache-busting
 cd build/DunGen_dist
+
+# Emscripten generates a new UUID for the data file every time it builds. :/
+#  This makes the generated .js have a different hash each time, which is silly.
+#  So far as I can tell, the UUID doesn't get used for anything, so swapping it
+#  out to something stable helps maintain the cache when appropriate.
+
+# Nothing magical about this UUID; it's just the one that was last generated when
+#  I noticed the issue.
+uuid=2859d42b-7ce1-4e0f-9679-70e77052e11e
+
+sed -i.bak -e "s/package_uuid:\"[0-9a-zA-Z-]*\"/package_uuid:\"$uuid\"/g" DunGen.js
+rm DunGen.js.bak
 
 declare -A busts
 busts[DunGen.data]=DunGen.data
@@ -57,6 +70,7 @@ busts[DunGen.html]=DunGen.html
 
 targets=(DunGen.html DunGen.js)
 
+# change filenames and url references to everything except the HTML
 for b in ${!busts[@]}; do
     hash=$(md5sum ./$b | awk '{print $1}')
     ext=${b##*.}
