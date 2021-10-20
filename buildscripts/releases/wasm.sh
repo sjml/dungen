@@ -4,6 +4,7 @@ set -e
 
 cd "$(dirname "$0")"
 cd ../..
+rm -rf build
 
 if [[ ! -f local/wasm-cross-constants.txt ]]; then
   echo "Need a \`local/wasm-cross-constants.txt\` file in this form:"
@@ -16,7 +17,6 @@ EMSDK_VERSION=$(cat platform/WebAssembly/EMSDK_VERSION.txt)
 EMSDK_PATH=$(cat local/wasm-cross-constants.txt | grep EMSDK_BASE | cut -d " " -f 3 | cut -d "'" -f 2)
 $EMSDK_PATH/../../emsdk activate $EMSDK_VERSION
 
-rm -rf build
 
 meson \
   --cross-file local/wasm-cross-constants.txt \

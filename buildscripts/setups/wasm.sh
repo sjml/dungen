@@ -4,6 +4,7 @@ set -e
 
 cd "$(dirname "$0")"
 cd ../..
+rm -rf build
 
 if [[ ! -f local/wasm-cross-constants.txt ]]; then
   echo "Need a \`local/wasm-cross-constants.txt\` file in this form:"

@@ -21,5 +21,3 @@ The project builds for various platforms using [Meson](https://mesonbuild.com/).
 On Ubuntu (the only Linux distribution I regularly test on), in addition to `meson` you'll need to install: `build-essential pkg-config clang libx11-dev libxi-dev libxcursor-dev libgl-dev`. On other platforms, everything you need should already be there or in this repo. 
 
 To make a distributable version, look at the scripts the `buildscripts/releases` folder. After running one of those scripts, a runnable set of files ready for zipping/deploying will end up in the `build/DunGen_dist` directory on all platforms.
-
-Note there is code in the project related to building for iOS, but not currently a functional iOS build. My Mac is more or less out of commission at the moment and so that will have to wait. Alack. 

@@ -4,7 +4,6 @@ set -e
 
 cd "$(dirname "$0")"
 cd ../..
-
 rm -rf build
 
 meson --buildtype=release --prefix=$(pwd)/build/DunGen_dist/DunGen.app --bindir=Contents/MacOS build
