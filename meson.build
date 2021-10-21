@@ -42,7 +42,10 @@ if build_machine.system() == 'windows'
         '/external:anglebrackets', '/external:W0', # don't warn for any files imported with angle brackets (external)
     ]
 else
-    lib_args += '-w' # no warnings
+    lib_args += [
+        '-w', # no warnings
+        '-fPIC', # position-independent code
+    ]
 
     exe_args += [
         '-Wall', '-Wextra', '-Wpedantic', '-Werror', # all warnings, and treat as errors
