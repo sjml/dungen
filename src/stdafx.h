@@ -8,10 +8,6 @@
 #include <lauxlib.h>
 #include <lualib.h>
 
-#if _WIN32
-    #include <glad/glad.h>
-#endif // _WIN32
-
 #ifdef __clang__
     #pragma clang diagnostic push
     #pragma clang diagnostic ignored "-Wstrict-prototypes"

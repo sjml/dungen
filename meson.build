@@ -171,13 +171,12 @@ elif host_machine_system == 'linux'
     dungen_srcs += 'src/platform/linux.c'
 elif host_machine_system == 'windows'
     dungen_srcs += 'src/platform/windows.c'
-    dungen_inc_dirs += ['platform/windows/GL_headers']
 elif host_machine_system == 'emscripten'
     dungen_srcs += 'src/platform/wasm.c'
 endif
 
 
-sokol_inc_dirs = ['src', 'lib/sokol-3825314']
+sokol_inc_dirs = ['src', 'lib/sokol-8fcd271']
 dungen_inc_dirs += sokol_inc_dirs
 dungen_inc_dirs += [
     'lib/single-file'
@@ -195,7 +194,6 @@ if host_machine_system == 'macos' or host_machine_system == 'ios'
 elif host_machine_system == 'windows'
     dungen_srcs += [
         'src/infrastructure/sokol_impl.c',
-        'platform/windows/GL_headers/glad.c'
     ]
 elif host_machine_system == 'linux'
     dungen_srcs += [

@@ -27,9 +27,9 @@
 * handle newlines in text rendering? (and fix Great Wyrm label)
 * outlines flip edge alignment when regions have disjoint sections
 * why is tile choice not using SetTileOutline?
-* still need glad.h? (I think sokol might make it redundant)
 
 ## Tech Debt
+* could use a minor code audit -- lots of cruft leftover from old build systems, etc. 
 * more graceful failure (at least on Windows) if can't find resources directory
 * figure out why Lua struggles compiling with C11 but only on Ubuntu
 * world.c could use a refactor
