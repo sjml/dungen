@@ -217,9 +217,12 @@ elif host_machine_system == 'windows'
         'platform/windows/GL_headers/glad.c'
     ]
 elif host_machine_system == 'linux'
-    dungen_srcs += [
-        'src/infrastructure/sokol_impl.c'
-    ]
+    sokol = static_library('sokol',
+        'src/infrastructure/sokol_impl.c',
+        include_directories: dungen_inc_dirs,
+        c_args: ['-fPIC']
+    )
+    dungen_libs += sokol
 elif host_machine_system == 'emscripten'
     dungen_srcs += [
         'src/infrastructure/sokol_impl.c'
