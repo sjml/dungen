@@ -4,6 +4,8 @@
 #define STB_IMAGE_WRITE_IMPLEMENTATION
 #include <stb_image_write.h>
 
+#include <util/sokol_imgui.h>
+
 #include "sokol_ext.h"
 
 #include "util.h"
@@ -11,6 +13,7 @@
 #include "text.h"
 #include "outline.h"
 #include "game.h"
+#include "../scripting/console.h"
 #include "../ui/banner.h"
 #include "../ui/choice.h"
 #include "../ui/tile_choice.h"
@@ -134,6 +137,9 @@ void InitializeRendering() {
 
     InitializeText();
     LoadFont("Pixel", "fonts/04B_03__.TTF", 32.0, true);
+
+    simgui_setup(&(simgui_desc_t){ 0 });
+    simgui_new_frame(framebufferDimensions.x, framebufferDimensions.y, 0.0);
 
     renderingInitialized = true;
 }
@@ -347,8 +353,18 @@ int Render() {
     }
     arrfree(screenShotRequests);
 
+    drawConsole();
+    
+    simgui_render();
+
     sg_end_pass();
     sg_commit();
+
+    double dt = GetDeltaTime();
+    if (dt == 0.0) {
+        dt = DBL_EPSILON;
+    }
+    simgui_new_frame(framebufferDimensions.x, framebufferDimensions.y, dt);
 
     return 0;
 }

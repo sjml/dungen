@@ -1,4 +1,4 @@
-project('DunGen', 'c',
+project('DunGen', 'c', 'cpp',
     license: 'MIT',
     default_options: ['c_std=c11', 'warning_level=0']
 )
@@ -143,6 +143,21 @@ pcg = static_library('pcg',
     c_args: lib_args
 )
 
+cimgui_inc_dirs = ['lib/cimgui-05d7db0']
+dungen_inc_dirs += cimgui_inc_dirs
+cimgui = static_library('cimgui',
+    sources: [
+        'lib/cimgui-05d7db0/cimgui.cpp',
+        'lib/cimgui-05d7db0/imgui/imgui.cpp',
+        'lib/cimgui-05d7db0/imgui/imgui_widgets.cpp',
+        'lib/cimgui-05d7db0/imgui/imgui_draw.cpp',
+        'lib/cimgui-05d7db0/imgui/imgui_tables.cpp',
+        'lib/cimgui-05d7db0/imgui/imgui_demo.cpp',
+    ],
+    include_directories: cimgui_inc_dirs,
+    c_args: lib_args
+)
+
 dungen_srcs = [
     'src/main.c',
     'src/dungen.c',
@@ -156,6 +171,7 @@ dungen_srcs = [
     'src/infrastructure/text.c',
     'src/infrastructure/util.c',
     'src/infrastructure/world.c',
+    'src/scripting/console.c',
     'src/scripting/scripting.c',
     'src/scripting/wrapping.c',
     'src/ui/banner.c',
@@ -184,7 +200,7 @@ dungen_inc_dirs += [
 ]
 
 
-dungen_libs = [lua, sqlite, sds, pqueue, pcg]
+dungen_libs = [lua, sqlite, sds, pqueue, pcg, cimgui]
 if host_machine_system == 'macos' or host_machine_system == 'ios'
     sokol = static_library('sokol',
         'src/infrastructure/sokol_impl.c',

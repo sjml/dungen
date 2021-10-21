@@ -23,6 +23,11 @@
 #define SOKOL_ARGS_IMPL
 #include <sokol_args.h>
 
+#define CIMGUI_DEFINE_ENUMS_AND_STRUCTS
+#include <cimgui.h>
+#define SOKOL_IMGUI_IMPL
+#include <util/sokol_imgui.h>
+
 #define SOKOL_EXT_IMPL
 #include "sokol_ext.h"
 
