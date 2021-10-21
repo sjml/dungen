@@ -58,7 +58,7 @@ if build_machine.system() == 'windows'
     exe_args += ['-D_CRT_SECURE_NO_WARNINGS']
 elif build_machine.system() == 'linux'
     exe_args += ['-D_GNU_SOURCE']
-    lib_args += ['-DLUA_USE_LINUX']
+    lib_args += ['-DLUA_USE_LINUX', '-D_GNU_SOURCE']
 endif
 
 
@@ -220,7 +220,6 @@ elif host_machine_system == 'linux'
     sokol = static_library('sokol',
         'src/infrastructure/sokol_impl.c',
         include_directories: dungen_inc_dirs,
-        c_args: ['-fPIC']
     )
     dungen_libs += sokol
 elif host_machine_system == 'emscripten'
