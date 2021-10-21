@@ -10,4 +10,3 @@ if (Test-Path build)
 meson build
 meson compile -C build
 
-Set-Location -Path ..
