@@ -2779,6 +2779,14 @@ static int _wrap_Vec2i_x_set(lua_State* L) {
       arg1 = vecPtr;
     }
     else {
+      // make sure it's a table
+      if (!lua_istable(L, 1)) {
+        SWIG_fail_arg("Vec2i_x_set", 1, "table or native vector");
+      }
+      if (lua_rawlen(L, 1) < 2) {
+        SWIG_fail_arg("Vec2i_x_set", 1, "table with length at least 2");
+      }
+      
       // convert table parameters to floats
       lua_pushinteger(L, 1);
       lua_gettable(L, 1);
@@ -2823,6 +2831,14 @@ static int _wrap_Vec2i_x_get(lua_State* L) {
       arg1 = vecPtr;
     }
     else {
+      // make sure it's a table
+      if (!lua_istable(L, 1)) {
+        SWIG_fail_arg("Vec2i_x_get", 1, "table or native vector");
+      }
+      if (lua_rawlen(L, 1) < 2) {
+        SWIG_fail_arg("Vec2i_x_get", 1, "table with length at least 2");
+      }
+      
       // convert table parameters to floats
       lua_pushinteger(L, 1);
       lua_gettable(L, 1);
@@ -2867,6 +2883,14 @@ static int _wrap_Vec2i_y_set(lua_State* L) {
       arg1 = vecPtr;
     }
     else {
+      // make sure it's a table
+      if (!lua_istable(L, 1)) {
+        SWIG_fail_arg("Vec2i_y_set", 1, "table or native vector");
+      }
+      if (lua_rawlen(L, 1) < 2) {
+        SWIG_fail_arg("Vec2i_y_set", 1, "table with length at least 2");
+      }
+      
       // convert table parameters to floats
       lua_pushinteger(L, 1);
       lua_gettable(L, 1);
@@ -2911,6 +2935,14 @@ static int _wrap_Vec2i_y_get(lua_State* L) {
       arg1 = vecPtr;
     }
     else {
+      // make sure it's a table
+      if (!lua_istable(L, 1)) {
+        SWIG_fail_arg("Vec2i_y_get", 1, "table or native vector");
+      }
+      if (lua_rawlen(L, 1) < 2) {
+        SWIG_fail_arg("Vec2i_y_get", 1, "table with length at least 2");
+      }
+      
       // convert table parameters to floats
       lua_pushinteger(L, 1);
       lua_gettable(L, 1);
@@ -3551,6 +3583,14 @@ static int _wrap_gbVec3_xy_set(lua_State* L) {
       arg2 = vecPtr;
     }
     else {
+      // make sure it's a table
+      if (!lua_istable(L, 2)) {
+        SWIG_fail_arg("gbVec3_xy_set", 2, "table or native vector");
+      }
+      if (lua_rawlen(L, 2) < 2) {
+        SWIG_fail_arg("gbVec3_xy_set", 2, "table with length at least 2");
+      }
+      
       // convert table parameters to floats
       lua_pushinteger(L, 1);
       lua_gettable(L, 2);
@@ -4158,6 +4198,14 @@ static int _wrap_gbVec4_xy_set(lua_State* L) {
       arg2 = vecPtr;
     }
     else {
+      // make sure it's a table
+      if (!lua_istable(L, 2)) {
+        SWIG_fail_arg("gbVec4_xy_set", 2, "table or native vector");
+      }
+      if (lua_rawlen(L, 2) < 2) {
+        SWIG_fail_arg("gbVec4_xy_set", 2, "table with length at least 2");
+      }
+      
       // convert table parameters to floats
       lua_pushinteger(L, 1);
       lua_gettable(L, 2);
@@ -4235,6 +4283,14 @@ static int _wrap_gbVec4_zw_set(lua_State* L) {
       arg2 = vecPtr;
     }
     else {
+      // make sure it's a table
+      if (!lua_istable(L, 2)) {
+        SWIG_fail_arg("gbVec4_zw_set", 2, "table or native vector");
+      }
+      if (lua_rawlen(L, 2) < 2) {
+        SWIG_fail_arg("gbVec4_zw_set", 2, "table with length at least 2");
+      }
+      
       // convert table parameters to floats
       lua_pushinteger(L, 1);
       lua_gettable(L, 2);
@@ -4312,6 +4368,14 @@ static int _wrap_gbVec4_xyz_set(lua_State* L) {
       arg2 = vecPtr;
     }
     else {
+      // make sure it's a table
+      if (!lua_istable(L, 2)) {
+        SWIG_fail_arg("gbVec4_xyz_set", 2, "table or native vector");
+      }
+      if (lua_rawlen(L, 2) < 3) {
+        SWIG_fail_arg("gbVec4_xyz_set", 2, "table with length at least 3");
+      }
+      
       // convert table parameters to floats
       lua_pushinteger(L, 1);
       lua_gettable(L, 2);
@@ -4396,6 +4460,14 @@ static int _wrap_gbVec4_rgb_set(lua_State* L) {
       arg2 = vecPtr;
     }
     else {
+      // make sure it's a table
+      if (!lua_istable(L, 2)) {
+        SWIG_fail_arg("gbVec4_rgb_set", 2, "table or native vector");
+      }
+      if (lua_rawlen(L, 2) < 3) {
+        SWIG_fail_arg("gbVec4_rgb_set", 2, "table with length at least 3");
+      }
+      
       // convert table parameters to floats
       lua_pushinteger(L, 1);
       lua_gettable(L, 2);
@@ -4686,6 +4758,14 @@ static int _wrap_WorldToScreen(lua_State* L) {
       arg1 = *vecPtr;
     }
     else {
+      // make sure it's a table
+      if (!lua_istable(L, 1)) {
+        SWIG_fail_arg("WorldToScreen", 1, "table or native vector");
+      }
+      if (lua_rawlen(L, 1) < 2) {
+        SWIG_fail_arg("WorldToScreen", 1, "table with length at least 2");
+      }
+      
       // convert table parameters to floats
       lua_pushinteger(L, 1);
       lua_gettable(L, 1);
@@ -5007,6 +5087,14 @@ static int _wrap_TileDrawData_worldPos_set(lua_State* L) {
       arg2 = vecPtr;
     }
     else {
+      // make sure it's a table
+      if (!lua_istable(L, 2)) {
+        SWIG_fail_arg("TileDrawData_worldPos_set", 2, "table or native vector");
+      }
+      if (lua_rawlen(L, 2) < 2) {
+        SWIG_fail_arg("TileDrawData_worldPos_set", 2, "table with length at least 2");
+      }
+      
       // convert table parameters to floats
       lua_pushinteger(L, 1);
       lua_gettable(L, 2);
@@ -5084,6 +5172,14 @@ static int _wrap_TileDrawData_color_set(lua_State* L) {
       arg2 = vecPtr;
     }
     else {
+      // make sure it's a table
+      if (!lua_istable(L, 2)) {
+        SWIG_fail_arg("TileDrawData_color_set", 2, "table or native vector");
+      }
+      if (lua_rawlen(L, 2) < 3) {
+        SWIG_fail_arg("TileDrawData_color_set", 2, "table with length at least 3");
+      }
+      
       // convert table parameters to floats
       lua_pushinteger(L, 1);
       lua_gettable(L, 2);
@@ -5280,6 +5376,14 @@ static int _wrap_TileMetaData_hexPos_set(lua_State* L) {
       arg2 = vecPtr;
     }
     else {
+      // make sure it's a table
+      if (!lua_istable(L, 2)) {
+        SWIG_fail_arg("TileMetaData_hexPos_set", 2, "table or native vector");
+      }
+      if (lua_rawlen(L, 2) < 2) {
+        SWIG_fail_arg("TileMetaData_hexPos_set", 2, "table with length at least 2");
+      }
+      
       // convert table parameters to floats
       lua_pushinteger(L, 1);
       lua_gettable(L, 2);
@@ -6562,6 +6666,14 @@ static int _wrap_ScreenToTile(lua_State* L) {
       arg1 = vecPtr;
     }
     else {
+      // make sure it's a table
+      if (!lua_istable(L, 1)) {
+        SWIG_fail_arg("ScreenToTile", 1, "table or native vector");
+      }
+      if (lua_rawlen(L, 1) < 2) {
+        SWIG_fail_arg("ScreenToTile", 1, "table with length at least 2");
+      }
+      
       // convert table parameters to floats
       lua_pushinteger(L, 1);
       lua_gettable(L, 1);
@@ -6717,6 +6829,14 @@ static int _wrap_SetTileOutline(lua_State* L) {
       arg2 = *vecPtr;
     }
     else {
+      // make sure it's a table
+      if (!lua_istable(L, 2)) {
+        SWIG_fail_arg("SetTileOutline", 2, "table or native vector");
+      }
+      if (lua_rawlen(L, 2) < 3) {
+        SWIG_fail_arg("SetTileOutline", 2, "table with length at least 3");
+      }
+      
       // convert table parameters to floats
       lua_pushinteger(L, 1);
       lua_gettable(L, 2);
@@ -7077,6 +7197,14 @@ static int _wrap_SetRegionOutline(lua_State* L) {
       arg2 = *vecPtr;
     }
     else {
+      // make sure it's a table
+      if (!lua_istable(L, 2)) {
+        SWIG_fail_arg("SetRegionOutline", 2, "table or native vector");
+      }
+      if (lua_rawlen(L, 2) < 3) {
+        SWIG_fail_arg("SetRegionOutline", 2, "table with length at least 3");
+      }
+      
       // convert table parameters to floats
       lua_pushinteger(L, 1);
       lua_gettable(L, 2);
@@ -7200,6 +7328,14 @@ static int _wrap_SetRegionLabel(lua_State* L) {
       arg4 = *vecPtr;
     }
     else {
+      // make sure it's a table
+      if (!lua_istable(L, 4)) {
+        SWIG_fail_arg("SetRegionLabel", 4, "table or native vector");
+      }
+      if (lua_rawlen(L, 4) < 3) {
+        SWIG_fail_arg("SetRegionLabel", 4, "table with length at least 3");
+      }
+      
       // convert table parameters to floats
       lua_pushinteger(L, 1);
       lua_gettable(L, 4);
@@ -7238,6 +7374,14 @@ static int _wrap_SetRegionLabel(lua_State* L) {
       arg5 = *vecPtr;
     }
     else {
+      // make sure it's a table
+      if (!lua_istable(L, 5)) {
+        SWIG_fail_arg("SetRegionLabel", 5, "table or native vector");
+      }
+      if (lua_rawlen(L, 5) < 2) {
+        SWIG_fail_arg("SetRegionLabel", 5, "table with length at least 2");
+      }
+      
       // convert table parameters to floats
       lua_pushinteger(L, 1);
       lua_gettable(L, 5);
@@ -9070,6 +9214,14 @@ static int _wrap_AddBanner(lua_State* L) {
       arg3 = *vecPtr;
     }
     else {
+      // make sure it's a table
+      if (!lua_istable(L, 3)) {
+        SWIG_fail_arg("AddBanner", 3, "table or native vector");
+      }
+      if (lua_rawlen(L, 3) < 3) {
+        SWIG_fail_arg("AddBanner", 3, "table with length at least 3");
+      }
+      
       // convert table parameters to floats
       lua_pushinteger(L, 1);
       lua_gettable(L, 3);
@@ -9108,6 +9260,14 @@ static int _wrap_AddBanner(lua_State* L) {
       arg4 = *vecPtr;
     }
     else {
+      // make sure it's a table
+      if (!lua_istable(L, 4)) {
+        SWIG_fail_arg("AddBanner", 4, "table or native vector");
+      }
+      if (lua_rawlen(L, 4) < 3) {
+        SWIG_fail_arg("AddBanner", 4, "table with length at least 3");
+      }
+      
       // convert table parameters to floats
       lua_pushinteger(L, 1);
       lua_gettable(L, 4);

@@ -13,6 +13,14 @@
         $1 = vecPtr;
     }
     else {
+        // make sure it's a table
+        if (!lua_istable(L, $input)) {
+            SWIG_fail_arg("$symname", $input, "table or native vector");
+        }
+        if (lua_rawlen(L, $input) < 3) {
+            SWIG_fail_arg("$symname", $input, "table with length at least 3");
+        }
+
         // convert table parameters to floats
         lua_pushinteger(L, 1);
         lua_gettable(L, $input);
@@ -63,6 +71,14 @@
         $1 = *vecPtr;
     }
     else {
+        // make sure it's a table
+        if (!lua_istable(L, $input)) {
+            SWIG_fail_arg("$symname", $input, "table or native vector");
+        }
+        if (lua_rawlen(L, $input) < 3) {
+            SWIG_fail_arg("$symname", $input, "table with length at least 3");
+        }
+
         // convert table parameters to floats
         lua_pushinteger(L, 1);
         lua_gettable(L, $input);
@@ -103,6 +119,14 @@
         $1 = vecPtr;
     }
     else {
+        // make sure it's a table
+        if (!lua_istable(L, $input)) {
+            SWIG_fail_arg("$symname", $input, "table or native vector");
+        }
+        if (lua_rawlen(L, $input) < 3) {
+            SWIG_fail_arg("$symname", $input, "table with length at least 3");
+        }
+
         // convert table parameters to floats
         lua_pushinteger(L, 1);
         lua_gettable(L, $input);
@@ -143,6 +167,14 @@
         $1 = *vecPtr;
     }
     else {
+        // make sure it's a table
+        if (!lua_istable(L, $input)) {
+            SWIG_fail_arg("$symname", $input, "table or native vector");
+        }
+        if (lua_rawlen(L, $input) < 3) {
+            SWIG_fail_arg("$symname", $input, "table with length at least 3");
+        }
+
         // convert table parameters to floats
         lua_pushinteger(L, 1);
         lua_gettable(L, $input);
@@ -175,6 +207,14 @@
         $1 = vecPtr;
     }
     else {
+        // make sure it's a table
+        if (!lua_istable(L, $input)) {
+            SWIG_fail_arg("$symname", $input, "table or native vector");
+        }
+        if (lua_rawlen(L, $input) < 2) {
+            SWIG_fail_arg("$symname", $input, "table with length at least 2");
+        }
+
         // convert table parameters to floats
         lua_pushinteger(L, 1);
         lua_gettable(L, $input);
@@ -208,6 +248,14 @@
         $1 = *vecPtr;
     }
     else {
+        // make sure it's a table
+        if (!lua_istable(L, $input)) {
+            SWIG_fail_arg("$symname", $input, "table or native vector");
+        }
+        if (lua_rawlen(L, $input) < 2) {
+            SWIG_fail_arg("$symname", $input, "table with length at least 2");
+        }
+
         // convert table parameters to floats
         lua_pushinteger(L, 1);
         lua_gettable(L, $input);
@@ -234,6 +282,14 @@
         $1 = vecPtr;
     }
     else {
+        // make sure it's a table
+        if (!lua_istable(L, $input)) {
+            SWIG_fail_arg("$symname", $input, "table or native vector");
+        }
+        if (lua_rawlen(L, $input) < 2) {
+            SWIG_fail_arg("$symname", $input, "table with length at least 2");
+        }
+
         // convert table parameters to floats
         lua_pushinteger(L, 1);
         lua_gettable(L, $input);
@@ -267,6 +323,14 @@
         $1 = *vecPtr;
     }
     else {
+        // make sure it's a table
+        if (!lua_istable(L, $input)) {
+            SWIG_fail_arg("$symname", $input, "table or native vector");
+        }
+        if (lua_rawlen(L, $input) < 2) {
+            SWIG_fail_arg("$symname", $input, "table with length at least 2");
+        }
+
         // convert table parameters to floats
         lua_pushinteger(L, 1);
         lua_gettable(L, $input);

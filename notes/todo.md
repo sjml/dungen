@@ -2,7 +2,7 @@
 0. to resume actual work
     - refresh on chamber progress (merging, moving contents, etc.)
         - complete test setup and execution
-        - what is happening with the storage? 
+        - what is happening with the storage?
         - maybe distinguish between things that take up space (like flowing water/magma) and things that only have a visual representation of a tag (like population)
     - refresh on river flowing and exploration
         - might junk and remake -- have leveled up as a programmer since last go at it
@@ -21,21 +21,21 @@
 5. Relaxable constraint sets
 
 ## Near Term
-* reposition text, banners, buttons when resolution changes 
+* reposition text, banners, buttons when resolution changes
 * fix text shader to use `texture` instead of `texelFetch` so we can do WebGL 1 instead of 2?
 * make webpage explaining project, linking to releases, etc.
 * handle newlines in text rendering? (and fix Great Wyrm label)
 * outlines flip edge alignment when regions have disjoint sections
 * why is tile choice not using SetTileOutline?
+* successful quit request should halt the stack popping
 
 ## Tech Debt
-* could use a minor code audit -- lots of cruft leftover from old build systems, etc. 
+* could use a minor code audit -- lots of cruft leftover from old build systems, etc.
 * more graceful failure (at least on Windows) if can't find resources directory
 * figure out why Lua struggles compiling with C11 but only on Ubuntu
 * world.c could use a refactor
 * note at the top of attributes.c about simplifying it
 * RenderingRegions is a holdover from when they were bare TileSets; think about just making a permalist like Agents and TileData have (though TileData's is more by rendering necessity...)
-* typemaps should reject inputs that are not tables
 * add way to modify attributes instead of having to get/set round-trip through SQLite
 * overusing the stretchy buffer right now; look for more chances to just use a static array
 
