@@ -39,7 +39,7 @@ jobs:
           buildscripts/releases/windows.ps1
       - name: Run unit tests
         run: |
-          build/DunGen_dist/DunGen.exe startup=_testing.UnitTest
+          build/DunGen_dist/DunGen.exe startup=_testing.UnitTestHarness
       - name: Upload built artifacts
         uses: actions/upload-artifact@v2
         with:
@@ -115,11 +115,10 @@ jobs:
           buildscripts/releases/iOS-Simulator.sh
       - name: Build release version for device
         run: |
-          rm -rf build
           buildscripts/releases/iOS-Device.sh
 
 
-  # if a release tag (starting with "v" as in "v1.0.2", has been made,
+  # if a release tag (starting with "v" as in "v1.0.2") has been made,
   #   prep a draft GitHub release with artifacts + push to itch
   generate-release:
     runs-on: macos-11

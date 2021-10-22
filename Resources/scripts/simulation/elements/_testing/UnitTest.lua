@@ -1,3 +1,5 @@
+sir("testingInProgress", 1)
+
 errCount = 0
 
 td = GetTileAtPosition(25, 25)
@@ -204,6 +206,6 @@ circle4 = nil
 circle5 = nil
 collectgarbage() -- just to make sure this doesn't trigger segfaults
 
-
+sir("testingInProgress", 0)
 reportErrors(errCount)
 quit(nil, errCount)
