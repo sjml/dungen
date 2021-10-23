@@ -6,6 +6,6 @@ cd "$(dirname "$0")"
 cd ../..
 rm -rf build
 
-CC=clang meson build
+CC=clang meson -Dc_std=gnu11 build
 cd build
 ninja

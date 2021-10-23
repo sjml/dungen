@@ -48,7 +48,6 @@ if build_machine.system() == 'windows'
 else
     lib_args += [
         '-w', # no warnings
-        '-fPIC', # position-independent code
     ]
 
     exe_args += [
@@ -61,7 +60,7 @@ endif
 if build_machine.system() == 'windows'
     exe_args += ['-D_CRT_SECURE_NO_WARNINGS']
 elif build_machine.system() == 'linux'
-    exe_args += ['-D_GNU_SOURCE']
+    exe_args += ['-D_GNU_SOURCE', '-fPIC']
     lib_args += ['-DLUA_USE_LINUX', '-D_GNU_SOURCE']
 endif
 
@@ -115,7 +114,8 @@ lua = static_library('lua',
     sources: lua_srcs,
     include_directories: lua_inc_dirs,
     override_options: ['c_std=none'], # I don't like this, but Ubuntu doesn't like compiling Lua with C11?
-    c_args: lib_args
+    c_args: lib_args,
+    pic: true,
 )
 
 sds_inc_dirs = ['lib/sds-0bb446e']
@@ -123,7 +123,8 @@ dungen_inc_dirs += sds_inc_dirs
 sds = static_library('sds',
     sources: 'lib/sds-0bb446e/sds.c',
     include_directories: sds_inc_dirs,
-    c_args: lib_args
+    c_args: lib_args,
+    pic: true
 )
 
 sqlite_inc_dirs = ['lib/sqlite-amalgamation-3290000']
@@ -131,7 +132,8 @@ dungen_inc_dirs += sqlite_inc_dirs
 sqlite = static_library('sqlite',
     sources: 'lib/sqlite-amalgamation-3290000/sqlite3.c',
     include_directories: sqlite_inc_dirs,
-    c_args: lib_args
+    c_args: lib_args,
+    pic: true
 )
 
 pqueue_inc_dirs = ['lib/libpqueue-f319ea0/src']
@@ -139,7 +141,8 @@ dungen_inc_dirs += pqueue_inc_dirs
 pqueue = static_library('pqueue',
     sources: 'lib/libpqueue-f319ea0/src/pqueue.c',
     include_directories: pqueue_inc_dirs,
-    c_args: lib_args
+    c_args: lib_args,
+    pic: true
 )
 
 pcg_inc_dirs = ['lib/pcg-c-basic-0.9']
@@ -147,7 +150,8 @@ dungen_inc_dirs += pcg_inc_dirs
 pcg = static_library('pcg',
     sources: 'lib/pcg-c-basic-0.9/pcg_basic.c',
     include_directories: pcg_inc_dirs,
-    c_args: lib_args
+    c_args: lib_args,
+    pic: true
 )
 
 cimgui_inc_dirs = ['lib/cimgui-05d7db0']
@@ -168,6 +172,7 @@ cimgui = static_library('cimgui',
     include_directories: cimgui_inc_dirs,
     cpp_args: lib_args + cimgui_args,
     c_args: lib_args + cimgui_args,
+    pic: true
 )
 
 dungen_srcs = [
@@ -217,7 +222,8 @@ if host_machine_system == 'macos' or host_machine_system == 'ios'
     sokol = static_library('sokol',
         'src/infrastructure/sokol_impl.c',
         include_directories: dungen_inc_dirs,
-        c_args: ['-x', 'objective-c']
+        c_args: ['-x', 'objective-c'],
+        pic: true
     )
     dungen_libs += sokol
 elif host_machine_system == 'windows'
@@ -229,6 +235,7 @@ elif host_machine_system == 'linux'
     sokol = static_library('sokol',
         'src/infrastructure/sokol_impl.c',
         include_directories: dungen_inc_dirs,
+        pic: true
     )
     dungen_libs += sokol
 elif host_machine_system == 'emscripten'
