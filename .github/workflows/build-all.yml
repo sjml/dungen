@@ -66,7 +66,7 @@ jobs:
         uses: GabrielBB/xvfb-action@v1
         with:
           run: |
-            build/DunGen_dist/DunGen.AppImage startup=_testing.UnitTest
+            build/DunGen_dist/DunGen.AppImage startup=_testing.UnitTestHarness
       - name: Upload built artifacts
         uses: actions/upload-artifact@v2
         with:
