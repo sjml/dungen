@@ -8,12 +8,10 @@
 #include <time.h>
 #include <pcg_basic.h>
 
-#include <util/sokol_imgui.h>
-
 #include "util.h"
 #include "world.h"
 #include "rendering.h"
-#include "../scripting/console.h"
+#include "tools.h"
 #include "../scripting/scripting.h"
 #include "../hlvm/hlvm.h"
 #include "../ui/banner.h"
@@ -124,9 +122,11 @@ void QuitGame(const char* message, int exitCode) {
 }
 
 void ProcessEvent(const sapp_event* event) {
-    if (simgui_handle_event(event)) {
-        return;
-    }
+    #if !defined(DUNGEN_DISABLE_TOOLS)
+        if (simgui_handle_event(event)) {
+            return;
+        }
+    #endif // !defined(DUNGEN_DISABLE_TOOLS)
     sapp_event ev_cpy = *event;
     arrpush(frameEvents, ev_cpy);
     if (event->type == SAPP_EVENTTYPE_QUIT_REQUESTED) {
@@ -143,7 +143,7 @@ void _RunEvents() {
                 sapp_request_quit();
             }
             else if (event->key_code == SAPP_KEYCODE_GRAVE_ACCENT) {
-                toggleConsole();
+                ShowTools(!AreToolsVisible());
             }
         }
         else if (event->type == SAPP_EVENTTYPE_KEY_UP) {

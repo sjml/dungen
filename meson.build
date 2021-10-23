@@ -22,12 +22,16 @@ endif
 
 
 if host_machine_system == 'macos' and not get_option('debug')
-    add_global_arguments(['-arch', 'arm64', '-arch', 'x86_64'], language: 'c')
-    add_global_link_arguments(['-arch', 'arm64', '-arch', 'x86_64'], language: 'c')
+    add_global_arguments(['-arch', 'arm64', '-arch', 'x86_64'], language: ['c', 'cpp'])
+    add_global_link_arguments(['-arch', 'arm64', '-arch', 'x86_64'], language: ['c', 'cpp'])
 endif
 
 if get_option('debug')
-    add_global_arguments(['-D_DEBUG', '-DDEBUG'], language: 'c')
+    add_global_arguments(['-D_DEBUG', '-DDEBUG'], language: ['c', 'cpp'])
+endif
+
+if host_machine_system == 'ios' or host_machine_system == 'emscripten'
+    add_global_arguments(['-DDUNGEN_DISABLE_TOOLS'], language: ['c', 'cpp'])
 endif
 
 # By default, don't show any warnings; we'll enable them for our client code.
@@ -177,9 +181,9 @@ dungen_srcs = [
     'src/infrastructure/outline.c',
     'src/infrastructure/rendering.c',
     'src/infrastructure/text.c',
+    'src/infrastructure/tools.c',
     'src/infrastructure/util.c',
     'src/infrastructure/world.c',
-    'src/scripting/console.c',
     'src/scripting/scripting.c',
     'src/scripting/wrapping.c',
     'src/ui/banner.c',
