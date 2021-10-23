@@ -137,7 +137,7 @@ void ProcessEvent(const sapp_event* event) {
 void _RunEvents() {
     for (int ei=0; ei < arrlen(frameEvents); ei++) {
         sapp_event *event = &frameEvents[ei];
-        
+
         if (event->type == SAPP_EVENTTYPE_KEY_DOWN) {
             if (event->key_code == SAPP_KEYCODE_ESCAPE) {
                 sapp_request_quit();

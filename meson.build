@@ -148,6 +148,10 @@ pcg = static_library('pcg',
 
 cimgui_inc_dirs = ['lib/cimgui-05d7db0']
 dungen_inc_dirs += cimgui_inc_dirs
+cimgui_args = [
+    '-DIMGUI_DISABLE_STB_TRUETYPE_IMPLEMENTATION',
+    '-DIMGUI_DISABLE_STB_RECT_PACK_IMPLEMENTATION',
+]
 cimgui = static_library('cimgui',
     sources: [
         'lib/cimgui-05d7db0/cimgui.cpp',
@@ -158,7 +162,8 @@ cimgui = static_library('cimgui',
         'lib/cimgui-05d7db0/imgui/imgui_demo.cpp',
     ],
     include_directories: cimgui_inc_dirs,
-    c_args: lib_args
+    cpp_args: lib_args + cimgui_args,
+    c_args: lib_args + cimgui_args,
 )
 
 dungen_srcs = [
