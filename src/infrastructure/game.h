@@ -6,6 +6,7 @@ void QuitGame(const char* message, int exitCode);
 
 int GameTick(void);
 double GetTime(void);
+double GetDeltaTime(void);
 
 void SeedRandomString(const char* seed);
 void SeedRandom(uint64_t seed, uint64_t seq);

@@ -40,6 +40,9 @@
 #include <sokol_glue.h>
 #include <sokol_time.h>
 #include <sokol_args.h>
+#if !defined(DUNGEN_DISABLE_TOOLS)
+    #include <util/sokol_imgui.h>
+#endif // !defined(DUNGEN_DISABLE_TOOLS)
 
 #ifdef __clang__
     #pragma clang diagnostic pop

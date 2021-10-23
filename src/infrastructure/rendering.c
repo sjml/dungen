@@ -11,6 +11,7 @@
 #include "text.h"
 #include "outline.h"
 #include "game.h"
+#include "tools.h"
 #include "../ui/banner.h"
 #include "../ui/choice.h"
 #include "../ui/tile_choice.h"
@@ -134,6 +135,11 @@ void InitializeRendering() {
 
     InitializeText();
     LoadFont("Pixel", "fonts/04B_03__.TTF", 32.0, true);
+
+    #if !defined(DUNGEN_DISABLE_TOOLS)
+        simgui_setup(&(simgui_desc_t){ 0 });
+        simgui_new_frame(framebufferDimensions.x, framebufferDimensions.y, 0.0);
+    #endif // !defined(DUNGEN_DISABLE_TOOLS)
 
     renderingInitialized = true;
 }
@@ -347,8 +353,23 @@ int Render() {
     }
     arrfree(screenShotRequests);
 
+    RenderTools();
+
+    #if !defined(DUNGEN_DISABLE_TOOLS)
+        simgui_render();
+    #endif // !defined(DUNGEN_DISABLE_TOOLS)
+
     sg_end_pass();
     sg_commit();
+
+    double dt = GetDeltaTime();
+    if (dt == 0.0) {
+        dt = DBL_EPSILON;
+    }
+
+    #if !defined(DUNGEN_DISABLE_TOOLS)
+        simgui_new_frame(framebufferDimensions.x, framebufferDimensions.y, dt);
+    #endif // !defined(DUNGEN_DISABLE_TOOLS)
 
     return 0;
 }

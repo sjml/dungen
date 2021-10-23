@@ -6,7 +6,7 @@ cd "$(dirname "$0")"
 cd ../..
 rm -rf build
 
-CC=clang meson --buildtype=release --prefix=$(pwd)/build/DunGen_dist/AppDir --bindir='' build
+CC=clang meson -Dc_std=gnu11 --buildtype=release --prefix=$(pwd)/build/DunGen_dist/AppDir --bindir='' build
 cd build
 ninja
 meson install

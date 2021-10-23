@@ -23,6 +23,13 @@
 #define SOKOL_ARGS_IMPL
 #include <sokol_args.h>
 
+#if !defined(DUNGEN_DISABLE_TOOLS)
+    #define CIMGUI_DEFINE_ENUMS_AND_STRUCTS
+    #include <cimgui.h>
+    #define SOKOL_IMGUI_IMPL
+    #include <util/sokol_imgui.h>
+#endif // !defined(DUNGEN_DISABLE_TOOLS)
+
 #define SOKOL_EXT_IMPL
 #include "sokol_ext.h"
 

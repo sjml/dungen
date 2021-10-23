@@ -11,6 +11,7 @@
 #include "util.h"
 #include "world.h"
 #include "rendering.h"
+#include "tools.h"
 #include "../scripting/scripting.h"
 #include "../hlvm/hlvm.h"
 #include "../ui/banner.h"
@@ -21,6 +22,7 @@
 #define TICKS_PER_CYCLE   1
 #define SECONDS_PER_CYCLE 0.0
 
+static double dt;
 static uint64_t previousTime;
 
 static sapp_event* frameEvents = NULL;
@@ -120,6 +122,11 @@ void QuitGame(const char* message, int exitCode) {
 }
 
 void ProcessEvent(const sapp_event* event) {
+    #if !defined(DUNGEN_DISABLE_TOOLS)
+        if (simgui_handle_event(event)) {
+            return;
+        }
+    #endif // !defined(DUNGEN_DISABLE_TOOLS)
     sapp_event ev_cpy = *event;
     arrpush(frameEvents, ev_cpy);
     if (event->type == SAPP_EVENTTYPE_QUIT_REQUESTED) {
@@ -130,9 +137,13 @@ void ProcessEvent(const sapp_event* event) {
 void _RunEvents() {
     for (int ei=0; ei < arrlen(frameEvents); ei++) {
         sapp_event *event = &frameEvents[ei];
+
         if (event->type == SAPP_EVENTTYPE_KEY_DOWN) {
             if (event->key_code == SAPP_KEYCODE_ESCAPE) {
                 sapp_request_quit();
+            }
+            else if (event->key_code == SAPP_KEYCODE_GRAVE_ACCENT) {
+                ShowTools(!AreToolsVisible());
             }
         }
         else if (event->type == SAPP_EVENTTYPE_KEY_UP) {
@@ -242,12 +253,16 @@ double GetTime(void) {
     return stm_sec(stm_now());
 }
 
+double GetDeltaTime(void) {
+    return dt;
+}
+
 double hlvmAccum = 0.0;
 int GameTick(void) {
     _RunEvents(); // process input since last frame (safe to call gfx functions now)
 
     uint64_t dt_ticks = stm_laptime(&previousTime);
-    double dt = stm_sec(dt_ticks);
+    dt = stm_sec(dt_ticks);
     // printf("dt: %.4f\n", dt);
     dt = gb_clamp(dt, 0.0, MAX_TIMESTEP);
 
