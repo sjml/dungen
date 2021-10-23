@@ -157,8 +157,13 @@ pcg = static_library('pcg',
 cimgui_inc_dirs = ['lib/cimgui-05d7db0']
 dungen_inc_dirs += cimgui_inc_dirs
 cimgui_args = [
-    '-DIMGUI_DISABLE_STB_TRUETYPE_IMPLEMENTATION',
-    '-DIMGUI_DISABLE_STB_RECT_PACK_IMPLEMENTATION',
+    ## without these lines the binary is slightly bigger,
+    ##   but there's a null assertion with them. probably
+    ##   some mismatch between the library versions. not
+    ##   worth avoiding the duplication, but some day if
+    ##   feeling especially expeditious, might investigate.
+    # '-DIMGUI_DISABLE_STB_TRUETYPE_IMPLEMENTATION',
+    # '-DIMGUI_DISABLE_STB_RECT_PACK_IMPLEMENTATION',
 ]
 cimgui = static_library('cimgui',
     sources: [
