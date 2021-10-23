@@ -8,13 +8,15 @@
 
 #include "rendering.h"
 
-static bool toolsVisible = false;
+#if !defined(DUNGEN_DISABLE_TOOLS)
+    static bool toolsVisible = false;
+#endif // !defined(DUNGEN_DISABLE_TOOLS)
 
 void ShowTools(bool show) {
     #if !defined(DUNGEN_DISABLE_TOOLS)
         toolsVisible = show;
     #else
-        show = show; // unused variable
+        (void)show; // unused variable
     #endif // defined(DUNGEN_DISABLE_TOOLS)
 }
 
