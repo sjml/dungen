@@ -49,6 +49,8 @@ void InitializeAttributes() {
     hmdefault(tagIdxToRegions, NULL);
     hmdefault(tileIdxToTags, NULL);
     hmdefault(regionIdxToTags, NULL);
+    hmdefault(tagIdxToAgents, NULL);
+    hmdefault(agentIdxToTags, NULL);
 
     char* err = 0;
     const char* dbPath = ":memory:";
@@ -84,6 +86,24 @@ void InitializeAttributes() {
 
 void FinalizeAttributes() {
     sqlite3_close(db);
+
+    shfree(tags_StringToIdx);
+    hmfree(tags_IdxToString);
+    hmfree(tagIdxToTiles);
+    hmfree(tagIdxToRegions);
+    hmfree(tileIdxToTags);
+    hmfree(regionIdxToTags);
+    hmfree(tagIdxToAgents);
+    hmfree(agentIdxToTags);
+
+    tags_StringToIdx = NULL;
+    tags_IdxToString = NULL;
+    tagIdxToTiles = NULL;
+    tagIdxToRegions = NULL;
+    tileIdxToTags = NULL;
+    regionIdxToTags = NULL;
+    tagIdxToAgents = NULL;
+    agentIdxToTags = NULL;
 }
 
 void SetupTileAttributeData(TileData* data) {

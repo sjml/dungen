@@ -138,7 +138,6 @@ void InitializeRendering() {
 
     #if !defined(DUNGEN_DISABLE_TOOLS)
         simgui_setup(&(simgui_desc_t){ 0 });
-        simgui_new_frame(framebufferDimensions.x, framebufferDimensions.y, 0.0);
     #endif // !defined(DUNGEN_DISABLE_TOOLS)
 
     renderingInitialized = true;
@@ -161,6 +160,11 @@ void FinalizeRendering() {
     free(screenShotBuffer);
 
     FinalizeText();
+
+    #if !defined(DUNGEN_DISABLE_TOOLS)
+        simgui_shutdown();
+    #endif // !defined(DUNGEN_DISABLE_TOOLS)
+
 
     #if !(DUNGEN_MOBILE)
         sg_shutdown();
@@ -353,23 +357,21 @@ int Render() {
     }
     arrfree(screenShotRequests);
 
-    RenderTools();
-
     #if !defined(DUNGEN_DISABLE_TOOLS)
+        double dt = GetDeltaTime();
+        if (dt == 0.0) {
+            dt = DBL_EPSILON;
+        }
+
+        simgui_new_frame(framebufferDimensions.x, framebufferDimensions.y, dt);
+
+        RenderTools();
+
         simgui_render();
     #endif // !defined(DUNGEN_DISABLE_TOOLS)
 
     sg_end_pass();
     sg_commit();
-
-    double dt = GetDeltaTime();
-    if (dt == 0.0) {
-        dt = DBL_EPSILON;
-    }
-
-    #if !defined(DUNGEN_DISABLE_TOOLS)
-        simgui_new_frame(framebufferDimensions.x, framebufferDimensions.y, dt);
-    #endif // !defined(DUNGEN_DISABLE_TOOLS)
 
     return 0;
 }

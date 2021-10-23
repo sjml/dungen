@@ -35,7 +35,7 @@ void LoadColorTable(const char* tablename, const char* filename) {
     stbi_image_free(imageData);
 
     if (shget(colorTables, tablename) != NULL) {
-        fprintf(stderr, "ERROR: existing color table named `%s`.\n", tablename);
+        fprintf(stderr, "WARNING: existing color table named `%s`.\n", tablename);
         return;
     }
     shput(colorTables, tablename, colorList);

@@ -7,6 +7,9 @@
 #endif // defined(DUNGEN_DISABLE_TOOLS)
 
 #include "rendering.h"
+#include "attributes.h"
+#include "world.h"
+#include "../scripting/scripting.h"
 
 #if !defined(DUNGEN_DISABLE_TOOLS)
     static bool toolsVisible = false;
@@ -39,14 +42,25 @@ bool AreToolsVisible(void) {
             return;
         }
 
-        Vec2i fbSizei = GetFramebufferDimensions();
-        gbVec2 fbSize = { (float)fbSizei.x, (float)fbSizei.y };
-        fbSize.x = fbSize.x * 0.75f;
-        fbSize.y = fbSize.y * 0.75f;
-
         igSetNextWindowPos((ImVec2){10,10}, ImGuiCond_Once, (ImVec2){0,0});
-        igSetNextWindowSize((ImVec2){fbSize.x, fbSize.y}, ImGuiCond_Once);
-        igBegin("DunGen Tools", 0, ImGuiWindowFlags_None);
+        igBegin("DunGen Tools", 0,
+            ImGuiWindowFlags_AlwaysAutoResize
+        );
+
+        if (igButton("Reset World", (ImVec2){150, 20})) {
+            FinalizeAttributes();
+            FinalizeWorld();
+
+            InitializeAttributes();
+            RunFile("scripts/simulation/WorldSetup.lua");
+        }
+
+        if (igTreeNode_Str("Lua Files")) {
+            igCheckbox("Checkbox?", &toolsVisible);
+            igTreePop();
+            igSeparator();
+        }
+
         igEnd();
     }
 #endif // defined(DUNGEN_DISABLE_TOOLS)
