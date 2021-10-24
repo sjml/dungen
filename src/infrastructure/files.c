@@ -63,9 +63,67 @@
         return fi;
     }
 #else
+    #include <dirent.h>
+	#include <unistd.h>
+    #include <sys/stat.h>
+
     FileInfo* GetFileSystemInformation(char* path) {
-        (void)(path); // unused
-        return NULL;
+        struct stat faData;
+        int status = stat(path, &faData);
+
+        if (status != 0) {
+            return NULL;
+        }
+        
+        FileInfo* fi = malloc(sizeof(FileInfo));
+        fi->path = malloc(sizeof(char) * (strlen(path) + 1));
+        strcpy(fi->path, path);
+
+        fi->isDirectory = S_ISDIR(faData.st_mode);
+        fi->children = NULL;
+        if (fi->isDirectory) {
+            size_t pathLen = strlen(fi->path);
+            if ('/' != fi->path[pathLen-1]) {
+                char* newPath = malloc(sizeof(char) * (pathLen + 2));
+                sprintf(newPath, "%s/", fi->path);
+                free(fi->path);
+                fi->path = newPath;
+            }
+
+            FileInfo** childFileList = NULL;
+            FileInfo** childDirList = NULL;
+
+            DIR *dirHandle = opendir(fi->path);
+            struct dirent *entry;
+            while ((entry = readdir(dirHandle))) {
+                if ((strcmp(entry->d_name, ".") == 0) || (strcmp(entry->d_name, "..") == 0)) {
+                    continue;
+                }
+                char* childPath = malloc(sizeof(char) * (strlen(path) + strlen(entry->d_name) + 2));
+                sprintf(childPath, "%s/%s", path, entry->d_name);
+                printf("%s\n", childPath);
+
+                FileInfo* childInfo = GetFileSystemInformation(childPath);
+                if (childInfo->isDirectory) {
+                    arrpush(childDirList, childInfo);
+                }
+                else {
+                    arrpush(childFileList, childInfo);
+                }
+            }
+            closedir(dirHandle);
+
+            for (int i=0; i < arrlen(childDirList); i++) {
+                arrpush(fi->children, childDirList[i]);
+            }
+            for (int i=0; i < arrlen(childFileList); i++) {
+                arrpush(fi->children, childFileList[i]);
+            }
+            arrfree(childDirList);
+            arrfree(childFileList);
+        }
+
+        return fi;
     }
 #endif // defined(_WIN32)
 
@@ -81,7 +139,7 @@ void FileInfoFree(FileInfo* fi) {
 }
 
 void PrintFileInfo(FileInfo* fi, int depth) {
-    printf("%*s%s\n", depth*2, "", fi->path);
+    printf("%*s%s\n", depth*2, " ", fi->path);
     if (fi->isDirectory) {
         for (int i=0; i < arrlen(fi->children); i++) {
             PrintFileInfo(fi->children[i], depth+1);

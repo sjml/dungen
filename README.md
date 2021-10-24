@@ -18,6 +18,6 @@ The simulation scripts are located in the `Resources/scripts/simulation` directo
 ## Building
 The project builds for various platforms using [Meson](https://mesonbuild.com/). In the `buildscripts/setups` folder there are shell scripts that will configure Meson and build an initial debug version of the app. There is also a [Visual Studio Code](https://code.visualstudio.com) setup for building, debugging, and running. 
 
-On Ubuntu (the only Linux distribution I regularly test on), in addition to `meson` you'll need to install: `build-essential pkg-config clang libx11-dev libxi-dev libxcursor-dev libgl-dev`. On other platforms, everything you need should already be there or in this repo. 
+On Ubuntu (the only Linux distribution I regularly test on), in addition to `meson` you'll need to install: `build-essential pkg-config clang lldb libx11-dev libxi-dev libxcursor-dev libgl-dev`. On other platforms, everything you need should already be there or in this repo. 
 
 To make a distributable version, look at the scripts the `buildscripts/releases` folder. After running one of those scripts, a runnable set of files ready for zipping/deploying will end up in the `build/DunGen_dist` directory on all platforms. The scripts in the `buildscripts/setups` folder are similar, but make debug builds for development and don't do the final distribution packaging.
