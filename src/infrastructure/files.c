@@ -64,6 +64,7 @@
     }
 #else
     FileInfo* GetFileSystemInformation(char* path) {
+        (void)(path); // unused
         return NULL;
     }
 #endif // defined(_WIN32)
@@ -80,7 +81,7 @@ void FileInfoFree(FileInfo* fi) {
 }
 
 void PrintFileInfo(FileInfo* fi, int depth) {
-    printf("% *s%s\n", depth*2, " ", fi->path);
+    printf("%*s%s\n", depth*2, "", fi->path);
     if (fi->isDirectory) {
         for (int i=0; i < arrlen(fi->children); i++) {
             PrintFileInfo(fi->children[i], depth+1);

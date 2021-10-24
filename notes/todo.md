@@ -31,7 +31,6 @@
 ## Tech Debt
 * could use a minor code audit -- lots of cruft leftover from old build systems, etc.
 * more graceful failure (at least on Windows) if can't find resources directory
-* figure out why Lua struggles compiling with C11 but only on Ubuntu
 * world.c could use a refactor
 * note at the top of attributes.c about simplifying it
 * RenderingRegions is a holdover from when they were bare TileSets; think about just making a permalist like Agents and TileData have (though TileData's is more by rendering necessity...)

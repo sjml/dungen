@@ -13,11 +13,8 @@
 #include "../hlvm/hlvm.h"
 #include "../scripting/scripting.h"
 
-#if !defined(DUNGEN_DISABLE_TOOLS)
-    static bool toolsVisible = false;
-#endif // !defined(DUNGEN_DISABLE_TOOLS)
 
-
+static bool toolsVisible = false;
 static FileInfo* scriptListing = NULL;
 
 void ShowTools(bool show) {
@@ -74,7 +71,7 @@ bool AreToolsVisible(void) {
                 size_t rootLen = strlen(scriptListing->path);
                 size_t elPathLen = strlen(fi->path) - rootLen - 4 + 1; // minus ".lua" + the null terminator
                 char* elPath = malloc(sizeof(char) * elPathLen);
-                int idx = 0;
+                size_t idx = 0;
                 char c;
                 do {
                     c = fi->path[idx+rootLen];

@@ -123,7 +123,6 @@ dungen_inc_dirs += lua_inc_dirs
 lua = static_library('lua',
     sources: lua_srcs,
     include_directories: lua_inc_dirs,
-    override_options: ['c_std=none'], # I don't like this, but Ubuntu doesn't like compiling Lua with C11?
     c_args: lib_args,
     pic: true,
 )
