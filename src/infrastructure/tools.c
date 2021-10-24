@@ -103,9 +103,9 @@ bool AreToolsVisible(void) {
         igSetNextWindowPos((ImVec2){10,10}, ImGuiCond_Once, (ImVec2){0,0});
         igBegin("DunGen Tools", 0,
               ImGuiWindowFlags_AlwaysAutoResize
-            | ImGuiWindowFlags_NoCollapse
         );
 
+        igBeginGroup();
         if (igButton("Reset World", (ImVec2){150, 20})) {
             FinalizeAttributes();
             FinalizeWorld();
@@ -113,10 +113,21 @@ bool AreToolsVisible(void) {
             InitializeAttributes();
             RunFile("scripts/simulation/WorldSetup.lua");
         }
+        if (igButton("Reload Script Files", (ImVec2){150, 20})) {
+            //
+        }
 
         if (scriptListing != NULL) {
             RenderSimFileTree(scriptListing, (int)strlen(scriptListing->path));
         }
+        igEndGroup();
+
+        igSameLine(0.0f, -1.0f);
+
+        igBeginGroup();
+
+        igEndGroup();
+
 
         igEnd();
     }

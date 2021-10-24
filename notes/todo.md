@@ -21,6 +21,11 @@
 5. Relaxable constraint sets
 
 ## Near Term
+* tools
+    - destroy all regions and agents when resetting world
+    - hook up reload scripts
+    - have way to see and hopefully adjust registers
+    - lua console
 * reposition text, banners, buttons when resolution changes
 * make webpage explaining project, linking to releases, etc.
 * handle newlines in text rendering? (and fix Great Wyrm label)
