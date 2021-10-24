@@ -8,12 +8,17 @@
 
 #include "rendering.h"
 #include "attributes.h"
+#include "files.h"
 #include "world.h"
+#include "../hlvm/hlvm.h"
 #include "../scripting/scripting.h"
 
 #if !defined(DUNGEN_DISABLE_TOOLS)
     static bool toolsVisible = false;
 #endif // !defined(DUNGEN_DISABLE_TOOLS)
+
+
+static FileInfo* scriptListing = NULL;
 
 void ShowTools(bool show) {
     #if !defined(DUNGEN_DISABLE_TOOLS)
@@ -21,6 +26,15 @@ void ShowTools(bool show) {
     #else
         (void)show; // unused variable
     #endif // defined(DUNGEN_DISABLE_TOOLS)
+
+    if (!toolsVisible) {
+        return;
+    }
+
+    if (scriptListing != NULL) {
+        FileInfoFree(scriptListing);
+    }
+    scriptListing = GetFileSystemInformation("scripts/simulation/elements");
 }
 
 bool AreToolsVisible(void) {
@@ -36,15 +50,63 @@ bool AreToolsVisible(void) {
         return;
     }
 #else
-    void RenderTools(void) {
+    void RenderSimFileTree(FileInfo* fi, int strip) {
+        int baseLen = (int)strlen(fi->path);
+        if (fi->isDirectory) {
+            char* label = fi->path + (sizeof(char) * strip);
+            if (baseLen == strip) {
+                label = "Simulation Elements";
+            }
+            ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_None;
+            if (label[0] != '_') {
+                flags |= ImGuiTreeNodeFlags_DefaultOpen;
+            }
+            if (igTreeNodeEx_Str(label, flags)) {
+                for (int i=0; i < arrlen(fi->children); i++) {
+                    RenderSimFileTree(fi->children[i], baseLen);
+                }
+                igTreePop();
+            }
+        }
+        else {
+            igPushID_Str(fi->path);
+            if (igSmallButton("push")) {
+                size_t rootLen = strlen(scriptListing->path);
+                size_t elPathLen = strlen(fi->path) - rootLen - 4 + 1; // minus ".lua" + the null terminator
+                char* elPath = malloc(sizeof(char) * elPathLen);
+                int idx = 0;
+                char c;
+                do {
+                    c = fi->path[idx+rootLen];
+                    if (c == '/') {
+                        elPath[idx] = '.';
+                    }
+                    else {
+                        elPath[idx] = c;
+                    }
+                    idx++;
+                } while (c != '\0' && idx < elPathLen);
+                elPath[elPathLen-1] = '\0';
 
+                PushSimulationElement(elPath);
+
+                free(elPath);
+            }
+            igPopID();
+            igSameLine(0.0f, -1.0f);
+            igText(fi->path + (sizeof(char) * strip));
+        }
+    }
+
+    void RenderTools(void) {
         if (!toolsVisible) {
             return;
         }
 
         igSetNextWindowPos((ImVec2){10,10}, ImGuiCond_Once, (ImVec2){0,0});
         igBegin("DunGen Tools", 0,
-            ImGuiWindowFlags_AlwaysAutoResize
+              ImGuiWindowFlags_AlwaysAutoResize
+            | ImGuiWindowFlags_NoCollapse
         );
 
         if (igButton("Reset World", (ImVec2){150, 20})) {
@@ -55,10 +117,8 @@ bool AreToolsVisible(void) {
             RunFile("scripts/simulation/WorldSetup.lua");
         }
 
-        if (igTreeNode_Str("Lua Files")) {
-            igCheckbox("Checkbox?", &toolsVisible);
-            igTreePop();
-            igSeparator();
+        if (scriptListing != NULL) {
+            RenderSimFileTree(scriptListing, (int)strlen(scriptListing->path));
         }
 
         igEnd();

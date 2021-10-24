@@ -4,6 +4,8 @@
 
 void InitializeHLVM(void);
 
+void PushSimulationElement(const char* el);
+
 int         GetIntRegister     (const char* key);
 float       GetFloatRegister   (const char* key);
 const char* GetStringRegister  (const char* key);

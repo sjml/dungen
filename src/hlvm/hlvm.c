@@ -18,6 +18,14 @@ void InitializeHLVM() {
     shdefault(tileSetRegisters, NULL);
 }
 
+void PushSimulationElement(const char* el) {
+    lua_getglobal(GetLuaState(), "push");
+    lua_pushstring(GetLuaState(), el);
+    if (lua_pcall(GetLuaState(), 1, 0, 0) != 0) {
+        fprintf(stderr, "ERROR: No global 'push()' function defined in Lua!\n");
+    }
+}
+
 int GetIntRegister(const char* key) {
     return shget(intRegisters, key);
 }

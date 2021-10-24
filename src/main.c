@@ -33,9 +33,9 @@ sapp_desc sokol_main(int argc, char * argv[]) {
         .sample_count = 4,
         .high_dpi = true,
 
-        #if _WIN32
+        #if defined(_WIN32)
             .win32_console_utf8 = true,
             .win32_console_attach = true,
-        #endif // _WIN32
+        #endif // defined(_WIN32)
     };
 }

@@ -45,6 +45,11 @@ if build_machine.system() == 'windows'
         '/W4', '/WX', # all warnings, and treat as errors
         '/external:anglebrackets', '/external:W0', # don't warn for any files imported with angle brackets (external)
     ]
+    if get_option('debug')
+        exe_args += [
+            '/wd4189' # allow unreferenced variables in debug
+        ]
+    endif
 else
     lib_args += [
         '-w', # no warnings
@@ -54,6 +59,11 @@ else
         '-Wall', '-Wextra', '-Wpedantic', '-Werror', # all warnings, and treat as errors
         '-Wno-missing-braces', # turn off missing braces warning; missing initializers catches real problems
     ]
+    if get_option('debug')
+        exe_args += [
+            '-Wno-unused', # allow unreferenced variables in debug
+        ]
+    endif
 endif
 
 
@@ -186,6 +196,7 @@ dungen_srcs = [
     'src/constraints/pathfind.c',
     'src/hlvm/hlvm.c',
     'src/infrastructure/attributes.c',
+    'src/infrastructure/files.c',
     'src/infrastructure/game.c',
     'src/infrastructure/images.c',
     'src/infrastructure/outline.c',

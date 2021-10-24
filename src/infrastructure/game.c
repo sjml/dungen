@@ -96,11 +96,7 @@ void InitializeGame(const char* startupElement) {
     InitializeHLVM();
 
     if (RunFile("scripts/simulation/WorldSetup.lua") == 0) {
-        lua_getglobal(GetLuaState(), "push");
-        lua_pushstring(GetLuaState(), startupElement);
-        if (lua_pcall(GetLuaState(), 1, 0, 0) != 0) {
-            fprintf(stderr, "ERROR: No global 'push()' function defined in Lua!\n");
-        }
+        PushSimulationElement(startupElement);
     }
 }
 
