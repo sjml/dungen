@@ -1,6 +1,15 @@
 #include "stdafx.h"
 #include "files.h"
 
+
+int compareFileInfoForSort(const void* a, const void* b) {
+    FileInfo** fia = (FileInfo**)a;
+    FileInfo** fib = (FileInfo**)b;
+    const char* ap = (*fia)->path;
+    const char* bp = (*fib)->path;
+    return strcmp(ap, bp);
+}
+
 #if defined(_WIN32)
     #define WIN32_LEAN_AND_MEAN
     #include <windows.h>
@@ -50,6 +59,9 @@
                 }
             } while (FindNextFile(findHandle, &fd));
 
+            qsort(childDirList, arrlen(childDirList), sizeof(FileInfo*), compareFileInfoForSort);
+            qsort(childFileList, arrlen(childFileList), sizeof(FileInfo*), compareFileInfoForSort);
+
             for (int i=0; i < arrlen(childDirList); i++) {
                 arrpush(fi->children, childDirList[i]);
             }
@@ -74,7 +86,7 @@
         if (status != 0) {
             return NULL;
         }
-        
+
         FileInfo* fi = malloc(sizeof(FileInfo));
         fi->path = malloc(sizeof(char) * (strlen(path) + 1));
         strcpy(fi->path, path);
@@ -101,7 +113,6 @@
                 }
                 char* childPath = malloc(sizeof(char) * (strlen(path) + strlen(entry->d_name) + 2));
                 sprintf(childPath, "%s/%s", path, entry->d_name);
-                printf("%s\n", childPath);
 
                 FileInfo* childInfo = GetFileSystemInformation(childPath);
                 if (childInfo->isDirectory) {
@@ -112,6 +123,9 @@
                 }
             }
             closedir(dirHandle);
+
+            qsort(childDirList, arrlen(childDirList), sizeof(FileInfo*), compareFileInfoForSort);
+            qsort(childFileList, arrlen(childFileList), sizeof(FileInfo*), compareFileInfoForSort);
 
             for (int i=0; i < arrlen(childDirList); i++) {
                 arrpush(fi->children, childDirList[i]);
