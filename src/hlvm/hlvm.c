@@ -11,11 +11,36 @@ static struct { char* key; TileSet* value; } *tileSetRegisters = NULL;
 
 
 void InitializeHLVM() {
+    sh_new_arena(intRegisters);
     shdefault(intRegisters, 0);
+    sh_new_arena(floatRegisters);
     shdefault(floatRegisters, 0.0f);
+    sh_new_arena(stringRegisters);
     shdefault(stringRegisters, "");
+    sh_new_arena(tileRegisters);
     shdefault(tileRegisters, NULL);
+    sh_new_arena(tileSetRegisters);
     shdefault(tileSetRegisters, NULL);
+}
+
+void FinalizeHLVM() {
+    // might be leaking memory from string arenas, but the cleanup only
+    //   gets called when tools are manually resetting things OR when shutting down
+    if (intRegisters != NULL) {
+        shfree(intRegisters);
+    }
+    if (floatRegisters != NULL) {
+        shfree(floatRegisters);
+    }
+    if (stringRegisters != NULL) {
+        shfree(stringRegisters);
+    }
+    if (tileRegisters != NULL) {
+        shfree(tileRegisters);
+    }
+    if (tileSetRegisters != NULL) {
+        shfree(tileSetRegisters);
+    }
 }
 
 void PushSimulationElement(const char* el) {
@@ -64,4 +89,12 @@ void SetTileRegister(const char* key, TileData* value) {
 
 void SetTileSetRegister(const char* key, TileSet* value)  {
     shput(tileSetRegisters, key, value);
+}
+
+char** ListIntRegisters() {
+    char** names = NULL;
+    for (int i=0; i < shlen(intRegisters); i++) {
+        arrpush(names, intRegisters[i].key);
+    }
+    return names;
 }

@@ -43,6 +43,7 @@ typedef enum eAttrType {
 } AttrType;
 
 void InitializeAttributes() {
+    sh_new_arena(tags_StringToIdx);
     shdefault(tags_StringToIdx, -1);
     hmdefault(tags_IdxToString, "");
     hmdefault(tagIdxToTiles, NULL);

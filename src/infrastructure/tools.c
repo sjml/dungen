@@ -17,21 +17,25 @@
 static bool toolsVisible = false;
 static FileInfo* scriptListing = NULL;
 
+void InitializeTools(void) {
+    if (scriptListing != NULL) {
+        FileInfoFree(scriptListing);
+    }
+    scriptListing = GetFileSystemInformation("scripts/simulation/elements");
+}
+
+void FinalizeTools(void) {
+    if (scriptListing != NULL) {
+        FileInfoFree(scriptListing);
+    }
+}
+
 void ShowTools(bool show) {
     #if !defined(DUNGEN_DISABLE_TOOLS)
         toolsVisible = show;
     #else
         (void)show; // unused variable
     #endif // defined(DUNGEN_DISABLE_TOOLS)
-
-    if (!toolsVisible) {
-        return;
-    }
-
-    if (scriptListing != NULL) {
-        FileInfoFree(scriptListing);
-    }
-    scriptListing = GetFileSystemInformation("scripts/simulation/elements");
 }
 
 bool AreToolsVisible(void) {
@@ -107,14 +111,20 @@ bool AreToolsVisible(void) {
 
         igBeginGroup();
         if (igButton("Reset World", (ImVec2){150, 20})) {
-            FinalizeAttributes();
             FinalizeWorld();
+            FinalizeAttributes();
 
+            InitializeHLVM();
             InitializeAttributes();
             RunFile("scripts/simulation/WorldSetup.lua");
         }
         if (igButton("Reload Script Files", (ImVec2){150, 20})) {
-            //
+            if (scriptListing != NULL) {
+                FileInfoFree(scriptListing);
+            }
+            scriptListing = GetFileSystemInformation("scripts/simulation/elements");
+
+            RunString("loadFiles(\"scripts/simulation/elements\", \"\")");
         }
 
         if (scriptListing != NULL) {
@@ -125,6 +135,17 @@ bool AreToolsVisible(void) {
         igSameLine(0.0f, -1.0f);
 
         igBeginGroup();
+
+        if (igCollapsingHeader_BoolPtr("Int Registers", 0, ImGuiTreeNodeFlags_DefaultOpen)) {
+            char** regNames = ListIntRegisters();
+            for (int i=0; i < arrlen(regNames); i++) {
+                int val = GetIntRegister(regNames[i]);
+                if (igInputInt(regNames[i], &val, 1, 10, ImGuiInputTextFlags_None)) {
+                    SetIntRegister(regNames[i], val);
+                }
+            }
+            arrfree(regNames);
+        }
 
         igEndGroup();
 

@@ -22,31 +22,30 @@
 
 ## Near Term
 * tools
-    - destroy all regions and agents when resetting world
-    - hook up reload scripts
-    - have way to see and hopefully adjust registers
+    - finish register views/inputs
     - lua console
 * reposition text, banners, buttons when resolution changes
-* make webpage explaining project, linking to releases, etc.
 * handle newlines in text rendering? (and fix Great Wyrm label)
 * outlines flip edge alignment when regions have disjoint sections
 * why is tile choice not using SetTileOutline?
 * successful quit request should halt the stack popping
+* make webpage (on itch? prolly) explaining project, linking to releases, etc.
 
 ## Tech Debt
-* could use a minor code audit -- lots of cruft leftover from old build systems, etc.
+* could use a minor but broad code sweep -- lots of cruft leftover from old build systems, etc.
 * more graceful failure (at least on Windows) if can't find resources directory
 * world.c could use a refactor
+    - RenderingRegions is a holdover from when they were bare TileSets; think about just making a permalist like Agents and TileData have (though TileData's is more by rendering necessity...)
+        - in general, regions should be managed by the world instead of rendering system
 * note at the top of attributes.c about simplifying it
-* RenderingRegions is a holdover from when they were bare TileSets; think about just making a permalist like Agents and TileData have (though TileData's is more by rendering necessity...)
-* add way to modify attributes instead of having to get/set round-trip through SQLite
+    - also add way to modify attributes instead of having to get/set round-trip through SQLite
 * overusing the stretchy buffer right now; look for more chances to just use a static array
 
 ## Horizon
-* in-game console
 * HLVM exceptions (C + Lua invoking)
 * pull sim settings and other stuff out into config file that Lua pulls in
-* expose resources directory on mac?
+* try to read resources from user directory (and add button to tools to copy there)
+    - will involve navigating sandbox stuff with Mac and AppImage
 * history recording -- optional live captioning
     - little in-place captions "Natural caverns form with pockets of liquid hot magma" etc.
     - write all out to text and pretty formatting (or JSON+HTML renderer)

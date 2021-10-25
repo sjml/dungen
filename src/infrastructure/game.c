@@ -102,6 +102,7 @@ void InitializeGame(const char* startupElement) {
 
 void FinalizeGame(void) {
     FinalizeWorld();
+    FinalizeHLVM();
     sdsfree(randomSeedString);
 }
 

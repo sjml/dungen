@@ -152,6 +152,17 @@ long GetTileDistance(TileData* t1, TileData* t2) {
 }
 
 void FinalizeWorld() {
+    for (int i=0; i < arrlen(agents); i++) {
+        free(agents[i]);
+    }
+    arrfree(agents);
+    agents = NULL;
+
+    Region** regions = GetRenderingRegions();
+    while (arrlen(regions) > 0) {
+        DestroyRegion(regions[0]);
+    }
+
     for (int i=0; i < arrlen(PointList); i++) {
         arrfree(PointList[i]);
     }
@@ -634,7 +645,7 @@ void SetRegionLabel(Region* r, const char* text, float scale, gbVec4 color, gbVe
     gbVec2 pos;
     pos.x = orthoPos.x - (extents.x * 0.5f) + 1.0f;
     pos.y = orthoPos.y + (extents.y * 0.5f);
-    
+
     r->label = CreateTextInfo(text, "Pixel", pos, scale, color);
 }
 
