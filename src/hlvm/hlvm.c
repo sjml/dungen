@@ -24,8 +24,6 @@ void InitializeHLVM() {
 }
 
 void FinalizeHLVM() {
-    // might be leaking memory from string arenas, but the cleanup only
-    //   gets called when tools are manually resetting things OR when shutting down
     if (intRegisters != NULL) {
         shfree(intRegisters);
     }
@@ -98,3 +96,36 @@ char** ListIntRegisters() {
     }
     return names;
 }
+
+char** ListFloatRegisters() {
+    char** names = NULL;
+    for (int i=0; i < shlen(floatRegisters); i++) {
+        arrpush(names, floatRegisters[i].key);
+    }
+    return names;
+}
+
+char** ListStringRegisters() {
+    char** names = NULL;
+    for (int i=0; i < shlen(stringRegisters); i++) {
+        arrpush(names, stringRegisters[i].key);
+    }
+    return names;
+}
+
+char** ListTileRegisters() {
+    char** names = NULL;
+    for (int i=0; i < shlen(tileRegisters); i++) {
+        arrpush(names, tileRegisters[i].key);
+    }
+    return names;
+}
+
+char** ListTileSetRegisters() {
+    char** names = NULL;
+    for (int i=0; i < shlen(tileSetRegisters); i++) {
+        arrpush(names, tileSetRegisters[i].key);
+    }
+    return names;
+}
+

@@ -142,6 +142,11 @@ void _RunEvents() {
             else if (event->key_code == SAPP_KEYCODE_GRAVE_ACCENT) {
                 ShowTools(!AreToolsVisible());
             }
+            else if (event->key_code == SAPP_KEYCODE_TAB) {
+                if (AreToolsVisible()) {
+                    RequestConsoleFocus();
+                }
+            }
         }
         else if (event->type == SAPP_EVENTTYPE_KEY_UP) {
             // no-op
@@ -181,6 +186,9 @@ void _RunEvents() {
             mousePos.y = event->mouse_y / sapp_dpi_scale();
         }
         else if (event->type == SAPP_EVENTTYPE_MOUSE_LEAVE) {
+            // no-op
+        }
+        else if (event->type == SAPP_EVENTTYPE_MOUSE_SCROLL) {
             // no-op
         }
         else if (event->type == SAPP_EVENTTYPE_QUIT_REQUESTED) {

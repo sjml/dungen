@@ -6,4 +6,7 @@ void FinalizeTools(void);
 void ShowTools(bool show);
 bool AreToolsVisible(void);
 
-void RenderTools();
+// HACKHACK
+void RequestConsoleFocus(void);
+
+void RenderTools(void);

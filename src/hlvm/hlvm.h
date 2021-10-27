@@ -20,3 +20,7 @@ void SetTileRegister    (const char* key, TileData*    value);
 void SetTileSetRegister (const char* key, TileSet*     value);
 
 char** ListIntRegisters();
+char** ListFloatRegisters();
+char** ListStringRegisters();
+char** ListTileRegisters();
+char** ListTileSetRegisters();
