@@ -39,11 +39,7 @@ void FinalizeTools(void) {
 }
 
 void ShowTools(bool show) {
-    #if !defined(DUNGEN_DISABLE_TOOLS)
-        toolsVisible = show;
-    #else
-        (void)show; // unused variable
-    #endif // defined(DUNGEN_DISABLE_TOOLS)
+    toolsVisible = show;
 }
 
 bool AreToolsVisible(void) {
