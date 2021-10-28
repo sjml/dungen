@@ -138,7 +138,12 @@ void _RunEvents() {
 
         if (event->type == SAPP_EVENTTYPE_KEY_DOWN) {
             if (event->key_code == SAPP_KEYCODE_ESCAPE) {
-                sapp_request_quit();
+                if (AreToolsVisible()) {
+                    ShowTools(false);
+                }
+                else {
+                    sapp_request_quit();
+                }
             }
             else if (event->key_code == SAPP_KEYCODE_GRAVE_ACCENT) {
                 ShowTools(!AreToolsVisible());

@@ -4,6 +4,9 @@
         - complete test setup and execution
         - what is happening with the storage?
         - maybe distinguish between things that take up space (like flowing water/magma) and things that only have a visual representation of a tag (like population)
+        - note: somewhere, in one of the simulation elements, there's an infinite loop getting hit
+            - found it as hundreds of magmas were being stored in one chamber?
+            - maybe hlvm should be able to report what it's current top stack element is
     - refresh on river flowing and exploration
         - might junk and remake -- have leveled up as a programmer since last go at it
 1. Rework river encounters to use centralized system
@@ -21,14 +24,10 @@
 5. Relaxable constraint sets
 
 ## Near Term
-* somewhere, in one of the simulation elements, there's an infinite loop getting hit
-    - found it as hundreds of magmas were being stored in one chamber?
-    - maybe hlvm should be able to report what it's current top stack element is
 * reposition text, banners, buttons when resolution changes
 * handle newlines in text rendering? (and fix Great Wyrm label)
 * outlines flip edge alignment when regions have disjoint sections
 * why is tile choice not using SetTileOutline?
-* successful quit request should halt the stack popping
 * make webpage (on itch? prolly) explaining project, linking to releases, etc.
 
 ## Tech Debt

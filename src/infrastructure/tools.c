@@ -46,7 +46,8 @@ void InitializeTools(void) {
     inputBuffer[0] = '\0';
 
     consoleText = sdsempty();
-    consoleText = sdscat(consoleText, LUA_COPYRIGHT);
+    consoleText = sdscat(consoleText, LUA_RELEASE "\n");
+    consoleText = sdscat(consoleText, &LUA_COPYRIGHT[strlen(LUA_RELEASE)+2]);
     consoleText = sdscat(consoleText, "\n\n");
     lastConsoleTextSize = sdslen(consoleText);
 
