@@ -21,8 +21,6 @@
 5. Relaxable constraint sets
 
 ## Near Term
-* tools
-    - lua console: history and autocomplete
 * somewhere, in one of the simulation elements, there's an infinite loop getting hit
     - found it as hundreds of magmas were being stored in one chamber?
     - maybe hlvm should be able to report what it's current top stack element is
@@ -45,7 +43,8 @@
 
 ## Horizon
 * HLVM exceptions (C + Lua invoking)
-* pull sim settings and other stuff out into config file that Lua pulls in
+* Lua console: autocomplete, multiline input
+* pull sim settings and other stuff out into config file that Lua reads in
 * try to read resources from user directory (and add button to tools to copy there)
     - will involve navigating sandbox stuff with Mac and AppImage
 * history recording -- optional live captioning

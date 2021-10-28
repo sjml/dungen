@@ -24,6 +24,8 @@ static bool consoleFocusRequestActive = false;
 
 static size_t lastConsoleTextSize = 0;
 static sds consoleText;
+static char** consoleHistory = NULL;
+static int consoleHistoryIndex = -1;
 
 void ConsoleLog(char* out) {
     consoleText = sdscat(consoleText, out);
@@ -44,6 +46,8 @@ void InitializeTools(void) {
     inputBuffer[0] = '\0';
 
     consoleText = sdsempty();
+    consoleText = sdscat(consoleText, LUA_COPYRIGHT);
+    consoleText = sdscat(consoleText, "\n\n");
     lastConsoleTextSize = sdslen(consoleText);
 
     RegisterLogFunction(ConsoleLog, 0);
@@ -57,6 +61,12 @@ void FinalizeTools(void) {
 
     sdsfree(consoleText);
     lastConsoleTextSize = 0;
+
+    for (int i=0; i < arrlen(consoleHistory); i++) {
+        free(consoleHistory[i]);
+    }
+    arrfree(consoleHistory);
+    consoleHistoryIndex = -1;
 
     free(inputBuffer);
 }
@@ -130,6 +140,34 @@ void RequestConsoleFocus(void) {
         }
     }
 
+    int ConsoleInputCallback(ImGuiInputTextCallbackData* cbData) {
+        if (cbData->EventFlag == ImGuiInputTextFlags_CallbackHistory) {
+            const int currentHistoryIndex = consoleHistoryIndex;
+            if (cbData->EventKey == ImGuiKey_UpArrow) {
+                if (consoleHistoryIndex == -1) {
+                    consoleHistoryIndex = (int)arrlen(consoleHistory) - 1;
+                }
+                else if (consoleHistoryIndex > 0) {
+                    consoleHistoryIndex -= 1;
+                }
+            }
+            else if (cbData->EventKey == ImGuiKey_DownArrow) {
+                if (consoleHistoryIndex != -1) {
+                    if (++consoleHistoryIndex >= arrlen(consoleHistory)) {
+                        consoleHistoryIndex = -1;
+                    }
+                }
+            }
+
+            if (currentHistoryIndex != consoleHistoryIndex) {
+                const char* rep = (consoleHistoryIndex >= 0) ? consoleHistory[consoleHistoryIndex] : "";
+                ImGuiInputTextCallbackData_DeleteChars(cbData, 0, cbData->BufTextLen);
+                ImGuiInputTextCallbackData_InsertChars(cbData, 0, rep, NULL);
+            }
+        }
+        return 0;
+    }
+
     void RenderTools(void) {
         if (!toolsVisible) {
             return;
@@ -139,7 +177,7 @@ void RequestConsoleFocus(void) {
         igSetNextWindowSizeConstraints((ImVec2){1004, 500}, (ImVec2){1004, 748}, NULL, NULL);
         igBegin("DunGen Tools", 0, ImGuiNextWindowDataFlags_None
             // | ImGuiWindowFlags_AlwaysAutoResize
-            | ImGuiWindowFlags_NoMove
+            // | ImGuiWindowFlags_NoMove
         );
 
         igBeginGroup();
@@ -231,8 +269,9 @@ void RequestConsoleFocus(void) {
         igPushStyleColor_Vec4(ImGuiCol_FrameBg, (ImVec4){0.0f, 0.0f, 0.0f, 0.0f});
         if (igInputText("", inputBuffer, inputBufferSize, ImGuiInputTextFlags_None
             | ImGuiInputTextFlags_EnterReturnsTrue
+            | ImGuiInputTextFlags_CallbackHistory
             ,
-            NULL, NULL
+            ConsoleInputCallback, NULL
         )) {
             if (strlen(inputBuffer) > 0) {
                 char* logInput = malloc(sizeof(char) * (strlen(inputBuffer) + 1 + 3)); // "> " and newline and terminator
@@ -240,6 +279,13 @@ void RequestConsoleFocus(void) {
                 ConsoleLog(logInput);
                 free(logInput);
                 RunString(inputBuffer);
+                if (arrlen(consoleHistory) == 0) {
+                    arrpush(consoleHistory, strdup(inputBuffer));
+                }
+                else if (strcmp(consoleHistory[arrlen(consoleHistory)-1], inputBuffer) != 0) {
+                    arrpush(consoleHistory, strdup(inputBuffer));
+                }
+                consoleHistoryIndex = (int)arrlen(consoleHistory);
                 inputBuffer[0] = '\0';
             }
             consoleFocusRequestActive = true;
