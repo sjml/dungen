@@ -10,14 +10,15 @@
 
 void InitializeDunGen(const char* startupElement) {
     InitializePlatform();
-    InitializeLua();
-    InitializeAttributes();
-    InitializeGame(startupElement);
-    InitializeRendering();
 
     #if !defined(DUNGEN_DISABLE_TOOLS)
         InitializeTools();
     #endif
+
+    InitializeLua();
+    InitializeAttributes();
+    InitializeGame(startupElement);
+    InitializeRendering();
 }
 
 void TickAndRender() {
@@ -30,14 +31,15 @@ void EventCallback(const sapp_event* event) {
 }
 
 void FinalizeDunGen(void) {
-    #if !defined(DUNGEN_DISABLE_TOOLS)
-        FinalizeTools();
-    #endif
-
     FinalizeGame();
 
     FinalizeAttributes();
     FinalizeLua();
     FinalizeRendering();
+
+    #if !defined(DUNGEN_DISABLE_TOOLS)
+        FinalizeTools();
+    #endif
+
     FinalizePlatform();
 }

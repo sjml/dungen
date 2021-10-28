@@ -6,6 +6,7 @@
 #include "../infrastructure/text.h"
 #include "../infrastructure/rendering.h"
 #include "../infrastructure/game.h"
+#include "../infrastructure/log.h"
 
 static int hoveredChoice = -1;
 static int pressedChoice = -1;
@@ -34,7 +35,7 @@ int GetChoiceStatus(void) {
 
 void AddChoice(const char* description) {
     if (arrlen(choices) >= 12) {
-        fprintf(stderr, "ERROR: Cannot have more than 12 choices. Ignoring '%s'.\n", description);
+        LogErr("ERROR: Cannot have more than 12 choices. Ignoring '%s'.\n", description);
         return;
     }
 
@@ -67,11 +68,11 @@ void PresentChoiceSelection(const char* description) {
     int numChoices = (int)arrlen(choices);
 
     if (numChoices == 0) {
-        fprintf(stderr, "WARNING: Cannot present empty choice selection.\n");
+        LogErr("WARNING: Cannot present empty choice selection.\n");
         return;
     }
     else if (numChoices > 12) {
-        fprintf(stderr, "WARNING: Cannot present overfull choice selection.\n");
+        LogErr("WARNING: Cannot present overfull choice selection.\n");
         return;
     }
 

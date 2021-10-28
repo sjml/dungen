@@ -5,6 +5,7 @@
 #include "outline.h"
 #include "rendering.h"
 #include "game.h"
+#include "log.h"
 
 
 static TileDrawData* TileDrawArray = NULL;
@@ -262,11 +263,11 @@ TileSet* IntersectTileSets(TileSet* set1, TileSet* set2) {
 
 TileData* GetTileAtPosition(int x, int y) {
     if (x < 0 || x >= tileWorldSize.x) {
-        fprintf(stderr, "Invalid tile x index: %d\n", x);
+        LogErr("Invalid tile x index: %d\n", x);
         return NULL;
     }
     if (y < 0 || y >= tileWorldSize.x) {
-        fprintf(stderr, "Invalid tile y index: %d\n", y);
+        LogErr("Invalid tile y index: %d\n", y);
         return NULL;
     }
     return &WorldArray[y*tileWorldSize.x + x];
@@ -274,7 +275,7 @@ TileData* GetTileAtPosition(int x, int y) {
 
 TileData* GetTileAtIndex(long long i) {
     if (i < 0 || i >= arrlen(WorldArray)) {
-//        fprintf(stderr, "Invalid tile index: %lld\n", i);
+//        LogErr("Invalid tile index: %lld\n", i);
         return NULL;
     }
     return &WorldArray[i];

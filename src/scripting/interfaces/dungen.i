@@ -2,6 +2,9 @@
 
 %{
     #include "stdafx.h"
+    #include "../infrastructure/log.h"
+
+    #define printf Log
 
     // disabling specific warnings in generated file
     #ifdef _MSC_VER
@@ -21,6 +24,7 @@
 %include rendering.i
 %include text.i
 %include util.i
+%include log.i
 
 %include hlvm.i
 %include world.i

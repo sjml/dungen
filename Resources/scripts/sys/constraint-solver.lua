@@ -259,7 +259,7 @@ function ConstraintSolver:Solve(debug)
   for i, c in ipairs(self.constraints) do
     if (i == 1) then
       if c:isInstanceOf(SetConstraint) == false then
-        io.stderr:write("LUA ERROR: First constraint is not a SetConstraint. Aborting solve.\n")
+        LogErr("LUA ERROR: First constraint is not a SetConstraint. Aborting solve.\n")
         return false
       end
 
@@ -284,7 +284,7 @@ function ConstraintSolver:Solve(debug)
         end
       elseif c:isInstanceOf(PreferentialConstraint) then
         if i < #self.constraints then
-          io.stderr:write("LUA WARNING: Preferential constraint should be the last element in a set. Ignoring.\n")
+          LogErr("LUA WARNING: Preferential constraint should be the last element in a set. Ignoring.\n")
         end
       end
       if (debug) then

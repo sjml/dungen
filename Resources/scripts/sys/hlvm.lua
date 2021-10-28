@@ -46,7 +46,7 @@ function loadFiles(dir, prefix)
         if (f ~= nil) then
           sims[prefix .. simName] = f
         else
-          io.stderr:write("LUA ERROR: Couldn't load code for " .. prefix .. simName .. ":" .. err .. "\n")
+          LogErr("LUA ERROR: Couldn't load code for " .. prefix .. simName .. ":" .. err .. "\n")
         end
       end
       local attr = lfs.attributes(dir .. "/" .. file)
@@ -68,7 +68,7 @@ function push(simName)
 
   local f = sims[simName]
   if (f == nil) then
-    io.stderr:write("LUA WARNING: No element called `" .. tostring(simName) .. "`.\n")
+    LogErr("LUA WARNING: No element called `" .. tostring(simName) .. "`.\n")
     f = sims["Null"]
   end
 
@@ -89,8 +89,8 @@ function HLVMProcess()
 
   local success, error = coroutine.resume(simStack[#simStack])
   if not success then
-    io.stderr:write("LUA ERROR: " .. error .. "; HLVM popping.\n")
-    io.stderr:write("\t" .. debug.traceback(simStack[#simStack]) .. "\n")
+    LogErr("LUA ERROR: " .. error .. "; HLVM popping.\n")
+    LogErr("\t" .. debug.traceback(simStack[#simStack]) .. "\n")
     table.remove(simStack)
     return
   end

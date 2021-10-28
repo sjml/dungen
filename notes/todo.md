@@ -22,7 +22,7 @@
 
 ## Near Term
 * tools
-    - lua console
+    - lua console: history and autocomplete
 * somewhere, in one of the simulation elements, there's an infinite loop getting hit
     - found it as hundreds of magmas were being stored in one chamber?
     - maybe hlvm should be able to report what it's current top stack element is

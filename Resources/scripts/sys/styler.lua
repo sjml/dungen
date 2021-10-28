@@ -26,7 +26,7 @@ function ReloadStyles()
   for k,v in pairs(preload) do styles[k] = v end
   local styleLoad, err = loadfile("scripts/simulation/Styles.lua", "bt", styles)
   if (err) then
-    io.stderr:write("ERROR: Could not load styles. " .. err .. "\n")
+    LogErr("ERROR: Could not load styles. " .. err .. "\n")
     return
   end
   styleLoad()
@@ -143,7 +143,7 @@ local function applyOutlineStyle(styleTable, target)
     elseif outlineType == "outer" then
       outlineType = -1
     else
-      io.stderr:write("STYLE ERROR: Unknown outlineType: " .. tostring(outlineType) .. "\n")
+      LogErr("STYLE ERROR: Unknown outlineType: " .. tostring(outlineType) .. "\n")
       return
     end
     local thickness = styleTable.outlineThickness or 0.15

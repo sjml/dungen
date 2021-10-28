@@ -134,7 +134,7 @@ function _resetStorageDisplay(chamber)
     end
 
     if #empties == 0 then
-      io.stderr:write("LUA ERROR: Couldn't fit `"..tag.."` in storage chamber.\n")
+      LogErr("LUA ERROR: Couldn't fit `"..tag.."` in storage chamber.\n")
       return false
     end
 

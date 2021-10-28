@@ -2,6 +2,7 @@
 #include "hlvm.h"
 
 #include "../scripting/scripting.h"
+#include "../infrastructure/log.h"
 
 static struct { char* key; int value; } *intRegisters = NULL;
 static struct { char* key; float value; } *floatRegisters = NULL;
@@ -45,7 +46,7 @@ void PushSimulationElement(const char* el) {
     lua_getglobal(GetLuaState(), "push");
     lua_pushstring(GetLuaState(), el);
     if (lua_pcall(GetLuaState(), 1, 0, 0) != 0) {
-        fprintf(stderr, "ERROR: No global 'push()' function defined in Lua!\n");
+        LogErr("ERROR: No global 'push()' function defined in Lua!\n");
     }
 }
 

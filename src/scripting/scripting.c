@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "scripting.h"
 
+#include "../infrastructure/log.h"
+
 // implementation in generated wrapping.c file
 int luaopen_dungen(lua_State* L);
 
@@ -14,9 +16,9 @@ void InitializeLua() {
     L = luaL_newstate();
     luaL_openlibs(L);
     luaopen_lfs(L);
-    
+
     luaopen_dungen(L);
-    
+
     RunFile("scripts/sys/init.lua");
 }
 
@@ -31,7 +33,7 @@ lua_State* GetLuaState() {
 int RunFile(const char* filename) {
     int error = luaL_dofile(L, filename);
     if (error) {
-        fprintf(stderr, "%s\n", lua_tostring(L, -1));
+        LogErr("%s\n", lua_tostring(L, -1));
         lua_pop(L, 1);
         return 1;
     }
@@ -41,7 +43,7 @@ int RunFile(const char* filename) {
 int RunString(const char* string) {
     int error = luaL_dostring(L, string);
     if (error) {
-        fprintf(stderr, "LUA ERROR: %s\n", lua_tostring(L, -1));
+        LogErr("LUA ERROR: %s\n", lua_tostring(L, -1));
         lua_pop(L, 1);
         return 1;
     }

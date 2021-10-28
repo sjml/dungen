@@ -4,6 +4,7 @@
 #include "../infrastructure/world.h"
 #include "../infrastructure/rendering.h"
 #include "../infrastructure/game.h"
+#include "../infrastructure/log.h"
 #include "../hlvm/hlvm.h"
 
 static Region* hoveredSingle = NULL;
@@ -23,7 +24,7 @@ void PresentTileChoice(void) {
     valid = GetTileSetRegister("TileChoiceValidSet");
     if (GetTileSetCount(valid) == 0) {
         valid = NULL;
-        fprintf(stderr, "WARNING: Cannot present empty tile choice selection.\n");
+        LogErr("WARNING: Cannot present empty tile choice selection.\n");
         return;
     }
 
@@ -45,7 +46,7 @@ void PresentTileChoice(void) {
     }
     RequestRenderBufferUpdate(invalids);
     DestroyTileSet(invalids);
-    
+
     TileChoiceProcessMouseMovement(GetCursorPosition());
 }
 

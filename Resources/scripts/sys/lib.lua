@@ -15,8 +15,8 @@ function basicAssert(item1, item2, desc)
       end
     end
   end
-  io.stderr:write("❌ FAIL! " .. desc .. "\n")
-  io.stderr:write("\t" .. tostring(item1) .. " not equal to " .. tostring(item2) .. "\n")
+  LogErr("❌ FAIL! " .. desc .. "\n")
+  LogErr("\t" .. tostring(item1) .. " not equal to " .. tostring(item2) .. "\n")
   return 1
 end
 
@@ -24,7 +24,7 @@ function reportErrors(errCount)
   if errCount == 0 then
     print("\n🎉  No errors detected!")
   else
-    io.stderr:write("\n🙈  " .. tostring(errCount) .. " ERROR(S)\n")
+    LogErr("\n🙈  " .. tostring(errCount) .. " ERROR(S)\n")
   end
 end
 
@@ -90,7 +90,7 @@ function GetFunctionTable(classname)
   local reg = debug.getregistry()
   local classTable = reg["SWIG"][classname]
   if (classTable == nil) then
-    io.stderr:write("LUA WARNING: No class called " .. classname .. ".\n")
+    LogErr("LUA WARNING: No class called " .. classname .. ".\n")
     return
   end
   return classTable[".fn"]

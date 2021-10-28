@@ -4,6 +4,8 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
 
+#include "log.h"
+
 
 static struct { char* key; gbVec3* value; } *colorTables = NULL;
 
@@ -35,7 +37,7 @@ void LoadColorTable(const char* tablename, const char* filename) {
     stbi_image_free(imageData);
 
     if (shget(colorTables, tablename) != NULL) {
-        fprintf(stderr, "WARNING: existing color table named `%s`.\n", tablename);
+        LogErr("WARNING: existing color table named `%s`.\n", tablename);
         return;
     }
     shput(colorTables, tablename, colorList);
@@ -46,11 +48,11 @@ gbVec3 GetColorByIndex(const char* tablename, int i) {
     gbVec3 ret = {0.0f, 0.0f, 0.0f};
     gbVec3* ct = shget(colorTables, tablename);
     if (ct == NULL) {
-        fprintf(stderr, "ERROR: no color table named `%s`.\n", tablename);
+        LogErr("ERROR: no color table named `%s`.\n", tablename);
         return ret;
     }
     if (i < 0 || i >= arrlen(ct)) {
-        fprintf(stderr, "ERROR: %d is invalid index to `%s`.\n", i, tablename);
+        LogErr("ERROR: %d is invalid index to `%s`.\n", i, tablename);
         return ret;
     }
 
@@ -65,7 +67,7 @@ gbVec3 GetColorByPercent(const char* tablename, float p) {
     gbVec3 ret = {0.0f, 0.0f, 0.0f};
     gbVec3* ct = shget(colorTables, tablename);
     if (ct == NULL) {
-        fprintf(stderr, "ERROR: no color table named `%s`.\n", tablename);
+        LogErr("ERROR: no color table named `%s`.\n", tablename);
         return ret;
     }
     float fIndex = p * (float)arrlen(ct);

@@ -12,6 +12,7 @@
 
 #include "util.h"
 #include "rendering.h"
+#include "log.h"
 #include "../platform/platform.h"
 #include "../shaders/text_bytecode.h"
 
@@ -95,7 +96,7 @@ static struct { char* key; FontData *value; } *loadedFonts;
 void LoadFont(const char* refName, const char* filePath, float pointSize, bool isPixelFont) {
     const unsigned char* fontBuffer = readBinaryFile(filePath);
     if (fontBuffer == NULL) {
-        fprintf(stderr, "ERROR: Could not load font %s\n", filePath);
+        LogErr("ERROR: Could not load font %s\n", filePath);
         return;
     }
 
@@ -266,7 +267,7 @@ bool PurgeFont(const char* fontName) {
 TextInfo* CreateTextInfo(const char* text, const char* fontName, gbVec2 pos, float scale, gbVec4 color) {
     FontData* fd = shget(loadedFonts, fontName);
     if (fd == NULL) {
-        fprintf(stderr, "ERROR: No loaded font named %s\n", fontName);
+        LogErr("ERROR: No loaded font named %s\n", fontName);
         return NULL;
     }
 
@@ -395,7 +396,7 @@ gbVec2 MeasureTextExtents(const char* text, const char* fontName, float scale) {
 
     FontData* fd = shget(loadedFonts, fontName);
     if (fd == NULL) {
-        fprintf(stderr, "ERROR: No loaded font named %s\n", fontName);
+        LogErr("ERROR: No loaded font named %s\n", fontName);
         return ret;
     }
 

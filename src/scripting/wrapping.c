@@ -2702,6 +2702,9 @@ static swig_module_info swig_module = {swig_types, 15, 0, 0, 0, 0};
 #define SWIG_LUACODE   luaopen_dungen_luacode
 
     #include "stdafx.h"
+    #include "../infrastructure/log.h"
+
+    #define printf Log
 
     // disabling specific warnings in generated file
     #ifdef _MSC_VER
@@ -2731,6 +2734,9 @@ SWIGINTERN int SWIG_lua_isnilstring(lua_State *L, int idx) {
 
 
     #include "../infrastructure/util.h"
+
+
+    #include "../infrastructure/log.h"
 
 
     #include "../hlvm/hlvm.h"
@@ -4839,6 +4845,46 @@ static int _wrap_MeasureTextExtents(lua_State* L) {
     memmove(resultptr, &result, sizeof(gbVec2));
     SWIG_NewPointerObj(L,(void *) resultptr,SWIGTYPE_p_gbVec2,1); SWIG_arg++;
   }
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_Log(lua_State* L) {
+  int SWIG_arg = 0;
+  char *arg1 = (char *) 0 ;
+  void *arg2 = 0 ;
+  
+  SWIG_check_num_args("Log",1,1)
+  if(!SWIG_lua_isnilstring(L,1)) SWIG_fail_arg("Log",1,"char *");
+  arg1 = (char *)lua_tostring(L, 1);
+  Log(arg1,arg2);
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_LogErr(lua_State* L) {
+  int SWIG_arg = 0;
+  char *arg1 = (char *) 0 ;
+  void *arg2 = 0 ;
+  
+  SWIG_check_num_args("LogErr",1,1)
+  if(!SWIG_lua_isnilstring(L,1)) SWIG_fail_arg("LogErr",1,"char *");
+  arg1 = (char *)lua_tostring(L, 1);
+  LogErr(arg1,arg2);
+  
   return SWIG_arg;
   
   if(0) SWIG_fail;
@@ -9442,6 +9488,8 @@ static swig_lua_method swig_SwigModule_methods[]= {
     { "WorldToScreen", _wrap_WorldToScreen},
     { "TakeScreenshot", _wrap_TakeScreenshot},
     { "MeasureTextExtents", _wrap_MeasureTextExtents},
+    { "Log", _wrap_Log},
+    { "LogErr", _wrap_LogErr},
     { "GetIntRegister", _wrap_GetIntRegister},
     { "GetFloatRegister", _wrap_GetFloatRegister},
     { "GetStringRegister", _wrap_GetStringRegister},

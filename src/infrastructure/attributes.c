@@ -14,6 +14,7 @@
 #include "attributes.h"
 
 #include "rendering.h"
+#include "log.h"
 
 static long long __tagIdx = 0;
 static struct { char* key; long long value; } *tags_StringToIdx = NULL;
@@ -58,14 +59,14 @@ void InitializeAttributes() {
 
     int ret = sqlite3_open(dbPath, &db);
     if (ret != SQLITE_OK) {
-        fprintf(stderr, "SQL ERROR: Cannot open database: %s\n", sqlite3_errmsg(db));
+        LogErr("SQL ERROR: Cannot open database: %s\n", sqlite3_errmsg(db));
         sqlite3_close(db);
         return;
     }
 
     ret = sqlite3_exec(db, "PRAGMA foreign_keys = ON;", 0, 0, &err);
     if (ret != SQLITE_OK) {
-        fprintf(stderr, "SQL ERROR: %s\n", err);
+        LogErr("SQL ERROR: %s\n", err);
         sqlite3_free(err);
         sqlite3_close(db);
         return;
@@ -78,7 +79,7 @@ void InitializeAttributes() {
     ;
     ret = sqlite3_exec(db, creation, 0, 0, &err);
     if (ret != SQLITE_OK) {
-        fprintf(stderr, "SQL ERROR: %s\n", err);
+        LogErr("SQL ERROR: %s\n", err);
         sqlite3_free(err);
         sqlite3_close(db);
         return;
@@ -110,7 +111,7 @@ void FinalizeAttributes() {
 void SetupTileAttributeData(TileData* data) {
     sqlite3_stmt *stmt;
     if (sqlite3_prepare(db, "INSERT INTO tiles(tile_id, ptr) VALUES(?, ?);", -1, &stmt, 0) != SQLITE_OK) {
-        fprintf(stderr, "SQL ERROR: could not prepare insert statement: %s\n", sqlite3_errmsg(db));
+        LogErr("SQL ERROR: could not prepare insert statement: %s\n", sqlite3_errmsg(db));
         return;
     }
 
@@ -118,19 +119,19 @@ void SetupTileAttributeData(TileData* data) {
     sqlite3_exec(db, "BEGIN TRANSACTION;", 0, 0, &err);
     for(int i=0; i < arrlen(data); i++) {
         if (sqlite3_bind_int(stmt, 1, i) != SQLITE_OK) {
-            fprintf(stderr, "SQL ERROR: could not bind index value to statement: %s\n", sqlite3_errmsg(db));
+            LogErr("SQL ERROR: could not bind index value to statement: %s\n", sqlite3_errmsg(db));
             sqlite3_finalize(stmt);
             sqlite3_exec(db, "ROLLBACK TRANSACTION;", 0, 0, &err);
             return;
         }
         if (sqlite3_bind_pointer(stmt, 2, (void*)&data[i], "pTileData", NULL) != SQLITE_OK) {
-            fprintf(stderr, "SQL ERROR: could not bind pointer value to statement: %s\n", sqlite3_errmsg(db));
+            LogErr("SQL ERROR: could not bind pointer value to statement: %s\n", sqlite3_errmsg(db));
             sqlite3_finalize(stmt);
             sqlite3_exec(db, "ROLLBACK TRANSACTION;", 0, 0, &err);
             return;
         }
         if (sqlite3_step(stmt) != SQLITE_DONE) {
-            fprintf(stderr, "SQL ERROR: couldn't execute insert statement: %s\n", sqlite3_errmsg(db));
+            LogErr("SQL ERROR: couldn't execute insert statement: %s\n", sqlite3_errmsg(db));
             sqlite3_finalize(stmt);
             sqlite3_exec(db, "ROLLBACK TRANSACTION;", 0, 0, &err);
             return;
@@ -147,17 +148,17 @@ void SetupTileAttributeData(TileData* data) {
 long long SetupRegionAttributeData(Region* r) {
     sqlite3_stmt *stmt;
     if (sqlite3_prepare(db, "INSERT INTO regions(ptr) VALUES(?);", -1, &stmt, 0) != SQLITE_OK) {
-        fprintf(stderr, "SQL ERROR: could not prepare insert statement: %s\n", sqlite3_errmsg(db));
+        LogErr("SQL ERROR: could not prepare insert statement: %s\n", sqlite3_errmsg(db));
         return -1;
     }
 
     if (sqlite3_bind_pointer(stmt, 1, (void*)r, "pRegion", NULL) != SQLITE_OK) {
-        fprintf(stderr, "SQL ERROR: could not bind pointer value to statement: %s\n", sqlite3_errmsg(db));
+        LogErr("SQL ERROR: could not bind pointer value to statement: %s\n", sqlite3_errmsg(db));
         sqlite3_finalize(stmt);
         return -1;
     }
     if (sqlite3_step(stmt) != SQLITE_DONE) {
-        fprintf(stderr, "SQL ERROR: couldn't execute insert statement: %s\n", sqlite3_errmsg(db));
+        LogErr("SQL ERROR: couldn't execute insert statement: %s\n", sqlite3_errmsg(db));
         sqlite3_finalize(stmt);
         return -1;
     }
@@ -169,17 +170,17 @@ long long SetupRegionAttributeData(Region* r) {
 void ClearRegionAttributeData(Region* r) {
     sqlite3_stmt *stmt;
     if (sqlite3_prepare(db, "DELETE FROM regions WHERE region_id = ?;", -1, &stmt, 0) != SQLITE_OK) {
-        fprintf(stderr, "SQL ERROR: could not prepare deletion statement: %s\n", sqlite3_errmsg(db));
+        LogErr("SQL ERROR: could not prepare deletion statement: %s\n", sqlite3_errmsg(db));
         return;
     }
 
     if (sqlite3_bind_int64(stmt, 1, r->i) != SQLITE_OK) {
-        fprintf(stderr, "SQL ERROR: could not bind index value to deletion statement: %s\n", sqlite3_errmsg(db));
+        LogErr("SQL ERROR: could not bind index value to deletion statement: %s\n", sqlite3_errmsg(db));
         sqlite3_finalize(stmt);
         return;
     }
     if (sqlite3_step(stmt) != SQLITE_DONE) {
-        fprintf(stderr, "SQL ERROR: couldn't execute deletion statement: %s\n", sqlite3_errmsg(db));
+        LogErr("SQL ERROR: couldn't execute deletion statement: %s\n", sqlite3_errmsg(db));
         sqlite3_finalize(stmt);
         return;
     }
@@ -190,22 +191,22 @@ void ClearRegionAttributeData(Region* r) {
 long long SetupAgentAttributeData(Agent* a) {
     sqlite3_stmt *stmt;
     if (sqlite3_prepare(db, "INSERT INTO agents(agent_id, ptr) VALUES(?, ?);", -1, &stmt, 0) != SQLITE_OK) {
-        fprintf(stderr, "SQL ERROR: could not prepare insert statement: %s\n", sqlite3_errmsg(db));
+        LogErr("SQL ERROR: could not prepare insert statement: %s\n", sqlite3_errmsg(db));
         return -1;
     }
 
     if (sqlite3_bind_int64(stmt, 1, a->i) != SQLITE_OK) {
-        fprintf(stderr, "SQL ERROR: could not bind index value to statement: %s\n", sqlite3_errmsg(db));
+        LogErr("SQL ERROR: could not bind index value to statement: %s\n", sqlite3_errmsg(db));
         sqlite3_finalize(stmt);
         return -1;
     }
     if (sqlite3_bind_pointer(stmt, 2, (void*)a, "pAgent", NULL) != SQLITE_OK) {
-        fprintf(stderr, "SQL ERROR: could not bind pointer value to statement: %s\n", sqlite3_errmsg(db));
+        LogErr("SQL ERROR: could not bind pointer value to statement: %s\n", sqlite3_errmsg(db));
         sqlite3_finalize(stmt);
         return -1;
     }
     if (sqlite3_step(stmt) != SQLITE_DONE) {
-        fprintf(stderr, "SQL ERROR: couldn't execute insert statement: %s\n", sqlite3_errmsg(db));
+        LogErr("SQL ERROR: couldn't execute insert statement: %s\n", sqlite3_errmsg(db));
         sqlite3_finalize(stmt);
         return -1;
     }
@@ -227,16 +228,16 @@ bool _DoesColumnExist(const char* name, AttrType dType) {
     }
     sqlite3_stmt* stmt;
     if (sqlite3_prepare(db, query, -1, &stmt, NULL) != SQLITE_OK) {
-        fprintf(stderr, "SQL ERROR: could not prepare column check statement: %s\n", sqlite3_errmsg(db));
+        LogErr("SQL ERROR: could not prepare column check statement: %s\n", sqlite3_errmsg(db));
         return false;
     }
     if (sqlite3_bind_text(stmt, 1, name, (int)strlen(name), NULL) != SQLITE_OK) {
-        fprintf(stderr, "SQL ERROR: could not bind column name to statement: %s\n", sqlite3_errmsg(db));
+        LogErr("SQL ERROR: could not bind column name to statement: %s\n", sqlite3_errmsg(db));
         sqlite3_finalize(stmt);
         return false;
     }
     if (sqlite3_step(stmt) != SQLITE_ROW) {
-        fprintf(stderr, "SQL ERROR: couldn't execute column check statement: %s\n", sqlite3_errmsg(db));
+        LogErr("SQL ERROR: couldn't execute column check statement: %s\n", sqlite3_errmsg(db));
         sqlite3_finalize(stmt);
         return false;
     }
@@ -271,12 +272,12 @@ void _SetAttributeInt(void* data, AttrType dType, const char* name, int value) {
     if (!_DoesColumnExist(name, dType)) {
         sprintf(query, "ALTER TABLE %s ADD %s INTEGER DEFAULT 0;", tableName, name);
         if (sqlite3_prepare(db, query, -1, &stmt, NULL) != SQLITE_OK) {
-            fprintf(stderr, "SQL ERROR: could not prepare column add statement: %s\n", sqlite3_errmsg(db));
+            LogErr("SQL ERROR: could not prepare column add statement: %s\n", sqlite3_errmsg(db));
             sqlite3_finalize(stmt);
             return;
         }
         if (sqlite3_step(stmt) != SQLITE_DONE) {
-            fprintf(stderr, "SQL ERROR: couldn't execute column add statement: %s\n", sqlite3_errmsg(db));
+            LogErr("SQL ERROR: couldn't execute column add statement: %s\n", sqlite3_errmsg(db));
             sqlite3_finalize(stmt);
             return;
         }
@@ -285,22 +286,22 @@ void _SetAttributeInt(void* data, AttrType dType, const char* name, int value) {
 
     sprintf(query, "UPDATE %s SET %s = ? WHERE %s = ?;", tableName, name, idName);
     if (sqlite3_prepare(db, query, -1, &stmt, NULL) != SQLITE_OK) {
-        fprintf(stderr, "SQL ERROR: could not prepare update statement: %s\n", sqlite3_errmsg(db));
+        LogErr("SQL ERROR: could not prepare update statement: %s\n", sqlite3_errmsg(db));
         sqlite3_finalize(stmt);
         return;
     }
     if (sqlite3_bind_int(stmt, 1, value) != SQLITE_OK) {
-        fprintf(stderr, "SQL ERROR: could not bind integer value to update statement: %s\n", sqlite3_errmsg(db));
+        LogErr("SQL ERROR: could not bind integer value to update statement: %s\n", sqlite3_errmsg(db));
         sqlite3_finalize(stmt);
         return;
     }
     if (sqlite3_bind_int64(stmt, 2, idx) != SQLITE_OK) {
-        fprintf(stderr, "SQL ERROR: could not bind index value to update statement: %s\n", sqlite3_errmsg(db));
+        LogErr("SQL ERROR: could not bind index value to update statement: %s\n", sqlite3_errmsg(db));
         sqlite3_finalize(stmt);
         return;
     }
     if (sqlite3_step(stmt) != SQLITE_DONE) {
-        fprintf(stderr, "SQL ERROR: couldn't execute integer update statement: %s\n", sqlite3_errmsg(db));
+        LogErr("SQL ERROR: couldn't execute integer update statement: %s\n", sqlite3_errmsg(db));
         sqlite3_finalize(stmt);
         return;
     }
@@ -348,12 +349,12 @@ void _SetAttributeFloat(void* data, AttrType dType, const char* name, float valu
     if (!_DoesColumnExist(name, dType)) {
         sprintf(query, "ALTER TABLE %s ADD %s REAL DEFAULT 0.0;", tableName, name);
         if (sqlite3_prepare(db, query, -1, &stmt, NULL) != SQLITE_OK) {
-            fprintf(stderr, "SQL ERROR: could not prepare column add statement: %s\n", sqlite3_errmsg(db));
+            LogErr("SQL ERROR: could not prepare column add statement: %s\n", sqlite3_errmsg(db));
             sqlite3_finalize(stmt);
             return;
         }
         if (sqlite3_step(stmt) != SQLITE_DONE) {
-            fprintf(stderr, "SQL ERROR: couldn't execute column add statement: %s\n", sqlite3_errmsg(db));
+            LogErr("SQL ERROR: couldn't execute column add statement: %s\n", sqlite3_errmsg(db));
             sqlite3_finalize(stmt);
             return;
         }
@@ -362,23 +363,23 @@ void _SetAttributeFloat(void* data, AttrType dType, const char* name, float valu
 
     sprintf(query, "UPDATE %s SET %s = ? WHERE %s = ?;", tableName, name, idName);
     if (sqlite3_prepare(db, query, -1, &stmt, NULL) != SQLITE_OK) {
-        fprintf(stderr, "SQL ERROR: could not prepare update statement: %s\n", sqlite3_errmsg(db));
+        LogErr("SQL ERROR: could not prepare update statement: %s\n", sqlite3_errmsg(db));
         sqlite3_finalize(stmt);
         return;
     }
     if (sqlite3_bind_double(stmt, 1, (double)value) != SQLITE_OK) {
-        fprintf(stderr, "SQL ERROR: could not bind integer value to update statement: %s\n", sqlite3_errmsg(db));
+        LogErr("SQL ERROR: could not bind integer value to update statement: %s\n", sqlite3_errmsg(db));
         sqlite3_finalize(stmt);
         return;
     }
 
     if (sqlite3_bind_int64(stmt, 2, idx) != SQLITE_OK) {
-        fprintf(stderr, "SQL ERROR: could not bind index value to update statement: %s\n", sqlite3_errmsg(db));
+        LogErr("SQL ERROR: could not bind index value to update statement: %s\n", sqlite3_errmsg(db));
         sqlite3_finalize(stmt);
         return;
     }
     if (sqlite3_step(stmt) != SQLITE_DONE) {
-        fprintf(stderr, "SQL ERROR: couldn't execute integer update statement: %s\n", sqlite3_errmsg(db));
+        LogErr("SQL ERROR: couldn't execute integer update statement: %s\n", sqlite3_errmsg(db));
         sqlite3_finalize(stmt);
         return;
     }
@@ -426,12 +427,12 @@ void _SetAttributeString(void* data, AttrType dType, const char* name, const cha
     if (!_DoesColumnExist(name, dType)) {
         sprintf(query, "ALTER TABLE %s ADD %s TEXT DEFAULT '';", tableName, name);
         if (sqlite3_prepare(db, query, -1, &stmt, NULL) != SQLITE_OK) {
-            fprintf(stderr, "SQL ERROR: could not prepare column add statement: %s\n", sqlite3_errmsg(db));
+            LogErr("SQL ERROR: could not prepare column add statement: %s\n", sqlite3_errmsg(db));
             sqlite3_finalize(stmt);
             return;
         }
         if (sqlite3_step(stmt) != SQLITE_DONE) {
-            fprintf(stderr, "SQL ERROR: couldn't execute column add statement: %s\n", sqlite3_errmsg(db));
+            LogErr("SQL ERROR: couldn't execute column add statement: %s\n", sqlite3_errmsg(db));
             sqlite3_finalize(stmt);
             return;
         }
@@ -440,23 +441,23 @@ void _SetAttributeString(void* data, AttrType dType, const char* name, const cha
 
     sprintf(query, "UPDATE %s SET %s = ? WHERE %s = ?;", tableName, name, idName);
     if (sqlite3_prepare(db, query, -1, &stmt, NULL) != SQLITE_OK) {
-        fprintf(stderr, "SQL ERROR: could not prepare update statement: %s\n", sqlite3_errmsg(db));
+        LogErr("SQL ERROR: could not prepare update statement: %s\n", sqlite3_errmsg(db));
         sqlite3_finalize(stmt);
         return;
     }
     if (sqlite3_bind_text(stmt, 1, value, (int)strlen(value), NULL) != SQLITE_OK) {
-        fprintf(stderr, "SQL ERROR: could not bind integer value to update statement: %s\n", sqlite3_errmsg(db));
+        LogErr("SQL ERROR: could not bind integer value to update statement: %s\n", sqlite3_errmsg(db));
         sqlite3_finalize(stmt);
         return;
     }
 
     if (sqlite3_bind_int64(stmt, 2, idx) != SQLITE_OK) {
-        fprintf(stderr, "SQL ERROR: could not bind index value to update statement: %s\n", sqlite3_errmsg(db));
+        LogErr("SQL ERROR: could not bind index value to update statement: %s\n", sqlite3_errmsg(db));
         sqlite3_finalize(stmt);
         return;
     }
     if (sqlite3_step(stmt) != SQLITE_DONE) {
-        fprintf(stderr, "SQL ERROR: couldn't execute integer update statement: %s\n", sqlite3_errmsg(db));
+        LogErr("SQL ERROR: couldn't execute integer update statement: %s\n", sqlite3_errmsg(db));
         sqlite3_finalize(stmt);
         return;
     }
@@ -507,19 +508,19 @@ int _GetAttributeInt(void* data, AttrType dType, const char* name) {
 
     sprintf(query, "SELECT %s FROM %s WHERE %s = ?;", name, tableName, idName);
     if (sqlite3_prepare(db, query, -1, &stmt, NULL) != SQLITE_OK) {
-        fprintf(stderr, "SQL ERROR: could not prepare select statement: %s\n", sqlite3_errmsg(db));
+        LogErr("SQL ERROR: could not prepare select statement: %s\n", sqlite3_errmsg(db));
         sqlite3_finalize(stmt);
         return 0;
     }
 
     if (sqlite3_bind_int64(stmt, 1, idx) != SQLITE_OK) {
-        fprintf(stderr, "SQL ERROR: could not bind index value to insert statement: %s\n", sqlite3_errmsg(db));
+        LogErr("SQL ERROR: could not bind index value to insert statement: %s\n", sqlite3_errmsg(db));
         sqlite3_finalize(stmt);
         return 0;
     }
 
     if (sqlite3_step(stmt) != SQLITE_ROW) {
-        fprintf(stderr, "SQL ERROR: couldn't execute select statement: %s\n", sqlite3_errmsg(db));
+        LogErr("SQL ERROR: couldn't execute select statement: %s\n", sqlite3_errmsg(db));
         sqlite3_finalize(stmt);
         return 0;
     }
@@ -571,19 +572,19 @@ float _GetAttributeFloat(void* data, AttrType dType, const char* name) {
 
     sprintf(query, "SELECT %s FROM %s WHERE %s = ?;", name, tableName, idName);
     if (sqlite3_prepare(db, query, -1, &stmt, NULL) != SQLITE_OK) {
-        fprintf(stderr, "SQL ERROR: could not prepare select statement: %s\n", sqlite3_errmsg(db));
+        LogErr("SQL ERROR: could not prepare select statement: %s\n", sqlite3_errmsg(db));
         sqlite3_finalize(stmt);
         return 0.0f;
     }
 
     if (sqlite3_bind_int64(stmt, 1, idx) != SQLITE_OK) {
-        fprintf(stderr, "SQL ERROR: could not bind index value to insert statement: %s\n", sqlite3_errmsg(db));
+        LogErr("SQL ERROR: could not bind index value to insert statement: %s\n", sqlite3_errmsg(db));
         sqlite3_finalize(stmt);
         return 0.0f;
     }
 
     if (sqlite3_step(stmt) != SQLITE_ROW) {
-        fprintf(stderr, "SQL ERROR: couldn't execute select statement: %s\n", sqlite3_errmsg(db));
+        LogErr("SQL ERROR: couldn't execute select statement: %s\n", sqlite3_errmsg(db));
         sqlite3_finalize(stmt);
         return 0.0f;
     }
@@ -635,19 +636,19 @@ char* _GetAttributeString(void* data, AttrType dType, const char* name) {
 
     sprintf(query, "SELECT %s FROM %s WHERE %s = ?;", name, tableName, idName);
     if (sqlite3_prepare(db, query, -1, &stmt, NULL) != SQLITE_OK) {
-        fprintf(stderr, "SQL ERROR: could not prepare select statement: %s\n", sqlite3_errmsg(db));
+        LogErr("SQL ERROR: could not prepare select statement: %s\n", sqlite3_errmsg(db));
         sqlite3_finalize(stmt);
         return "";
     }
 
     if (sqlite3_bind_int64(stmt, 1, idx) != SQLITE_OK) {
-        fprintf(stderr, "SQL ERROR: could not bind index value to insert statement: %s\n", sqlite3_errmsg(db));
+        LogErr("SQL ERROR: could not bind index value to insert statement: %s\n", sqlite3_errmsg(db));
         sqlite3_finalize(stmt);
         return "";
     }
 
     if (sqlite3_step(stmt) != SQLITE_ROW) {
-        fprintf(stderr, "SQL ERROR: couldn't execute select statement: %s\n", sqlite3_errmsg(db));
+        LogErr("SQL ERROR: couldn't execute select statement: %s\n", sqlite3_errmsg(db));
         sqlite3_finalize(stmt);
         return "";
     }
@@ -1165,7 +1166,7 @@ void** _GetByAttribute(AttrType dType, const char* attrName, AttrComparison comp
 
     sqlite3_stmt* stmt;
     if (sqlite3_prepare(db, query, -1, &stmt, NULL) != SQLITE_OK) {
-        fprintf(stderr, "SQL WARNING: could not prepare attribute selection statement: %s\n", sqlite3_errmsg(db));
+        LogErr("SQL WARNING: could not prepare attribute selection statement: %s\n", sqlite3_errmsg(db));
         sqlite3_finalize(stmt);
         sdsfree(query);
         return ret;
@@ -1195,7 +1196,7 @@ void** _GetByAttribute(AttrType dType, const char* attrName, AttrComparison comp
             arrpush(ret, retData);
         }
         else {
-            fprintf(stderr, "SQL ERROR: Returning ids of non-existent tiles?\n");
+            LogErr("SQL ERROR: Returning ids of non-existent tiles?\n");
         }
     }
 
@@ -1257,7 +1258,7 @@ bool _CheckAttribute(void* data, AttrType dType, const char* attrName, AttrCompa
 
     sqlite3_stmt* stmt;
     if (sqlite3_prepare(db, query, -1, &stmt, NULL) != SQLITE_OK) {
-        fprintf(stderr, "SQL WARNING: could not prepare attribute check statement: %s\n", sqlite3_errmsg(db));
+        LogErr("SQL WARNING: could not prepare attribute check statement: %s\n", sqlite3_errmsg(db));
         sqlite3_finalize(stmt);
         sdsfree(query);
         return false;
@@ -1265,13 +1266,13 @@ bool _CheckAttribute(void* data, AttrType dType, const char* attrName, AttrCompa
     sdsfree(query);
 
     if (sqlite3_bind_int64(stmt, 1, idx) != SQLITE_OK) {
-        fprintf(stderr, "SQL ERROR: could not bind index value to attribute check statement: %s\n", sqlite3_errmsg(db));
+        LogErr("SQL ERROR: could not bind index value to attribute check statement: %s\n", sqlite3_errmsg(db));
         sqlite3_finalize(stmt);
         return false;
     }
 
     if (sqlite3_step(stmt) != SQLITE_ROW) {
-        fprintf(stderr, "SQL ERROR: couldn't execute attribute check statement: %s\n", sqlite3_errmsg(db));
+        LogErr("SQL ERROR: couldn't execute attribute check statement: %s\n", sqlite3_errmsg(db));
         sqlite3_finalize(stmt);
         return false;
     }

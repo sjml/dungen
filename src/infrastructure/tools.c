@@ -10,6 +10,7 @@
 #include "attributes.h"
 #include "files.h"
 #include "world.h"
+#include "log.h"
 #include "../hlvm/hlvm.h"
 #include "../scripting/scripting.h"
 
@@ -20,6 +21,19 @@ static char* inputBuffer = NULL;
 static int inputBufferSize = 1024;
 static bool consoleFocusRequestActive = false;
 
+
+static size_t lastConsoleTextSize = 0;
+static sds consoleText;
+
+void ConsoleLog(char* out) {
+    consoleText = sdscat(consoleText, out);
+}
+
+void ConsoleErrorLog(char* out) {
+    // TODO: color this differently if possible?
+    consoleText = sdscat(consoleText, out);
+}
+
 void InitializeTools(void) {
     if (scriptListing != NULL) {
         FileInfoFree(scriptListing);
@@ -28,12 +42,21 @@ void InitializeTools(void) {
 
     inputBuffer = malloc(inputBufferSize);
     inputBuffer[0] = '\0';
+
+    consoleText = sdsempty();
+    lastConsoleTextSize = sdslen(consoleText);
+
+    RegisterLogFunction(ConsoleLog, 0);
+    RegisterLogFunction(ConsoleErrorLog, 1);
 }
 
 void FinalizeTools(void) {
     if (scriptListing != NULL) {
         FileInfoFree(scriptListing);
     }
+
+    sdsfree(consoleText);
+    lastConsoleTextSize = 0;
 
     free(inputBuffer);
 }
@@ -116,6 +139,7 @@ void RequestConsoleFocus(void) {
         igSetNextWindowSizeConstraints((ImVec2){1004, 500}, (ImVec2){1004, 748}, NULL, NULL);
         igBegin("DunGen Tools", 0, ImGuiNextWindowDataFlags_None
             // | ImGuiWindowFlags_AlwaysAutoResize
+            | ImGuiWindowFlags_NoMove
         );
 
         igBeginGroup();
@@ -189,24 +213,11 @@ void RequestConsoleFocus(void) {
         igGetContentRegionAvail(&avail);
         igBeginChild_Str("Lua Console", (ImVec2){0, 0}, false, ImGuiWindowFlags_AlwaysAutoResize);
         igBeginChild_Str("Lua Printout", (ImVec2){0, avail.y - 25}, true, ImGuiWindowFlags_None);
-        igTextWrapped("Here is where the Lua console will be."
-            "\n\n"
-            "Veniam do consequat proident ex ea cupidatat eiusmod ea cillum duis id mollit et. Qui non nisi culpa deserunt non reprehenderit occaecat cupidatat velit dolore velit eu. Fugiat minim adipisicing aliqua dolor adipisicing velit ea tempor anim nostrud ut."
-            "\n\n"
-            "Amet excepteur cupidatat labore non labore elit occaecat pariatur tempor veniam. Tempor reprehenderit enim quis veniam culpa aute. Ad sit aute tempor tempor do ut duis tempor aute ea. Non exercitation dolore est cillum ut laborum."
-            "\n\n"
-            "Dolore exercitation in aliquip Lorem deserunt. Veniam ut deserunt enim dolore ad consectetur ullamco aute incididunt laborum. Ad et aute veniam labore deserunt in esse laboris consectetur minim ea non irure. Quis fugiat consectetur excepteur incididunt pariatur mollit anim veniam velit labore in duis. Labore aliqua et cupidatat elit dolor cupidatat voluptate anim Lorem fugiat ad. Duis nulla cillum ut in ut laborum sint nisi in fugiat."
-            "\n\n"
-            "Velit do nulla exercitation cillum enim tempor. Aliqua et elit occaecat occaecat. Ad mollit esse excepteur labore tempor ex fugiat dolor consectetur ut sint eiusmod deserunt. Aliqua elit nostrud voluptate proident laboris ut laboris. Commodo tempor veniam officia magna non aute laboris ipsum id deserunt ex cupidatat anim ea."
-            "\n\n"
-            "Veniam do consequat proident ex ea cupidatat eiusmod ea cillum duis id mollit et. Qui non nisi culpa deserunt non reprehenderit occaecat cupidatat velit dolore velit eu. Fugiat minim adipisicing aliqua dolor adipisicing velit ea tempor anim nostrud ut."
-            "\n\n"
-            "Amet excepteur cupidatat labore non labore elit occaecat pariatur tempor veniam. Tempor reprehenderit enim quis veniam culpa aute. Ad sit aute tempor tempor do ut duis tempor aute ea. Non exercitation dolore est cillum ut laborum."
-            "\n\n"
-            "Dolore exercitation in aliquip Lorem deserunt. Veniam ut deserunt enim dolore ad consectetur ullamco aute incididunt laborum. Ad et aute veniam labore deserunt in esse laboris consectetur minim ea non irure. Quis fugiat consectetur excepteur incididunt pariatur mollit anim veniam velit labore in duis. Labore aliqua et cupidatat elit dolor cupidatat voluptate anim Lorem fugiat ad. Duis nulla cillum ut in ut laborum sint nisi in fugiat."
-            "\n\n"
-            "Velit do nulla exercitation cillum enim tempor. Aliqua et elit occaecat occaecat. Ad mollit esse excepteur labore tempor ex fugiat dolor consectetur ut sint eiusmod deserunt. Aliqua elit nostrud voluptate proident laboris ut laboris. Commodo tempor veniam officia magna non aute laboris ipsum id deserunt ex cupidatat anim ea."
-        );
+        igTextWrapped(consoleText);
+        if (lastConsoleTextSize != sdslen(consoleText)) {
+            igSetScrollHereY(1.0f);
+        }
+        lastConsoleTextSize = sdslen(consoleText);
         igEndChild();
 
         igPushItemWidth(-1);
@@ -218,8 +229,24 @@ void RequestConsoleFocus(void) {
         igSameLine(0.0f, 0.0f);
         if (consoleFocusRequestActive) { igSetKeyboardFocusHere(0); }
         igPushStyleColor_Vec4(ImGuiCol_FrameBg, (ImVec4){0.0f, 0.0f, 0.0f, 0.0f});
-        igInputText("", inputBuffer, inputBufferSize, ImGuiInputTextFlags_None, NULL, NULL);
-        consoleFocusRequestActive = false;
+        if (igInputText("", inputBuffer, inputBufferSize, ImGuiInputTextFlags_None
+            | ImGuiInputTextFlags_EnterReturnsTrue
+            ,
+            NULL, NULL
+        )) {
+            if (strlen(inputBuffer) > 0) {
+                char* logInput = malloc(sizeof(char) * (strlen(inputBuffer) + 1 + 3)); // "> " and newline and terminator
+                sprintf(logInput, "> %s\n", inputBuffer);
+                ConsoleLog(logInput);
+                free(logInput);
+                RunString(inputBuffer);
+                inputBuffer[0] = '\0';
+            }
+            consoleFocusRequestActive = true;
+        }
+        else {
+            consoleFocusRequestActive = false;
+        }
         igPopStyleColor(1);
         igPopItemWidth();
 

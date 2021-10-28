@@ -12,6 +12,7 @@
 #include "outline.h"
 #include "game.h"
 #include "tools.h"
+#include "log.h"
 #include "../ui/banner.h"
 #include "../ui/choice.h"
 #include "../ui/tile_choice.h"
@@ -240,7 +241,7 @@ void RemoveRegionFromRendering(Region* r) {
             return;
         }
     }
-    fprintf(stderr, "ERROR: removing Region that was not part of the world.\n");
+    LogErr("ERROR: removing Region that was not part of the world.\n");
 }
 
 Region** GetRenderingRegions() {
@@ -339,7 +340,7 @@ int Render() {
         #if defined(SOKOL_GLCORE33) || defined(SOKOL_GLES3) || defined(SOKOL_GLES2)
             sgext_read_framebuffer(0, 0, framebufferDimensions.x, framebufferDimensions.y, screenShotBuffer);
         #else
-            fprintf(stderr, "WARNING: Screenshots not available with non-GL backends.\n");
+            LogErr("WARNING: Screenshots not available with non-GL backends.\n");
         #endif
     }
     for (int i=0; i < arrlen(screenShotRequests); i++) {

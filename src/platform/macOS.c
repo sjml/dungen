@@ -3,10 +3,12 @@
 #include <CoreFoundation/CoreFoundation.h>
 #include <unistd.h>
 
+#include "../infrastructure/log.h"
+
 void InitializePlatform() {
     #if DEBUG
         if (chdir("./Resources") != 0) {
-            fprintf(stderr, "ERROR: Could not find Resources directory. Exiting.\n");
+            LogErr("ERROR: Could not find Resources directory. Exiting.\n");
             exit(EXIT_FAILURE);
         }
     #else
@@ -14,7 +16,7 @@ void InitializePlatform() {
         CFURLRef resourcesURL = CFBundleCopyResourcesDirectoryURL(mainBundle);
         char path[PATH_MAX];
         if (!CFURLGetFileSystemRepresentation(resourcesURL, TRUE, (UInt8 *)path, PATH_MAX)) {
-            fprintf(stderr, "Problem setting up working directory! Probably nothing will work!\n");
+            LogErr("Problem setting up working directory! Probably nothing will work!\n");
         }
         CFRelease(resourcesURL);
         chdir(path);

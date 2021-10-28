@@ -37,8 +37,24 @@ require("sys.gamelib.exploration")
 ProFi = require("lib.ProFi")
 ordered_table = require("lib.ordered_table")
 
+function print(...)
+  local args = table.pack(...)
+  for i=1, #args do
+    local s = args[i]
+    if (s ~= nil) then
+      Log(s)
+    else
+      Log("[nil]")
+    end
+    if (i < #args) then
+      Log(" ")
+    end
+  end
+  Log("\n")
+end
+
 os.exit = function()
-  io.stderr:write("Cannot exit from Lua.\n")
+  LogErr("Cannot exit from Lua.\n")
 end
 
 loadFiles("scripts/simulation/elements", "")

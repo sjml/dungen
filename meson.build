@@ -198,6 +198,7 @@ dungen_srcs = [
     'src/infrastructure/files.c',
     'src/infrastructure/game.c',
     'src/infrastructure/images.c',
+    'src/infrastructure/log.c',
     'src/infrastructure/outline.c',
     'src/infrastructure/rendering.c',
     'src/infrastructure/text.c',

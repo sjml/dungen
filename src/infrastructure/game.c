@@ -12,6 +12,7 @@
 #include "world.h"
 #include "rendering.h"
 #include "tools.h"
+#include "log.h"
 #include "../scripting/scripting.h"
 #include "../hlvm/hlvm.h"
 #include "../ui/banner.h"
@@ -38,7 +39,7 @@ void SeedRandomString(const char* seedString) {
     sds* toks = sdssplitlen(seedString, strlen(seedString), "///", 3, &count);
     if (count != 2) {
         sdsfreesplitres(toks, count);
-        fprintf(stderr, "ERROR: Invalid random seed. Falling back to standard seeding procedure.\n");
+        LogErr("ERROR: Invalid random seed. Falling back to standard seeding procedure.\n");
         SeedRandom(0, 0);
         return;
     }
@@ -60,7 +61,7 @@ void SeedRandom(uint64_t seed, uint64_t seq) {
     }
     randomSeedString = sdsempty();
     randomSeedString = sdscatprintf(randomSeedString, "%" PRIu64 "///%" PRIu64, seed, seq);
-    printf("Random Seed: %s\n\n", randomSeedString);
+    Log("Random Seed: %s\n\n", randomSeedString);
     pcg32_srandom_r(&randomState, seed, seq);
 }
 
@@ -108,7 +109,7 @@ void FinalizeGame(void) {
 
 void QuitGame(const char* message, int exitCode) {
     if (message != NULL) {
-        printf("Quitting: %s\n", message);
+        Log("Quitting: %s\n", message);
     }
     if (exitCode != 0) {
         exit(exitCode);
@@ -247,7 +248,7 @@ void _RunEvents() {
         }
         #if DEBUG
         else {
-            printf("Unprocessed event! (%d)\n", event->type);
+            Log("Unprocessed event! (%d)\n", event->type);
         }
         #endif // DEBUG
     }
@@ -268,7 +269,7 @@ int GameTick(void) {
 
     uint64_t dt_ticks = stm_laptime(&previousTime);
     dt = stm_sec(dt_ticks);
-    // printf("dt: %.4f\n", dt);
+    // Log("dt: %.4f\n", dt);
     dt = gb_clamp(dt, 0.0, MAX_TIMESTEP);
 
     bool waiting = GetIntRegister("WaitForUI") != 0;
@@ -280,10 +281,10 @@ int GameTick(void) {
             while (hlvmTickCount++ < TICKS_PER_CYCLE) {
                 lua_getglobal(GetLuaState(), "HLVMProcess");
                 if (!lua_isfunction(GetLuaState(), -1)) {
-                    fprintf(stderr, "ERROR: No global 'HLVMProcess()' function defined in Lua!\n");
+                    LogErr("ERROR: No global 'HLVMProcess()' function defined in Lua!\n");
                 }
                 if (lua_pcall(GetLuaState(), 0, 0, 0) != 0) {
-                    fprintf(stderr, "ERROR: %s\n", lua_tostring(GetLuaState(), -1));
+                    LogErr("ERROR: %s\n", lua_tostring(GetLuaState(), -1));
                 }
             }
         }
