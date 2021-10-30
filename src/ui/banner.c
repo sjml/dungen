@@ -16,7 +16,7 @@ typedef struct {
 static BannerInfo* banners = NULL;
 static const float padding = 60.0f;
 
-void _repositionBanners() {
+void RepositionBanners() {
     float height = 0.0f;
     for (long i = 0; i < arrlen(banners); i++) {
         height += banners[i].extents.y + padding;
@@ -61,7 +61,7 @@ void _repositionBanners() {
 
 void PositionBanner(void* bannerHandle, float yPos) {
     ((BannerInfo*)bannerHandle)->manualY = yPos;
-    _repositionBanners();
+    RepositionBanners();
 }
 
 void* AddBanner(const char* text, float scale, gbVec4 textColor, gbVec4 bgColor, float duration) {
@@ -77,7 +77,7 @@ void* AddBanner(const char* text, float scale, gbVec4 textColor, gbVec4 bgColor,
     bi.extents = MeasureTextExtents(bi.ti->text, "Pixel", bi.ti->scale);
 
     arrpush(banners, bi);
-    _repositionBanners();
+    RepositionBanners();
 
     return (void*)&banners[arrlen(banners) - 1];
 }
@@ -90,7 +90,7 @@ void RemoveBanner(void* bannerHandle) {
             arrdel(banners, i);
             break;
         }
-        _repositionBanners();
+        RepositionBanners();
     }
 }
 
@@ -115,7 +115,7 @@ bool UpdateBanners(float dt) {
             sg_destroy_buffer(banners[deadIndices[i]].vertBuffer);
             arrdel(banners, deadIndices[i]);
         }
-        _repositionBanners();
+        RepositionBanners();
     }
 
     return true;

@@ -202,6 +202,7 @@ void _RunEvents() {
         }
         else if (event->type == SAPP_EVENTTYPE_RESIZED) {
             UpdateRenderingDimensions();
+            RunString("ResolveStyles()");
         }
         else if (event->type == SAPP_EVENTTYPE_TOUCHES_BEGAN) {
             // only deal with the first touch; treat like mouse

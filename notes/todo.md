@@ -24,7 +24,6 @@
 5. Relaxable constraint sets
 
 ## Near Term
-* reposition text, banners, buttons when resolution changes
 * handle newlines in text rendering? (and fix Great Wyrm label)
 * outlines flip edge alignment when regions have disjoint sections
 * why is tile choice not using SetTileOutline?
@@ -33,6 +32,7 @@
 ## Tech Debt
 * could use a minor but broad code sweep -- lots of cruft leftover from old build systems, etc.
 * more graceful failure (at least on Windows) if can't find resources directory
+* multiple choice loses its banner on resize -- leaving for now because it means a refactor of how the choice banner gets displayed
 * world.c could use a refactor
     - RenderingRegions is a holdover from when they were bare TileSets; think about just making a permalist like Agents and TileData have (though TileData's is more by rendering necessity...)
         - in general, regions should be managed by the world instead of rendering system

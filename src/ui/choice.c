@@ -45,6 +45,11 @@ void AddChoice(const char* description) {
 }
 
 void ClearChoices(void) {
+    if (bannerHandle != NULL) {
+        RemoveBanner(bannerHandle);
+        bannerHandle = NULL;
+    }
+
     choiceStatus = -1;
     for (int i=0; i < arrlen(choices); i++) {
         free(choices[i]);
@@ -74,6 +79,23 @@ void PresentChoiceSelection(const char* description) {
     else if (numChoices > 12) {
         LogErr("WARNING: Cannot present overfull choice selection.\n");
         return;
+    }
+
+    if (bannerHandle != NULL) {
+        RemoveBanner(bannerHandle);
+    }
+    if (arrlen(buttons) > 0) {
+        for (int i=0; i < arrlen(buttons); i++) {
+            sg_destroy_buffer(buttons[i].vertBuff);
+        }
+        arrfree(buttons);
+        buttons = NULL;
+
+        for (int i=0; i < arrlen(choiceTexts); i++) {
+            DestroyTextInfo(choiceTexts[i]);
+        }
+        arrfree(choiceTexts);
+        choiceTexts = NULL;
     }
 
     choiceStatus = 1;

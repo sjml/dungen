@@ -216,6 +216,17 @@ void UpdateRenderingDimensions() {
     orthoDimensions.y = defaultWindowHeight;
     orthoDimensions.x = (int)((float)defaultWindowHeight * aspect);
     gb_mat4_ortho2d(&orthoMatrix, 0.0f, (float)orthoDimensions.x, (float)orthoDimensions.y, 0.0f);
+
+    RepositionBanners();
+    if (GetChoiceStatus() >= 0) {
+        // TODO: preserve choice selection label on resize
+        PresentChoiceSelection("");
+    }
+
+    for (int ri=0; ri < arrlen(regions); ri++) {
+        SetRegionAsDirty(regions[ri]);
+    }
+
 }
 
 Vec2i GetWindowDimensions(void) {
