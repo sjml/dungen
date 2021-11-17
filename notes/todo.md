@@ -42,6 +42,10 @@
 
 ## Horizon
 * HLVM exceptions (C + Lua invoking)
+    - this is not just devwank -- will need to be part of the sim design
+    - basically just setting bookmarks to return to in the event of a "throw"
+    - example: a civilization starts an exploration process but in the middle of it has an encounter that wipes them out; need to have some means of easily unwinding the stack to a known good point
+    - consider: loader can detect if an element throws, can check if it's inside a "try" block and refuse to run the code if it's unsafe (a la Java?)
 * Lua console: autocomplete, multiline input
 * pull sim settings and other stuff out into config file that Lua reads in
 * try to read resources from user directory (and add button to tools to copy there)
