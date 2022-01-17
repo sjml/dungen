@@ -21,7 +21,7 @@ if host_machine_system == 'darwin'
 endif
 
 
-if host_machine_system == 'macos' and not get_option('debug')
+if host_machine_system == 'macos' # and not get_option('debug')
     add_global_arguments(['-arch', 'arm64', '-arch', 'x86_64'], language: ['c', 'cpp'])
     add_global_link_arguments(['-arch', 'arm64', '-arch', 'x86_64'], language: ['c', 'cpp'])
 endif
