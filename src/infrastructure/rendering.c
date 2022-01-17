@@ -138,7 +138,9 @@ void InitializeRendering() {
     LoadFont("Pixel", "fonts/04B_03__.TTF", 32.0, true);
 
     #if !defined(DUNGEN_DISABLE_TOOLS)
-        simgui_setup(&(simgui_desc_t){ 0 });
+        simgui_desc_t desc = (simgui_desc_t){0};
+        desc.dpi_scale = sapp_dpi_scale();
+        simgui_setup(&desc);
     #endif // !defined(DUNGEN_DISABLE_TOOLS)
 
     renderingInitialized = true;
